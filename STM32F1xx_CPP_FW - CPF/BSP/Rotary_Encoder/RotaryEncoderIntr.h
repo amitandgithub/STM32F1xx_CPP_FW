@@ -21,12 +21,21 @@ namespace BSP
 {   
       
     
-    class RotaryEncoderIntr : public Callback
+    class RotaryEncoderIntr
     {
     public:
         using Status_t = uint32_t;
         using Pin_t = HAL::Gpio::Pin_t;
         typedef void(*BtnHandler_t)();
+        class CWCallback : public Callback
+        {
+            virtual void CallbackFunction();
+        };
+        
+        class SWCallback : public Callback
+        {
+            virtual void CallbackFunction();
+        };
         
         typedef enum
         {
@@ -61,7 +70,9 @@ namespace BSP
         HALCallback_t       _CWHandler;
         HALCallback_t       _CCWHandler;
         bool                _CWCurrState;
-        RotaryState_t       _RotaryCurrState;   
+        RotaryState_t       _RotaryCurrState; 
+        CWCallback          _CWCallback;
+        SWCallback          _SWCallback;
         
     };
     // This function implements Clear-On-Read on Rotary Encoder State
@@ -74,13 +85,13 @@ namespace BSP
     
     inline bool RotaryEncoderIntr::getButtonState()
     {
-        return _SW.getState();
+        return true;
     }
     inline void RotaryEncoderIntr::RegisterHandler(HALCallback_t CW_Handler, HALCallback_t CCW_Handler, HALCallback_t SWH2LCallback, HALCallback_t SWL2HCallback)
     {
         _CWHandler     = CW_Handler;
         _CCWHandler    = CCW_Handler;
-        _SW.RegisterHandler(SWH2LCallback,SWL2HCallback);
+        //_SW.RegisterHandler(SWH2LCallback,SWL2HCallback);
     }
 #endif //RotaryEncoderIntr_h
 }

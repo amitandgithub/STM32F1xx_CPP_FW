@@ -16,9 +16,9 @@ RotaryEncoderIntr::RotaryEncoderIntr(Pin_t CWPin,Pin_t CCWPin,Pin_t SWPin,
                                      HALCallback_t CCWHandler,
                                      HALCallback_t SWL2HCallback,
                                      HALCallback_t SWH2LCallback ):
-        _CWPin(CWPin,HAL::GpioInput::INPUT_PULL_DOWN,CW_L2H_Handler,CW_H2L_Handler),
-        _CCW(CCWPin,BSP::BtnPoll::BTN_PULL_DOWN,0),                            
-        _SW(SWPin,BSP::BtnInt::BTN_PULL_DOWN,SWH2LCallback,SWL2HCallback), 
+        _CWPin(CWPin,HAL::GpioInput::INPUT_PULL_DOWN,HAL::GpioInput::IT_ON_FALLING,&_CWCallback),
+        _CCWPin(CCWPin,HAL::GpioInput::INPUT_PULL_DOWN),                            
+        _SWPin(SWPin,HAL::GpioInput::INPUT_PULL_DOWN,HAL::GpioInput::IT_ON_RISING_FALLING,&_SWCallback), 
         _CWCurrState(0),
         _CWHandler(CWHandler),
         _CCWHandler(CCWHandler),   
@@ -30,23 +30,22 @@ RotaryEncoderIntr::RotaryEncoderIntr(Pin_t CWPin,Pin_t CCWPin,Pin_t SWPin,
 RotaryEncoderIntr::Status_t RotaryEncoderIntr::HwInit(void *pInitStruct)
 {
     (void)pInitStruct;
-    _CW.HwInit(); 
-    _CCW.HwInit(); 
-    _SW.HwInit(); 
-    _CWCurrState = _CW.getState();
+    _CWPin.HwInit(); 
+    _CCWPin.HwInit(); 
+    _SWPin.HwInit(); 
     return 1;
 }
 
 void RotaryEncoderIntr::CW_L2H_Handler()
 {
-    if(_CCW.getState() == false)
-    {
-        if(_CWHandler) _CWHandler();
-    }
-    else
-    {
-        if(_CCWHandler) _CCWHandler();
-    }
+//    if(_CCW.getState() == false)
+//    {
+//        if(_CWHandler) _CWHandler();
+//    }
+//    else
+//    {
+//        if(_CCWHandler) _CCWHandler();
+//    }
 }
     
  void RotaryEncoderIntr::CW_H2L_Handler()
