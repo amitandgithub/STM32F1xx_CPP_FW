@@ -44,7 +44,8 @@ int main(void)
         //Gpio_Intput_Test();
          // Hw_ButtonIntr_Test();
          //Hw_BtnPoll_Test();
-         Rotary_Encoder_Test();
+        // Rotary_Encoder_Test();
+        Rotary_Encoder_Intr_Test();
         
         //Gpio_Intr_Intput_Test();
         //BtnInt_Test();

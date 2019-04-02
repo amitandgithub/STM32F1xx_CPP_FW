@@ -9,6 +9,7 @@
 #include"HwButton.h"
 #include"BtnPoll.h"
 #include"RotaryEncoderPoll.h"
+#include"RotaryEncoderIntr.h"
 #include"Callback.h"
 #include"BtnInt.h"
 
@@ -35,6 +36,7 @@ extern void CCW_Handler();
 extern void Rising();
 extern void Falling();
 extern void BtnInt_Test();
+extern void Rotary_Encoder_Intr_Test();
 
 extern void I2C_Master_Test();
 extern void I2C_Slave_Test();

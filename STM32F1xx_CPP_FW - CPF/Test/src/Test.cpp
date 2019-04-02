@@ -207,7 +207,7 @@ void btn_A1_High_Handler()
 
 uint32_t CW,CCW,High;
 
-
+#if 0
 void Rotary_Encoder_Test()
 {
     static RotaryEncoderPoll::RotaryState_t  RotaryState;
@@ -235,16 +235,57 @@ void Rotary_Encoder_Test()
 //        }
     }
 }
+#endif
 
-void CW_Handler()
+#if 1
+/******************************************************************************
+** GpioInput Test 
+******************************************************************************/
+static uint32_t RE_CW,RE_CCW,RE_SW;
+class SWCallback : public Callback
 {
-    CW++;
+    virtual void CallbackFunction()
+    {
+       RE_SW++;
+    }
+};
+SWCallback SW_Callback;
+
+
+class CWCallback : public Callback
+{
+    virtual void CallbackFunction()
+    {
+        RE_CW++;
+    }
+};
+CWCallback CW_Callback;
+
+class CCWCallback : public Callback
+{
+    virtual void CallbackFunction()
+    {
+        RE_CCW++;
+    }
+};
+CCWCallback CCW_Callback;
+
+void Rotary_Encoder_Intr_Test()
+{
+    static RotaryEncoderPoll::RotaryState_t  RotaryState;
+    RotaryEncoderIntr RotaryEncoder(Gpio::A5,Gpio::A7,Gpio::A1,&CW_Callback,&CCW_Callback,&SW_Callback,&SW_Callback);
+    RotaryEncoder.HwInit();
+    C13_Led.HwInit();
+
+    while(1)
+    {
+
+    }
 }
 
-void CCW_Handler()
-{
-    CCW++;
-}
+/******************************************************************************/
+#endif // Rotary_Encoder_Intr_Test Test
+
 
 #if 0
 void Gpio_Output_Test()
