@@ -13,7 +13,7 @@ namespace BSP
 {
     
     
-BtnPoll::BtnPoll(Pin_t Pin, Pull_t Pull, uint8_t Debounce,  HALCallback_t L2HCallback, HALCallback_t H2LCallback) :
+BtnPoll::BtnPoll(Pin_t Pin, Pull_t Pull, uint8_t Debounce,  Callback_t L2HCallback, Callback_t H2LCallback) :
         _BtnPin(Pin,(Pull==BTN_PULL_UP?HAL::GpioInput::INPUT_PULL_UP:HAL::GpioInput::INPUT_PULL_DOWN) ),
         _debounce(Debounce),
         _previousState(BTN_IDLE),
@@ -32,7 +32,7 @@ BtnPoll::Status_t BtnPoll::HwInit(void *pInitStruct)
     return _BtnPin.HwInit(); 
 }
 
-void BtnPoll::RunStateMachine()
+void BtnPoll::Run()
 {      
     switch(_currentState)
     {
@@ -71,13 +71,15 @@ void BtnPoll::RunStateMachine()
     case BTN_LOW: 
         _currentState = BTN_IDLE;
         _previousState = BTN_LOW;
-        if(_H2LCallback) _H2LCallback();
+        if(_H2LCallback) 
+            _H2LCallback->CallbackFunction();
         break;
         
     case BTN_HIGH:
         _currentState = BTN_IDLE;
         _previousState = BTN_HIGH;
-        if(_L2HCallback) _L2HCallback();        
+        if(_L2HCallback) 
+            _L2HCallback->CallbackFunction();        
         break;         
         
     default: break;

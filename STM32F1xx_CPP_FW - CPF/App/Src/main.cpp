@@ -35,37 +35,15 @@ int main(void)
     /* Configure the system clock */
     SystemClock_Config();
     
-    //HAL::Interrupt::Relocate_Vector_Table();
-
     while(1)
     {
-        //Gpio_Output_Test();
-       // Led_Test();
-        //Gpio_Intput_Test();
-         // Hw_ButtonIntr_Test();
-         //Hw_BtnPoll_Test();
-        // Rotary_Encoder_Test();
-        Rotary_Encoder_Intr_Test();
-        
-        //Gpio_Intr_Intput_Test();
+       //BtnPoll_Test();
         //BtnInt_Test();
-        
-        //INA219_Test();
-        //SPI_Poll_Test();
-        //Nokia5110LCD_Test();
-        //SPI1_DMA_Test();
-        //SPI2_DMA_Test();
-        //Nokia5110LCD_SPI1_Test();
-        //Nokia5110LCD_SPI2_Test(); 
-        //Nokia5110LCD_Dual_Test();
-        //Queue_Test();
-        //Hw_Button_Test();
-        //Hw_ButtonIntr_Test();
-       //RTC_Test();
-        //Printf_Test();
-        //UI_Test();
-        //Display_Buffer_Test();
-        //SD_Test();
+       //Led_Test();
+        //Rotary_Encoder_Test();
+        //Rotary_EncoderIntr_Test();
+        //KeypadPoll_Test();
+        KeypadIntr_Test();
     }
     
 }
@@ -223,7 +201,7 @@ void SystemClock_Config_LL(void)
 
    if(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_2)
   {
-    Error_Handler();  
+    //Error_Handler();  
   }
   LL_RCC_HSE_Enable();
 

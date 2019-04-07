@@ -24,6 +24,8 @@ class BtnInt : public Callback
 {
 public:
     
+    typedef Callback* Callback_t;
+    
     typedef enum
 	{
         BTN_LOW,
@@ -41,22 +43,22 @@ public:
         BTN_PULL_DOWN
     }Pull_t;
     
-    BtnInt(Pin_t Pin, Pull_t Pull = BTN_PULL_DOWN, HALCallback_t L2HCallback = nullptr, HALCallback_t H2LCallback = nullptr );
+    BtnInt(Pin_t Pin, Pull_t Pull = BTN_PULL_DOWN, Callback_t L2HCallback = nullptr, Callback_t H2LCallback = nullptr );
     ~BtnInt(){};
     Status_t HwInit(void *pInitStruct = nullptr);
 	bool Read();
     bool getState();
     uint32_t _getMillis();
-    void RegisterHandler(HALCallback_t L2HCallback, HALCallback_t H2LCallback);
+    void RegisterHandler(Callback_t L2HCallback, Callback_t H2LCallback);
     virtual void CallbackFunction();
     
 private:
      HAL::GpioInput         _BtnPin;
-     HALCallback_t          _L2HCallback;
-     HALCallback_t          _H2LCallback;
+     Callback_t          _L2HCallback;
+     Callback_t          _H2LCallback;
 };
 
-inline void BtnInt::RegisterHandler(HALCallback_t L2HCallback, HALCallback_t H2LCallback)
+inline void BtnInt::RegisterHandler(Callback_t L2HCallback, Callback_t H2LCallback)
 {
     _L2HCallback = L2HCallback;
     _H2LCallback = H2LCallback;    

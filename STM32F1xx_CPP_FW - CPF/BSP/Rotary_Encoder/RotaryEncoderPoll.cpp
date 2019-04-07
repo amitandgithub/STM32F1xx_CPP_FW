@@ -12,17 +12,17 @@ namespace BSP
 {
 
 RotaryEncoderPoll::RotaryEncoderPoll(Pin_t CWPin,Pin_t CCWPin,Pin_t SWPin,
-                                     HALCallback_t CWHandler, 
-                                     HALCallback_t CCWHandler,
-                                     HALCallback_t SWL2HCallback,
-                                     HALCallback_t SWH2LCallback ):
-        _CW(CWPin,BSP::BtnPoll::BTN_PULL_DOWN,1,CW_L2H_Handler,CW_H2L_Handler), // for CW Debounce time for 1 msec works fine + 100nf and 1K RC debounce
-        _CCW(CCWPin,BSP::BtnPoll::BTN_PULL_DOWN,10),                            // for CCW Debounce time for 8 ~ 10 msec works fine + 100nf and 1K RC debounce
+                                     Callback_t CWHandler, 
+                                     Callback_t CCWHandler,
+                                     Callback_t SWL2HCallback,
+                                     Callback_t SWH2LCallback ):
+        _CW(CWPin,BSP::BtnPoll::BTN_PULL_DOWN,1,this,nullptr), // for CW Debounce time for 1 msec works fine + 100nf and 1K RC debounce
+        _CCW(CCWPin,BSP::BtnPoll::BTN_PULL_DOWN,0),                            // for CCW Debounce time for 0 msec works fine + 100nf and 1K RC debounce
         _SW(SWPin,BSP::BtnPoll::BTN_PULL_DOWN,0,SWH2LCallback,SWL2HCallback), 
-        _CWCurrState(0),
+       // _CWCurrState(0),
         _CWHandler(CWHandler),
-        _CCWHandler(CCWHandler),   
-        _RotaryCurrState(NOT_ROTATING)
+        _CCWHandler(CCWHandler)   
+       // _RotaryCurrState(NOT_ROTATING)
 {
             
 }
@@ -33,59 +33,32 @@ RotaryEncoderPoll::Status_t RotaryEncoderPoll::HwInit(void *pInitStruct)
     _CW.HwInit(); 
     _CCW.HwInit(); 
     _SW.HwInit(); 
-    _CWCurrState = _CW.getState();
+    //_CWCurrState = _CW.getState();
     return 1;
 }
 
-void RotaryEncoderPoll::RunStateMachine()
+void RotaryEncoderPoll::Run()
 {  
-    bool CW_New_State; 
-    bool CCW_New_State; 
+    _CW.Run();
+    
+    _CCW.Run();
+    
+    _SW.Run();
+}
 
-    
-    _CW.RunStateMachine();
-    
-    _CCW.RunStateMachine();
-    
-    _SW.RunStateMachine();
-    
-    CW_New_State  =  _CW.getState(); 
-     
-    
-    if(_CWCurrState == CW_New_State)
-        return;
-    
-    CCW_New_State =  _CCW.Read();
-    
-    if ((CW_New_State == true))
-    {     
-        if((CCW_New_State == false))
-        {
-            _RotaryCurrState = ROTATING_CLOCKWISE;
-            if(_CWHandler) _CWHandler();
-            //LL_mDelay(10);
-            
-        }
-        else
-        {
-            _RotaryCurrState = ROTATING_ANTI_CLOCKWISE;  
-            if(_CCWHandler) _CCWHandler();
-           // LL_mDelay(10);
-        }
+void RotaryEncoderPoll::CallbackFunction()
+{
+    if(_CCW.getState() == false)
+    {
+       // _RotaryCurrState = ROTATING_CLOCKWISE;
+        if(_CWHandler) 
+            _CWHandler->CallbackFunction();        
     }
-    
-    _CWCurrState = CW_New_State;
-    
+    else
+    {
+      //  _RotaryCurrState = ROTATING_ANTI_CLOCKWISE;
+        if(_CCWHandler) 
+            _CCWHandler->CallbackFunction();        
+    }
 }
-
-void RotaryEncoderPoll::CW_L2H_Handler()
-{
-    
-}
-    
- void RotaryEncoderPoll::CW_H2L_Handler()
-{
-    
-}
-
 }

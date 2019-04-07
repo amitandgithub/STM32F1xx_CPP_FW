@@ -46,7 +46,7 @@ BSP::Led C13_Led(Gpio::C13);
 ** LED Test
 ******************************************************************************/
 
-BSP::Led C13_Led(Gpio::C13);
+
 
 void Led_Test()
 {
@@ -122,7 +122,7 @@ void Gpio_Intr_Intput_Test()
 /******************************************************************************/
 #endif // GpioInput Test
 
-#if 1
+#if 0
 void BtnInt_Test()
 {
     static BtnInt BtnInt_A8(Gpio::A8, BSP::BtnInt::BTN_PULL_DOWN, Rising,Falling );
@@ -207,10 +207,19 @@ void btn_A1_High_Handler()
 
 uint32_t CW,CCW,High;
 
-#if 0
+#if 1
+void CW_Handler()
+{
+    CW++;
+}
+void CCW_Handler()
+{
+    CCW++;
+}
+
 void Rotary_Encoder_Test()
 {
-    static RotaryEncoderPoll::RotaryState_t  RotaryState;
+//    static RotaryEncoderPoll::RotaryState_t  RotaryState;
     RotaryEncoderPoll RotaryEncoder(Gpio::A5,Gpio::A7,Gpio::A1,CW_Handler,CCW_Handler,Btn_Low_Handler,Btn_High_Handler);
     RotaryEncoder.HwInit();
     C13_Led.HwInit();
@@ -270,13 +279,18 @@ class CCWCallback : public Callback
 };
 CCWCallback CCW_Callback;
 
+RotaryEncoderIntr RotaryEncoder(Gpio::A5,Gpio::A7,Gpio::A1,&CW_Callback,&CCW_Callback,&SW_Callback,&SW_Callback);
+
 void Rotary_Encoder_Intr_Test()
 {
-    static RotaryEncoderPoll::RotaryState_t  RotaryState;
-    RotaryEncoderIntr RotaryEncoder(Gpio::A5,Gpio::A7,Gpio::A1,&CW_Callback,&CCW_Callback,&SW_Callback,&SW_Callback);
+    int i  = sizeof(RotaryEncoderPoll); // 144
+     i  = sizeof(RotaryEncoderIntr); // 116
+     i =  sizeof(GpioInput); // 28
+     i =  sizeof(BtnPoll); // 44
+     i =  sizeof(BtnInt); // 40
+     
     RotaryEncoder.HwInit();
     C13_Led.HwInit();
-
     while(1)
     {
 

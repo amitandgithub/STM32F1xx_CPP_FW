@@ -368,6 +368,7 @@
                     <state>$PROJ_DIR$\..\BSP\Led</state>
                     <state>$PROJ_DIR$\..\BSP\Button</state>
                     <state>$PROJ_DIR$\..\BSP\Rotary_Encoder</state>
+                    <state>$PROJ_DIR$\..\BSP\Keypad</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2107,7 +2108,19 @@
             </file>
         </group>
         <group>
+            <name>Keypad</name>
+            <file>
+                <name>$PROJ_DIR$\..\BSP\Keypad\KeypadIntr.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\BSP\Keypad\KeypadPoll.h</name>
+            </file>
+        </group>
+        <group>
             <name>Led</name>
+            <file>
+                <name>$PROJ_DIR$\..\BSP\Led\Led.cpp</name>
+            </file>
         </group>
         <group>
             <name>RotaryEncoder</name>
@@ -2200,7 +2213,25 @@
     <group>
         <name>Test</name>
         <file>
-            <name>$PROJ_DIR$\..\Test\src\Test.cpp</name>
+            <name>$PROJ_DIR$\..\Test\inc\BtnIntTest.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Test\inc\BtnPollTest.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\BSP\Keypad\KeypadIntrTest.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\BSP\Keypad\KeypadPollTest.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Test\inc\LedTest.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Test\inc\RotaryEncoderIntrTest.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Test\inc\RotaryEncoderPollTest.h</name>
         </file>
     </group>
     <group>

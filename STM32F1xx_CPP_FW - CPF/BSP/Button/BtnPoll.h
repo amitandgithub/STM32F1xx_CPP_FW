@@ -22,7 +22,7 @@ using namespace HAL;
 class BtnPoll
 {
 public:
-    
+    typedef Callback* Callback_t;
     typedef enum
 	{
         BTN_LOW,
@@ -40,26 +40,27 @@ public:
         BTN_PULL_DOWN
     }Pull_t;
     
-    BtnPoll(Pin_t Pin, Pull_t Pull = BTN_PULL_DOWN, uint8_t Debounce = 3U, HALCallback_t L2HCallback = nullptr, HALCallback_t H2LCallback = nullptr );
+    BtnPoll(Pin_t Pin, Pull_t Pull = BTN_PULL_DOWN, uint8_t Debounce = 3U, Callback_t L2HCallback = nullptr, Callback_t H2LCallback = nullptr );
     ~BtnPoll(){};
     Status_t HwInit(void *pInitStruct = nullptr);
-	void RunStateMachine();
+	void Run();
 	BtnState_t Read();
     bool getState();
     uint32_t _getMillis();
-    void RegisterHandler(HALCallback_t L2HCallback, HALCallback_t H2LCallback);
+    void RegisterHandler(Callback_t L2HCallback, Callback_t H2LCallback);
     
 private:
      HAL::GpioInput         _BtnPin;
+     Callback_t          _L2HCallback;
+     Callback_t          _H2LCallback;
      BtnState_t             _previousState;
      BtnState_t             _currentState;
      uint8_t                _debounce;
      uint16_t               _startMillis;
-     HALCallback_t          _L2HCallback;
-     HALCallback_t          _H2LCallback;
+
 };
 
-inline void BtnPoll::RegisterHandler(HALCallback_t L2HCallback, HALCallback_t H2LCallback)
+inline void BtnPoll::RegisterHandler(Callback_t L2HCallback, Callback_t H2LCallback)
 {
     _L2HCallback = L2HCallback;
     _H2LCallback = H2LCallback;    

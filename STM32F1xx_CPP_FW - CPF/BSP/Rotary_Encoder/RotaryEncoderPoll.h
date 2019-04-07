@@ -17,14 +17,12 @@
 namespace BSP
 {
     
-    using namespace HAL;  
-    
-    class RotaryEncoderPoll
+    class RotaryEncoderPoll : public Callback
     {
     public:
         using Status_t = uint32_t;
         using Pin_t = HAL::Gpio::Pin_t;
-        typedef void(*BtnHandler_t)();
+        typedef Callback* Callback_t;   
         
         typedef enum
         {
@@ -34,53 +32,53 @@ namespace BSP
         }RotaryState_t;
         
         RotaryEncoderPoll(Pin_t CWPin,Pin_t CCWPin,Pin_t SWPin,
-                          HALCallback_t CWHandler = nullptr, 
-                          HALCallback_t CCWHandler = nullptr,
-                          HALCallback_t SWL2HCallback = nullptr, 
-                          HALCallback_t SWH2LCallback = nullptr);
+                          Callback_t CWHandler = nullptr, 
+                          Callback_t CCWHandler = nullptr,
+                          Callback_t SWL2HCallback = nullptr, 
+                          Callback_t SWH2LCallback = nullptr);
         
         ~RotaryEncoderPoll(){};
         
         Status_t            HwInit(void *pInitStruct = nullptr);
         
-        void                RunStateMachine();
+        void                Run();
         
         RotaryState_t       getRotaryState();
         
         bool                getButtonState();
         
-        void                RegisterHandler(HALCallback_t CW_Handler, HALCallback_t CCW_Handler, HALCallback_t SWH2LCallback, HALCallback_t SWL2HCallback);
+        void                RegisterHandler(Callback_t CW_Handler, Callback_t CCW_Handler, Callback_t SWH2LCallback, Callback_t SWL2HCallback);
         
-        static void         CW_L2H_Handler();
+        virtual void CallbackFunction();
         
-        static void         CW_H2L_Handler();
     private:
         BtnPoll             _CW;
         BtnPoll             _CCW;
         BtnPoll             _SW;  
-        HALCallback_t       _CWHandler;
-        HALCallback_t       _CCWHandler;
-        bool                _CWCurrState;
-        RotaryState_t       _RotaryCurrState;   
+        Callback_t       _CWHandler;
+        Callback_t       _CCWHandler;
+       // bool                _CWCurrState;
+       // RotaryState_t       _RotaryCurrState;   
         
     };
     // This function implements Clear-On-Read on Rotary Encoder State
-    inline RotaryEncoderPoll::RotaryState_t RotaryEncoderPoll::getRotaryState()
-    {
-        RotaryState_t returnState = _RotaryCurrState;
-        _RotaryCurrState = NOT_ROTATING;
-        return returnState;
-    }
+//    inline RotaryEncoderPoll::RotaryState_t RotaryEncoderPoll::getRotaryState()
+//    {
+//        //RotaryState_t returnState = _RotaryCurrState;
+//        _RotaryCurrState = NOT_ROTATING;
+//        return returnState;
+//    }
     
     inline bool RotaryEncoderPoll::getButtonState()
     {
         return _SW.getState();
     }
-    inline void RotaryEncoderPoll::RegisterHandler(HALCallback_t CW_Handler, HALCallback_t CCW_Handler, HALCallback_t SWH2LCallback, HALCallback_t SWL2HCallback)
+    inline void RotaryEncoderPoll::RegisterHandler(Callback_t CW_Handler, Callback_t CCW_Handler, Callback_t SWH2LCallback, Callback_t SWL2HCallback)
     {
         _CWHandler     = CW_Handler;
         _CCWHandler    = CCW_Handler;
         _SW.RegisterHandler(SWH2LCallback,SWL2HCallback);
     }
-#endif //RotaryEncoderPoll_h
 }
+#endif //RotaryEncoderPoll_h
+
