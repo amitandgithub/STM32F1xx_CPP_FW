@@ -195,110 +195,239 @@ namespace HAL
             return GPIO_SUCCESS;
         }
         
-        void GpioInput::ISR(IRQn_t IRQNumber)
+//        void GpioInput::ISR(IRQn_t IRQNumber)
+//        {
+////            IRQn_t L_IRQNumber = IRQNumber - EXTI0_IRQn;
+////            
+////            switch(L_IRQNumber)
+////            {
+////            case 0: SET_BIT(EXTI->PR,LL_EXTI_LINE_0);
+////            _GpioCallbacks[0]->CallbackFunction();
+////            break;
+////            case 1: SET_BIT(EXTI->PR,LL_EXTI_LINE_1);
+////            _GpioCallbacks[1]->CallbackFunction();
+////            break;
+////            case 2: SET_BIT(EXTI->PR,LL_EXTI_LINE_2);
+////            _GpioCallbacks[2]->CallbackFunction();
+////            break;                   
+////            case 3: SET_BIT(EXTI->PR,LL_EXTI_LINE_3);
+////            _GpioCallbacks[3]->CallbackFunction();
+////            break;
+////            case 4: SET_BIT(EXTI->PR,LL_EXTI_LINE_4);
+////            _GpioCallbacks[4]->CallbackFunction();
+////            break;                    
+////            }
+//            
+//            if(IRQNumber == EXTI0_IRQn )
+//            {
+//                SET_BIT(EXTI->PR,LL_EXTI_LINE_0);
+//                _GpioCallbacks[0]->CallbackFunction();
+//            }
+//            else if(IRQNumber == EXTI1_IRQn )
+//            {
+//                SET_BIT(EXTI->PR,LL_EXTI_LINE_1);
+//                _GpioCallbacks[1]->CallbackFunction();
+//            }
+//            else if(IRQNumber == EXTI2_IRQn )
+//            {
+//                SET_BIT(EXTI->PR,LL_EXTI_LINE_2);
+//                _GpioCallbacks[2]->CallbackFunction();
+//            }
+//            else if(IRQNumber == EXTI3_IRQn )
+//            {
+//                SET_BIT(EXTI->PR,LL_EXTI_LINE_3);
+//                _GpioCallbacks[3]->CallbackFunction();
+//            }
+//            else if(IRQNumber == EXTI4_IRQn )
+//            {
+//                SET_BIT(EXTI->PR,LL_EXTI_LINE_4);
+//                _GpioCallbacks[4]->CallbackFunction();
+//            }
+//            else if(IRQNumber == EXTI9_5_IRQn )
+//            {
+//                if((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_5) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_5);
+//                    _GpioCallbacks[5]->CallbackFunction();
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_6) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_6);
+//                    _GpioCallbacks[6]->CallbackFunction();
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_7) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_7);
+//                    _GpioCallbacks[7]->CallbackFunction();
+//                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_8) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_8);
+//                    _GpioCallbacks[8]->CallbackFunction();
+//                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_9) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_9);
+//                    _GpioCallbacks[9]->CallbackFunction();
+//                }
+//                
+//            }
+//            else if(IRQNumber == EXTI15_10_IRQn )
+//            {
+//                if((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_10) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_10);
+//                    _GpioCallbacks[10]->CallbackFunction();
+//                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_11) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_11);
+//                    _GpioCallbacks[11]->CallbackFunction();
+//                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_12) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_12);
+//                    _GpioCallbacks[12]->CallbackFunction();
+//                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_13) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_13);
+//                    _GpioCallbacks[13]->CallbackFunction();
+//                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_14) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_14);
+//                    _GpioCallbacks[14]->CallbackFunction();
+//                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_15) == true)
+//                {
+//                    SET_BIT(EXTI->PR,LL_EXTI_LINE_15);
+//                    _GpioCallbacks[15]->CallbackFunction();
+//                    
+//                }
+//            }
+//            else
+//            {
+//                while(1); // Fatal Error
+//            }
+//        }
+//        
+//}
+
+//        void GpioInput::ISR(IRQn_t IRQNumber)
+//        {
+//            switch(IRQNumber)
+//            {
+//            case 0: LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_4);
+//                    _GpioCallbacks[0]->CallbackFunction();
+//                    return;
+//            case 1: LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_4);
+//                    _GpioCallbacks[1]->CallbackFunction();
+//                    return;
+//            case 2: LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_4);
+//                    _GpioCallbacks[2]->CallbackFunction();
+//                    return;                   
+//            case 3: LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_4);
+//                    _GpioCallbacks[3]->CallbackFunction();
+//                    return;
+//            case 4: LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_4);
+//                    _GpioCallbacks[4]->CallbackFunction();
+//                    return; 
+//            default: ;
+//            }
+//            
+//            // POSITION_VAL(_pin)); // if _pin = 0x80, then POSITION_VAL(_pin) is 7
+//            if(IRQNumber == EXTI9_5_IRQn )
+//            {
+//                if((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_5) == true)
+//                {
+//                    //SET_BIT(EXTI->PR,LL_EXTI_LINE_5);
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_5);
+//                    _GpioCallbacks[5]->CallbackFunction();
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_6) == true)
+//                {
+//                    //SET_BIT(EXTI->PR,LL_EXTI_LINE_6);
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_6);
+//                    _GpioCallbacks[6]->CallbackFunction();
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_7) == true)
+//                {
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_7);
+//                    _GpioCallbacks[7]->CallbackFunction();                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_8) == true)
+//                {
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_8);
+//                    _GpioCallbacks[8]->CallbackFunction();                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_9) == true)
+//                {
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_9);
+//                    _GpioCallbacks[9]->CallbackFunction();
+//                }                
+//            }
+//            else if(IRQNumber == EXTI15_10_IRQn )
+//            {
+//                if((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_10) == true)
+//                {
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_10);
+//                    _GpioCallbacks[10]->CallbackFunction();                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_11) == true)
+//                {
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_11);
+//                    _GpioCallbacks[11]->CallbackFunction();                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_12) == true)
+//                {
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_12);
+//                    _GpioCallbacks[12]->CallbackFunction();                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_13) == true)
+//                {
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_13);
+//                    _GpioCallbacks[13]->CallbackFunction();                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_14) == true)
+//                {
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_14);
+//                    _GpioCallbacks[14]->CallbackFunction();                    
+//                }
+//                else if ((bool)LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_15) == true)
+//                {
+//                    LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_15);
+//                    _GpioCallbacks[15]->CallbackFunction();                    
+//                }
+//            }
+//            else
+//            {
+//                while(1); // Fatal Error
+//            }
+//        }
+//        
+//}
+
+        void GpioInput::ISR(IRQn_t IRQNumber) // 6575 bytes from 7051  bytes
         {
-            if(IRQNumber == EXTI0_IRQn )
+            // if we don't check EXTI->PR for 0,
+            // in that case POSITION_VAL(EXTI->PR) will return 32, which will
+            // try to access with 32 index _GpioCallbacks[ExternalInterrupt]
+            // and will crash because array is only 16 elements
+            if(EXTI->PR)
             {
-                SET_BIT(EXTI->PR,LL_EXTI_LINE_0);
-                _GpioCallbacks[0]->CallbackFunction();
-            }
-            else if(IRQNumber == EXTI1_IRQn )
-            {
-                SET_BIT(EXTI->PR,LL_EXTI_LINE_1);
-                _GpioCallbacks[1]->CallbackFunction();
-            }
-            else if(IRQNumber == EXTI2_IRQn )
-            {
-                SET_BIT(EXTI->PR,LL_EXTI_LINE_2);
-                _GpioCallbacks[2]->CallbackFunction();
-            }
-            else if(IRQNumber == EXTI3_IRQn )
-            {
-                SET_BIT(EXTI->PR,LL_EXTI_LINE_3);
-                _GpioCallbacks[3]->CallbackFunction();
-            }
-            else if(IRQNumber == EXTI4_IRQn )
-            {
-                SET_BIT(EXTI->PR,LL_EXTI_LINE_4);
-                _GpioCallbacks[4]->CallbackFunction();
-            }
-            else if(IRQNumber == EXTI9_5_IRQn )
-            {
-                if((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_5) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_5);
-                    _GpioCallbacks[5]->CallbackFunction();
-                }
-                else if ((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_6) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_6);
-                    _GpioCallbacks[6]->CallbackFunction();
-                }
-                else if ((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_7) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_7);
-                    _GpioCallbacks[7]->CallbackFunction();
-                    
-                }
-                else if ((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_8) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_8);
-                    _GpioCallbacks[8]->CallbackFunction();
-                    
-                }
-                else if ((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_9) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_9);
-                    _GpioCallbacks[9]->CallbackFunction();
-                }
-                
-            }
-            else if(IRQNumber == EXTI15_10_IRQn )
-            {
-                if((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_10) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_10);
-                    _GpioCallbacks[10]->CallbackFunction();
-                    
-                }
-                else if ((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_11) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_11);
-                    _GpioCallbacks[11]->CallbackFunction();
-                    
-                }
-                else if ((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_12) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_12);
-                    _GpioCallbacks[12]->CallbackFunction();
-                    
-                }
-                else if ((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_13) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_13);
-                    _GpioCallbacks[13]->CallbackFunction();
-                    
-                }
-                else if ((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_14) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_14);
-                    _GpioCallbacks[14]->CallbackFunction();
-                    
-                }
-                else if ((bool)LL_EXTI_IsEnabledIT_0_31(LL_EXTI_LINE_15) == true)
-                {
-                    SET_BIT(EXTI->PR,LL_EXTI_LINE_15);
-                    _GpioCallbacks[15]->CallbackFunction();
-                    
-                }
-            }
-            else
-            {
-                while(1); // Fatal Error
+                 uint32_t ExternalInterrupt = (uint32_t)POSITION_VAL(EXTI->PR);               
+                _GpioCallbacks[ExternalInterrupt]->CallbackFunction();                
+                LL_EXTI_ClearFlag_0_31( (uint32_t)((uint32_t)1U)<<ExternalInterrupt);
             }
         }
+
         
 }
-
-
-
