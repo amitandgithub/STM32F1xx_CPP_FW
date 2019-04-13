@@ -14,3 +14,4 @@ using namespace HAL;
 #include "RotaryEncoderIntrTest.h"
 #include "KeypadPollTest.h"
 #include "KeypadIntrTest.h"
+#include "GpioOutputFastTest.h"
