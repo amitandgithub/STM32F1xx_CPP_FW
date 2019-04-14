@@ -2440,6 +2440,12 @@
                 <name>$PROJ_DIR$\..\HAL\Gpio\GpioOutputFast.h</name>
             </file>
         </group>
+        <group>
+            <name>I2C</name>
+            <file>
+                <name>$PROJ_DIR$\..\HAL\I2C\I2CMaster.cpp</name>
+            </file>
+        </group>
     </group>
     <group>
         <name>IAR</name>
@@ -2474,6 +2480,9 @@
             <name>$PROJ_DIR$\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_gpio.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_i2c.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_pwr.c</name>
         </file>
         <file>
@@ -2502,6 +2511,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\Test\inc\GpioOutputFastTest.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Test\inc\I2CMasterTest.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\BSP\Keypad\KeypadIntrTest.h</name>

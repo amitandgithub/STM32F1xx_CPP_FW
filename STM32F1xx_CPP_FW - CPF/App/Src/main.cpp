@@ -43,7 +43,8 @@ int main(void)
         //Rotary_Encoder_Test();
         //Rotary_EncoderIntr_Test();
         //KeypadPoll_Test();
-        KeypadIntr_Test();
+        //KeypadIntr_Test();
+        I2CMaster_Test();
     }
     
 }

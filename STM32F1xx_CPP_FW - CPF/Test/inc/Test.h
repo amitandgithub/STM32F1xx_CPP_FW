@@ -15,3 +15,4 @@ using namespace HAL;
 #include "KeypadPollTest.h"
 #include "KeypadIntrTest.h"
 #include "GpioOutputFastTest.h"
+#include "I2CMasterTest.h"
