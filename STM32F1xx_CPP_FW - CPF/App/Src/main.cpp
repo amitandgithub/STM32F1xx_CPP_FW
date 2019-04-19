@@ -26,6 +26,7 @@ void putc ( void* p, char c);
 
 
 
+
 int main(void)
 {	
     
@@ -44,7 +45,8 @@ int main(void)
         //Rotary_EncoderIntr_Test();
         //KeypadPoll_Test();
         //KeypadIntr_Test();
-        I2CMaster_Test();
+        //I2CMaster_Test();
+        INA219_Test();
     }
     
 }

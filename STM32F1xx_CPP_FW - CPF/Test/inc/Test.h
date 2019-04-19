@@ -16,3 +16,4 @@ using namespace HAL;
 #include "KeypadIntrTest.h"
 #include "GpioOutputFastTest.h"
 #include "I2CMasterTest.h"
+#include "INA219_test.h"

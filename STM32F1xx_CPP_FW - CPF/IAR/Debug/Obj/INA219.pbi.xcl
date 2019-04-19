@@ -1,95 +1,79 @@
-"C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\HW_Modules\INA219.cpp"
+"C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\BSP\INA219\INA219.cpp"
 -std=c++14
 -ferror-limit=0
 -fbracket-depth=512
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\HW_Modules
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\BSP\INA219
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\App\Inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\App\Inc
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\Devices\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\Test\inc
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\Test\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\Utils\inc
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\Utils\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\Drivers\STM32F1xx_HAL_Driver\Inc
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\STM32F1xx_HAL_Driver\Inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\System
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\STM32F1xx_HAL_Driver\CMSIS\Device\ST\STM32F1xx\Include
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\HAL\Common
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\System
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\HAL\Gpio
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\STM32F1xx_HAL_Driver\CMSIS\Include
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\Drivers\Gpio\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\Drivers\CMSIS\Include
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\CPP_FW\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\BSP\Led
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\Drivers\I2C
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\BSP\Button
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\HW_Modules\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\BSP\Rotary_Encoder
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\Drivers\SPI
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\BSP\Keypad
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\Utils\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\HAL\I2C
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\Drivers\RTC
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\..\BSP\INA219
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\SW_Modules\inc
+C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\inc
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\HW_Modules\SD\inc
+C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\inc\c
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\HAL\Common
+C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\inc\cpp
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\IAR\..\HAL\Gpio
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\App\Inc
 -I
-C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.1\arm\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF
 -I
-C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.1\arm\inc\c
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\Test\inc
 -I
-C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.1\arm\inc\cpp
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\Utils\inc
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\App\Inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\Drivers\STM32F1xx_HAL_Driver\Inc
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\Devices\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\System
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\HAL\Common
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\Test\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\HAL\Gpio
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\Utils\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\Drivers\CMSIS\Device\ST\STM32F1xx\Include
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\STM32F1xx_HAL_Driver\Inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\Drivers\CMSIS\Include
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\STM32F1xx_HAL_Driver\CMSIS\Device\ST\STM32F1xx\Include
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\BSP\Led
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\System
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\BSP\Button
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\STM32F1xx_HAL_Driver\CMSIS\Include
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\BSP\Rotary_Encoder
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\Drivers\Gpio\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\BSP\Keypad
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\CPP_FW\inc
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\HAL\I2C
 -I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\Drivers\I2C
--I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\HW_Modules\inc
--I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\Drivers\SPI
--I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\Utils\inc
--I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\Drivers\RTC
--I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\SW_Modules\inc
--I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\HW_Modules\SD\inc
--I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\HAL\Common
--I
-C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\HAL\Gpio
+C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\BSP\INA219
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0
@@ -240,8 +224,8 @@ C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\HAL\Gpio
 -D__JMP_BUF_ELEMENT_TYPE__=unsigned long long int
 -D__JMP_BUF_NUM_ELEMENTS__=8
 -D__TID__=0xcf60
--D__VER__=8030001
--D__BUILD_NUMBER__=114
+-D__VER__=8032003
+-D__BUILD_NUMBER__=193
 -D__IAR_SYSTEMS_ICC__=9
 -D_MAX_ALIGNMENT=8
 -D__LITTLE_ENDIAN__=1
@@ -318,8 +302,8 @@ C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\HAL\Gpio
 -D__HAS_JOINED_TYPES__=1
 -D__HAS_LOCATED_DECLARATION__=1
 -D__HAS_LOCATED_WITH_INIT__=1
--D__IAR_COMPILERBASE__=656388
--D__IAR_COMPILERBASE_STR__=10.4.4.1056
+-D__IAR_COMPILERBASE__=656398
+-D__IAR_COMPILERBASE_STR__=10.4.14.1149
 -D__UNICODE_SOURCE_SUPPORTED__=1
 -D__VTABLE_MEM__=
 -D__PRAGMA_REDEFINE_EXTNAME=1
@@ -413,9 +397,9 @@ C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\Main\STM32F1xx_CPP_FW\HAL\Gpio
 -DHAL_I2C_MODULE_ENABLED=1
 -DHAL_SPI_MODULE_ENABLED=1
 -DHAL_RTC_MODULE_ENABLED=1
--D_DLIB_CONFIG_FILE_HEADER_NAME="C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.1\\arm\\inc\\c\\DLib_Config_Normal.h"
--D_DLIB_CONFIG_FILE_STRING="C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.1\\arm\\inc\\c\\DLib_Config_Normal.h"
--D__VERSION__="IAR ANSI C/C++ Compiler V8.30.1.114/W32 for ARM"
+-D_DLIB_CONFIG_FILE_HEADER_NAME="C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.2\\arm\\inc\\c\\DLib_Config_Normal.h"
+-D_DLIB_CONFIG_FILE_STRING="C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.2\\arm\\inc\\c\\DLib_Config_Normal.h"
+-D__VERSION__="IAR ANSI C/C++ Compiler V8.32.3.193/W32 for ARM"
 -D__ICCARM_OLD_DEFINED_VAARGS__=1
 -D__VA_STACK_ALIGN__=8
 -D__CODE_MEMORY_LIST1__()=__CODE_MEM_HELPER1__(__code, 0 )
