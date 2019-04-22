@@ -45,8 +45,9 @@ int main(void)
         //Rotary_EncoderIntr_Test();
         //KeypadPoll_Test();
         //KeypadIntr_Test();
-        //I2CMaster_Test();
-        INA219_Test();
+        //I2CPoll_Test();
+        //INA219_Test();
+        I2CIntr_Test();
     }
     
 }

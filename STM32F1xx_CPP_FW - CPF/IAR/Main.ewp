@@ -2172,7 +2172,10 @@
         <group>
             <name>I2C</name>
             <file>
-                <name>$PROJ_DIR$\..\HAL\I2C\I2CMaster.cpp</name>
+                <name>$PROJ_DIR$\..\HAL\I2C\I2CIntr.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\HAL\I2C\I2CPoll.cpp</name>
             </file>
         </group>
     </group>
@@ -2242,7 +2245,10 @@
             <name>$PROJ_DIR$\..\Test\inc\GpioOutputFastTest.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Test\inc\I2CMasterTest.h</name>
+            <name>$PROJ_DIR$\..\Test\inc\I2CIntrTest.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Test\inc\I2CPollTest.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Test\inc\INA219_test.h</name>
