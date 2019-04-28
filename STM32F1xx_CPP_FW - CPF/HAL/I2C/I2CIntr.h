@@ -32,10 +32,9 @@ namespace HAL
         
         typedef struct
         {
+            uint8_t  SlaveAddress;
             uint16_t TxSize;
             uint16_t RxSize; 
-            uint16_t BytesRead;
-            uint16_t BytesSent;
             uint8_t* TxBuf; 
             uint8_t* RxBuf;         
         }Transaction_t;
@@ -43,6 +42,7 @@ namespace HAL
         typedef enum
         {
             I2C_OK,
+            I2C_BUSY,
             I2C_BUSY_TIMEOUT,
             I2C_START_TIMEOUT,
             I2C_ADDR_TIMEOUT,
@@ -51,8 +51,11 @@ namespace HAL
             I2C_TXE_TIMEOUT,
             I2C_STOP_TIMEOUT,
             I2C_ACK_FAIL,
-            I2C_INVALID_PARAMS,
+            I2C_ARB_LOST,
+            I2C_INTR_PENDING,
             I2C_BUS_ERROR,
+            I2C_DATA_OVR,
+            I2C_INVALID_PARAMS,
         }I2CStatus_t;
         
         typedef enum
@@ -76,6 +79,9 @@ namespace HAL
             I2C_EVENT_INTERRUPT_BUFFER_DISABLE,
             I2C_ERROR_INTERRUPT_ENABLE,
             I2C_ERROR_INTERRUPT_DISABLE,
+            I2C_INTERRUPT_ENABLE_ALL,
+            I2C_INTERRUPT_DISABLE_ALL,
+            
         }I2CInterrupt_t;
         
         static const uint32_t I2C_TIMEOUT       = 5000U;
@@ -94,6 +100,8 @@ namespace HAL
         inline void ClockEnable();
         
         inline void ClockDisable();
+        
+        inline I2CState_t GetState();
         
         bool DetectSlave(uint8_t SlaveAddress);
         
@@ -149,7 +157,21 @@ namespace HAL
             
         void Master_TxE_Handler();
         
-        void Master_BTF_Handler();
+        void MasterTransmit_BTF_Handler();
+        
+        void MasterReceive_BTF_Handler(); 
+            
+        void Master_RxNE_Handler();
+        
+        void Slave_STOP_Handler();
+        
+        void Master_BERR_Handler();
+        
+        void Master_AF_Handler();
+        
+        void Master_AL_Handler();
+        
+        void Master_OVR_Handler();
         
     private:
         GpioOutput      _sclPin;
@@ -159,17 +181,21 @@ namespace HAL
         I2CState_t      _I2CState;
         I2CStatus_t     _I2CStatus;
         Transaction_t   _Transaction;
+        uint32_t start,stop;
         
     };
     
     void I2CIntr::Start()
     {
         LL_I2C_GenerateStartCondition(_I2Cx);
+        start++;
     }
     
     void I2CIntr::Stop()
     {
         LL_I2C_GenerateStopCondition(_I2Cx);
+        /* Wait Until STOP falg is set by HW */
+        while(_I2Cx->CR1 & (I2C_CR1_STOP));
     }
     
     void I2CIntr::SendAddress(uint8_t SlaveAddress)
@@ -256,6 +282,10 @@ namespace HAL
         return I2C_OK;
     }
     
+    I2CIntr::I2CState_t I2CIntr::GetState()
+    {
+             return _I2CState;
+    }
     
 #if defined (I2C_DEBUG)
 #define I2C_DEBUG_LOG(log) (_I2CStatus = (log))  // 108 bytes of ROM

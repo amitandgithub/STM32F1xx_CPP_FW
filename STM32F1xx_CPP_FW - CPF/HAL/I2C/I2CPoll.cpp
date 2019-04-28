@@ -125,7 +125,7 @@ namespace HAL
             _I2Cx->CR1 &= ~I2C_CR1_POS;
             
             /* Enable Address Acknowledge */
-            _I2Cx->CR1 |= I2C_CR1_ACK;
+           // _I2Cx->CR1 |= I2C_CR1_ACK;
             
             /* Generate Start */
             Start();
