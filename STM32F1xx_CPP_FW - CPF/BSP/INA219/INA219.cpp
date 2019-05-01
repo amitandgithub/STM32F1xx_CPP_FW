@@ -10,6 +10,11 @@
 namespace BSP
 {
 
+    
+   // static uint8_t buf[5];
+   // static float valueDec;
+   // static uint16_t value;
+    
 INA219::INA219(I2CDev pI2CDrv, uint8_t INA219Address) : m_pI2CDrv(pI2CDrv), m_INA219_Address(INA219Address)
 {
 }
@@ -24,7 +29,7 @@ INA219::~INA219()
 void INA219::HwInit()
 {
     m_pI2CDrv->HwInit();
-    SetCalibration_32V_1A();
+    //SetCalibration_32V_1A();
 }
 
 void INA219::Run(Power_t* pPower)
@@ -32,7 +37,7 @@ void INA219::Run(Power_t* pPower)
 	pPower->Voltage = GetBusVoltage_V();
 	pPower->Current = GetCurrent_mA();
 	pPower->Power   = GetPower_mW();
-    if(pPower->Voltage <0 || pPower->Voltage < 0.9f )pPower->Voltage=0; // Negative voltage till 0.90v is not what we are interested in.
+    if(pPower->Voltage <0 || pPower->Voltage < 0.4f )pPower->Voltage=0; // Negative voltage till 0.40v is not what we are interested in.
 	if(pPower->Current < 0 ) pPower->Current = 0;         // Discard the junk values
 }
 
@@ -43,13 +48,21 @@ void INA219::Run(Power_t* pPower)
     @brief  Sends a single command byte over I2C
 */
 /**************************************************************************/
+
 void INA219::WriteRegister (uint8_t reg, uint16_t value)
 {
-  uint8_t buf[3];
+  
 	buf[0] = reg;
 	buf[1] = ((value >> 8) & 0xFF);
 	buf[2] = (value & 0xFF);
+#if INTR_MODE
+    while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
 	m_pI2CDrv->MasterTx( m_INA219_Address, buf, 3) ;
+    while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
+#else
+	m_pI2CDrv->MasterTx( m_INA219_Address, buf, 3) ;
+#endif
+    
 }
 
 /**************************************************************************/
@@ -60,11 +73,22 @@ void INA219::WriteRegister (uint8_t reg, uint16_t value)
 void INA219::ReadRegister(uint8_t reg, uint16_t *value)
 {
 	//vu32 delay = 100;
-	uint8_t buf[3];
+	//uint8_t buf[3];
 	buf[0] = reg;
+#if INTR_MODE
+    while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
+	m_pI2CDrv->MasterTx( m_INA219_Address, buf, 1) ;
+    while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
+	m_pI2CDrv->MasterRx( m_INA219_Address, buf, 2);
+    while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
+	*value = ((buf[0] << 8) | buf[1]);
+   while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
+#else
 	m_pI2CDrv->MasterTx( m_INA219_Address, buf, 1) ;
 	m_pI2CDrv->MasterRx( m_INA219_Address, buf, 2);
-	 *value = ((buf[0] << 8) | buf[1]);
+	*value = ((buf[0] << 8) | buf[1]);
+#endif
+   
 }
 
 /**************************************************************************/
@@ -350,7 +374,7 @@ void INA219::SetCalibration_16V_400mA(void) {
 */
 /**************************************************************************/
 int16_t INA219::GetBusVoltage_raw() {
-	uint16_t value;
+	//uint16_t value;
   ReadRegister(INA219_REG_BUSVOLTAGE, &value);
 
   // Shift to the right 3 to drop CNVR and OVF and multiply by LSB
@@ -363,7 +387,7 @@ int16_t INA219::GetBusVoltage_raw() {
 */
 /**************************************************************************/
 int16_t INA219::GetShuntVoltage_raw() {
-	uint16_t value;
+	//uint16_t value;
   ReadRegister(INA219_REG_SHUNTVOLTAGE, &value);
   return (int16_t)value;
 }
@@ -374,7 +398,7 @@ int16_t INA219::GetShuntVoltage_raw() {
 */
 /**************************************************************************/
 int16_t INA219::GetCurrent_raw() {
-	uint16_t value;
+	//uint16_t value;
 
   // Sometimes a sharp load will reset the INA219, which will
   // reset the cal register, meaning CURRENT and POWER will
@@ -394,7 +418,7 @@ int16_t INA219::GetCurrent_raw() {
 */
 /**************************************************************************/
 float INA219::GetShuntVoltage_mV() {
-	int16_t value;
+	//int16_t value;
 	value = GetShuntVoltage_raw();
 	return value * 0.01;
 }
@@ -405,7 +429,8 @@ float INA219::GetShuntVoltage_mV() {
 */
 /**************************************************************************/
 float INA219::GetBusVoltage_V() {
-	int16_t value = GetBusVoltage_raw();
+	//int16_t value = GetBusVoltage_raw();
+    value = GetBusVoltage_raw();
 	return value * 0.001;
  }
 
@@ -417,14 +442,15 @@ float INA219::GetBusVoltage_V() {
 /**************************************************************************/
 float INA219::GetCurrent_mA()
 {
-	float valueDec = GetCurrent_raw();
+	//float valueDec = GetCurrent_raw();
+    valueDec = GetCurrent_raw();
 	valueDec /= ina219_currentDivider_mA;
 	return valueDec;
 }
 
 float INA219::GetPower_mW(void)
 {
-	float valueDec;
+	//float valueDec;
 	uint16_t value_Raw;
 
 	WriteRegister(INA219_REG_CALIBRATION, ina219_calValue);

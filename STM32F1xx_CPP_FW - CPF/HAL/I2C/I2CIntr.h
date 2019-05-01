@@ -20,6 +20,9 @@
 
 namespace HAL
 {
+#define I2C_LOG_STATES_SIZE 500
+#define I2C_LOG_STATES(log) (I2CStates[I2CStates_Idx++  % I2C_LOG_STATES_SIZE] = (log))
+    
 #define I2C_DEBUG 
     
     class I2CIntr : public InterruptSource
@@ -36,7 +39,8 @@ namespace HAL
             uint16_t TxSize;
             uint16_t RxSize; 
             uint8_t* TxBuf; 
-            uint8_t* RxBuf;         
+            uint8_t* RxBuf;  
+            bool RepeatedStart;
         }Transaction_t;
         
         typedef enum
@@ -60,6 +64,42 @@ namespace HAL
         
         typedef enum
         {
+            NONE,
+            I2C_LOG_STOP_INTR,
+            I2C_LOG_START_MASTER_TX,
+            I2C_LOG_START_MASTER_RX,
+            I2C_LOG_START_MASTER_TXRX,
+            I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_0,
+            I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_1_DMA,
+            I2C_LOG_ADDR_INTR_MASTER_RX_STOP,
+            I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_2_DMA,
+            I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_2,
+            I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_OTHER,
+            I2C_LOG_ADDR_INTR_MASTER_TX_SIZE_GT_0,
+            I2C_LOG_ADDR_INTR_MASTER_TX_REPEATED_START,
+            I2C_LOG_ADDR_INTR_MASTER_TX_STOP,
+            I2C_LOG_TXE,
+            I2C_LOG_TXE_DONE,            
+            I2C_LOG_BTF_MASTER_TX_GT_0,
+            I2C_LOG_BTF_MASTER_TX_REPEATED_START,
+            I2C_LOG_BTF_MASTER_TX_STOP,
+            I2C_LOG_BTF_MASTER_RX_SIZE_3,
+            I2C_LOG_BTF_MASTER_RX_SIZE_2,
+            I2C_LOG_BTF_MASTER_RX_SIZE_GT_3,
+            I2C_LOG_BTF_MASTER_RXNE_SIZE_GT_3,
+            I2C_LOG_BTF_MASTER_RXNE_SIZE_2_OR_3,
+            I2C_LOG_BTF_MASTER_RXNE_LAST,
+            I2C_LOG_BTF_MASTER_BERR,
+            I2C_LOG_BTF_MASTER_ACK_FAIL,
+            I2C_LOG_BTF_MASTER_ARB_LOST,
+            I2C_LOG_SB_MASTER_TX,
+            I2C_LOG_SB_MASTER_RX,
+            I2C_LOG_SB_MASTER_RX_REPEATED_START,
+            I2C_LOG_BTF_MASTER_DATA_OVR,
+        }I2CStates_t;
+        
+        typedef enum
+        {
             RESET,
             BUSY,
             READY,
@@ -67,6 +107,7 @@ namespace HAL
             MASTER_RX,
             SLAVE_TX,
             SLAVE_RX,
+            MASTER_RX_REPEATED_START,
             MASTER_TX_ACK_FAIL,
 
         }I2CState_t;
@@ -84,10 +125,10 @@ namespace HAL
             
         }I2CInterrupt_t;
         
-        static const uint32_t I2C_TIMEOUT       = 5000U;
-        static const uint16_t I2C_DIR_WRITE     = 0xfff7U;
-        static const uint16_t I2C_DIR_READ      = 0x0001U;
-        static const uint16_t I2C_SLAVE_ADDRESS = 0x08<<1;
+        static const uint32_t I2C_TIMEOUT           = 5000U;
+        static const uint16_t I2C_DIR_WRITE         = 0xfff7U;
+        static const uint16_t I2C_DIR_READ          = 0x0001U;
+        static const uint16_t I2C_OWN_SLAVE_ADDRESS = 0x08<<1;
         
         I2CIntr(Pin_t scl, Pin_t sda, Hz_t Hz = 100000U);
         
@@ -121,6 +162,8 @@ namespace HAL
         
         I2CStatus_t MasterRx(uint16_t SlaveAddress,uint8_t* pdata, uint32_t len, uint32_t* pbytesXfered = nullptr );
         
+        I2CStatus_t MasterTxRx(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf, uint32_t RxLen, bool RepeatedStart);
+        
         I2CStatus_t SlaveTx(uint8_t* pdata, uint32_t len, uint32_t* pbytesXfered = nullptr );
         
         I2CStatus_t SlaveRx(uint8_t* pdata, uint32_t len, uint32_t* pbytesXfered = nullptr );
@@ -150,6 +193,8 @@ namespace HAL
         void InteruptControl(I2CInterrupt_t I2CInterrupt);
         
         inline I2CStatus_t StartListening();
+        
+        inline bool StopFlagCleared(uint32_t timeout);
         
         void Master_SB_Handler(); 
         
@@ -181,7 +226,10 @@ namespace HAL
         I2CState_t      _I2CState;
         I2CStatus_t     _I2CStatus;
         Transaction_t   _Transaction;
-        uint32_t start,stop;
+        uint32_t        start;
+        uint32_t        stop;
+        I2CStates_t     I2CStates[I2C_LOG_STATES_SIZE];
+        uint32_t        I2CStates_Idx;
         
     };
     
@@ -194,8 +242,10 @@ namespace HAL
     void I2CIntr::Stop()
     {
         LL_I2C_GenerateStopCondition(_I2Cx);
-        /* Wait Until STOP falg is set by HW */
-        while(_I2Cx->CR1 & (I2C_CR1_STOP));
+        /* Wait with timeout Until STOP falg is set by HW */
+        //while(_I2Cx->CR1 & (I2C_CR1_STOP));
+        if (StopFlagCleared(I2C_TIMEOUT) == true)
+            _I2CStatus = I2C_STOP_TIMEOUT;
     }
     
     void I2CIntr::SendAddress(uint8_t SlaveAddress)
@@ -217,6 +267,12 @@ namespace HAL
     {
         while( (timeout--) && (LL_I2C_IsActiveFlag_BUSY(_I2Cx) == 1U) );
         return (bool)LL_I2C_IsActiveFlag_BUSY(_I2Cx);
+    }
+    
+    bool I2CIntr::StopFlagCleared(uint32_t timeout)
+    {
+        while( (timeout--) && (_I2Cx->CR1 & (I2C_CR1_STOP)) );
+        return (bool)(_I2Cx->CR1 & (I2C_CR1_STOP));
     }
     
     bool I2CIntr::StartConditionGenerated(uint32_t timeout)
@@ -271,8 +327,7 @@ namespace HAL
         {          
             //I2C_DEBUG_LOG(I2C_BUSY_TIMEOUT);
             return I2C_BUSY_TIMEOUT;                
-        }
-        
+        }        
         /* Disable Pos */
         _I2Cx->CR1 &= ~I2C_CR1_POS;
         

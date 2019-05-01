@@ -9,15 +9,25 @@
 #define INA219_h
 
 #include"I2CPoll.h"
+#include"I2CIntr.h"
 
 namespace BSP
 {
 
 class INA219 
 {
-public:
+public:    
+
+#define INTR_MODE 1
+    
+#if INTR_MODE
+    using I2CDev = HAL::I2CIntr*;
+    using I2CStatus =  HAL::I2CIntr::I2CStatus_t;
+#else
     using I2CDev = HAL::I2CPoll*;
     using I2CStatus =  HAL::I2CPoll::I2CStatus_t;
+#endif
+    
 	typedef struct {
 		float Voltage;
 		float Current;
@@ -41,13 +51,15 @@ public:
 	float GetPower_mW(void);
 	void Run(Power_t* pPower);
 
-private:
-    
+private:    
 	I2CDev              m_pI2CDrv;
 	int8_t              m_INA219_Address;
 	uint32_t            ina219_calValue;
 	uint32_t            ina219_currentDivider_mA;
 	uint32_t            ina219_powerDivider_mW;
+    uint8_t             buf[5];
+    float               valueDec;
+    uint16_t            value;
 
 
 };
