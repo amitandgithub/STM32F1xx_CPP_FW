@@ -7,6 +7,9 @@
 static I2CIntr I2CDevIntr(Gpio::B6, Gpio::B7,100000U);
 static uint8_t Intr_TxRx[20];
 static GpioOutput B13(Gpio::B13);
+static HAL::I2CIntr::Transaction_t Transaction,Transaction1,Transaction2;
+static uint8_t VoltageReg = 2,CurrentReg = 4,ConfigReg = 5, TxnDone;
+static uint16_t VoltageValue,CurrentValue;
 
 class I2CCallback : public Callback
 {
@@ -30,6 +33,36 @@ class I2CRxFullCallback_t : public Callback
     }
 };
 
+class VoltageCallback_t : public Callback
+{
+    void CallbackFunction()
+    {
+        static float CallbackVoltage;
+        int16_t curr;
+        
+        curr = ((VoltageValue<<8) & 0xff00) | ((VoltageValue>>8) & 0x00ff);
+        CallbackVoltage = (int16_t)((curr >> 3) * 4);        
+        CallbackVoltage = CallbackVoltage * 0.001;  
+        TxnDone = 1;
+    }
+};
+
+class CurrentCallback_t : public Callback
+{
+    void CallbackFunction()
+    {
+        static float CallbackCurrent;
+        int16_t curr;
+        
+        curr = ((CurrentValue<<8) & 0xff00) | ((CurrentValue>>8) & 0x00ff);
+        CallbackCurrent = curr/10.0;  
+        TxnDone = 1;
+    }
+};
+
+static class VoltageCallback_t  VoltageCallback;
+static class CurrentCallback_t  CurrentCallback;
+
 class I2CRxDoneCallback_t : public Callback
 {
     void CallbackFunction()
@@ -46,7 +79,7 @@ void I2CIntr_Test()
 {        
     static INA219 INA219_Dev(&I2CDevIntr,0x80U);
     static float Voltage,Current;
-    static HAL::I2CIntr::Transaction_t Transaction;
+    
     static class I2CCallback I2C_XferDone_Callback;
     static class I2CRxFullCallback_t I2CRxQueueFullCallback;
     static class I2CRxDoneCallback_t I2CRxDoneCallback;
@@ -60,7 +93,7 @@ void I2CIntr_Test()
     uint8_t name[] = "Amit Chaudhary is a good Boy";
     name[sizeof(name)/sizeof(uint8_t)-1] = '\n';
     INA219_Dev.HwInit();
-    testID = 111;
+    testID = 13;
     B13.HwInit();
     Transaction.XferDoneCallback = &I2C_XferDone_Callback;
     
@@ -122,11 +155,11 @@ void I2CIntr_Test()
             Intr_TxRx[2] = (value & 0xFF);
             I2CDevIntr.MasterTx(0x80,Intr_TxRx,3);
             while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
-            testID = 8;
+            testID = 13;
             break;
             
         case 7:    
-            // INA219 Test with repeated start
+            // INA219 Test with repeated start 
             // Get Voltage
             reg = 2;
             Intr_TxRx[0] = reg;
@@ -153,7 +186,7 @@ void I2CIntr_Test()
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Current = curr;  
             Current = Current/10;
-            //testID = 8;
+            testID = 13;
             break;
             
         case 8:    
@@ -183,7 +216,7 @@ void I2CIntr_Test()
             while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Current = curr/10;  
-            testID = 9;
+            testID = 13;
             break;
             
         case 9:  
@@ -262,7 +295,7 @@ void I2CIntr_Test()
             break;
             
         case 12:  
-            // TXRX with Repeated Start
+            // TXRX with Repeated Start - transaction mode
             RepeatedStart = 1;
             
             Intr_TxRx[0] = 'A';
@@ -300,12 +333,83 @@ void I2CIntr_Test()
             I2CDevIntr.MasterTxRx(&Transaction);
             while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
             break;            
+        case 13:    
+            /* INA219 Test without repeated start with "Transaction_t" and Queue Post*/
+            /* Get Voltage */
+#define Q_RESPIRE_DELAY 1000
+            I2CIntr::I2CStatus_t Status;
+            static uint32_t Q_Sucess,Q_Fail;    
+            RepeatedStart = 0;
+            reg = 2;
+            Intr_TxRx[0] = reg;
             
+            Transaction.SlaveAddress = 0x80;
+            Transaction.TxBuf = &VoltageReg ;//&Intr_TxRx[0];
+            Transaction.TxLen = 1;
+            Transaction.RxBuf = (uint8_t*)&VoltageValue;
+            Transaction.RxLen = 2;
+            Transaction.RepeatedStart = RepeatedStart;
+            Transaction.XferDoneCallback = &VoltageCallback;
+
+            Status = I2CDevIntr.Post(&Transaction);
+            
+            if ((Status == I2CIntr::I2C_TXN_POSTED) || ( Status == I2CIntr::I2C_OK ) )
+            {
+                Q_Sucess++;
+            }
+            else 
+            {
+                Q_Fail++;
+                LL_mDelay(Q_RESPIRE_DELAY);
+            }
+            
+            /* Calibration value*/            
+            Transaction1.SlaveAddress = 0x80;
+            Transaction1.TxBuf = &Intr_TxRx[0];
+            Transaction1.TxLen = 3;
+            Transaction1.RxBuf = nullptr;
+            Transaction1.RxLen = 0;
+            Transaction1.RepeatedStart = RepeatedStart;
+            
+            Status = I2CDevIntr.Post(&Transaction1);
+            if ((Status == I2CIntr::I2C_TXN_POSTED) || ( Status == I2CIntr::I2C_OK ) )
+            {
+                Q_Sucess++;
+            }
+            else 
+            {
+                Q_Fail++;
+                LL_mDelay(Q_RESPIRE_DELAY);
+            }
+            
+            /* Get Current */ 
+            reg = 4;
+            Intr_TxRx[0] = reg;            
+            Transaction2.SlaveAddress = 0x80;
+            Transaction2.TxBuf = &CurrentReg; //&Intr_TxRx[0];
+            Transaction2.TxLen = 1;
+            Transaction2.RxBuf = (uint8_t*)&CurrentValue; //&Intr_TxRx[5];
+            Transaction2.RxLen = 2;
+            Transaction2.RepeatedStart = RepeatedStart;
+            Transaction2.XferDoneCallback = &CurrentCallback;
+            
+            Status = I2CDevIntr.Post(&Transaction2);
+            if ((Status == I2CIntr::I2C_TXN_POSTED) || ( Status == I2CIntr::I2C_OK ) )
+            {
+                Q_Sucess++;
+            }
+            else 
+            {
+                Q_Fail++;
+                LL_mDelay(Q_RESPIRE_DELAY);
+            }
+            //testID = 7;
+            break;    
             
         default: break;
         
         }
         
-        LL_mDelay(1);
+        //LL_mDelay(1);
     }
 }

@@ -76,6 +76,8 @@ namespace HAL
             I2C_DATA_OVR,
             I2C_INVALID_PARAMS,
             I2C_XFER_DONE,
+            I2C_TXN_POSTED,
+            I2C_TXN_QUEUE_ERROR,
         }I2CStatus_t;
         
         typedef enum
@@ -126,6 +128,12 @@ namespace HAL
             I2C_LOG_TxE_SLAVE_TX_QUEUE_EMPTY,
             I2C_LOG_BTF_SLAVE_TX,
             I2C_LOG_BTF_SLAVE_TX_QUEUE_EMPTY,
+            I2C_LOG_MASTER_BTF_XFER_DONE,
+            I2C_LOG_ADDR_XFER_DONE,
+            I2C_LOG_TXN_QUEUED,
+            I2C_LOG_TXN_DEQUEUED,
+            I2C_LOG_TXN_QUEUE_EMPTY,
+            I2C_LOG_TXN_QUEUE_ERROR,
         }I2CLogs_t;
         
         typedef enum
@@ -140,7 +148,7 @@ namespace HAL
             SLAVE_RX_LISTENING,
             MASTER_RX_REPEATED_START,
             MASTER_TX_ACK_FAIL,
-        }I2CState_t;
+        }I2CState_t;      
 
 		typedef struct
         {
@@ -153,7 +161,9 @@ namespace HAL
             uint8_t*            RxBuf;
             I2CCallback_t       XferDoneCallback;
         }Transaction_t;
-				
+		
+        using I2CTxnQueue_t = Utils::Queue<Transaction_t*,10U> ;
+
         typedef enum 
         {
             I2C_EVENT_INTERRUPT_ENABLE,
@@ -213,6 +223,8 @@ namespace HAL
                                uint8_t RepeatedStart, I2CCallback_t XferDoneCallback = nullptr);
         
         I2CStatus_t MasterTxRx(Transaction_t* pTransaction);
+        
+        I2CStatus_t Post(Transaction_t* pTransaction);
         
         I2CStatus_t SlaveTx(uint8_t* pdata, uint32_t len, I2CCallback_t XferDoneCallback = nullptr );
         
@@ -296,6 +308,8 @@ namespace HAL
         I2CCallback_t       _RxQueueFullCallback;
         I2CCallback_t       _SlaveTxDoneCallback;
         I2CCallback_t       _SlaveRxDoneCallback;
+        I2CTxnQueue_t       _I2CTxnQueue;
+        Transaction_t*      _pCurrentTxn;
         
 #ifdef I2C_INTR_DEBUG
         I2CLogs_t       I2CStates[I2C_LOG_STATES_SIZE];
