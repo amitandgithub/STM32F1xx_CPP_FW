@@ -18,3 +18,4 @@ using namespace HAL;
 #include "I2CPollTest.h"
 #include "INA219_test.h"
 #include "I2CIntrTest.h"
+#include "BMP280_test.h"

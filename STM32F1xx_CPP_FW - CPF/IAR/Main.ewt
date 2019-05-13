@@ -2457,6 +2457,15 @@
         </group>
     </group>
     <group>
+        <name>HW_Modules</name>
+        <group>
+            <name>BMP280</name>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\BMP280\BMP280.cpp</name>
+            </file>
+        </group>
+    </group>
+    <group>
         <name>IAR</name>
         <file>
             <name>$PROJ_DIR$\..\STM32F1xx_HAL_Driver\CMSIS\Device\ST\STM32F1xx\Source\Templates\iar\startup_stm32f103xb.s</name>
@@ -2512,6 +2521,9 @@
     </group>
     <group>
         <name>Test</name>
+        <file>
+            <name>$PROJ_DIR$\..\Test\inc\BMP280_test.h</name>
+        </file>
         <file>
             <name>$PROJ_DIR$\..\Test\inc\BtnIntTest.h</name>
         </file>

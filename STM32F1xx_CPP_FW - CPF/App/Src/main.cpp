@@ -47,7 +47,8 @@ int main(void)
         //KeypadIntr_Test();
         //I2CPoll_Test();
         //INA219_Test();
-        I2CIntr_Test();
+        //I2CIntr_Test();
+       BMP280_Test();
     }
     
 }
