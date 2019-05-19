@@ -36,7 +36,7 @@ void BMP280_Test()
         t = BMP280_Dev.readTemperature();
         p = BMP280_Dev.readPressure();
         a = BMP280_Dev.readAltitude(1013.25);
-        LL_mDelay(500);
+        LL_mDelay(2000);
        
     }
 }

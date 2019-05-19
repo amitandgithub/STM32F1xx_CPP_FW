@@ -139,7 +139,7 @@ void BMP280::setSampling(sensor_mode mode,
                              while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
                              
                              while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             m_pI2CDrv->MasterRx( m_BMP280_Address, &buf[1], 2, &I2C_Status) ;
+                             m_pI2CDrv->MasterRx( m_BMP280_Address, &buf[1], 3, &I2C_Status) ;
                              while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
                              
 #else
@@ -184,7 +184,7 @@ void BMP280::setSampling(sensor_mode mode,
                              while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
                              m_pI2CDrv->MasterRx( m_BMP280_Address, &buf[1], 3, &I2C_Status) ;
                              while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             LL_mDelay(1);
+                             //LL_mDelay(1);
                              
 #else
                              m_pI2CDrv->MasterTx( m_BMP280_Address, buf, 1) ;
@@ -206,10 +206,15 @@ void BMP280::setSampling(sensor_mode mode,
                          */
                          void BMP280::readCoefficients() 
                          {
+#if 0
+                             _bmp280_calib.dig_T1 = 0x6B22;//read16_LE(BMP280_REGISTER_DIG_T1);
+                             _bmp280_calib.dig_T2 = 0x6450; //readS16_LE(BMP280_REGISTER_DIG_T2);
+                             _bmp280_calib.dig_T3 = 0x32; //readS16_LE(BMP280_REGISTER_DIG_T3);
+#else
                              _bmp280_calib.dig_T1 = read16_LE(BMP280_REGISTER_DIG_T1);
                              _bmp280_calib.dig_T2 = readS16_LE(BMP280_REGISTER_DIG_T2);
                              _bmp280_calib.dig_T3 = readS16_LE(BMP280_REGISTER_DIG_T3);
-                             
+#endif
                              _bmp280_calib.dig_P1 = read16_LE(BMP280_REGISTER_DIG_P1);
                              _bmp280_calib.dig_P2 = readS16_LE(BMP280_REGISTER_DIG_P2);
                              _bmp280_calib.dig_P3 = readS16_LE(BMP280_REGISTER_DIG_P3);
@@ -219,6 +224,15 @@ void BMP280::setSampling(sensor_mode mode,
                              _bmp280_calib.dig_P7 = readS16_LE(BMP280_REGISTER_DIG_P7);
                              _bmp280_calib.dig_P8 = readS16_LE(BMP280_REGISTER_DIG_P8);
                              _bmp280_calib.dig_P9 = readS16_LE(BMP280_REGISTER_DIG_P9);
+                             
+                             printf("_bmp280_calib.dig_T1 = %d \n",_bmp280_calib.dig_T1);
+                             printf("_bmp280_calib.dig_T2 = %d \n",_bmp280_calib.dig_T2);
+                             printf("_bmp280_calib.dig_T3 = %d \n",_bmp280_calib.dig_T3);
+                             
+                             printf("_bmp280_calib.dig_T1 = %x \n",_bmp280_calib.dig_T1);
+                             printf("_bmp280_calib.dig_T2 = %x \n",_bmp280_calib.dig_T2);
+                             printf("_bmp280_calib.dig_T3 = %x \n",_bmp280_calib.dig_T3);
+                             
                          }
                          
                          /*!
@@ -234,19 +248,16 @@ void BMP280::setSampling(sensor_mode mode,
                              adc_T >>= 4;
                              
                              var1 = ((((adc_T >> 3) - ((int32_t)_bmp280_calib.dig_T1 << 1))) *
-                                     ((int32_t)_bmp280_calib.dig_T2)) >>
-                                 11;
+                                     ((int32_t)_bmp280_calib.dig_T2)) >> 11;
                              
                              var2 = (((((adc_T >> 4) - ((int32_t)_bmp280_calib.dig_T1)) *
-                                       ((adc_T >> 4) - ((int32_t)_bmp280_calib.dig_T1))) >>
-                                      12) *
-                                     ((int32_t)_bmp280_calib.dig_T3)) >>
-                                 14;
+                                       ((adc_T >> 4) - ((int32_t)_bmp280_calib.dig_T1))) >> 12) *
+                                     ((int32_t)_bmp280_calib.dig_T3)) >> 14;
                              
                              t_fine = var1 + var2;
                              
                              float T = (t_fine * 5 + 128) >> 8;
-                             return T / 100;
+                             return T / 100.0;
                          }
                          
                          /*!

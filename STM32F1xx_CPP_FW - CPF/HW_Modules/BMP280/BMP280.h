@@ -198,7 +198,7 @@ private:
         /** Enables 3-wire SPI */
         uint8_t spi3w_en : 1;
         /** Used to retrieve the assembled config register's byte value. */
-        uint8_t get() { return (t_sb << 5) | (filter << 2) | spi3w_en; }
+       uint8_t get() { return (t_sb << 5) | (filter << 2) | spi3w_en; }
     };
     
     /** Encapsulates trhe ctrl_meas register */

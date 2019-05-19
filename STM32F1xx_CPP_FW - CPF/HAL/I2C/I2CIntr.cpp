@@ -658,6 +658,14 @@ namespace HAL
                 InteruptControl(HAL::I2CIntr::I2C_EVENT_INTERRUPT_BUFFER_ENABLE);
                 
                 _I2Cx->DR = _Transaction.SlaveAddress | I2C_DIR_READ;
+
+				if(_Transaction.RxLen == 2U)
+				{
+					/* Enable Pos */
+                    _I2Cx->CR1 |= I2C_CR1_POS;
+
+					I2C_LOG_STATES(I2C_LOG_SB_MASTER_RX_2);					
+				}
                 
                 I2C_LOG_STATES(I2C_LOG_SB_MASTER_RX);
             }
@@ -841,7 +849,7 @@ namespace HAL
             else if((_Transaction.RxLen == 2U) || (_Transaction.RxLen == 3U))
             {  
                 // This is already done in ADDR for Rx 2 byte only
-                // Need to here if Rx>2, In this case it will not be done in ADDR
+                // Need to do here if Rx>2, In this case it will not be done in ADDR
                 
                 /* Disable Acknowledge */
                 _I2Cx->CR1 &= ~I2C_CR1_ACK;
@@ -879,6 +887,16 @@ namespace HAL
                 _Transaction.TxLen--;
                 //I2C_LOG_STATES(I2C_LOG_TXE);
             } 
+			else
+			{				
+				/* Generate Stop */
+                _I2Cx->CR1 |= I2C_CR1_STOP;
+              // TxE and BTF are cleared by hardware by the Stop condition
+
+				Stop();
+				
+				I2C_LOG_STATES(I2C_LOG_TXE_DONE);
+			}
         }
         
         void I2CIntr::Master_Rx_BTF_Handler()

@@ -24,18 +24,25 @@ void SystemClock_Config_LL(void);
 //static void LL_Init(void);
 void putc ( void* p, char c);
 
-
+//#include "DebugLog.h"
+//
+//static constexpr uint32_t x = Utils::DebugLog::Make(7,5);
+//
+//enum
+//{
+//    ONE = Utils::DebugLog::Make(7,1),
+//    TWO = Utils::DebugLog::Make(7,2),
+//    THREE = Utils::DebugLog::Make(7,3),
+//};
 
 
 int main(void)
 {	
-    
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();
     
     /* Configure the system clock */
     SystemClock_Config();
-    
     while(1)
     {
        //BtnPoll_Test();
@@ -47,7 +54,7 @@ int main(void)
         //KeypadIntr_Test();
         //I2CPoll_Test();
         //INA219_Test();
-        //I2CIntr_Test();
+       // I2CIntr_Test();
        BMP280_Test();
     }
     

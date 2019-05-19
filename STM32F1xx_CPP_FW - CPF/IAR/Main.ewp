@@ -372,6 +372,7 @@
                     <state>$PROJ_DIR$\..\HAL\I2C</state>
                     <state>$PROJ_DIR$\..\BSP\INA219</state>
                     <state>$PROJ_DIR$\..\HW_Modules\BMP280</state>
+                    <state>$PROJ_DIR$\..\SW_Modules\DebugLog</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2233,6 +2234,15 @@
         <file>
             <name>$PROJ_DIR$\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_utils.c</name>
         </file>
+    </group>
+    <group>
+        <name>SW_Modules</name>
+        <group>
+            <name>DebugLog</name>
+            <file>
+                <name>$PROJ_DIR$\..\SW_Modules\DebugLog\DebugLog.cpp</name>
+            </file>
+        </group>
     </group>
     <group>
         <name>System</name>
