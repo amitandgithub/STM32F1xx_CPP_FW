@@ -24,25 +24,37 @@ void SystemClock_Config_LL(void);
 //static void LL_Init(void);
 void putc ( void* p, char c);
 
-//#include "DebugLog.h"
-//
-//static constexpr uint32_t x = Utils::DebugLog::Make(7,5);
-//
-//enum
-//{
-//    ONE = Utils::DebugLog::Make(7,1),
-//    TWO = Utils::DebugLog::Make(7,2),
-//    THREE = Utils::DebugLog::Make(7,3),
-//};
-
+#include "DebugLog.h"
+#define TYPES uint32_t,5,7,20,100
+static constexpr auto x = Utils::DebugLog<TYPES>::Make(2,3);
+static constexpr auto m = Utils::DebugLog<TYPES>::TIMESTAMP_MASK;
+static constexpr auto moduleID = Utils::DebugLog<TYPES>::DBG_LOG_MODULE_ID_I2C;
+static Utils::DebugLog<TYPES>::DebugLogElement_t Ele; 
+enum
+{
+    ONE = Utils::DebugLog<TYPES>::Make(Utils::DebugLog<TYPES>::DBG_LOG_MODULE_ID_I2C,1),
+    TWO = Utils::DebugLog<TYPES>::Make(Utils::DebugLog<TYPES>::DBG_LOG_MODULE_ID_SPI,2),
+    THREE =Utils::DebugLog<TYPES>::Make(7,3),
+};
 
 int main(void)
 {	
+    auto y = x;
+    y = m;
+    auto n = Ele.bits.ModuleID; // 7 CPU Cycles
+    auto c = Ele; // 3 CPU Cycles
+    auto mid = moduleID;
+    
+    y = ONE;
+    y = TWO;
+    y = THREE;
+
+    
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();
     
     /* Configure the system clock */
-    SystemClock_Config();
+   // SystemClock_Config();
     while(1)
     {
        //BtnPoll_Test();
