@@ -28,17 +28,20 @@ namespace Utils
         class DebugLog
         {      
         public:
-            static_assert( (ModuleIDBits+LogValueBits+TimeStampBits) <= (sizeof(T)*8), "Data type of DebugLog is too small !");
             
-            using DebugLog_tm = DebugLog<T,ModuleIDBits,LogValueBits,TimeStampBits,MaxLogEntries >;
+            static_assert( (ModuleIDBits+LogValueBits+TimeStampBits) <= (sizeof(T)*8), "Data type of DebugLog is too small !");          
+            
             typedef T DebugLog_t;
             
             typedef enum : DebugLog_t
             {
                 DBG_LOG_MODULE_ID_I2C,
-                DBG_LOG_MODULE_ID_SPI,            
+                DBG_LOG_MODULE_ID_SPI, 
+                DBG_LOG_MODULE_ID_MAX
             }ModuleId_t;                        
             
+            //static_assert( (ModuleIDBits+LogValueBits+TimeStampBits) <= (sizeof(T)*8), "Data type of DebugLog is too small !");      
+             
             typedef enum
             {
                 STATUS_OK,
@@ -72,11 +75,11 @@ namespace Utils
             
             Status_t        Register           (DebugLog_t* pModuleID);
             
-            inline void     Enable             (DebugLog_t ModuleID);
+            inline void     Enable             (ModuleId_t ModuleID);
             
-            inline void     Disable            (DebugLog_t ModuleID);
+            inline void     Disable            (ModuleId_t ModuleID);
             
-            inline void     Log                (DebugLog_t ModuleID_LogValue);
+            inline void     Log                (DebugLog_t ModuleID_ORed_LogValue);
             
             static constexpr DebugLog_t Make   (DebugLog_t ModuleID, DebugLog_t LogValue){return (ModuleID<<(LogValueBits+TimeStampBits) | LogValue<<TimeStampBits) & TIMESTAMP_MASK;}
             
@@ -98,23 +101,23 @@ namespace Utils
     
     template< typename T,uint32_t ModuleIDBits, uint32_t LogValueBits,uint32_t TimeStampBits,uint32_t MaxLogEntries > 
         void DebugLog< T,ModuleIDBits,LogValueBits,TimeStampBits,MaxLogEntries >::
-    Enable(DebugLog_t ModuleID)
+    Enable(ModuleId_t ModuleID)
     {
-        _ModuleEnableMask |= ((DebugLog_t)1U << POSITION_VAL(ModuleID));
+        _ModuleEnableMask |= ((DebugLog_t)1U << ModuleID); //POSITION_VAL(ModuleID));
     }
     
     template< typename T,uint32_t ModuleIDBits, uint32_t LogValueBits,uint32_t TimeStampBits,uint32_t MaxLogEntries > 
         void DebugLog< T,ModuleIDBits,LogValueBits,TimeStampBits,MaxLogEntries >::
-    Disable(DebugLog_t ModuleID)
+    Disable(ModuleId_t ModuleID)
     {
-        _ModuleEnableMask &= ~((DebugLog_t)1U << POSITION_VAL(ModuleID));
+        _ModuleEnableMask &= ~((DebugLog_t)1U << ModuleID); //POSITION_VAL(ModuleID));
     }
     
     template< typename T,uint32_t ModuleIDBits, uint32_t LogValueBits,uint32_t TimeStampBits,uint32_t MaxLogEntries > 
         void DebugLog< T,ModuleIDBits,LogValueBits,TimeStampBits,MaxLogEntries >::
-    Log(DebugLog_t ModuleID_LogValue)
+    Log(DebugLog_t ModuleID_ORed_LogValue)
     {
-        if(_ModuleEnableMask & ModuleID_LogValue)
+        if(_ModuleEnableMask & ModuleID_ORed_LogValue)
         {
             // DBG_Q.Write( ModuleID | LogValue | GetCurrentTicks());
             if(_LogIndex == MaxLogEntries)
@@ -123,9 +126,9 @@ namespace Utils
             }
 #ifdef DBG_LOG_WITHOUT_TIMESTAMP
             
-            _Entries[_LogIndex] = ModuleID_LogValue;           
+            _Entries[_LogIndex] = ModuleID_ORed_LogValue;           
 #else
-            _Entries[_LogIndex] = ModuleID_LogValue | (GetCurrentTicks() & TIMESTAMP_MASK);
+            _Entries[_LogIndex] = ModuleID_ORed_LogValue | (GetCurrentTicks() & TIMESTAMP_MASK);
 #endif
             _LogIndex++;            
         }
