@@ -740,7 +740,7 @@ namespace HAL
                      // earlier /* Enable Acknowledge */
                     //_I2Cx->CR1 |= I2C_CR1_ACK;  
                     
-                    /* Enable Pos, Semd NACK after receiving 2nd byte, This case is for Rx 2 bytes */
+                    /* Enable Pos, Semd NACK after receiving 2nd byte, This case is only for Rx == 2 bytes */
                     _I2Cx->CR1 |= I2C_CR1_POS;      
 
                    /* Clear ADDR flag */
