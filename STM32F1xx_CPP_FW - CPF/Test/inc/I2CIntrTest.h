@@ -95,7 +95,7 @@ void I2CIntr_Test()
     uint8_t name[] = "Amit Chaudhary is a good Boy";
     name[sizeof(name)/sizeof(uint8_t)-1] = '\n';
     INA219_Dev.HwInit();
-    testID = 7;
+    testID = 14;
     B13.HwInit();
     Transaction.XferDoneCallback = &I2C_XferDone_Callback;
     

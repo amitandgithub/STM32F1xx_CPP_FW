@@ -54,7 +54,7 @@ int main(void)
     HAL_Init();
     
     /* Configure the system clock */
-   // SystemClock_Config();
+    SystemClock_Config();
     while(1)
     {
        //BtnPoll_Test();
@@ -66,7 +66,7 @@ int main(void)
         //KeypadIntr_Test();
         //I2CPoll_Test();
         //INA219_Test();
-       // I2CIntr_Test();
+        I2CIntr_Test();
        BMP280_Test();
     }
     
