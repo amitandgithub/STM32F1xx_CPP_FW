@@ -34,11 +34,13 @@ namespace HAL
     
 #endif
     
+//#define I2C_RX_METHOD_1
+    
     class I2CIntr : public InterruptSource
     {
     public:
         
-        static const uint32_t I2C_TIMEOUT           = 50000U;
+        static const uint32_t I2C_TIMEOUT           = 5000U;
         static const uint16_t I2C_DIR_WRITE         = 0xfffeU;
         static const uint16_t I2C_DIR_READ          = 0x0001U;
         static const uint16_t I2C_OWN_SLAVE_ADDRESS = 0x08U<<1U;
@@ -84,6 +86,7 @@ namespace HAL
         {
             NONE,
             I2C_LOG_STOPF_FLAG,
+            I2C_LOG_STOPF_NOT_CLEARED,
             I2C_LOG_START_MASTER_TX,
             I2C_LOG_START_MASTER_RX,
             I2C_LOG_START_MASTER_TXRX,
@@ -140,6 +143,7 @@ namespace HAL
             I2C_LOG_TXN_DEQUEUED,
             I2C_LOG_TXN_QUEUE_EMPTY,
             I2C_LOG_TXN_QUEUE_ERROR,
+            I2C_LOG_TXN_DONE
         }I2CLogs_t;
         
         typedef enum
@@ -264,6 +268,24 @@ namespace HAL
         
         void InteruptControl(I2CInterrupt_t I2CInterrupt);
         
+        void InterruptControl(bool enable, uint16_t InterruptFlag){ enable ? SET_BIT(_I2Cx->CR2, InterruptFlag) : CLEAR_BIT(_I2Cx->CR2, InterruptFlag) ;}
+        
+        void Enable_EVT_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN);}
+        
+        void Enable_BUF_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITBUFEN);}
+        
+        void Enable_ERR_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITERREN);}
+        
+        void Enable_EVT_BUF_ERR_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITBUFEN | I2C_CR2_ITERREN);}
+        
+        void Disable_EVT_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN);}
+        
+        void Disable_BUF_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITBUFEN);}
+        
+        void Disable_ERR_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITERREN);}
+        
+        void Disable_EVT_BUF_ERR_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITBUFEN | I2C_CR2_ITERREN);}
+        
         inline I2CStatus_t StartListening();
         
         inline bool StopFlagCleared(uint32_t timeout);
@@ -303,19 +325,21 @@ namespace HAL
         void Slave_TxE_Handler();
         
     private:
-        GpioOutput          _sclPin;
-        GpioOutput          _sdaPin;
-        Hz_t                _hz;
-        I2Cx_t              _I2Cx;
-        I2CState_t          _I2CState;
-        I2CStatus_t         _I2CStatus;
-        Transaction_t       _Transaction;
-        I2CCallback_t       _TxQueueEmptyCallback;
-        I2CCallback_t       _RxQueueFullCallback;
-        I2CCallback_t       _SlaveTxDoneCallback;
-        I2CCallback_t       _SlaveRxDoneCallback;
-        I2CTxnQueue_t       _I2CTxnQueue;
-        Transaction_t*      _pCurrentTxn;
+        GpioOutput              _sclPin;
+        GpioOutput              _sdaPin;
+        Hz_t                    _hz;
+        I2Cx_t                  _I2Cx;            
+        Transaction_t           _Transaction;
+        I2CCallback_t           _TxQueueEmptyCallback;
+        I2CCallback_t           _RxQueueFullCallback;
+        I2CCallback_t           _SlaveTxDoneCallback;
+        I2CCallback_t           _SlaveRxDoneCallback;
+        I2CTxnQueue_t           _I2CTxnQueue;
+        Transaction_t*          _pCurrentTxn;
+        /* It must be volatile becoz it is shared between ISR and main loop */
+        volatile I2CState_t     _I2CState; 
+        /* It must be volatile becoz it is shared between ISR and main loop */
+        volatile I2CStatus_t    _I2CStatus;
         
 #ifdef I2C_INTR_DEBUG
         I2CLogs_t       I2CStates[I2C_LOG_STATES_SIZE];
@@ -375,8 +399,8 @@ namespace HAL
     
     bool I2CIntr::StopFlagCleared(uint32_t timeout)
     {   
-#if 0
-        static int StopCount;
+#if 1
+        static int StopCountMax;
         uint32_t Timeout=0;
         
         while( (timeout--) && (_I2Cx->CR1 & (I2C_CR1_STOP)) )
@@ -384,10 +408,11 @@ namespace HAL
             Timeout++;          
         }
         
-        if(StopCount<Timeout) 
-            StopCount = Timeout;
+        if(StopCountMax<Timeout) 
+            StopCountMax = Timeout;
+#else
+        while( (timeout--) && (_I2Cx->CR1 & (I2C_CR1_STOP)) );        
 #endif
-        while( (timeout--) && (_I2Cx->CR1 & (I2C_CR1_STOP)) );
         return (bool)(_I2Cx->CR1 & (I2C_CR1_STOP));
     }
     
@@ -453,7 +478,7 @@ namespace HAL
        // _I2CState = SLAVE_RX_LISTENING;
         _I2CState = READY;
         
-        InteruptControl(HAL::I2CIntr::I2C_INTERRUPT_ENABLE_ALL);
+        Enable_EVT_BUF_ERR_Interrupt();
         
         return I2C_OK;
     }

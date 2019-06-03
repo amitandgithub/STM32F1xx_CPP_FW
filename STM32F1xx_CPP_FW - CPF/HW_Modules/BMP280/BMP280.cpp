@@ -42,7 +42,7 @@ uint8_t BMP280::HwInit()
         return false;
         
     readCoefficients();
-    write8(BMP280_REGISTER_CONTROL, 0x3F); /* needed? */
+   // write8(BMP280_REGISTER_CONTROL, 0x3F); /* needed? */
     setSampling();
     
     return 1;
@@ -89,15 +89,7 @@ void BMP280::setSampling(sensor_mode mode,
                          {
                              buf[0] = reg;
                              buf[1] = value;
-#if BMP280_INTR_MODE
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             m_pI2CDrv->MasterTx( m_BMP280_Address, buf, 2, &I2C_Status) ;
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-#else
-                             m_pI2CDrv->MasterTx( m_BMP280_Address, buf, 1) ;
-                             m_pI2CDrv->MasterTx( m_BMP280_Address, &buf[1], 1) ;
-#endif
-                             
+                             Tx(buf, 2, &I2C_Status);
                          }
                          
                          /*!
@@ -109,20 +101,8 @@ void BMP280::setSampling(sensor_mode mode,
                          uint8_t BMP280::read8(byte reg) 
                          {
                              buf[0] = reg;
-#if BMP280_INTR_MODE
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             m_pI2CDrv->MasterTx( m_BMP280_Address, buf, 1, &I2C_Status) ;
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             m_pI2CDrv->MasterRx( m_BMP280_Address, &buf[1], 1, &I2C_Status) ;
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             
-#else
-                             m_pI2CDrv->MasterTx( m_BMP280_Address, buf, 1);
-                             m_pI2CDrv->MasterRx( m_BMP280_Address, &buf[1], 1);
-#endif
-                             
+                             Tx(buf, 1, &I2C_Status);
+                             Rx(&buf[1], 1, &I2C_Status);                             
                              return buf[1];
                          }
                          
@@ -133,20 +113,8 @@ void BMP280::setSampling(sensor_mode mode,
                          {
                              uint16_t value;
                              buf[0] = reg;
-#if BMP280_INTR_MODE
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             m_pI2CDrv->MasterTx( m_BMP280_Address, buf, 1, &I2C_Status) ;
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             m_pI2CDrv->MasterRx( m_BMP280_Address, &buf[1], 2, &I2C_Status) ;
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             
-#else
-                             m_pI2CDrv->MasterTx( m_BMP280_Address, &buf[0], 1) ;
-                             m_pI2CDrv->MasterRx( m_BMP280_Address, &buf[1], 1) ;
-                             m_pI2CDrv->MasterRx( m_BMP280_Address, &buf[2], 1) ;
-#endif    
+                             Tx(buf, 1, &I2C_Status) ;
+                             Rx(&buf[1], 2, &I2C_Status) ;    
                              value = (uint16_t)((buf[1] << 8) | buf[2]);
                              return value;
                          }
@@ -176,28 +144,13 @@ void BMP280::setSampling(sensor_mode mode,
                          {
                              uint32_t value;
                              buf[0] = reg;
-#if BMP280_INTR_MODE
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             m_pI2CDrv->MasterTx( m_BMP280_Address, buf, 1, &I2C_Status) ;
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             //LL_mDelay(1);
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             m_pI2CDrv->MasterRx( m_BMP280_Address, &buf[1], 3, &I2C_Status) ;
-                             while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-                             //LL_mDelay(1);
-                             
-#else
-                             m_pI2CDrv->MasterTx( m_BMP280_Address, buf, 1) ;
-                             LL_mDelay(1);
-                             m_pI2CDrv->MasterRx( m_BMP280_Address, &buf[1], 3) ;
-#endif  
-                             
+                             Tx(buf, 1, &I2C_Status) ;
+                             Rx(&buf[1], 3, &I2C_Status) ;                             
                              value = buf[1];
                              value <<= 8;
                              value |= buf[2];
                              value <<= 8;
-                             value |= buf[3];
-                             
+                             value |= buf[3];                             
                              return value;
                          }
                          
@@ -206,15 +159,9 @@ void BMP280::setSampling(sensor_mode mode,
                          */
                          void BMP280::readCoefficients() 
                          {
-#if 0
-                             _bmp280_calib.dig_T1 = 0x6B22;//read16_LE(BMP280_REGISTER_DIG_T1);
-                             _bmp280_calib.dig_T2 = 0x6450; //readS16_LE(BMP280_REGISTER_DIG_T2);
-                             _bmp280_calib.dig_T3 = 0x32; //readS16_LE(BMP280_REGISTER_DIG_T3);
-#else
                              _bmp280_calib.dig_T1 = read16_LE(BMP280_REGISTER_DIG_T1);
                              _bmp280_calib.dig_T2 = readS16_LE(BMP280_REGISTER_DIG_T2);
                              _bmp280_calib.dig_T3 = readS16_LE(BMP280_REGISTER_DIG_T3);
-#endif
                              _bmp280_calib.dig_P1 = read16_LE(BMP280_REGISTER_DIG_P1);
                              _bmp280_calib.dig_P2 = readS16_LE(BMP280_REGISTER_DIG_P2);
                              _bmp280_calib.dig_P3 = readS16_LE(BMP280_REGISTER_DIG_P3);
@@ -225,13 +172,13 @@ void BMP280::setSampling(sensor_mode mode,
                              _bmp280_calib.dig_P8 = readS16_LE(BMP280_REGISTER_DIG_P8);
                              _bmp280_calib.dig_P9 = readS16_LE(BMP280_REGISTER_DIG_P9);
                              
-                             printf("_bmp280_calib.dig_T1 = %d \n",_bmp280_calib.dig_T1);
-                             printf("_bmp280_calib.dig_T2 = %d \n",_bmp280_calib.dig_T2);
-                             printf("_bmp280_calib.dig_T3 = %d \n",_bmp280_calib.dig_T3);
-                             
-                             printf("_bmp280_calib.dig_T1 = %x \n",_bmp280_calib.dig_T1);
-                             printf("_bmp280_calib.dig_T2 = %x \n",_bmp280_calib.dig_T2);
-                             printf("_bmp280_calib.dig_T3 = %x \n",_bmp280_calib.dig_T3);
+//                             printf("_bmp280_calib.dig_T1 = %d \n",_bmp280_calib.dig_T1);
+//                             printf("_bmp280_calib.dig_T2 = %d \n",_bmp280_calib.dig_T2);
+//                             printf("_bmp280_calib.dig_T3 = %d \n",_bmp280_calib.dig_T3);
+//                             
+//                             printf("_bmp280_calib.dig_T1 = %x \n",_bmp280_calib.dig_T1);
+//                             printf("_bmp280_calib.dig_T2 = %x \n",_bmp280_calib.dig_T2);
+//                             printf("_bmp280_calib.dig_T3 = %x \n",_bmp280_calib.dig_T3);
                              
                          }
                          

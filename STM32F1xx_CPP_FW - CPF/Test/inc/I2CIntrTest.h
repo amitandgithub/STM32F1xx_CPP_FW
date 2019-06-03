@@ -95,7 +95,7 @@ void I2CIntr_Test()
     uint8_t name[] = "Amit Chaudhary is a good Boy";
     name[sizeof(name)/sizeof(uint8_t)-1] = '\n';
     INA219_Dev.HwInit();
-    testID = 14;
+    testID = 7;
     B13.HwInit();
     Transaction.XferDoneCallback = &I2C_XferDone_Callback;
     
@@ -188,7 +188,7 @@ void I2CIntr_Test()
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Current = curr;  
             Current = Current/10;
-            //testID = 13;
+            testID = 14;
             break;
             
         case 8:    
@@ -502,6 +502,6 @@ void I2CIntr_Test()
         
         }
         
-        //LL_mDelay(1);
+        //LL_mDelay(5);
     }
 }
