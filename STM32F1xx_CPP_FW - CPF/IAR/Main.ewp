@@ -373,6 +373,7 @@
                     <state>$PROJ_DIR$\..\BSP\INA219</state>
                     <state>$PROJ_DIR$\..\HW_Modules\BMP280</state>
                     <state>$PROJ_DIR$\..\SW_Modules\DebugLog</state>
+                    <state>$PROJ_DIR$\..\HAL\DMA</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2154,6 +2155,12 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\HAL\Common\InterruptManager.cpp</name>
+            </file>
+        </group>
+        <group>
+            <name>DMA</name>
+            <file>
+                <name>$PROJ_DIR$\..\HAL\DMA\DMA.cpp</name>
             </file>
         </group>
         <group>

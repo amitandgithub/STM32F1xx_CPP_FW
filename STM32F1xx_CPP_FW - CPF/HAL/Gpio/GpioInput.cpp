@@ -53,7 +53,8 @@ namespace HAL
         constexpr GpioInput::IRQn_t GpioInput::MapPin2ExtLine(uint32_t  Pin)
         {
             const IRQn_t IRQns[16] = 
-            {   EXTI0_IRQn,
+            {   
+            EXTI0_IRQn,
             EXTI1_IRQn,
             EXTI2_IRQn,
             EXTI3_IRQn,
@@ -423,7 +424,7 @@ namespace HAL
             // and will crash because array is only 16 elements
             if(EXTI->PR)
             {
-                 uint32_t ExternalInterrupt = (uint32_t)POSITION_VAL(EXTI->PR);               
+                uint32_t ExternalInterrupt = (uint32_t)POSITION_VAL(EXTI->PR);               
                 _GpioCallbacks[ExternalInterrupt]->CallbackFunction();                
                 LL_EXTI_ClearFlag_0_31( (uint32_t)((uint32_t)1U)<<ExternalInterrupt);
             }
