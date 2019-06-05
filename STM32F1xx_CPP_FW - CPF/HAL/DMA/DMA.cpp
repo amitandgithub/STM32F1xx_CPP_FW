@@ -12,7 +12,9 @@ namespace HAL
 { 
     DMA::DMACallback_t   DMA::_DMA1Callbacks[7] = {nullptr,};
     
-    DMA::DMA(uint32_t dma) : _DMA1Instance(nullptr)
+    DMA::DMA(uint32_t dma) : _DMA1Instance(nullptr),_Ch1_ISR(this),
+    _Ch2_ISR(this),_Ch3_ISR(this),_Ch4_ISR(this),_Ch5_ISR(this),
+    _Ch6_ISR(this),_Ch7_ISR(this)
 #if defined (DMA2)
     ,_DMA2Instance(nullptr)
 #endif
@@ -62,13 +64,13 @@ namespace HAL
     
     DMA::DMAStatus_t DMA::HwDeinit()
     {
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,this);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel2_IRQn,0,this);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel3_IRQn,0,this);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel4_IRQn,0,this);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel5_IRQn,0,this);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel6_IRQn,0,this);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel7_IRQn,0,this);  
+        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch1_ISR);
+        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch2_ISR);
+        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch3_ISR);
+        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch4_ISR);
+        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch5_ISR);
+        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch6_ISR);
+        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch7_ISR); 
         return 0;
     }
     

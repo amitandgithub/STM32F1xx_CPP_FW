@@ -20,7 +20,7 @@
 
 namespace HAL
 {    
-    class DMA : public InterruptSource
+    class DMA 
     {
     public:
         
@@ -56,6 +56,83 @@ namespace HAL
         
         virtual void ISR( IRQn_Type event );
         
+        class DMA_Channel1_ISR : public InterruptSource
+        {
+        public:
+            DMA_Channel1_ISR(DMA* This) : _this(This){};
+            ~DMA_Channel1_ISR(){};
+            virtual void ISR( IRQn_Type event ){if(_this->_DMA1Callbacks[0]) _this->_DMA1Callbacks[0]->CallbackFunction();}    
+        private:
+            DMA* _this;            
+        };
+        
+        class DMA_Channel2_ISR : public InterruptSource
+        {
+        public:
+            DMA_Channel2_ISR(DMA* This) : _this(This){};
+            ~DMA_Channel2_ISR(){};
+            virtual void ISR( IRQn_Type event ){if(_this->_DMA1Callbacks[1]) _this->_DMA1Callbacks[1]->CallbackFunction();}    
+        private:
+            DMA* _this;            
+        };
+        
+        
+        class DMA_Channel3_ISR : public InterruptSource
+        {
+        public:
+            DMA_Channel3_ISR(DMA* This) : _this(This){};
+            ~DMA_Channel3_ISR(){};
+            virtual void ISR( IRQn_Type event ){if(_this->_DMA1Callbacks[2]) _this->_DMA1Callbacks[2]->CallbackFunction();}    
+        private:
+            DMA* _this;            
+        };
+        
+        
+        class DMA_Channel4_ISR : public InterruptSource
+        {
+        public:
+            DMA_Channel4_ISR(DMA* This) : _this(This){};
+            ~DMA_Channel4_ISR(){};
+            virtual void ISR( IRQn_Type event ){if(_this->_DMA1Callbacks[3]) _this->_DMA1Callbacks[3]->CallbackFunction();}    
+        private:
+            DMA* _this;            
+        };
+        
+        
+        class DMA_Channel5_ISR : public InterruptSource
+        {
+        public:
+            DMA_Channel5_ISR(DMA* This) : _this(This){};
+            ~DMA_Channel5_ISR(){};
+            virtual void ISR( IRQn_Type event ){if(_this->_DMA1Callbacks[4]) _this->_DMA1Callbacks[4]->CallbackFunction();}    
+        private:
+            DMA* _this;            
+        };
+        
+        
+        class DMA_Channel6_ISR : public InterruptSource
+        {
+        public:
+            DMA_Channel6_ISR(DMA* This) : _this(This){};
+            ~DMA_Channel6_ISR(){};
+            virtual void ISR( IRQn_Type event ){if(_this->_DMA1Callbacks[5]) _this->_DMA1Callbacks[5]->CallbackFunction();}    
+        private:
+            DMA* _this;            
+        };
+        
+        
+        class DMA_Channel7_ISR : public InterruptSource
+        {
+        public:
+            DMA_Channel7_ISR(DMA* This) : _this(This){};
+            ~DMA_Channel7_ISR(){};
+            virtual void ISR( IRQn_Type event ){if(_this->_DMA1Callbacks[6]) _this->_DMA1Callbacks[6]->CallbackFunction();}    
+        private:
+            DMA* _this;            
+        };
+        
+        
+        static DMACallback_t   _DMA1Callbacks[7];
     private:        
         DMA(uint32_t dma);        
         ~DMA();
@@ -67,7 +144,14 @@ namespace HAL
         DMACallback_t       _HalfCompleteCB;
         DMACallback_t       _FullCompleteCB;
         DMACallback_t       _ErrorCB;   
-        static DMACallback_t   _DMA1Callbacks[7];
+        DMA_Channel1_ISR    _Ch1_ISR;
+        DMA_Channel2_ISR    _Ch2_ISR;
+        DMA_Channel3_ISR    _Ch3_ISR;
+        DMA_Channel4_ISR    _Ch4_ISR;
+        DMA_Channel5_ISR    _Ch5_ISR;
+        DMA_Channel6_ISR    _Ch6_ISR;
+        DMA_Channel7_ISR    _Ch7_ISR;
+        
     };
     
     
