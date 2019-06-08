@@ -14,7 +14,7 @@
 
 // C++ PROJECT INCLUDES
 #include "InterruptManager.h"
-//#include "SafetyAssert.hpp"
+#include "DMA.h"
 
 namespace HAL
 {
@@ -100,36 +100,59 @@ extern "C" void EXTI4_IRQHandler()
 
 extern "C" void DMA1_Channel1_IRQHandler()
 {
-    Nvic_Handler(DMA1_Channel1_IRQn);
+    //Nvic_Handler(DMA1_Channel1_IRQn);
+     if(DMA::_DMA1Callbacks[0]) 
+         DMA::_DMA1Callbacks[0]->CallbackFunction();
+     
+     NVIC_ClearPendingIRQ(DMA1_Channel1_IRQn); 
 }
 
 extern "C" void DMA1_Channel2_IRQHandler()
 {
-    Nvic_Handler(DMA1_Channel2_IRQn);
+    //Nvic_Handler(DMA1_Channel2_IRQn);
+     if(DMA::_DMA1Callbacks[1]) DMA::_DMA1Callbacks[1]->CallbackFunction();
+     
+     NVIC_ClearPendingIRQ(DMA1_Channel2_IRQn); 
 }
 
 extern "C" void DMA1_Channel3_IRQHandler()
 {
-    Nvic_Handler(DMA1_Channel3_IRQn);
+   // Nvic_Handler(DMA1_Channel3_IRQn);
+     if(DMA::_DMA1Callbacks[2]) DMA::_DMA1Callbacks[2]->CallbackFunction();
+     
+     NVIC_ClearPendingIRQ(DMA1_Channel3_IRQn); 
 }
 
 extern "C" void DMA1_Channel4_IRQHandler()
 {
-    Nvic_Handler(DMA1_Channel4_IRQn);
+    //Nvic_Handler(DMA1_Channel4_IRQn);
+     if(DMA::_DMA1Callbacks[3]) DMA::_DMA1Callbacks[3]->CallbackFunction();
+     
+     NVIC_ClearPendingIRQ(DMA1_Channel4_IRQn); 
 }
 
 extern "C" void DMA1_Channel5_IRQHandler()
 {
-    Nvic_Handler(DMA1_Channel5_IRQn);
+   // Nvic_Handler(DMA1_Channel5_IRQn);
+     if(DMA::_DMA1Callbacks[4]) DMA::_DMA1Callbacks[4]->CallbackFunction();
+     
+     NVIC_ClearPendingIRQ(DMA1_Channel5_IRQn); 
 }
 
 extern "C" void DMA1_Channel6_IRQHandler()
 {
-    Nvic_Handler(DMA1_Channel6_IRQn);
+    //Nvic_Handler(DMA1_Channel6_IRQn);
+     if(DMA::_DMA1Callbacks[5]) DMA::_DMA1Callbacks[5]->CallbackFunction();
+     
+     NVIC_ClearPendingIRQ(DMA1_Channel6_IRQn); 
 }
+
 extern "C" void DMA1_Channel7_IRQHandler()
 {
-    Nvic_Handler(DMA1_Channel7_IRQn);
+   // Nvic_Handler(DMA1_Channel7_IRQn);
+    if(DMA::_DMA1Callbacks[6]) DMA::_DMA1Callbacks[6]->CallbackFunction();
+    
+    NVIC_ClearPendingIRQ(DMA1_Channel7_IRQn); 
 }
 
 extern "C" void ADC1_2_IRQHandler()

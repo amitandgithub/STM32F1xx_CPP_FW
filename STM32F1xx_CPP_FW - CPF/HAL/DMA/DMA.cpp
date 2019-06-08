@@ -12,12 +12,12 @@ namespace HAL
 { 
     DMA::DMACallback_t   DMA::_DMA1Callbacks[7] = {nullptr,};
     
-    DMA::DMA(uint32_t dma) : _DMA1Instance(nullptr),_Ch1_ISR(this),
-    _Ch2_ISR(this),_Ch3_ISR(this),_Ch4_ISR(this),_Ch5_ISR(this),
-    _Ch6_ISR(this),_Ch7_ISR(this)
+    DMA* DMA::_DMA1Instance;
 #if defined (DMA2)
-    ,_DMA2Instance(nullptr)
+    DMA* DMA::_DMA2Instance(nullptr)
 #endif
+    
+    DMA::DMA(uint32_t dma) 
     {
         if(dma == 1)
         {
@@ -38,8 +38,40 @@ namespace HAL
     
     DMA::~DMA()
     {
+
+    }
+    
+    void DMA::ClockEnable()
+    {
+        if( _DMAx == DMA1)
+        {
+            LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA1);
+        }
+#if defined (DMA2)
+        else if( _DMAx == DMA2)
+        {
+            LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_DMA2);
+        }
+#endif        
         
     }
+    
+    void DMA::ClockDisable()
+    {
+        if( _DMAx == DMA1)
+        {
+            LL_AHB1_GRP1_DisableClock(LL_AHB1_GRP1_PERIPH_DMA1);
+        }
+#if defined (DMA2)
+        else if( _DMAx == DMA2)
+        {
+            LL_AHB1_GRP1_DisableClock(LL_AHB1_GRP1_PERIPH_DMA2);
+        }
+#endif        
+        
+    }
+    
+    
     
     DMA::DMAStatus_t DMA::HwInit(void *pInitStruct)
     {
@@ -64,53 +96,52 @@ namespace HAL
     
     DMA::DMAStatus_t DMA::HwDeinit()
     {
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch1_ISR);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch2_ISR);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch3_ISR);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch4_ISR);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch5_ISR);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch6_ISR);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(DMA1_Channel1_IRQn,0,&_Ch7_ISR); 
         return 0;
     }
     
-    DMA::DMAStatus_t DMA:: XferConfig(DMAConfig_t DMAConfig, uint32_t Channel)
+    DMA::DMAStatus_t DMA:: XferConfig(DMAConfig_t* DMAConfig, uint32_t Channel)
     {
        if(DMAConfig == nullptr) return 1;
        
+       LL_DMA_DisableChannel(_DMAx, Channel);
+       
        LL_DMA_Init(_DMAx, Channel, DMAConfig);
+       
+//       LL_DMA_ConfigTransfer(_DMAx, Channel, DMAConfig->Direction | \
+//                        DMAConfig->Mode                   | \
+//                        DMAConfig->PeriphOrM2MSrcIncMode  | \
+//                        DMAConfig->MemoryOrM2MDstIncMode  | \
+//                        DMAConfig->PeriphOrM2MSrcDataSize | \
+//                        DMAConfig->MemoryOrM2MDstDataSize | \
+//                        DMAConfig->Priority);
+       
+       LL_DMA_EnableChannel(_DMAx, Channel);
+       
        return 0;
         
     }
     
     DMA::DMAStatus_t DMA:: Xfer(uint32_t Channel, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength)
     {
+        LL_DMA_DisableChannel(_DMAx, Channel);
+        
         LL_DMA_SetMemoryAddress(_DMAx, Channel, DstAddress);
         
         LL_DMA_SetPeriphAddress(_DMAx, Channel, SrcAddress);
         
         LL_DMA_SetDataLength(_DMAx, Channel, DataLength); 
+        
+        LL_DMA_EnableChannel(_DMAx, Channel);
         return 0;
     }
     
     void DMA:: RegisterCallback(uint32_t Channel, DMACallback_t ChannelCB)
     {
-       _DMA1Callbacks[Channel%7] = ChannelCB;
+       _DMA1Callbacks[(Channel-1)%7] = ChannelCB;
     }
     
     void DMA:: UnRegisterCallback(uint32_t Channel)
     {
-       _DMA1Callbacks[Channel%7] = nullptr;
+       _DMA1Callbacks[(Channel-1)%7] = nullptr;
     }
-    
-    void DMA::ISR( IRQn_Type event ) // EXTI4_IRQn
-    {
-        
-    }
-    
-    
-    
-    
-    
-    
 }

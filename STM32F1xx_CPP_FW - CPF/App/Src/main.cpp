@@ -19,6 +19,7 @@ void _Error_Handler(char *, int);
 
 #include "printf.h"
 
+
 void SystemClock_Config(void);
 void SystemClock_Config_LL(void);
 //static void LL_Init(void);
@@ -47,8 +48,7 @@ int main(void)
     
     y = ONE;
     y = TWO;
-    y = THREE;
-
+    y = THREE;    
     
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();
@@ -67,7 +67,7 @@ int main(void)
         //I2CPoll_Test();
         //INA219_Test();
           I2CIntr_Test();
-          BMP280_Test();
+         // BMP280_Test();
     }
     
 }

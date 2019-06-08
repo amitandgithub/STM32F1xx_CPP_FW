@@ -18,23 +18,26 @@
 #include"InterruptManager.h"
 #include"Callback.h"
 #include"Queue.h"
+#include"DMA.h"
+
 namespace HAL
-{
-    
+{    
+
 #define I2C_INTR_DEBUG 
     
 #ifdef I2C_INTR_DEBUG    
     
 #define I2C_LOG_STATES_SIZE 1500
-#define I2C_LOG_STATES(log) (I2CStates[I2CStates_Idx++  % I2C_LOG_STATES_SIZE] = (log))
-    
+//#define I2C_LOG_STATES(log) (I2CStates[I2CStates_Idx++  % I2C_LOG_STATES_SIZE] = (log))
+    #define I2C_LOG_STATES(_log) log(_log)
 #else
     
 #define I2C_LOG_STATES(log)
     
 #endif
     
-//#define I2C_RX_METHOD_1
+    //#define I2C_RX_METHOD_1
+#define _DMA DMA::GetInstance(1)
     
     class I2CIntr : public InterruptSource
     {
@@ -44,6 +47,11 @@ namespace HAL
         static const uint16_t I2C_DIR_WRITE         = 0xfffeU;
         static const uint16_t I2C_DIR_READ          = 0x0001U;
         static const uint16_t I2C_OWN_SLAVE_ADDRESS = 0x08U<<1U;
+        
+        static const uint32_t I2C1_RX_DMA_CHANNEL = 7;
+        static const uint32_t I2C1_TX_DMA_CHANNEL = 6;
+        static const uint32_t I2C2_RX_DMA_CHANNEL = 5;
+        static const uint32_t I2C2_TX_DMA_CHANNEL = 4;
         
         using Pin_t = HAL::Gpio::Pin_t;
         typedef uint32_t Hz_t ;
@@ -113,7 +121,7 @@ namespace HAL
             I2C_LOG_RXNE_MASTER_SIZE_1,
             I2C_LOG_RXNE_MASTER_SIZE_2,
             I2C_LOG_RXNE_MASTER_SIZE_2_OR_3,
-           // I2C_LOG_BTF_MASTER_RXNE_LAST,
+            // I2C_LOG_BTF_MASTER_RXNE_LAST,
             I2C_LOG_RXNE_MASTER_LAST,
             I2C_LOG_BTF_MASTER_BERR,
             I2C_LOG_BTF_MASTER_ACK_FAIL,
@@ -143,7 +151,10 @@ namespace HAL
             I2C_LOG_TXN_DEQUEUED,
             I2C_LOG_TXN_QUEUE_EMPTY,
             I2C_LOG_TXN_QUEUE_ERROR,
-            I2C_LOG_TXN_DONE
+            I2C_LOG_TXN_DONE,
+            I2C_LOG_DMA_TX_DONE,
+            I2C_LOG_DMA_HALF_TX_DONE,
+            I2C_LOG_DMA_TX_ERROR,
         }I2CLogs_t;
         
         typedef enum
@@ -159,7 +170,7 @@ namespace HAL
             MASTER_RX_REPEATED_START,
             MASTER_TX_ACK_FAIL,
         }I2CState_t;      
-
+        
 		typedef struct
         {
             uint16_t            SlaveAddress;
@@ -173,7 +184,7 @@ namespace HAL
         }Transaction_t;
 		
         using I2CTxnQueue_t = Utils::Queue<Transaction_t*,10U> ;
-
+        
         typedef enum 
         {
             I2C_EVENT_INTERRUPT_ENABLE,
@@ -240,6 +251,8 @@ namespace HAL
         
         I2CStatus_t SlaveRx(uint8_t* pdata, uint32_t len, I2CCallback_t XferDoneCallback = nullptr );
         
+        I2CStatus_t MasterTx_DMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
+        
         inline bool Busy(uint32_t timeout);
         
         inline bool StartConditionGenerated(uint32_t timeout);
@@ -278,6 +291,8 @@ namespace HAL
         
         void Enable_EVT_BUF_ERR_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITBUFEN | I2C_CR2_ITERREN);}
         
+        void Enable_EVT_ERR_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITERREN);}
+        
         void Disable_EVT_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN);}
         
         void Disable_BUF_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITBUFEN);}
@@ -286,6 +301,8 @@ namespace HAL
         
         void Disable_EVT_BUF_ERR_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITBUFEN | I2C_CR2_ITERREN);}
         
+         void Disable_EVT_ERR_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITERREN);}
+        
         inline I2CStatus_t StartListening();
         
         inline bool StopFlagCleared(uint32_t timeout);
@@ -293,7 +310,7 @@ namespace HAL
         void Master_SB_Handler(); 
         
         void Master_ADDR_Handler(); 
-            
+        
         void Master_TxE_Handler();
         
         void Master_Tx_BTF_Handler();
@@ -324,6 +341,43 @@ namespace HAL
         
         void Slave_TxE_Handler();
         
+            class I2C1_DMA_Rx_Callback : public Callback
+    {
+    public:
+        I2C1_DMA_Rx_Callback(I2CIntr* This):_This(This){};
+        virtual void CallbackFunction();
+    private:
+        I2CIntr* _This;
+    };
+    
+    class I2C1_DMA_Tx_Callback : public Callback
+    {
+    public:
+        I2C1_DMA_Tx_Callback(I2CIntr* This):_This(This){};
+        virtual void CallbackFunction();
+    private:
+        I2CIntr* _This;
+    };
+    
+    class I2C2_DMA_Rx_Callback : public Callback
+    {
+    public:
+        I2C2_DMA_Rx_Callback(I2CIntr* This):_This(This){};
+        virtual void CallbackFunction();
+    private:
+        I2CIntr* _This;
+    };
+    
+    class I2C2_DMA_Tx_Callback : public Callback
+    {
+    public:
+        I2C2_DMA_Tx_Callback(I2CIntr* This):_This(This){};
+        virtual void CallbackFunction();
+    private:
+        I2CIntr* _This;
+    };
+    
+        
     private:
         GpioOutput              _sclPin;
         GpioOutput              _sdaPin;
@@ -341,6 +395,14 @@ namespace HAL
         /* It must be volatile becoz it is shared between ISR and main loop */
         volatile I2CStatus_t    _I2CStatus;
         
+        I2C1_DMA_Rx_Callback _I2C1_DMA_Rx_Callback;
+        I2C1_DMA_Tx_Callback _I2C1_DMA_Tx_Callback;
+        I2C2_DMA_Rx_Callback _I2C2_DMA_Rx_Callback;
+        I2C2_DMA_Tx_Callback _I2C2_DMA_Tx_Callback;
+        
+    public:  
+        inline void log(I2CLogs_t I2CLog) { I2CStates[I2CStates_Idx++  % I2C_LOG_STATES_SIZE] = I2CLog ;}
+        
 #ifdef I2C_INTR_DEBUG
         I2CLogs_t       I2CStates[I2C_LOG_STATES_SIZE];
         uint32_t        I2CStates_Idx;
@@ -349,8 +411,9 @@ namespace HAL
     public:
         I2CSlaveRxQueue_t   _I2CSlaveRxQueue;
         I2CSlaveTxQueue_t   _I2CSlaveTxQueue;
-        
 
+        
+        
         
     };
     
@@ -475,7 +538,7 @@ namespace HAL
         /* Enable Address Acknowledge */
         _I2Cx->CR1 |= I2C_CR1_ACK;
         
-       // _I2CState = SLAVE_RX_LISTENING;
+        // _I2CState = SLAVE_RX_LISTENING;
         _I2CState = READY;
         
         Enable_EVT_BUF_ERR_Interrupt();
@@ -485,7 +548,7 @@ namespace HAL
     
     I2CIntr::I2CState_t I2CIntr::GetState()
     {
-             return _I2CState;
+        return _I2CState;
     }
     
 #if defined (I2C_DEBUG)
@@ -493,6 +556,10 @@ namespace HAL
 #else 
 #define I2C_DEBUG_LOG(log)
 #endif
+    
+    
+
+    
     
 }
 #endif //I2CIntr_h

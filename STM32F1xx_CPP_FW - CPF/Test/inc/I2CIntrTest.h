@@ -95,19 +95,21 @@ void I2CIntr_Test()
     uint8_t name[] = "Amit Chaudhary is a good Boy";
     name[sizeof(name)/sizeof(uint8_t)-1] = '\n';
     INA219_Dev.HwInit();
-    testID = 7;
+    
     B13.HwInit();
     Transaction.XferDoneCallback = &I2C_XferDone_Callback;
     
     I2CDevIntr.SetCallback(HAL::I2CIntr::I2C_RX_QUEUE_FULL_CALLBACK,&I2CRxQueueFullCallback);
     I2CDevIntr.SetCallback(HAL::I2CIntr::I2C_SLAVE_RX_COMPLETE_CALLBACK,&I2CRxDoneCallback);
-    I2CDevIntr.StartListening();
+    //I2CDevIntr.StartListening();
+    
+    testID = 15;
     
     while(1)
     {
         switch(testID)
         {
-        case 0:  // Receive 16 bytes
+        case 0:  // Send 16 bytes
             I2CDevIntr.MasterTx(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Status); 
             break;             
         case 1:  // Receive 6 bytes
@@ -188,7 +190,7 @@ void I2CIntr_Test()
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Current = curr;  
             Current = Current/10;
-            testID = 14;
+            testID = 15;
             break;
             
         case 8:    
@@ -497,6 +499,21 @@ void I2CIntr_Test()
             }
             //testID = 7;
             break;    
+            
+            case 15:    
+            /* INA219 Test without repeated start*/
+            
+            /* Calibration value*/
+            reg = 5;
+            value = 4096;
+            Intr_TxRx[0] = reg;
+            Intr_TxRx[1] = ((value >> 8) & 0xFF);
+            Intr_TxRx[2] = (value & 0xFF);
+            I2CDevIntr.MasterTx_DMA(0x80,Intr_TxRx,3,&Status);
+            //LL_mDelay(5);
+            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+           // testID = 99;
+            break;
             
         default: break;
         
