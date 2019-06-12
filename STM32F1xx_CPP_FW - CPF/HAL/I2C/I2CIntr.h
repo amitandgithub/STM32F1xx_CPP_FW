@@ -155,6 +155,18 @@ namespace HAL
             I2C_LOG_DMA_TX_DONE,
             I2C_LOG_DMA_HALF_TX_DONE,
             I2C_LOG_DMA_TX_ERROR,
+            I2C_LOG_BTF_MASTER_TX_DMA_STOP,
+            I2C_LOG_ADDR_INTR_MASTER_TX_DMA,
+            I2C_LOG_ADDR_INTR_MASTER_RX_DMA,
+            I2C_LOG_BTF_MASTER_RX_DMA_STOP,
+            I2C_LOG_START_MASTER_TX_DMA,
+            I2C_LOG_START_MASTER_RX_DMA,
+            I2C_LOG_DMA_HALF_RX_DONE,
+            I2C_LOG_DMA_RX_ERROR,
+            I2C_LOG_DMA_RX_DONE,
+            I2C_LOG_ADDR_INTR_MASTER_RX_DMA_SIZE_1,
+            I2C_LOG_ADDR_INTR_MASTER_RX_DMA_SIZE_2,
+            I2C_LOG_DMA_TX_BTF_TIMEOUT,
         }I2CLogs_t;
         
         typedef enum
@@ -169,6 +181,8 @@ namespace HAL
             SLAVE_RX_LISTENING,
             MASTER_RX_REPEATED_START,
             MASTER_TX_ACK_FAIL,
+            MASTER_TX_DMA,
+            MASTER_RX_DMA,
         }I2CState_t;      
         
 		typedef struct
@@ -252,6 +266,8 @@ namespace HAL
         I2CStatus_t SlaveRx(uint8_t* pdata, uint32_t len, I2CCallback_t XferDoneCallback = nullptr );
         
         I2CStatus_t MasterTx_DMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
+        
+        I2CStatus_t MasterRx_DMA(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
         
         inline bool Busy(uint32_t timeout);
         
