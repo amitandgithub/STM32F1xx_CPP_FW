@@ -534,7 +534,7 @@ namespace HAL
             _Transaction.TxBuf              = nullptr;
             _Transaction.TxLen              = 0;
             _Transaction.RxBuf              = RxBuf;
-            _Transaction.RxLen              = RxLen;  
+            _Transaction.RxLen              = 0;  
             _Transaction.RepeatedStart      = 0;  
             _Transaction.pStatus            = pStatus; 
             _Transaction.XferDoneCallback   = XferDoneCallback;
@@ -574,6 +574,9 @@ namespace HAL
             /* Enable DMA Request */
             _I2Cx->CR2 |= I2C_CR2_DMAEN;
             
+            /* Disable Last DMA */
+            _I2Cx->CR2 |= I2C_CR2_LAST;
+                
             Enable_EVT_ERR_Interrupt();
             
             I2C_LOG_STATES(I2C_LOG_START_MASTER_RX_DMA);
@@ -926,24 +929,9 @@ namespace HAL
         void I2CIntr::Master_Rx_BTF_Handler()
         {
             if( _I2CState == MASTER_RX_REPEATED_START)
-                return;
-            
-            if(_I2CState == MASTER_RX_DMA)
-            {
-                _I2Cx->CR1 |= I2C_CR1_STOP;              
-                
-                _Transaction.RxLen = 0;
-                
-                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_DMA_STOP);
-                
-                if (StopFlagCleared(I2C_TIMEOUT) == true)
-                {
-                    _I2CStatus = I2C_STOP_TIMEOUT;
-                    (*_Transaction.pStatus) = I2C_STOP_TIMEOUT;
-                }                
-				Stop();
-            }            
-            else if(_Transaction.RxLen == 3U)
+                return;            
+           
+            if(_Transaction.RxLen == 3U)
             {
                 /* Disable Acknowledge */
                 _I2Cx->CR1 &= ~I2C_CR1_ACK;
@@ -991,6 +979,11 @@ namespace HAL
                 _Transaction.RxLen--;
                 I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_SIZE_GT_3);
             }  
+            
+            if(_I2CState == MASTER_RX_DMA)
+            {                
+                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_DMA_STOP);
+            } 
         }        
         
         void I2CIntr::Master_TxE_Handler()
@@ -1311,20 +1304,31 @@ namespace HAL
                     _DMA->DisableHalfTransferCompleteInterrupt(_This->I2C1_RX_DMA_CHANNEL);
                     _DMA->DisableTransferCompleteInterrupt(_This->I2C1_RX_DMA_CHANNEL);
                     _DMA->DisableTransferErrorInterrupt(_This->I2C1_RX_DMA_CHANNEL);
-                }
-                /* Clear the transfer complete flag */
-                LL_DMA_ClearFlag_TC7(_DMA->_DMAx);
-                
+                }                
+                 
                 /* Disable Last DMA */
                 _This->_I2Cx->CR2 &= ~I2C_CR2_LAST;
                 
                 /* Disable DMA Request */            
                 _This->_I2Cx->CR2 &= ~I2C_CR2_DMAEN;
                 
+                /* Clear the transfer complete flag */
+                LL_DMA_ClearFlag_TC7(_DMA->_DMAx);
+                
+                _This->_I2Cx->CR1 |= I2C_CR1_STOP;
+                 
+                if (_This->StopFlagCleared(I2C_TIMEOUT) == true)
+                {
+                    _This->_I2CStatus = I2C_STOP_TIMEOUT;
+                    *(_This->_Transaction.pStatus) = I2CIntr::I2C_STOP_TIMEOUT;
+                }                
+				
+                _This->Stop();
+                
                 _This->log(I2CIntr::I2C_LOG_DMA_RX_DONE);
             }
             
-            /* Transfer Error Interrupt management **************************************/
+            /* Transfer Complete Interrupt management **************************************/
             else if ( LL_DMA_IsActiveFlag_TE7(_DMA->_DMAx))
             {
                 /* When a DMA transfer error occurs */
@@ -1335,6 +1339,7 @@ namespace HAL
                 _DMA->DisableTransferCompleteInterrupt(_This->I2C1_RX_DMA_CHANNEL);
                 _DMA->DisableTransferErrorInterrupt(_This->I2C1_RX_DMA_CHANNEL);
                 
+                 
                 /* Clear all flags */
                 //_DMA->_DMAx->IFCR = (DMA_ISR_GIF1 << hdma->ChannelIndex);
                 

@@ -88,7 +88,7 @@ void I2CIntr_Test()
     static uint32_t Q_Sucess,Q_Fail;
     int16_t curr;
     uint16_t config;
-    uint8_t testID = 0;  
+    uint8_t testID ;  
     uint8_t reg;
     uint16_t value;
     uint16_t slaveaddress = 0x08<<1;
@@ -103,7 +103,7 @@ void I2CIntr_Test()
     I2CDevIntr.SetCallback(HAL::I2CIntr::I2C_SLAVE_RX_COMPLETE_CALLBACK,&I2CRxDoneCallback);
     //I2CDevIntr.StartListening();
     
-    testID = 0;
+    testID = 15;
     
     while(1)
     {
@@ -116,8 +116,8 @@ void I2CIntr_Test()
             break;             
         case 1:  // Receive 6 bytes
             I2CDevIntr.MasterRx(slaveaddress,Intr_TxRx,6,&Status); 
-            testID = 6;
             while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            testID = 6;            
             break;                
         case 2:  // Receive 3 bytes
             I2CDevIntr.MasterRx(slaveaddress,Intr_TxRx,3,&Status); 
@@ -502,7 +502,7 @@ void I2CIntr_Test()
             //testID = 7;
             break;    
             
-            case 15: // DMA   
+            case 15: // INA219 with DMA   
             /* INA219 Test without repeated start*/
                 
             reg = 2;
@@ -548,7 +548,21 @@ void I2CIntr_Test()
             while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
             LL_mDelay(1000);
             break;  
+        case 17:  // Read 6 bytes using DMA
+            I2CDevIntr.MasterRx_DMA(slaveaddress,Intr_TxRx,6,&Status);
+            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            break; 
             
+        case 18:  // Send 16 bytes using DMA and Read 6 bytes using DMA
+            I2CDevIntr.MasterTx_DMA(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Status); 
+            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterRx_DMA(slaveaddress,Intr_TxRx,6,&Status);
+            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            break;    
+        case 19:  // Send 16 bytes using DMA and Read 6 bytes using DMA
+            //I2CDevIntr.MasterTxRx_DMA(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Status); 
+            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            break;
             
         default: break;
         
