@@ -121,7 +121,7 @@ namespace HAL
         
     }
     
-    DMA::DMAStatus_t DMA:: Xfer(uint32_t Channel, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength)
+    DMA::DMAStatus_t DMA:: Xfer(uint32_t Channel, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength, uint32_t DataDirection )
     {
         LL_DMA_DisableChannel(_DMAx, Channel);
         

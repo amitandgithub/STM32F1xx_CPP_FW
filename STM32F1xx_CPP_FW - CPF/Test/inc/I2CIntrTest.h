@@ -103,7 +103,7 @@ void I2CIntr_Test()
     I2CDevIntr.SetCallback(HAL::I2CIntr::I2C_SLAVE_RX_COMPLETE_CALLBACK,&I2CRxDoneCallback);
     //I2CDevIntr.StartListening();
     
-    testID = 15;
+    testID = 18;
     
     while(1)
     {

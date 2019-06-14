@@ -167,6 +167,9 @@ namespace HAL
             I2C_LOG_ADDR_INTR_MASTER_RX_DMA_SIZE_1,
             I2C_LOG_ADDR_INTR_MASTER_RX_DMA_SIZE_2,
             I2C_LOG_DMA_TX_BTF_TIMEOUT,
+            I2C_LOG_DMA_REPEATED_START,
+            I2C_LOG_DMA_STOP_GENERATED,
+            I2C_LOG_DMA_TXN_DONE,
         }I2CLogs_t;
         
         typedef enum
@@ -240,6 +243,8 @@ namespace HAL
         
         void Stop();
         
+        void TxnDoneHandler();
+        
         inline void SendAddress(uint8_t SlaveAddress);
         
         inline void WriteDataRegister(uint8_t data);
@@ -267,7 +272,10 @@ namespace HAL
         
         I2CStatus_t MasterTx_DMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
         
-        I2CStatus_t MasterRx_DMA(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
+        I2CStatus_t MasterRx_DMA(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);        
+        
+        I2CStatus_t MasterTxRx_DMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf, uint32_t RxLen,
+                               uint8_t RepeatedStart,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
         
         inline bool Busy(uint32_t timeout);
         
@@ -356,6 +364,10 @@ namespace HAL
         void Slave_AF_Handler();
         
         void Slave_TxE_Handler();
+
+		void I2C1_DMA_Tx_Done_Handler();
+
+		void I2C1_DMA_Rx_Done_Handler();
         
             class I2C1_DMA_Rx_Callback : public Callback
     {
