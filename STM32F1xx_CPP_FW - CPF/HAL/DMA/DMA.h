@@ -39,7 +39,7 @@ namespace HAL
         
         DMAStatus_t XferConfig(DMAConfig_t* DMAConfig, uint32_t Channel);
         
-        DMAStatus_t Xfer(uint32_t Channel, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength, uint32_t DataDirection );
+        DMAStatus_t Load(uint32_t Channel, uint32_t PeripheralAddress, uint32_t MemoryAddress, uint32_t DataLength, uint32_t DataDirection );
         
         void EnableHalfTransferCompleteInterrupt(uint32_t Channel){LL_DMA_EnableIT_HT(_DMAx, Channel);}
         

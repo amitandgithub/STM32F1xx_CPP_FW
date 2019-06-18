@@ -25,18 +25,17 @@ namespace HAL
 
 #define I2C_INTR_DEBUG 
     
-#ifdef I2C_INTR_DEBUG    
-    
+#ifdef I2C_INTR_DEBUG        
 #define I2C_LOG_STATES_SIZE 1500
 //#define I2C_LOG_STATES(log) (I2CStates[I2CStates_Idx++  % I2C_LOG_STATES_SIZE] = (log))
-    #define I2C_LOG_STATES(_log) log(_log)
+  #define I2C_LOG_STATES(_log) log(_log)
 #else
     
 #define I2C_LOG_STATES(log)
     
 #endif
     
-    //#define I2C_RX_METHOD_1
+//#define I2C_RX_METHOD_1
 #define _DMA DMA::GetInstance(1)
     
     class I2CIntr : public InterruptSource
@@ -109,7 +108,7 @@ namespace HAL
             I2C_LOG_ADDR_INTR_MASTER_TX_STOP,
             I2C_LOG_TXE,
             I2C_LOG_TXE_DONE,  
-            I2C_LOG_TXE_MASTER_TX_REPEATED_START,
+            I2C_LOG_REPEATED_START,
             I2C_LOG_BTF_MASTER_TX_GT_0,
             I2C_LOG_BTF_MASTER_TX_REPEATED_START,
             I2C_LOG_BTF_MASTER_TX_STOP,
@@ -152,15 +151,17 @@ namespace HAL
             I2C_LOG_TXN_QUEUE_EMPTY,
             I2C_LOG_TXN_QUEUE_ERROR,
             I2C_LOG_TXN_DONE,
+            I2C_LOG_TXN_DONE_ALL,
             I2C_LOG_DMA_TX_DONE,
             I2C_LOG_DMA_HALF_TX_DONE,
             I2C_LOG_DMA_TX_ERROR,
-            I2C_LOG_BTF_MASTER_TX_DMA_STOP,
             I2C_LOG_ADDR_INTR_MASTER_TX_DMA,
             I2C_LOG_ADDR_INTR_MASTER_RX_DMA,
             I2C_LOG_BTF_MASTER_RX_DMA_STOP,
+            I2C_LOG_BTF_MASTER_TX_DMA_STOP,
             I2C_LOG_START_MASTER_TX_DMA,
             I2C_LOG_START_MASTER_RX_DMA,
+            I2C_LOG_REPEATED_START_MASTER_RX_DMA,
             I2C_LOG_DMA_HALF_RX_DONE,
             I2C_LOG_DMA_RX_ERROR,
             I2C_LOG_DMA_RX_DONE,
@@ -241,9 +242,17 @@ namespace HAL
         
         inline void Start();
         
-        void Stop();
+       // void Stop();
         
-        void TxnDoneHandler();
+        void Interrupt_Tx_Done_Handler(uint32_t StopFlag);
+        
+        void Interrupt_Rx_Done_Handler();
+        
+        void DMA_Tx_Done_Handler();
+        
+        void DMA_Rx_Done_Handler();
+                
+        void TxnDoneHandler(uint32_t StopFlag);
         
         inline void SendAddress(uint8_t SlaveAddress);
         
