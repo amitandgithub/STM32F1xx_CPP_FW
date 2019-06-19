@@ -11,6 +11,7 @@ static HAL::I2CIntr::Transaction_t Transaction,Transaction1,Transaction2;
 static uint8_t VoltageReg = 2,CurrentReg = 4;
 static uint16_t VoltageValue,CurrentValue;
 static I2CIntr::I2CStatus_t Status,CurrentTxnStatus,VoltageTxnStatus;
+
 class I2CCallback : public Callback
 {
     void CallbackFunction()
@@ -103,7 +104,7 @@ void I2CIntr_Test()
     I2CDevIntr.SetCallback(HAL::I2CIntr::I2C_SLAVE_RX_COMPLETE_CALLBACK,&I2CRxDoneCallback);
     //I2CDevIntr.StartListening();
     
-    testID = 19;
+    testID = 21;
     
     while(1)
     {
@@ -548,7 +549,7 @@ void I2CIntr_Test()
             while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
             //LL_mDelay(1000);
             break;  
-        case 17:  // Read 6 bytes using DMA
+        case 17:  // Read 6 bytes using DMA, Rx of 1 byte doesn't work
             I2CDevIntr.MasterRx_DMA(slaveaddress,Intr_TxRx,6,&Status);
             while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
             break; 
@@ -556,16 +557,74 @@ void I2CIntr_Test()
         case 18:  // Send 16 bytes using DMA and Read 6 bytes using DMA
             I2CDevIntr.MasterTx_DMA(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Status); 
             while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            LL_mDelay(10);
             I2CDevIntr.MasterRx_DMA(slaveaddress,&Intr_TxRx[8],6,&Status);
             while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
-            //testID = 7;
+            testID = 19;
             break;    
         case 19:  // Send 16 bytes using DMA and Read 6 bytes using DMA TxRx with repeated start
-            I2CDevIntr.MasterTxRx_DMA(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Intr_TxRx[8],6,1,&Status); 
+            I2CDevIntr.MasterTxRx_DMA(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Intr_TxRx[7],6,1,&Status); 
             while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
-            //LL_mDelay(5);
+            LL_mDelay(150);
+            testID = 15;  
             break;
-            //testID = 7;  
+        case 20:  
+            // Txn using DMA
+            Transaction.SlaveAddress = slaveaddress;
+            Transaction.TxBuf = name;
+            Transaction.TxLen = sizeof(name)/sizeof(uint8_t);
+            Transaction.RxBuf = &Intr_TxRx[7];
+            Transaction.RxLen = 6;
+            Transaction.RepeatedStart = 1;
+            Transaction.XferDoneCallback = &I2C_XferDone_Callback;
+            Transaction.pStatus = &Status;
+            I2CDevIntr.MasterTxRx_DMA(&Transaction);
+            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            LL_mDelay(150);
+            break;
+            
+            case 21:  
+            // Txn using Post
+            Transaction.SlaveAddress = slaveaddress;
+            Transaction.TxBuf = name;
+            Transaction.TxLen = sizeof(name)/sizeof(uint8_t);
+            Transaction.RxBuf = &Intr_TxRx[7];
+            Transaction.RxLen = 6;
+            Transaction.RepeatedStart = 1;
+            Transaction.XferDoneCallback = &I2C_XferDone_Callback;
+            Transaction.pStatus = &Status;
+            
+            I2CDevIntr.Post(&Transaction,1);
+                
+            Transaction1.SlaveAddress = slaveaddress;
+            Transaction1.TxBuf = name;
+            Transaction1.TxLen = sizeof(name)/sizeof(uint8_t);
+            Transaction1.RxBuf = &Intr_TxRx[7];
+            Transaction1.RxLen = 6;
+            Transaction1.RepeatedStart = 1;
+            Transaction1.XferDoneCallback = &I2C_XferDone_Callback;
+            Transaction1.pStatus = &Status;
+            
+            I2CDevIntr.Post(&Transaction1,1);
+                
+            Transaction2.SlaveAddress = slaveaddress;
+            Transaction2.TxBuf = name;
+            Transaction2.TxLen = sizeof(name)/sizeof(uint8_t);
+            Transaction2.RxBuf = &Intr_TxRx[7];
+            Transaction2.RxLen = 6;
+            Transaction2.RepeatedStart = 1;
+            Transaction2.XferDoneCallback = &I2C_XferDone_Callback;
+            Transaction2.pStatus = &Status;
+            
+            I2CDevIntr.Post(&Transaction,1);
+            I2CDevIntr.Post(&Transaction1,1);
+            I2CDevIntr.Post(&Transaction2,1);
+            
+            I2CDevIntr.Post(&Transaction,1);
+            I2CDevIntr.Post(&Transaction1,1);
+            I2CDevIntr.Post(&Transaction2,1);
+                
+            LL_mDelay(2000);
             break;
             
         default: break;

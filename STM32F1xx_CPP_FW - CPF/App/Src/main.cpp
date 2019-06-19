@@ -45,6 +45,7 @@ int main(void)
     auto n = Ele.bits.ModuleID; // 7 CPU Cycles
     auto c = Ele; // 3 CPU Cycles
     auto mid = moduleID;
+    auto str = "Amit";
     
     y = ONE;
     y = TWO;

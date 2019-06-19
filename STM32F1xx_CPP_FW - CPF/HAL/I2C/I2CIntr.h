@@ -214,9 +214,7 @@ namespace HAL
             I2C_INTERRUPT_ENABLE_ALL,
             I2C_INTERRUPT_DISABLE_ALL,
             
-        }I2CInterrupt_t;
-        
-        
+        }I2CInterrupt_t;      
         
         I2CIntr(Pin_t scl, Pin_t sda, Hz_t Hz = 100000U);
         
@@ -241,8 +239,6 @@ namespace HAL
         void ScanBus(uint8_t* pFoundDevices, uint8_t size);
         
         inline void Start();
-        
-       // void Stop();
         
         void Interrupt_Tx_Done_Handler(uint32_t StopFlag);
         
@@ -273,7 +269,7 @@ namespace HAL
         
         I2CStatus_t MasterTxRx(Transaction_t* pTransaction);
         
-        I2CStatus_t Post(Transaction_t* pTransaction);
+        I2CStatus_t Post(Transaction_t* pTransaction, uint32_t Mode = 0);
         
         I2CStatus_t SlaveTx(uint8_t* pdata, uint32_t len, I2CCallback_t XferDoneCallback = nullptr );
         
@@ -285,6 +281,8 @@ namespace HAL
         
         I2CStatus_t MasterTxRx_DMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf, uint32_t RxLen,
                                uint8_t RepeatedStart,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
+        
+         I2CStatus_t MasterTxRx_DMA(Transaction_t* pTransaction);
         
         inline bool Busy(uint32_t timeout);
         
