@@ -1,7 +1,6 @@
 
 
-#include"I2CPoll.h"
-#include"I2CIntr.h"
+#include"I2c.h"
 #include"INA219.h"
 
 using namespace BSP;
@@ -14,8 +13,7 @@ static INA219::Power_t Power;
 void INA219_Test()
 {
 #if 1
-    static I2CPoll I2CDevPoll(HAL::Gpio::B6, HAL::Gpio::B7, 100000U);
-    static I2CIntr I2CDevIntr(HAL::Gpio::B6, HAL::Gpio::B7, 100000U);
+    static I2c I2CDevIntr(HAL::Gpio::B6, HAL::Gpio::B7, 100000U);
     static INA219 INA219_Dev(&I2CDevIntr,0x80U);
 
     INA219_Dev.HwInit();

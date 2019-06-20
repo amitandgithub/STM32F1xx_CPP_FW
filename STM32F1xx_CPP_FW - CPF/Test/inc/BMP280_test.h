@@ -1,7 +1,6 @@
 
 
-#include"I2CPoll.h"
-#include"I2CIntr.h"
+#include"I2c.h"
 #include"BMP280.h"
 
 using namespace BSP;
@@ -12,13 +11,9 @@ using namespace HAL;
 #if 1
 void BMP280_Test()
 {
-#if 0
-    static I2CPoll BME280_I2CDevPoll(HAL::Gpio::B6, HAL::Gpio::B7, 100000U);
-    static BMP280 BMP280_Dev(&BME280_I2CDevPoll,0XEC);
-#else    
-    static I2CIntr BME280_I2CDevIntr(HAL::Gpio::B6, HAL::Gpio::B7, 100000U);
+   
+    static I2c BME280_I2CDevIntr(HAL::Gpio::B6, HAL::Gpio::B7, 100000U);
     static BMP280 BMP280_Dev(&BME280_I2CDevIntr,0XEC);
-#endif
     volatile static float t,p,a;
     BMP280_Dev.HwInit();
     

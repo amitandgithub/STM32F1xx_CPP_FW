@@ -2181,10 +2181,7 @@
         <group>
             <name>I2C</name>
             <file>
-                <name>$PROJ_DIR$\..\HAL\I2C\I2CIntr.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\HAL\I2C\I2CPoll.cpp</name>
+                <name>$PROJ_DIR$\..\HAL\I2C\I2c.cpp</name>
             </file>
         </group>
     </group>
@@ -2279,9 +2276,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\Test\inc\I2CIntrTest.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Test\inc\I2CPollTest.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Test\inc\INA219_test.h</name>

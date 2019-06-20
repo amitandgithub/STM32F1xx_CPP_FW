@@ -1,16 +1,16 @@
 
 
 #include"INA219.h"
-#include"I2CIntr.h"
+#include"I2c.h"
 #define Q_RESPIRE_DELAY 200 
 
-static I2CIntr I2CDevIntr(Gpio::B6, Gpio::B7,100000U);
+static I2c I2CDevIntr(Gpio::B6, Gpio::B7,100000U);
 static uint8_t Intr_TxRx[20];
 static GpioOutput B13(Gpio::B13);
-static HAL::I2CIntr::Transaction_t Transaction,Transaction1,Transaction2;
+static HAL::I2c::Transaction_t Transaction,Transaction1,Transaction2;
 static uint8_t VoltageReg = 2,CurrentReg = 4;
 static uint16_t VoltageValue,CurrentValue;
-static I2CIntr::I2CStatus_t Status,CurrentTxnStatus,VoltageTxnStatus;
+static I2c::I2CStatus_t Status,CurrentTxnStatus,VoltageTxnStatus;
 
 class I2CCallback : public Callback
 {
@@ -70,13 +70,13 @@ class I2CRxDoneCallback_t : public Callback
     {
         while(I2CDevIntr.SlaveRxDataAvailable() > 1)
         {
-            I2CDevIntr._I2CSlaveTxQueue.Write(I2CDevIntr.ReadRxData());
+            I2CDevIntr.m_I2CSlaveTxQueue.Write(I2CDevIntr.ReadRxData());
         }
-        I2CDevIntr._I2CSlaveTxQueue.Write(I2CDevIntr.ReadRxData()+1);        
+        I2CDevIntr.m_I2CSlaveTxQueue.Write(I2CDevIntr.ReadRxData()+1);        
     }
 };
 
-void I2CIntr_Test()
+void I2c_Test()
 {        
     static INA219 INA219_Dev(&I2CDevIntr,0x80U);
     static float Voltage,Current;
@@ -100,34 +100,34 @@ void I2CIntr_Test()
     B13.HwInit();
     Transaction.XferDoneCallback = &I2C_XferDone_Callback;
     
-    I2CDevIntr.SetCallback(HAL::I2CIntr::I2C_RX_QUEUE_FULL_CALLBACK,&I2CRxQueueFullCallback);
-    I2CDevIntr.SetCallback(HAL::I2CIntr::I2C_SLAVE_RX_COMPLETE_CALLBACK,&I2CRxDoneCallback);
+    I2CDevIntr.SetCallback(HAL::I2c::I2C_RX_QUEUE_FULL_CALLBACK,&I2CRxQueueFullCallback);
+    I2CDevIntr.SetCallback(HAL::I2c::I2C_SLAVE_RX_COMPLETE_CALLBACK,&I2CRxDoneCallback);
     //I2CDevIntr.StartListening();
     
-    testID = 21;
+    testID = 15;
     
     while(1)
     {
         switch(testID)
         {
         case 0:  // Send 16 bytes
-            I2CDevIntr.MasterTx(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Status); 
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTx_Intr(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Status); 
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             testID = 16;
             break;             
         case 1:  // Receive 6 bytes
-            I2CDevIntr.MasterRx(slaveaddress,Intr_TxRx,6,&Status); 
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterRx_Intr(slaveaddress,Intr_TxRx,6,&Status); 
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             testID = 6;            
             break;                
         case 2:  // Receive 3 bytes
-            I2CDevIntr.MasterRx(slaveaddress,Intr_TxRx,3,&Status); 
+            I2CDevIntr.MasterRx_Intr(slaveaddress,Intr_TxRx,3,&Status); 
             break;            
         case 3:  // Receive 2 bytes
-            I2CDevIntr.MasterRx(slaveaddress,Intr_TxRx,2,&Status); 
+            I2CDevIntr.MasterRx_Intr(slaveaddress,Intr_TxRx,2,&Status); 
             break;
         case 4:  // Receive 1 bytes
-            I2CDevIntr.MasterRx(slaveaddress,Intr_TxRx,1,&Status); 
+            I2CDevIntr.MasterRx_Intr(slaveaddress,Intr_TxRx,1,&Status); 
             break;
         case 5:  // Ina219
             reg = 5;
@@ -135,7 +135,7 @@ void I2CIntr_Test()
             Intr_TxRx[0] = reg;
             Intr_TxRx[1] = ((value >> 8) & 0xFF);
             Intr_TxRx[2] = (value & 0xFF);
-            I2CDevIntr.MasterTx(0x80,Intr_TxRx,3,&Status); 
+            I2CDevIntr.MasterTx_Intr(0x80,Intr_TxRx,3,&Status); 
             break;
         case 6:              
             // Set Calibration register to 'Cal' calculated above
@@ -145,8 +145,8 @@ void I2CIntr_Test()
             Intr_TxRx[0] = reg;
             Intr_TxRx[1] = ((value >> 8) & 0xFF);
             Intr_TxRx[2] = (value & 0xFF);
-            I2CDevIntr.MasterTx(0x80,Intr_TxRx,3,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTx_Intr(0x80,Intr_TxRx,3,&Status);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
             // Set Config register to take into account the settings above
             // Write three bytes
@@ -160,8 +160,8 @@ void I2CIntr_Test()
             Intr_TxRx[0] = reg;
             Intr_TxRx[1] = ((value >> 8) & 0xFF);
             Intr_TxRx[2] = (value & 0xFF);
-            I2CDevIntr.MasterTx(0x80,Intr_TxRx,3,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTx_Intr(0x80,Intr_TxRx,3,&Status);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             testID = 13;
             break;
             
@@ -170,8 +170,8 @@ void I2CIntr_Test()
             // Get Voltage
             reg = 2;
             Intr_TxRx[0] = reg;
-            I2CDevIntr.MasterTxRx(0x80,&Intr_TxRx[0],1,&Intr_TxRx[5],2,true,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTxRx_Intr(0x80,&Intr_TxRx[0],1,&Intr_TxRx[5],2,true,&Status);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Voltage = (int16_t)((curr >> 3) * 4);
             Voltage = Voltage * 0.001;
@@ -182,14 +182,14 @@ void I2CIntr_Test()
             Intr_TxRx[0] = reg;
             Intr_TxRx[1] = ((value >> 8) & 0xFF);
             Intr_TxRx[2] = (value & 0xFF);
-            I2CDevIntr.MasterTx(0x80,Intr_TxRx,3,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTx_Intr(0x80,Intr_TxRx,3,&Status);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
             /* Get Current */ 
             reg = 4;
             Intr_TxRx[0] = reg;
-            I2CDevIntr.MasterTxRx(0x80,&Intr_TxRx[0],1,&Intr_TxRx[5],2,1,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTxRx_Intr(0x80,&Intr_TxRx[0],1,&Intr_TxRx[5],2,1,&Status);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Current = curr;  
             Current = Current/10;
@@ -201,8 +201,8 @@ void I2CIntr_Test()
             /* Get Voltage */ 
             reg = 2;
             Intr_TxRx[0] = reg;
-            I2CDevIntr.MasterTxRx(0x80,&Intr_TxRx[0],1,&Intr_TxRx[5],2,0,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTxRx_Intr(0x80,&Intr_TxRx[0],1,&Intr_TxRx[5],2,0,&Status);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Voltage = (int16_t)((curr >> 3) * 4);
             Voltage = Voltage * 0.001;
@@ -213,14 +213,14 @@ void I2CIntr_Test()
             Intr_TxRx[0] = reg;
             Intr_TxRx[1] = ((value >> 8) & 0xFF);
             Intr_TxRx[2] = (value & 0xFF);
-            I2CDevIntr.MasterTx(0x80,Intr_TxRx,3,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTx_Intr(0x80,Intr_TxRx,3,&Status);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
             /* Get Current */ 
             reg = 4;
             Intr_TxRx[0] = reg;
-            I2CDevIntr.MasterTxRx(0x80,&Intr_TxRx[0],1,&Intr_TxRx[5],2,0,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTxRx_Intr(0x80,&Intr_TxRx[0],1,&Intr_TxRx[5],2,0,&Status);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Current = curr/10;  
             testID = 13;
@@ -232,8 +232,8 @@ void I2CIntr_Test()
             Intr_TxRx[1] = 'M';
             Intr_TxRx[2] = 'I';
             Intr_TxRx[3] = 'T';
-            I2CDevIntr.MasterTxRx(slaveaddress,&Intr_TxRx[0],4,&Intr_TxRx[5],6,1,&Status); 
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTxRx_Intr(slaveaddress,&Intr_TxRx[0],4,&Intr_TxRx[5],6,1,&Status); 
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             testID = 8;
             break; 
         case 10:  
@@ -244,8 +244,8 @@ void I2CIntr_Test()
             Intr_TxRx[1] = 'M';
             Intr_TxRx[2] = 'I';
             Intr_TxRx[3] = 'T';
-            I2CDevIntr.MasterTxRx(slaveaddress,&Intr_TxRx[0],4,&Intr_TxRx[5],2,0,&Status); 
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTxRx_Intr(slaveaddress,&Intr_TxRx[0],4,&Intr_TxRx[5],2,0,&Status); 
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             break;  
             
         case 11:    
@@ -263,8 +263,8 @@ void I2CIntr_Test()
             Transaction.RepeatedStart = RepeatedStart;
             Transaction.pStatus = &Status;
                 
-            I2CDevIntr.MasterTxRx(&Transaction);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTxRx_Intr(&Transaction);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Voltage = (int16_t)((curr >> 3) * 4);
             Voltage = Voltage * 0.001;
@@ -284,8 +284,8 @@ void I2CIntr_Test()
             Transaction.RepeatedStart = RepeatedStart;
             Transaction.pStatus = &Status;
                 
-            I2CDevIntr.MasterTx(&Transaction);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTx_Intr(&Transaction);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
             /* Get Current */ 
             reg = 4;
@@ -298,8 +298,8 @@ void I2CIntr_Test()
             Transaction.RepeatedStart = RepeatedStart; 
             Transaction.pStatus = &Status;
                 
-            I2CDevIntr.MasterTxRx(&Transaction);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTxRx_Intr(&Transaction);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Current = curr/10; 
              testID = 15;
@@ -322,8 +322,8 @@ void I2CIntr_Test()
             Transaction.RepeatedStart = 0;
             Transaction.pStatus = &Status;
             
-            I2CDevIntr.MasterTx(&Transaction);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTx_Intr(&Transaction);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
             Transaction.SlaveAddress = 0x10;
             Transaction.TxBuf = &Intr_TxRx[0];
@@ -333,8 +333,8 @@ void I2CIntr_Test()
             Transaction.RepeatedStart = 0;
             Transaction.pStatus = &Status;
             
-            I2CDevIntr.MasterRx(&Transaction);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterRx_Intr(&Transaction);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
             Transaction.SlaveAddress = 0x10;
             Transaction.TxBuf = &Intr_TxRx[0];
@@ -344,8 +344,8 @@ void I2CIntr_Test()
             Transaction.RepeatedStart = RepeatedStart;
             Transaction.pStatus = &Status;
             
-            I2CDevIntr.MasterTxRx(&Transaction);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            I2CDevIntr.MasterTxRx_Intr(&Transaction);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             break;            
         case 13:    
             /* INA219 Test without repeated start with "Transaction_t" and Queue Post*/
@@ -364,7 +364,7 @@ void I2CIntr_Test()
 
             Status = I2CDevIntr.Post(&Transaction);
             
-            if ((Status == I2CIntr::I2C_TXN_POSTED) || ( Status == I2CIntr::I2C_OK ) )
+            if ((Status == I2c::I2C_TXN_POSTED) || ( Status == I2c::I2C_OK ) )
             {
                 Q_Sucess++;
             }
@@ -390,7 +390,7 @@ void I2CIntr_Test()
             Transaction1.pStatus = &Status;
             
             Status = I2CDevIntr.Post(&Transaction1);
-            if ((Status == I2CIntr::I2C_TXN_POSTED) || ( Status == I2CIntr::I2C_OK ) )
+            if ((Status == I2c::I2C_TXN_POSTED) || ( Status == I2c::I2C_OK ) )
             {
                 Q_Sucess++;
             }
@@ -413,7 +413,7 @@ void I2CIntr_Test()
             Transaction2.pStatus = &CurrentTxnStatus;
             
             Status = I2CDevIntr.Post(&Transaction2);
-            if ((Status == I2CIntr::I2C_TXN_POSTED) || ( Status == I2CIntr::I2C_OK ) )
+            if ((Status == I2c::I2C_TXN_POSTED) || ( Status == I2c::I2C_OK ) )
             {
                 Q_Sucess++;
             }
@@ -443,7 +443,7 @@ void I2CIntr_Test()
 
             Status = I2CDevIntr.Post(&Transaction);
             
-            if ((Status == I2CIntr::I2C_TXN_POSTED) || ( Status == I2CIntr::I2C_OK ) )
+            if ((Status == I2c::I2C_TXN_POSTED) || ( Status == I2c::I2C_OK ) )
             {
                 Q_Sucess++;
             }
@@ -469,7 +469,7 @@ void I2CIntr_Test()
             Transaction1.pStatus = &Status;
             
             Status = I2CDevIntr.Post(&Transaction1);
-            if ((Status == I2CIntr::I2C_TXN_POSTED) || ( Status == I2CIntr::I2C_OK ) )
+            if ((Status == I2c::I2C_TXN_POSTED) || ( Status == I2c::I2C_OK ) )
             {
                 Q_Sucess++;
             }
@@ -492,7 +492,7 @@ void I2CIntr_Test()
             Transaction2.pStatus = &CurrentTxnStatus;
             
             Status = I2CDevIntr.Post(&Transaction2);
-            if ((Status == I2CIntr::I2C_TXN_POSTED) || ( Status == I2CIntr::I2C_OK ) )
+            if ((Status == I2c::I2C_TXN_POSTED) || ( Status == I2c::I2C_OK ) )
             {
                 Q_Sucess++;
             }
@@ -509,10 +509,10 @@ void I2CIntr_Test()
             reg = 2;
             Intr_TxRx[0] = reg;
             I2CDevIntr.MasterTx_DMA(0x80,&Intr_TxRx[0],1,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
             I2CDevIntr.MasterRx_DMA(0x80,&Intr_TxRx[5],2,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Voltage = (int16_t)((curr >> 3) * 4);
@@ -525,18 +525,18 @@ void I2CIntr_Test()
             Intr_TxRx[1] = ((value >> 8) & 0xFF);
             Intr_TxRx[2] = (value & 0xFF);
             I2CDevIntr.MasterTx_DMA(0x80,Intr_TxRx,3,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
             /* Get Current */ 
             reg = 4;
             Intr_TxRx[0] = reg;           
             I2CDevIntr.MasterTx_DMA(0x80,&Intr_TxRx[0],1,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
             I2CDevIntr.MasterRx_DMA(0x80,&Intr_TxRx[5],2,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             curr = ((Intr_TxRx[5] << 8) | Intr_TxRx[6]);
             Current = curr;  
             Current = Current/10;
@@ -546,27 +546,27 @@ void I2CIntr_Test()
             
         case 16:  // Send 16 bytes using DMA
             I2CDevIntr.MasterTx_DMA(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Status); 
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             //LL_mDelay(1000);
             break;  
         case 17:  // Read 6 bytes using DMA, Rx of 1 byte doesn't work
             I2CDevIntr.MasterRx_DMA(slaveaddress,Intr_TxRx,6,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             break; 
             
         case 18:  // Send 16 bytes using DMA and Read 6 bytes using DMA
             I2CDevIntr.MasterTx_DMA(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Status); 
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             LL_mDelay(10);
             I2CDevIntr.MasterRx_DMA(slaveaddress,&Intr_TxRx[8],6,&Status);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             testID = 19;
             break;    
         case 19:  // Send 16 bytes using DMA and Read 6 bytes using DMA TxRx with repeated start
             I2CDevIntr.MasterTxRx_DMA(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Intr_TxRx[7],6,1,&Status); 
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             LL_mDelay(150);
-            testID = 15;  
+            testID = 20;  
             break;
         case 20:  
             // Txn using DMA
@@ -579,12 +579,13 @@ void I2CIntr_Test()
             Transaction.XferDoneCallback = &I2C_XferDone_Callback;
             Transaction.pStatus = &Status;
             I2CDevIntr.MasterTxRx_DMA(&Transaction);
-            while(I2CDevIntr.GetState() != HAL::I2CIntr::READY);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);
             LL_mDelay(150);
+            testID = 21; 
             break;
             
             case 21:  
-            // Txn using Post
+            // Txn using Post Queue
             Transaction.SlaveAddress = slaveaddress;
             Transaction.TxBuf = name;
             Transaction.TxLen = sizeof(name)/sizeof(uint8_t);
@@ -623,8 +624,9 @@ void I2CIntr_Test()
             I2CDevIntr.Post(&Transaction,1);
             I2CDevIntr.Post(&Transaction1,1);
             I2CDevIntr.Post(&Transaction2,1);
-                
-            LL_mDelay(2000);
+            
+            testID = 15; 
+            LL_mDelay(200);
             break;
             
         default: break;

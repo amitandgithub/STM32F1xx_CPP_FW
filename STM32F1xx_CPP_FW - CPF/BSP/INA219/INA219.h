@@ -8,8 +8,8 @@
 #ifndef INA219_h
 #define INA219_h
 
-#include"I2CPoll.h"
-#include"I2CIntr.h"
+
+#include"I2c.h"
 
 namespace BSP
 {
@@ -21,8 +21,8 @@ public:
 #define INTR_MODE 1
     
 #if INTR_MODE
-    using I2CDev = HAL::I2CIntr*;
-    using I2CStatus_t =  HAL::I2CIntr::I2CStatus_t;
+    using I2CDev = HAL::I2c*;
+    using I2CStatus_t =  HAL::I2c::I2CStatus_t;
 #else
     using I2CDev = HAL::I2CPoll*;
     using I2CStatus_t =  HAL::I2CPoll::I2CStatus_t;

@@ -102,8 +102,7 @@ namespace HAL
     inline DMA* DMA::GetInstance(uint32_t dma)
     {
         if(dma == 1)
-        {
-            
+        {            
             if(_DMA1Instance)
             {
                 return _DMA1Instance;

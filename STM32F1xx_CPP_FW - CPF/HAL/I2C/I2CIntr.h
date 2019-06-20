@@ -254,7 +254,11 @@ namespace HAL
         
         inline void WriteDataRegister(uint8_t data);
         
-        inline uint8_t ReadDataRegister();
+        inline uint8_t ReadDataRegister();             
+        
+        I2CStatus_t     TxPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen);        
+        
+        I2CStatus_t     RxPoll(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen);
         
         I2CStatus_t MasterTx(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
         
@@ -312,27 +316,27 @@ namespace HAL
         
         void InteruptControl(I2CInterrupt_t I2CInterrupt);
         
-        void InterruptControl(bool enable, uint16_t InterruptFlag){ enable ? SET_BIT(_I2Cx->CR2, InterruptFlag) : CLEAR_BIT(_I2Cx->CR2, InterruptFlag) ;}
+        void InterruptControl(bool enable, uint16_t InterruptFlag){ enable ? SET_BIT(m_I2Cx->CR2, InterruptFlag) : CLEAR_BIT(m_I2Cx->CR2, InterruptFlag) ;}
         
-        void Enable_EVT_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN);}
+        void Enable_EVT_Interrupt(){SET_BIT(m_I2Cx->CR2, I2C_CR2_ITEVTEN);}
         
-        void Enable_BUF_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITBUFEN);}
+        void Enable_BUF_Interrupt(){SET_BIT(m_I2Cx->CR2, I2C_CR2_ITBUFEN);}
         
-        void Enable_ERR_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITERREN);}
+        void Enable_ERR_Interrupt(){SET_BIT(m_I2Cx->CR2, I2C_CR2_ITERREN);}
         
-        void Enable_EVT_BUF_ERR_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITBUFEN | I2C_CR2_ITERREN);}
+        void Enable_EVT_BUF_ERR_Interrupt(){SET_BIT(m_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITBUFEN | I2C_CR2_ITERREN);}
         
-        void Enable_EVT_ERR_Interrupt(){SET_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITERREN);}
+        void Enable_EVT_ERR_Interrupt(){SET_BIT(m_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITERREN);}
         
-        void Disable_EVT_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN);}
+        void Disable_EVT_Interrupt(){CLEAR_BIT(m_I2Cx->CR2, I2C_CR2_ITEVTEN);}
         
-        void Disable_BUF_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITBUFEN);}
+        void Disable_BUF_Interrupt(){CLEAR_BIT(m_I2Cx->CR2, I2C_CR2_ITBUFEN);}
         
-        void Disable_ERR_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITERREN);}
+        void Disable_ERR_Interrupt(){CLEAR_BIT(m_I2Cx->CR2, I2C_CR2_ITERREN);}
         
-        void Disable_EVT_BUF_ERR_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITBUFEN | I2C_CR2_ITERREN);}
+        void Disable_EVT_BUF_ERR_Interrupt(){CLEAR_BIT(m_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITBUFEN | I2C_CR2_ITERREN);}
         
-         void Disable_EVT_ERR_Interrupt(){CLEAR_BIT(_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITERREN);}
+         void Disable_EVT_ERR_Interrupt(){CLEAR_BIT(m_I2Cx->CR2, I2C_CR2_ITEVTEN | I2C_CR2_ITERREN);}
         
         inline I2CStatus_t StartListening();
         
@@ -414,26 +418,26 @@ namespace HAL
     
         
     private:
-        GpioOutput              _sclPin;
-        GpioOutput              _sdaPin;
-        Hz_t                    _hz;
-        I2Cx_t                  _I2Cx;            
-        Transaction_t           _Transaction;
-        I2CCallback_t           _TxQueueEmptyCallback;
-        I2CCallback_t           _RxQueueFullCallback;
-        I2CCallback_t           _SlaveTxDoneCallback;
-        I2CCallback_t           _SlaveRxDoneCallback;
-        I2CTxnQueue_t           _I2CTxnQueue;
-        Transaction_t*          _pCurrentTxn;
-        /* It must be volatile becoz it is shared between ISR and main loop */
-        volatile I2CState_t     _I2CState; 
-        /* It must be volatile becoz it is shared between ISR and main loop */
-        volatile I2CStatus_t    _I2CStatus;
+        GpioOutput              m_sclPin;
+        GpioOutput              m_sdaPin;
+        Hz_t                    m_hz;
+        I2Cx_t                  m_I2Cx;            
+        Transaction_t           m_Transaction;
+        I2CCallback_t           m_TxQueueEmptyCallback;
+        I2CCallback_t           m_RxQueueFullCallback;
+        I2CCallback_t           m_SlaveTxDoneCallback;
+        I2CCallback_t           m_SlaveRxDoneCallback;
+        I2CTxnQueue_t           m_I2CTxnQueue;
         
-        I2C1_DMA_Rx_Callback _I2C1_DMA_Rx_Callback;
-        I2C1_DMA_Tx_Callback _I2C1_DMA_Tx_Callback;
-        I2C2_DMA_Rx_Callback _I2C2_DMA_Rx_Callback;
-        I2C2_DMA_Tx_Callback _I2C2_DMA_Tx_Callback;
+        /* It must be volatile becoz it is shared between ISR and main loop */
+        volatile I2CState_t     m_I2CState; 
+        /* It must be volatile becoz it is shared between ISR and main loop */
+        volatile I2CStatus_t    m_I2CStatus;
+        
+        I2C1_DMA_Rx_Callback m_I2C1_DMA_Rx_Callback;
+        I2C1_DMA_Tx_Callback m_I2C1_DMA_Tx_Callback;
+        I2C2_DMA_Rx_Callback m_I2C2_DMA_Rx_Callback;
+        I2C2_DMA_Tx_Callback m_I2C2_DMA_Tx_Callback;
         
     public:  
         inline void log(I2CLogs_t I2CLog) { I2CStates[I2CStates_Idx++  % I2C_LOG_STATES_SIZE] = I2CLog ;}
@@ -444,34 +448,31 @@ namespace HAL
 #endif
         
     public:
-        I2CSlaveRxQueue_t   _I2CSlaveRxQueue;
-        I2CSlaveTxQueue_t   _I2CSlaveTxQueue;
-
-        
-        
+        I2CSlaveRxQueue_t   m_I2CSlaveRxQueue;
+        I2CSlaveTxQueue_t   m_I2CSlaveTxQueue;      
         
     };
     
     
     inline void I2CIntr::SetRxFullCallback(I2CCallback_t I2CCallback)
     {
-        _RxQueueFullCallback = I2CCallback;
+        m_RxQueueFullCallback = I2CCallback;
     }
     inline uint8_t I2CIntr::ReadRxData()
     {
         uint8_t Data;
-        _I2CSlaveRxQueue.Read(Data);
+        m_I2CSlaveRxQueue.Read(Data);
         return Data;
     }
     
     inline uint8_t I2CIntr::SlaveRxDataAvailable()
     {
-        return _I2CSlaveRxQueue.Available();
+        return m_I2CSlaveRxQueue.Available();
     }
     
     void I2CIntr::Start()
     {
-        LL_I2C_GenerateStartCondition(_I2Cx);
+        LL_I2C_GenerateStartCondition(m_I2Cx);
     }
     
     void I2CIntr::SendAddress(uint8_t SlaveAddress)
@@ -481,18 +482,18 @@ namespace HAL
     
     void I2CIntr::WriteDataRegister(uint8_t data)
     {
-        LL_I2C_TransmitData8(_I2Cx, data);
+        LL_I2C_TransmitData8(m_I2Cx, data);
     }
     
     uint8_t I2CIntr::ReadDataRegister()
     {
-        return LL_I2C_ReceiveData8(_I2Cx);
+        return LL_I2C_ReceiveData8(m_I2Cx);
     }
     
     bool I2CIntr::Busy(uint32_t timeout)
     {
-        while( (timeout--) && (LL_I2C_IsActiveFlag_BUSY(_I2Cx) == 1U) );
-        return (bool)LL_I2C_IsActiveFlag_BUSY(_I2Cx);
+        while( (timeout--) && (LL_I2C_IsActiveFlag_BUSY(m_I2Cx) == 1U) );
+        return (bool)LL_I2C_IsActiveFlag_BUSY(m_I2Cx);
     }
     
     bool I2CIntr::StopFlagCleared(uint32_t timeout)
@@ -501,7 +502,7 @@ namespace HAL
         static int StopCountMax;
         uint32_t Timeout=0;
         
-        while( (timeout--) && (_I2Cx->CR1 & (I2C_CR1_STOP)) )
+        while( (timeout--) && (m_I2Cx->CR1 & (I2C_CR1_STOP)) )
         {            
             Timeout++;          
         }
@@ -509,55 +510,55 @@ namespace HAL
         if(StopCountMax<Timeout) 
             StopCountMax = Timeout;
 #else
-        while( (timeout--) && (_I2Cx->CR1 & (I2C_CR1_STOP)) );        
+        while( (timeout--) && (m_I2Cx->CR1 & (I2C_CR1_STOP)) );        
 #endif
-        return (bool)(_I2Cx->CR1 & (I2C_CR1_STOP));
+        return (bool)(m_I2Cx->CR1 & (I2C_CR1_STOP));
     }
     
     bool I2CIntr::StartConditionGenerated(uint32_t timeout)
     {
-        while( (timeout--) && (LL_I2C_IsActiveFlag_SB(_I2Cx) == 0U) );
-        return (bool)LL_I2C_IsActiveFlag_SB(_I2Cx);
+        while( (timeout--) && (LL_I2C_IsActiveFlag_SB(m_I2Cx) == 0U) );
+        return (bool)LL_I2C_IsActiveFlag_SB(m_I2Cx);
     }
     
     bool I2CIntr::SlaveAddressSent(uint32_t timeout)
     {
-        while( (timeout--) && (LL_I2C_IsActiveFlag_ADDR(_I2Cx) == 0U) );
-        return (bool)LL_I2C_IsActiveFlag_ADDR(_I2Cx);
+        while( (timeout--) && (LL_I2C_IsActiveFlag_ADDR(m_I2Cx) == 0U) );
+        return (bool)LL_I2C_IsActiveFlag_ADDR(m_I2Cx);
     } 
     bool I2CIntr::TransmitterEmpty(uint32_t timeout)
     {
-        while( (timeout--) && (LL_I2C_IsActiveFlag_TXE(_I2Cx) == 0U) );
-        return (bool)LL_I2C_IsActiveFlag_TXE(_I2Cx);
+        while( (timeout--) && (LL_I2C_IsActiveFlag_TXE(m_I2Cx) == 0U) );
+        return (bool)LL_I2C_IsActiveFlag_TXE(m_I2Cx);
     }
     
     bool I2CIntr::TransferDone(uint32_t timeout)
     {
-        while( (timeout--) && (LL_I2C_IsActiveFlag_BTF(_I2Cx) == 0U) );
-        return (bool)LL_I2C_IsActiveFlag_BTF(_I2Cx);
+        while( (timeout--) && (LL_I2C_IsActiveFlag_BTF(m_I2Cx) == 0U) );
+        return (bool)LL_I2C_IsActiveFlag_BTF(m_I2Cx);
     }
     void I2CIntr::SoftReset()
     {
-        LL_I2C_EnableReset(_I2Cx);
-        LL_I2C_DisableReset(_I2Cx);
+        LL_I2C_EnableReset(m_I2Cx);
+        LL_I2C_DisableReset(m_I2Cx);
         HwInit();
     }
     bool I2CIntr::ACKFail(uint32_t timeout)
     {
-        while( (timeout--) && (LL_I2C_IsActiveFlag_AF(_I2Cx) == 1U) );
-        return (bool)LL_I2C_IsActiveFlag_AF(_I2Cx);
+        while( (timeout--) && (LL_I2C_IsActiveFlag_AF(m_I2Cx) == 1U) );
+        return (bool)LL_I2C_IsActiveFlag_AF(m_I2Cx);
     }
     
     bool I2CIntr::DataAvailableRXNE(uint32_t timeout)
     {
-        while( (timeout--) && (LL_I2C_IsActiveFlag_RXNE(_I2Cx) == 0U) );
-        return (bool)LL_I2C_IsActiveFlag_RXNE(_I2Cx);
+        while( (timeout--) && (LL_I2C_IsActiveFlag_RXNE(m_I2Cx) == 0U) );
+        return (bool)LL_I2C_IsActiveFlag_RXNE(m_I2Cx);
     }
     
     bool I2CIntr::StopCondition(uint32_t timeout)
     {
-        while( (timeout--) && (LL_I2C_IsActiveFlag_STOP(_I2Cx) == 0U) );
-        return (bool)LL_I2C_IsActiveFlag_STOP(_I2Cx);
+        while( (timeout--) && (LL_I2C_IsActiveFlag_STOP(m_I2Cx) == 0U) );
+        return (bool)LL_I2C_IsActiveFlag_STOP(m_I2Cx);
     }
     I2CIntr::I2CStatus_t I2CIntr::StartListening()
     {
@@ -568,13 +569,13 @@ namespace HAL
             return I2C_BUSY_TIMEOUT;                
         }        
         /* Disable Pos */
-        _I2Cx->CR1 &= ~I2C_CR1_POS;
+        m_I2Cx->CR1 &= ~I2C_CR1_POS;
         
         /* Enable Address Acknowledge */
-        _I2Cx->CR1 |= I2C_CR1_ACK;
+        m_I2Cx->CR1 |= I2C_CR1_ACK;
         
-        // _I2CState = SLAVE_RX_LISTENING;
-        _I2CState = READY;
+        // m_I2CState = SLAVE_RX_LISTENING;
+        m_I2CState = READY;
         
         Enable_EVT_BUF_ERR_Interrupt();
         
@@ -583,7 +584,7 @@ namespace HAL
     
     I2CIntr::I2CState_t I2CIntr::GetState()
     {
-        return _I2CState;
+        return m_I2CState;
     }
     
 #if defined (I2C_DEBUG)

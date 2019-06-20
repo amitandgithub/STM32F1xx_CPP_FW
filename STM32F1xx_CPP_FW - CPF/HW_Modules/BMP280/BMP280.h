@@ -22,8 +22,7 @@
 #define __BMP280_H__
 
 #include <math.h>       /* pow */
-#include"I2CPoll.h"
-#include"I2CIntr.h"
+#include"I2c.h"
 
 /*!
 *  I2C ADDRESS/BITS/SETTINGS
@@ -94,8 +93,8 @@ public:
 #define BMP280_INTR_MODE 1
     
 #if BMP280_INTR_MODE
-    using I2CDev = HAL::I2CIntr*;
-    using I2CStatus_t =  HAL::I2CIntr::I2CStatus_t;
+    using I2CDev = HAL::I2c*;
+    using I2CStatus_t =  HAL::I2c::I2CStatus_t;
 #else
     using I2CDev = HAL::I2CPoll*;
     using I2CStatus_t =  HAL::I2CPoll::I2CStatus_t;
@@ -170,16 +169,16 @@ public:
     uint8_t Tx(uint8_t* TxBuf, uint32_t TxLen,I2CStatus_t* pStatus)
     { 
         uint8_t status;
-        status = m_pI2CDrv->MasterTx( m_BMP280_Address, TxBuf, TxLen, pStatus);
-        while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
+        status = m_pI2CDrv->MasterTx_Intr( m_BMP280_Address, TxBuf, TxLen, pStatus);
+        while(m_pI2CDrv->GetState() != HAL::I2c::READY);
         return status;
     }
     
     uint8_t Rx(uint8_t* RxBuf, uint32_t RxLen, I2CStatus_t* pStatus)
     {
         uint8_t status;
-        status = m_pI2CDrv->MasterRx( m_BMP280_Address, RxBuf, RxLen, pStatus);
-        while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
+        status = m_pI2CDrv->MasterRx_Intr( m_BMP280_Address, RxBuf, RxLen, pStatus);
+        while(m_pI2CDrv->GetState() != HAL::I2c::READY);
         return status;
     }
     

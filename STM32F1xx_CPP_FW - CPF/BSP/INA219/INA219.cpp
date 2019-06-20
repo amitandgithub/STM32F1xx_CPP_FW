@@ -55,9 +55,9 @@ void INA219::WriteRegister (uint8_t reg, uint16_t value)
 	buf[1] = ((value >> 8) & 0xFF);
 	buf[2] = (value & 0xFF);
 #if INTR_MODE
-    while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-	m_pI2CDrv->MasterTx( m_INA219_Address, buf, 3, &I2C_Status) ;
-    while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
+    while(m_pI2CDrv->GetState() != HAL::I2c::READY);
+	m_pI2CDrv->MasterTx_Intr( m_INA219_Address, buf, 3, &I2C_Status) ;
+    while(m_pI2CDrv->GetState() != HAL::I2c::READY);
 #else
 	m_pI2CDrv->MasterTx( m_INA219_Address, buf, 3, &I2C_Status) ;
 #endif
@@ -75,13 +75,13 @@ void INA219::ReadRegister(uint8_t reg, uint16_t *value)
 	//uint8_t buf[3];
 	buf[0] = reg;
 #if INTR_MODE
-    while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-	m_pI2CDrv->MasterTx( m_INA219_Address, buf, 1, &I2C_Status) ;
-    while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
-	m_pI2CDrv->MasterRx( m_INA219_Address, buf, 2, &I2C_Status);
-    while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
+    while(m_pI2CDrv->GetState() != HAL::I2c::READY);
+	m_pI2CDrv->MasterTx_Intr( m_INA219_Address, buf, 1, &I2C_Status) ;
+    while(m_pI2CDrv->GetState() != HAL::I2c::READY);
+	m_pI2CDrv->MasterRx_Intr( m_INA219_Address, buf, 2, &I2C_Status);
+    while(m_pI2CDrv->GetState() != HAL::I2c::READY);
 	*value = ((buf[0] << 8) | buf[1]);
-   while(m_pI2CDrv->GetState() != HAL::I2CIntr::READY);
+   while(m_pI2CDrv->GetState() != HAL::I2c::READY);
 #else
 	m_pI2CDrv->MasterTx( m_INA219_Address, buf, 1) ;
 	m_pI2CDrv->MasterRx( m_INA219_Address, buf, 2);
