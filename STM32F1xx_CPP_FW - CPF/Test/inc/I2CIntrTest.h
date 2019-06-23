@@ -3,8 +3,8 @@
 #include"INA219.h"
 #include"I2c.h"
 #define Q_RESPIRE_DELAY 200 
-
-static I2c I2CDevIntr(Gpio::B6, Gpio::B7,100000U);
+uint32_t logidx = 0;
+static I2c I2CDevIntr(Gpio::B6, Gpio::B7,400000U);
 static uint8_t Intr_TxRx[20];
 static GpioOutput B13(Gpio::B13);
 static HAL::I2c::Transaction_t Transaction,Transaction1,Transaction2;
@@ -104,7 +104,7 @@ void I2c_Test()
     I2CDevIntr.SetCallback(HAL::I2c::I2C_SLAVE_RX_COMPLETE_CALLBACK,&I2CRxDoneCallback);
     //I2CDevIntr.StartListening();
     
-    testID = 15;
+    testID = 21;
     
     while(1)
     {
@@ -541,7 +541,7 @@ void I2c_Test()
             Current = curr;  
             Current = Current/10;
             //LL_mDelay(100);
-            testID = 18;
+            //testID = 18;
             break;
             
         case 16:  // Send 16 bytes using DMA
@@ -625,8 +625,11 @@ void I2c_Test()
             I2CDevIntr.Post(&Transaction1,1);
             I2CDevIntr.Post(&Transaction2,1);
             
-            testID = 15; 
-            LL_mDelay(200);
+            //testID = 15; 
+            //LL_mDelay(200);
+           // printf("0x%x \n",I2CDevIntr.I2CStates[logidx++]);
+           // if(logidx == 1498)
+           //     logidx = 0;
             break;
             
         default: break;

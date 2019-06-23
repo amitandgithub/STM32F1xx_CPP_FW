@@ -74,24 +74,9 @@ namespace HAL
     
     
     DMA::DMAStatus_t DMA::HwInit(void *pInitStruct)
-    {
-//        /* Set DMA_InitStruct fields to default values */
-//        LL_DMA_InitTypeDef DMA_InitStruct;
-//        DMA_InitStruct.PeriphOrM2MSrcAddress  = 0x00000000U;
-//        DMA_InitStruct.MemoryOrM2MDstAddress  = 0x00000000U;
-//        DMA_InitStruct.Direction              = LL_DMA_DIRECTION_PERIPH_TO_MEMORY;
-//        DMA_InitStruct.Mode                   = LL_DMA_MODE_NORMAL;
-//        DMA_InitStruct.PeriphOrM2MSrcIncMode  = LL_DMA_PERIPH_NOINCREMENT;
-//        DMA_InitStruct.MemoryOrM2MDstIncMode  = LL_DMA_MEMORY_NOINCREMENT;
-//        DMA_InitStruct.PeriphOrM2MSrcDataSize = LL_DMA_PDATAALIGN_BYTE;
-//        DMA_InitStruct.MemoryOrM2MDstDataSize = LL_DMA_MDATAALIGN_BYTE;
-//        DMA_InitStruct.NbData                 = 0x00000000U;
-//        DMA_InitStruct.Priority               = LL_DMA_PRIORITY_LOW;
-
-        
+    {        
+        ClockEnable();
         return 1;
-       
-        
     }
     
     DMA::DMAStatus_t DMA::HwDeinit()

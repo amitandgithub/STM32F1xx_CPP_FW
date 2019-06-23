@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <settings>
     <DebugChecksum>
-        <Checksum>1762838036</Checksum>
+        <Checksum>3370356675</Checksum>
     </DebugChecksum>
     <StLinkDriver>
         <CStepIntDis>_ 0</CStepIntDis>
@@ -77,6 +77,10 @@
         <FreqHi>0</FreqHi>
         <MultiCoreRunAll>1</MultiCoreRunAll>
     </Simulator>
+    <struct_types>
+        <Fmt0>class Utils::DebugLog&lt;unsigned int, 5U, 7U, 20U, 100U&gt;-Overflow_Counter	4	0</Fmt0>
+        <Fmt1>class Utils::DebugLog&lt;unsigned int, 5U, 7U, 20U, 100U&gt;-m_ModuleEnableMask	4	0</Fmt1>
+    </struct_types>
     <Trace2>
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>
@@ -126,8 +130,7 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Test\inc\I2CIntrTest.h}.509.13" 0 0 1 "" 0 "" 0</Bp0>
-        <Count>1</Count>
+        <Count>0</Count>
     </Breakpoints2>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>

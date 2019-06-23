@@ -12,11 +12,12 @@
 #include "stm32f1xx_ll_dma.h"
 #include "stm32f1xx.h"
 #include "stm32f1xx_ll_gpio.h"
+#include "DebugLog.h"
+#include "printf.h"
 
 
-//#include "Gpio.h"
-//#include "GpioOutput.h"
-
+#define DBG_LOG_TYPE uint32_t,5,7,20,100
+#define DBG_LOG_CREATE_ID(__MODULE_ID,__X) Utils::DebugLog<DBG_LOG_TYPE>::Create(Utils::DebugLog<DBG_LOG_TYPE>::__MODULE_ID,__X)
 namespace HAL
 {
 

@@ -26,30 +26,32 @@ void SystemClock_Config_LL(void);
 void putc ( void* p, char c);
 
 #include "DebugLog.h"
-#define TYPES uint32_t,5,7,20,100
-static constexpr auto x = Utils::DebugLog<TYPES>::Make(2,3);
-static constexpr auto m = Utils::DebugLog<TYPES>::TIMESTAMP_MASK;
-static constexpr auto moduleID = Utils::DebugLog<TYPES>::DBG_LOG_MODULE_ID_I2C;
-static Utils::DebugLog<TYPES>::DebugLogElement_t Ele; 
-enum
-{
-    ONE = Utils::DebugLog<TYPES>::Make(Utils::DebugLog<TYPES>::DBG_LOG_MODULE_ID_I2C,1),
-    TWO = Utils::DebugLog<TYPES>::Make(Utils::DebugLog<TYPES>::DBG_LOG_MODULE_ID_SPI,2),
-    THREE =Utils::DebugLog<TYPES>::Make(7,3),
-};
+//#define TYPES uint32_t,5,7,20,100
+//static constexpr auto Auto_Amit = Utils::DebugLog<TYPES>::Create(2,3);
+//static constexpr auto m = Utils::DebugLog<TYPES>::TIMESTAMP_MASK;
+//static constexpr auto moduleID = Utils::DebugLog<TYPES>::DBG_LOG_MODULE_ID_I2C;
+//static Utils::DebugLog<TYPES>::DebugLogElement_t Ele; 
+//enum
+//{
+//    ONE = Utils::DebugLog<TYPES>::Create(Utils::DebugLog<TYPES>::DBG_LOG_MODULE_ID_I2C,1),
+//    TWO = Utils::DebugLog<TYPES>::Create(Utils::DebugLog<TYPES>::DBG_LOG_MODULE_ID_SPI,2),
+//    THREE =Utils::DebugLog<TYPES>::Create(7,3),
+//};
 
+//Utils::DebugLog<DBG_LOG_TYPE>*    Utils::DebugLog<DBG_LOG_TYPE>::m_Instance;
+uint32_t count;
 int main(void)
 {	
-    auto y = x;
-    y = m;
-    auto n = Ele.bits.ModuleID; // 7 CPU Cycles
-    auto c = Ele; // 3 CPU Cycles
-    auto mid = moduleID;
-    auto str = "Amit";
-    
-    y = ONE;
-    y = TWO;
-    y = THREE;    
+//    auto y = Auto_Amit;
+//    y = m;
+//    auto n = Ele.bits.ModuleID; // 7 CPU Cycles
+//    auto c = Ele; // 3 CPU Cycles
+//    auto mid = moduleID;
+//    auto str = "Amit";
+//    
+//    y = ONE;
+//    y = TWO;
+//    y = THREE;    
     
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();
@@ -68,7 +70,7 @@ int main(void)
         //I2CPoll_Test();
         //INA219_Test();
           I2c_Test();
-          //BMP280_Test();
+         // BMP280_Test();
     }
     
 }
