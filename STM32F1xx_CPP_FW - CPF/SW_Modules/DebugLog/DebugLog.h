@@ -61,22 +61,28 @@ namespace Utils
             
             static constexpr DebugLog_t TIMESTAMP_MASK = (
             (~((DebugLog_t)0))>>( (sizeof(DebugLog_t)*8) - (LogValueBits+ModuleIDBits))) << TimeStampBits ;
-            
+
+			
+			static const uint32_t MODULE_ID_SHIFT = (LogValueBits+TimeStampBits);
             static const uint32_t MAX_LOGS = 1024U;
             static const DebugLog_t LOG_MODULE_ID_MAX = 32;
             
         public:
             static DebugLog*   GetInstance();
             
-            Status_t        Init                ( );
+            Status_t        Init                    ( );
             
-            Status_t        Register            (DebugLog_t* pModuleID);
+            Status_t        Register                (DebugLog_t* pModuleID);
             
-            inline void     Enable              (ModuleId_t ModuleID);
+            inline void     Enable                  (ModuleId_t ModuleID);
             
-            inline void     Disable             (ModuleId_t ModuleID);
+            inline void     Disable                 (ModuleId_t ModuleID);
             
-            inline void     Log                 (DebugLog_t ModuleID_ORed_LogValue);
+            inline void     Log                     (DebugLog_t ModuleID_ORed_LogValue);
+
+			inline void     Log_Always              (DebugLog_t ModuleID_ORed_LogValue);
+
+			inline void     Log_Without_TimeStamp   (DebugLog_t ModuleID_ORed_LogValue);
 
                    void     Decode              ();
 
@@ -109,7 +115,7 @@ namespace Utils
         void DebugLog< T,ModuleIDBits,LogValueBits,TimeStampBits,MaxLogEntries >::
     Enable(ModuleId_t ModuleID)
     {
-        m_ModuleEnableMask |= (ModuleID)<<(LogValueBits+TimeStampBits); //POSITION_VAL(ModuleID));
+        m_ModuleEnableMask |= 1U<<(ModuleID);//<<(LogValueBits+TimeStampBits); //POSITION_VAL(ModuleID));
     }
     
     template< typename T,uint32_t ModuleIDBits, uint32_t LogValueBits,uint32_t TimeStampBits,uint32_t MaxLogEntries > 
@@ -118,13 +124,94 @@ namespace Utils
     {
         m_ModuleEnableMask &= ~((DebugLog_t)1U << ModuleID); //POSITION_VAL(ModuleID));
     }
-    
+
     template< typename T,uint32_t ModuleIDBits, uint32_t LogValueBits,uint32_t TimeStampBits,uint32_t MaxLogEntries > 
         void DebugLog< T,ModuleIDBits,LogValueBits,TimeStampBits,MaxLogEntries >::
     Log(DebugLog_t ModuleID_ORed_LogValue)
     {
-        if(m_ModuleEnableMask & ModuleID_ORed_LogValue)
+#if 1
+        uint32_t LogIndex = m_LogIndex;
+        
+		if( m_ModuleEnableMask & (1U << (ModuleID_ORed_LogValue>>(MODULE_ID_SHIFT))) )
         {
+            if(LogIndex == MaxLogEntries)
+            {
+                LogIndex = 0;
+            }
+            else if(LogIndex > MaxLogEntries)
+            {
+                LogIndex = 0;
+                Overflow_Counter++;                
+                count++;
+            }
+            
+#if DBG_LOG_WITHOUT_TIMESTAMP
+            
+            m_Entries[LogIndex++] = ModuleID_ORed_LogValue;           
+#else
+            m_Entries[LogIndex++] = ModuleID_ORed_LogValue | (GetCurrentTicks() & TIMESTAMP_MASK);
+#endif             
+        }
+        m_LogIndex = LogIndex;
+        
+        
+#else
+        if( m_ModuleEnableMask & (1U << (ModuleID_ORed_LogValue>>(MODULE_ID_SHIFT))) )
+        {
+            __disable_irq(); 
+            if(m_LogIndex == MaxLogEntries)
+            {
+                m_LogIndex = 0;
+            }
+            else if(m_LogIndex > MaxLogEntries)
+            {
+                m_LogIndex = 0;
+                Overflow_Counter++;                
+                count++;
+            }
+                       
+            
+#if DBG_LOG_WITHOUT_TIMESTAMP
+            
+            m_Entries[m_LogIndex++] = ModuleID_ORed_LogValue;           
+#else
+            m_Entries[m_LogIndex++] = ModuleID_ORed_LogValue | (GetCurrentTicks() & TIMESTAMP_MASK);
+#endif             
+            __enable_irq();
+        }
+             
+#endif // if 0
+    }
+	
+    template< typename T,uint32_t ModuleIDBits, uint32_t LogValueBits,uint32_t TimeStampBits,uint32_t MaxLogEntries > 
+        void DebugLog< T,ModuleIDBits,LogValueBits,TimeStampBits,MaxLogEntries >::
+	Log_Always(DebugLog_t ModuleID_ORed_LogValue)
+    {
+            if(m_LogIndex == MaxLogEntries)
+            {
+                m_LogIndex = 0;
+            }
+            else if(m_LogIndex > MaxLogEntries)
+            {
+                m_LogIndex = 0;
+                Overflow_Counter++;                
+                count++;
+            }
+            //__disable_irq();
+            
+#if DBG_LOG_WITHOUT_TIMESTAMP
+            
+            m_Entries[m_LogIndex++] = ModuleID_ORed_LogValue;           
+#else
+            m_Entries[m_LogIndex++] = ModuleID_ORed_LogValue | (GetCurrentTicks() & TIMESTAMP_MASK);
+#endif
+             //__enable_irq(); 
+    }
+
+    template< typename T,uint32_t ModuleIDBits, uint32_t LogValueBits,uint32_t TimeStampBits,uint32_t MaxLogEntries > 
+        void DebugLog< T,ModuleIDBits,LogValueBits,TimeStampBits,MaxLogEntries >::
+	Log_Without_TimeStamp(DebugLog_t ModuleID_ORed_LogValue)
+    {
             // DBG_Q.Write( ModuleID | LogValue | GetCurrentTicks());
             if(m_LogIndex == MaxLogEntries)
             {
@@ -139,18 +226,10 @@ namespace Utils
                // while(1);
             }
             //__disable_irq();
-            
-#if DBG_LOG_WITHOUT_TIMESTAMP
-            
-            m_Entries[m_LogIndex++] = ModuleID_ORed_LogValue;           
-#else
-            m_Entries[m_LogIndex++] = ModuleID_ORed_LogValue | (GetCurrentTicks() & TIMESTAMP_MASK);
-#endif
+            m_Entries[m_LogIndex++] = ModuleID_ORed_LogValue;
              //__enable_irq(); 
-             
-        }
     }
-    
+		
     template< typename T,uint32_t ModuleIDBits, uint32_t LogValueBits,uint32_t TimeStampBits,uint32_t MaxLogEntries > 
         DebugLog< T,ModuleIDBits,LogValueBits,TimeStampBits,MaxLogEntries >::
     DebugLog()

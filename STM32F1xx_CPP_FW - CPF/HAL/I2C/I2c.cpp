@@ -19,37 +19,37 @@ namespace HAL
         m_hz(Hz),
         m_I2CState(RESET)
 #if I2C_DMA
-        ,m_I2C1_DMA_Rx_Callback(this),
-        m_I2C1_DMA_Tx_Callback(this),
-        m_I2C2_DMA_Rx_Callback(this),
-        m_I2C2_DMA_Tx_Callback(this)
+            ,m_I2C1_DMA_Rx_Callback(this),
+            m_I2C1_DMA_Tx_Callback(this),
+            m_I2C2_DMA_Rx_Callback(this),
+            m_I2C2_DMA_Tx_Callback(this)
 #endif
-        {
-            if((scl == Gpio::B6) && (sda == Gpio::B7))
             {
-                m_I2Cx = I2C1;
+                if((scl == Gpio::B6) && (sda == Gpio::B7))
+                {
+                    m_I2Cx = I2C1;
+                }
+                else if((scl == Gpio::B10) && (sda == Gpio::B11))
+                {
+                    m_I2Cx = I2C2;
+                }
+                else if((scl == Gpio::B8) && (sda == Gpio::B9))
+                {
+                    // initialize with nullptr to configure it later in HwInit() with pin remap
+                    m_I2Cx = nullptr;
+                }
+                else
+                {
+                    while(1); // Fatal Error
+                }  
+                
+                m_RxQueueFullCallback = nullptr;
+                m_TxQueueEmptyCallback = nullptr;
+                m_SlaveRxDoneCallback = nullptr;
+                m_SlaveTxDoneCallback = nullptr;
+                
+                m_I2CStatus = I2C_OK;
             }
-            else if((scl == Gpio::B10) && (sda == Gpio::B11))
-            {
-                m_I2Cx = I2C2;
-            }
-            else if((scl == Gpio::B8) && (sda == Gpio::B9))
-            {
-                // initialize with nullptr to configure it later in HwInit() with pin remap
-                m_I2Cx = nullptr;
-            }
-            else
-            {
-                while(1); // Fatal Error
-            }  
-            
-            m_RxQueueFullCallback = nullptr;
-            m_TxQueueEmptyCallback = nullptr;
-            m_SlaveRxDoneCallback = nullptr;
-            m_SlaveTxDoneCallback = nullptr;
-            
-            m_I2CStatus = I2C_OK;
-        }
         
         I2c::I2CStatus_t I2c::HwInit(void *pInitStruct)
         {        	
@@ -174,193 +174,277 @@ namespace HAL
             }        
         }
         
-    I2c::I2CStatus_t I2c::TxPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen)
-    {
-        if(m_I2CState != READY)
-            return I2C_BUSY;
-        
-        if( (TxLen == 0) || (TxBuf == nullptr) )
-        {          
-            I2C_DEBUG_LOG(I2C_INVALID_PARAMS);            
-            return I2C_INVALID_PARAMS;                
-        }          
-        
-        /* Wait until BUSY flag is reset */
-        if( Busy(I2C_TIMEOUT) == true )
+        I2c::I2CStatus_t I2c::TxPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen)
         {
-            I2C_DEBUG_LOG(I2C_BUSY_TIMEOUT);
-            return I2C_BUSY_TIMEOUT;
-        }
-        
-        /* Disable Pos */
-        m_I2Cx->CR1 &= ~I2C_CR1_POS;
-        
-        /* Generate Start */
-        m_I2Cx->CR1 |= I2C_CR1_START;
-        
-        /* Check if Start condition generated successfully*/
-        if(StartConditionGenerated(I2C_TIMEOUT) == false)
-        {         
-            I2C_DEBUG_LOG(I2C_START_TIMEOUT);
-            return I2C_START_TIMEOUT;                
-        }            
-        
-        /* Send slave address */
-        m_I2Cx->DR = SlaveAddress & I2C_DIR_WRITE;
-        
-        /* Wait until ADDR flag is set */
-        if(SlaveAddressSent(I2C_TIMEOUT) == false)
-        {          
-            I2C_DEBUG_LOG(I2C_ADDR_TIMEOUT);
-            return I2C_ADDR_TIMEOUT;                
-        }
-        
-        /* Clear ADDR flag */
-        LL_I2C_ClearFlag_ADDR(m_I2Cx);
-        
-        while(TxLen > 0U)
-        {
-            /* Wait until TXE flag is set */
-            if(TransmitterEmpty(I2C_TIMEOUT) == false)
-            {       
-                if( (bool)LL_I2C_IsActiveFlag_AF(m_I2Cx) == true )
-                {
-                    /* Generate Stop */
-                    m_I2Cx->CR1 |= I2C_CR1_STOP; 
-                    
-                    I2C_DEBUG_LOG(I2C_ACK_FAIL);
-                    return I2C_ACK_FAIL; 
-                }
-                
-                I2C_DEBUG_LOG(I2C_TXE_TIMEOUT);
-                return I2C_TXE_TIMEOUT;
-            }                 
+            if(m_I2CState != READY)
+                return I2C_BUSY;
             
-            /* Write data to DR */
-            m_I2Cx->DR = *TxBuf++;                
-            TxLen--;     
+            if( (TxLen == 0) || (TxBuf == nullptr) )
+            {          
+                I2C_DEBUG_LOG(I2C_INVALID_PARAMS);            
+                return I2C_INVALID_PARAMS;                
+            }          
             
-            if( (bool)LL_I2C_IsActiveFlag_BTF(m_I2Cx) == true)
+            /* Wait until BUSY flag is reset */
+            if( Busy(I2C_TIMEOUT) == true )
             {
-                /* Write data to DR */
-                m_I2Cx->DR = *TxBuf++;                
-                TxLen--;                    
+                I2C_DEBUG_LOG(I2C_BUSY_TIMEOUT);
+                return I2C_BUSY_TIMEOUT;
             }
             
-            /* Wait until BTF flag is set */
-            if(TransferDone(I2C_TIMEOUT) == false)
-            {
-                if( (bool)LL_I2C_IsActiveFlag_AF(m_I2Cx) == true )
-                {
-                    /* Generate Stop */
-                    m_I2Cx->CR1 |= I2C_CR1_STOP;                 
-                    I2C_DEBUG_LOG(I2C_ACK_FAIL);
-                    return I2C_ACK_FAIL;
-                }
-                I2C_DEBUG_LOG(I2C_BTF_TIMEOUT);
-                return I2C_BTF_TIMEOUT;
-            }                
-        }                  
-        
-        /* Generate Stop */
-        m_I2Cx->CR1 |= I2C_CR1_STOP;
-        
-        I2C_DEBUG_LOG(I2C_OK);
-        return I2C_OK; 
-    }
-    
-    I2c::I2CStatus_t I2c::RxPoll(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen)
-    {
-        if(m_I2CState != READY)
-            return I2C_BUSY;
-        
-        if( (RxLen == 0) || (RxBuf == nullptr) )
-        {          
-            I2C_DEBUG_LOG(I2C_INVALID_PARAMS);            
-            return I2C_INVALID_PARAMS;                
-        }          
-        
-        /* Wait until BUSY flag is reset */
-        if( Busy(I2C_TIMEOUT) == true )
-        {
-            I2C_DEBUG_LOG(I2C_BUSY_TIMEOUT);
-            return I2C_BUSY_TIMEOUT;
-        }
-        
-        /* Disable Pos */
-        m_I2Cx->CR1 &= ~I2C_CR1_POS;
-        
-        /* Generate Start */
-        m_I2Cx->CR1 |= I2C_CR1_START;
-        
-        /* Check if Start condition generated successfully*/
-        if(StartConditionGenerated(I2C_TIMEOUT) == false)
-        {          
-            I2C_DEBUG_LOG(I2C_START_TIMEOUT);
-            return I2C_START_TIMEOUT;                
-        }
-        
-        /* Send slave address */
-        m_I2Cx->DR = SlaveAddress | I2C_DIR_READ;
-        
-        /* Wait until ADDR flag is set */
-        if(SlaveAddressSent(I2C_TIMEOUT) == false)
-        {          
-            I2C_DEBUG_LOG(I2C_ADDR_TIMEOUT);
-            return I2C_ADDR_TIMEOUT;                
-        }          
-        
-        if(RxLen == 1)
-        {
-            /* Disable Acknowledge */
-            m_I2Cx->CR1 &= ~I2C_CR1_ACK;
+            /* Disable Pos */
+            m_I2Cx->CR1 &= ~I2C_CR1_POS;
             
-            /* Disable all active IRQs around ADDR clearing and STOP programming because the EV6_3
-            software sequence must complete before the current byte end of transfer */
-            __disable_irq();
+            /* Generate Start */
+            m_I2Cx->CR1 |= I2C_CR1_START;
+            
+            /* Check if Start condition generated successfully*/
+            if(StartConditionGenerated(I2C_TIMEOUT) == false)
+            {         
+                I2C_DEBUG_LOG(I2C_START_TIMEOUT);
+                return I2C_START_TIMEOUT;                
+            }            
+            
+            /* Send slave address */
+            m_I2Cx->DR = SlaveAddress & I2C_DIR_WRITE;
+            
+            /* Wait until ADDR flag is set */
+            if(SlaveAddressSent(I2C_TIMEOUT) == false)
+            {          
+                I2C_DEBUG_LOG(I2C_ADDR_TIMEOUT);
+                return I2C_ADDR_TIMEOUT;                
+            }
             
             /* Clear ADDR flag */
             LL_I2C_ClearFlag_ADDR(m_I2Cx);
+            
+            while(TxLen > 0U)
+            {
+                /* Wait until TXE flag is set */
+                if(TransmitterEmpty(I2C_TIMEOUT) == false)
+                {       
+                    if( (bool)LL_I2C_IsActiveFlag_AF(m_I2Cx) == true )
+                    {
+                        /* Generate Stop */
+                        m_I2Cx->CR1 |= I2C_CR1_STOP; 
+                        
+                        I2C_DEBUG_LOG(I2C_ACK_FAIL);
+                        return I2C_ACK_FAIL; 
+                    }
+                    
+                    I2C_DEBUG_LOG(I2C_TXE_TIMEOUT);
+                    return I2C_TXE_TIMEOUT;
+                }                 
+                
+                /* Write data to DR */
+                m_I2Cx->DR = *TxBuf++;                
+                TxLen--;     
+                
+                if( (bool)LL_I2C_IsActiveFlag_BTF(m_I2Cx) == true)
+                {
+                    /* Write data to DR */
+                    m_I2Cx->DR = *TxBuf++;                
+                    TxLen--;                    
+                }
+                
+                /* Wait until BTF flag is set */
+                if(TransferDone(I2C_TIMEOUT) == false)
+                {
+                    if( (bool)LL_I2C_IsActiveFlag_AF(m_I2Cx) == true )
+                    {
+                        /* Generate Stop */
+                        m_I2Cx->CR1 |= I2C_CR1_STOP;                 
+                        I2C_DEBUG_LOG(I2C_ACK_FAIL);
+                        return I2C_ACK_FAIL;
+                    }
+                    I2C_DEBUG_LOG(I2C_BTF_TIMEOUT);
+                    return I2C_BTF_TIMEOUT;
+                }                
+            }                  
             
             /* Generate Stop */
             m_I2Cx->CR1 |= I2C_CR1_STOP;
             
-            /* Re-enable IRQs */
-            __enable_irq();             
-        }
-        else if(RxLen == 2)
-        {
-            /* Enable Pos */
-            m_I2Cx->CR1 |= I2C_CR1_POS;
-            
-            /* Disable all active IRQs around ADDR clearing and STOP programming because the EV6_3
-            software sequence must complete before the current byte end of transfer */
-            __disable_irq();
-            
-            /* Clear ADDR flag */
-            LL_I2C_ClearFlag_ADDR(m_I2Cx);
-            
-            /* Disable Acknowledge */
-            m_I2Cx->CR1 &= ~I2C_CR1_ACK;
-            
-            /* Re-enable IRQs */
-            __enable_irq(); 
-        }
-        else
-        {
-            /* Enable Acknowledge */
-            m_I2Cx->CR1 |= I2C_CR1_ACK;
-            
-            /* Clear ADDR flag */
-            LL_I2C_ClearFlag_ADDR(m_I2Cx);
+            I2C_DEBUG_LOG(I2C_OK);
+            return I2C_OK; 
         }
         
-        while(RxLen > 0U)
+        I2c::I2CStatus_t I2c::RxPoll(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen)
         {
-            if(RxLen <= 3U)
+            if(m_I2CState != READY)
+                return I2C_BUSY;
+            
+            if( (RxLen == 0) || (RxBuf == nullptr) )
+            {          
+                I2C_DEBUG_LOG(I2C_INVALID_PARAMS);            
+                return I2C_INVALID_PARAMS;                
+            }          
+            
+            /* Wait until BUSY flag is reset */
+            if( Busy(I2C_TIMEOUT) == true )
             {
-                /* One byte */
-                if(RxLen == 1U)
+                I2C_DEBUG_LOG(I2C_BUSY_TIMEOUT);
+                return I2C_BUSY_TIMEOUT;
+            }
+            
+            /* Disable Pos */
+            m_I2Cx->CR1 &= ~I2C_CR1_POS;
+            
+            /* Generate Start */
+            m_I2Cx->CR1 |= I2C_CR1_START;
+            
+            /* Check if Start condition generated successfully*/
+            if(StartConditionGenerated(I2C_TIMEOUT) == false)
+            {          
+                I2C_DEBUG_LOG(I2C_START_TIMEOUT);
+                return I2C_START_TIMEOUT;                
+            }
+            
+            /* Send slave address */
+            m_I2Cx->DR = SlaveAddress | I2C_DIR_READ;
+            
+            /* Wait until ADDR flag is set */
+            if(SlaveAddressSent(I2C_TIMEOUT) == false)
+            {          
+                I2C_DEBUG_LOG(I2C_ADDR_TIMEOUT);
+                return I2C_ADDR_TIMEOUT;                
+            }          
+            
+            if(RxLen == 1)
+            {
+                /* Disable Acknowledge */
+                m_I2Cx->CR1 &= ~I2C_CR1_ACK;
+                
+                /* Disable all active IRQs around ADDR clearing and STOP programming because the EV6_3
+                software sequence must complete before the current byte end of transfer */
+                __disable_irq();
+                
+                /* Clear ADDR flag */
+                LL_I2C_ClearFlag_ADDR(m_I2Cx);
+                
+                /* Generate Stop */
+                m_I2Cx->CR1 |= I2C_CR1_STOP;
+                
+                /* Re-enable IRQs */
+                __enable_irq();             
+            }
+            else if(RxLen == 2)
+            {
+                /* Enable Pos */
+                m_I2Cx->CR1 |= I2C_CR1_POS;
+                
+                /* Disable all active IRQs around ADDR clearing and STOP programming because the EV6_3
+                software sequence must complete before the current byte end of transfer */
+                __disable_irq();
+                
+                /* Clear ADDR flag */
+                LL_I2C_ClearFlag_ADDR(m_I2Cx);
+                
+                /* Disable Acknowledge */
+                m_I2Cx->CR1 &= ~I2C_CR1_ACK;
+                
+                /* Re-enable IRQs */
+                __enable_irq(); 
+            }
+            else
+            {
+                /* Enable Acknowledge */
+                m_I2Cx->CR1 |= I2C_CR1_ACK;
+                
+                /* Clear ADDR flag */
+                LL_I2C_ClearFlag_ADDR(m_I2Cx);
+            }
+            
+            while(RxLen > 0U)
+            {
+                if(RxLen <= 3U)
+                {
+                    /* One byte */
+                    if(RxLen == 1U)
+                    {
+                        /* Wait until RXNE flag is set */
+                        if(DataAvailableRXNE(I2C_TIMEOUT) == false)      
+                        {
+                            I2C_DEBUG_LOG(I2C_RXNE_TIMEOUT);
+                            return I2C_RXNE_TIMEOUT;
+                        }
+                        
+                        /* Read data from DR */
+                        (*RxBuf) = m_I2Cx->DR;
+                        RxLen--;
+                    }
+                    /* Two bytes */
+                    else if(RxLen == 2U)
+                    {
+                        /* Wait until BTF flag is set */
+                        if(TransferDone(I2C_TIMEOUT) == false)
+                        {         
+                            I2C_DEBUG_LOG(I2C_BTF_TIMEOUT);
+                            return I2C_BTF_TIMEOUT;                
+                        }
+                        
+                        /* Disable all active IRQs around ADDR clearing and STOP programming because the EV6_3
+                        software sequence must complete before the current byte end of transfer */
+                        __disable_irq();
+                        
+                        /* Generate Stop */
+                        m_I2Cx->CR1 |= I2C_CR1_STOP;
+                        
+                        /* Read data from DR */
+                        (*RxBuf++)= m_I2Cx->DR;
+                        RxLen--;
+                        
+                        /* Re-enable IRQs */
+                        __enable_irq();
+                        
+                        /* Read data from DR */
+                        (*RxBuf++) = m_I2Cx->DR;
+                        RxLen--;
+                    }
+                    /* 3 Last bytes */
+                    else
+                    {
+                        /* Wait until BTF flag is set */
+                        if(TransferDone(I2C_TIMEOUT) == false)
+                        {          
+                            I2C_DEBUG_LOG(I2C_BTF_TIMEOUT);
+                            return I2C_BTF_TIMEOUT;                
+                        }
+                        
+                        /* Disable Acknowledge */
+                        m_I2Cx->CR1 &= ~I2C_CR1_ACK;
+                        
+                        /* Disable all active IRQs around ADDR clearing and STOP programming because the EV6_3
+                        software sequence must complete before the current byte end of transfer */
+                        __disable_irq();
+                        
+                        /* Read data from DR */
+                        (*RxBuf++) = m_I2Cx->DR;
+                        RxLen--;
+                        
+                        /* Wait until BTF flag is set */
+                        if(TransferDone(I2C_TIMEOUT) == false)
+                        {         
+                            I2C_DEBUG_LOG(I2C_BTF_TIMEOUT);
+                            return I2C_BTF_TIMEOUT;                
+                        }
+                        
+                        /* Generate Stop */
+                        m_I2Cx->CR1 |= I2C_CR1_STOP;
+                        
+                        /* Read data from DR */
+                        (*RxBuf++) = m_I2Cx->DR;
+                        RxLen--;
+                        
+                        /* Re-enable IRQs */
+                        __enable_irq(); 
+                        
+                        /* Read data from DR */
+                        (*RxBuf++) = m_I2Cx->DR;
+                        RxLen--;
+                    }
+                }
+                else
                 {
                     /* Wait until RXNE flag is set */
                     if(DataAvailableRXNE(I2C_TIMEOUT) == false)      
@@ -370,107 +454,23 @@ namespace HAL
                     }
                     
                     /* Read data from DR */
-                    (*RxBuf) = m_I2Cx->DR;
+                    (*RxBuf++) = m_I2Cx->DR;
                     RxLen--;
-                }
-                /* Two bytes */
-                else if(RxLen == 2U)
-                {
-                    /* Wait until BTF flag is set */
-                    if(TransferDone(I2C_TIMEOUT) == false)
-                    {         
-                        I2C_DEBUG_LOG(I2C_BTF_TIMEOUT);
-                        return I2C_BTF_TIMEOUT;                
+                    
+                    if((bool)LL_I2C_IsActiveFlag_BTF(m_I2Cx) == true)
+                    {
+                        /* Read data from DR */
+                        (*RxBuf++) = m_I2Cx->DR;
+                        RxLen--;
                     }
-                    
-                    /* Disable all active IRQs around ADDR clearing and STOP programming because the EV6_3
-                    software sequence must complete before the current byte end of transfer */
-                    __disable_irq();
-                    
-                    /* Generate Stop */
-                    m_I2Cx->CR1 |= I2C_CR1_STOP;
-                    
-                    /* Read data from DR */
-                    (*RxBuf++)= m_I2Cx->DR;
-                    RxLen--;
-                    
-                    /* Re-enable IRQs */
-                    __enable_irq();
-                    
-                    /* Read data from DR */
-                    (*RxBuf++) = m_I2Cx->DR;
-                    RxLen--;
                 }
-                /* 3 Last bytes */
-                else
-                {
-                    /* Wait until BTF flag is set */
-                    if(TransferDone(I2C_TIMEOUT) == false)
-                    {          
-                        I2C_DEBUG_LOG(I2C_BTF_TIMEOUT);
-                        return I2C_BTF_TIMEOUT;                
-                    }
-                    
-                    /* Disable Acknowledge */
-                    m_I2Cx->CR1 &= ~I2C_CR1_ACK;
-                    
-                    /* Disable all active IRQs around ADDR clearing and STOP programming because the EV6_3
-                    software sequence must complete before the current byte end of transfer */
-                    __disable_irq();
-                    
-                    /* Read data from DR */
-                    (*RxBuf++) = m_I2Cx->DR;
-                    RxLen--;
-                    
-                    /* Wait until BTF flag is set */
-                    if(TransferDone(I2C_TIMEOUT) == false)
-                    {         
-                        I2C_DEBUG_LOG(I2C_BTF_TIMEOUT);
-                        return I2C_BTF_TIMEOUT;                
-                    }
-                    
-                    /* Generate Stop */
-                    m_I2Cx->CR1 |= I2C_CR1_STOP;
-                    
-                    /* Read data from DR */
-                    (*RxBuf++) = m_I2Cx->DR;
-                    RxLen--;
-                    
-                    /* Re-enable IRQs */
-                    __enable_irq(); 
-                    
-                    /* Read data from DR */
-                    (*RxBuf++) = m_I2Cx->DR;
-                    RxLen--;
-                }
-            }
-            else
-            {
-                /* Wait until RXNE flag is set */
-                if(DataAvailableRXNE(I2C_TIMEOUT) == false)      
-                {
-                    I2C_DEBUG_LOG(I2C_RXNE_TIMEOUT);
-                    return I2C_RXNE_TIMEOUT;
-                }
-                
-                /* Read data from DR */
-                (*RxBuf++) = m_I2Cx->DR;
-                RxLen--;
-                
-                if((bool)LL_I2C_IsActiveFlag_BTF(m_I2Cx) == true)
-                {
-                    /* Read data from DR */
-                    (*RxBuf++) = m_I2Cx->DR;
-                    RxLen--;
-                }
-            }
-        }       
+            }       
+            
+            I2C_DEBUG_LOG(I2C_OK);
+            return I2C_OK;
+        }
         
-        I2C_DEBUG_LOG(I2C_OK);
-        return I2C_OK;
-    }
-    
-    bool I2c::DetectSlave(uint8_t SlaveAddress)
+        bool I2c::DetectSlave(uint8_t SlaveAddress)
         {
             /* Wait until BUSY flag is reset */
             if( Busy(I2C_TIMEOUT) == true ) 
@@ -671,7 +671,7 @@ namespace HAL
             
 			/* Enable Acknowledge */
 			m_I2Cx->CR1 |= I2C_CR1_ACK;
-
+            
             Enable_EVT_BUF_ERR_Interrupt();
             
             /* Generate Start */
@@ -693,9 +693,9 @@ namespace HAL
             }
             
             return MasterTxRx_Intr(pTransaction->SlaveAddress, pTransaction->TxBuf ,pTransaction->TxLen, pTransaction->RxBuf ,
-                              pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus, pTransaction->XferDoneCallback);            
+                                   pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus, pTransaction->XferDoneCallback);            
         }        
-       
+        
         
         I2c::I2CStatus_t I2c::Post(Transaction_t* pTransaction, uint32_t Mode)
         {            
@@ -723,17 +723,17 @@ namespace HAL
                 if(Mode == 0)
                 {
                     return MasterTxRx_Intr(pTransaction->SlaveAddress, pTransaction->TxBuf ,pTransaction->TxLen, pTransaction->RxBuf ,
-                                      pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus,pTransaction->XferDoneCallback);  
+                                           pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus,pTransaction->XferDoneCallback);  
                 }
                 else
                 {
                     return MasterTxRx_DMA(pTransaction->SlaveAddress, pTransaction->TxBuf ,pTransaction->TxLen, pTransaction->RxBuf ,
-                                      pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus,pTransaction->XferDoneCallback);
+                                          pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus,pTransaction->XferDoneCallback);
                 }
             }                      
         }
         
-         //#pragma inline = forced
+        //#pragma inline = forced
         void I2c::TxnDoneHandler(uint32_t StopFlag)
         { 
             Transaction_t*          _pCurrentTxn;
@@ -748,7 +748,7 @@ namespace HAL
                     /* Generate Start */
                     m_I2Cx->CR1 |= I2C_CR1_START;
                     
-                     m_I2CState = MASTER_RX_REPEATED_START;
+                    m_I2CState = MASTER_RX_REPEATED_START;
                     
                     I2C_LOG_STATES(I2C_LOG_REPEATED_START);                     
                 }
@@ -821,8 +821,8 @@ namespace HAL
                         else
                         {                           
 #if I2C_DMA
-                             m_I2CState = MASTER_TX_DMA;
-							 /* Load DMA Tx transaction*/
+                            m_I2CState = MASTER_TX_DMA;
+                            /* Load DMA Tx transaction*/
 							m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(m_I2Cx->DR), (uint32_t)m_Transaction.TxBuf, m_Transaction.TxLen, LL_DMA_DIRECTION_MEMORY_TO_PERIPH );
 							
                             /* Load DMA Rx transaction*/
@@ -838,7 +838,7 @@ namespace HAL
                         // Next transaction starts with Rx only mode
                         if ( (m_I2CState == MASTER_TX) || (m_I2CState == MASTER_RX) )
                         {
-                                m_I2CState = MASTER_RX;
+                            m_I2CState = MASTER_RX;
                         }
                         else
                         {
@@ -849,7 +849,7 @@ namespace HAL
 							m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(m_I2Cx->DR), (uint32_t)m_Transaction.RxBuf, m_Transaction.RxLen, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
                             
                             /* Enable DMA Request */
-                           m_I2Cx->CR2 |= I2C_CR2_DMAEN;
+                            m_I2Cx->CR2 |= I2C_CR2_DMAEN;
 #endif
                         }
                     }
@@ -880,13 +880,13 @@ namespace HAL
                         //DataAvailableRXNE(1000000);
                         
                         m_I2CState = READY;
-
+                        
 						/* Disable Acknowledge */
                     	m_I2Cx->CR1 &= ~I2C_CR1_ACK;
-
+                        
 						/* Disable Last DMA */
                 		m_I2Cx->CR2 &= ~I2C_CR2_LAST;
-                
+                        
 						/* Disable DMA Request */            
                 		m_I2Cx->CR2 &= ~I2C_CR2_DMAEN;               
 						
@@ -908,484 +908,302 @@ namespace HAL
             default: break; 
             }            
         }
-        void I2c::ISR( IRQn_Type event )
-        {                
+		void I2c::ISR( IRQn_Type event )
+        {              			
             switch(POSITION_VAL(m_I2Cx->SR1))
             {
-            case I2C_SR1_SB_Pos : Master_SB_Handler(); 
-            break;
-            case I2C_SR1_ADDR_Pos:                    
-                if((m_I2CState == MASTER_TX) || (m_I2CState == MASTER_RX) || (m_I2CState == MASTER_TX_DMA) || (m_I2CState == MASTER_RX_DMA) )   Master_ADDR_Handler();
-                else if((m_I2CState == READY) || (m_I2CState == SLAVE_RX) || (m_I2CState == MASTER_TX_DMA))    Slave_ADDR_Handler(); // changing to Slave Tx here
-                else while(1);/* Fatal Error*/                        
-                break;
-                
-            case I2C_SR1_BTF_Pos :  
-                if     ((m_I2CState == MASTER_RX) || (m_I2CState == MASTER_RX_DMA))     Master_Rx_BTF_Handler();
-                else if((m_I2CState == MASTER_TX) || (m_I2CState == MASTER_TX_DMA))     Master_Tx_BTF_Handler();
-                else if(m_I2CState == SLAVE_RX )     Slave_Rx_BTF_Handler();
-                else if(m_I2CState == SLAVE_TX )     Slave_Tx_BTF_Handler(); 
-                else if(m_I2CState == MASTER_RX_REPEATED_START )     return;
-                else                                while(1);/* Fatal Error*/ 
-                break;
-                
-            case I2C_SR1_ADD10_Pos : 
-                break;
-                
-            case I2C_SR1_STOPF_Pos : Slave_STOP_Handler(); 
-            break;
-            
-            case I2C_SR1_RXNE_Pos : 
-                if     (m_I2CState == MASTER_RX)     Master_RxNE_Handler(); 
-                else if(m_I2CState == SLAVE_RX )     Slave_RxNE_Handler();  
-                else                                while(1);/* Fatal Error*/ 
-                break;
-                
-            case I2C_SR1_TXE_Pos : 
-                if     (m_I2CState == MASTER_TX)     Master_TxE_Handler(); 
-                else if(m_I2CState == SLAVE_TX )     Slave_TxE_Handler(); 
-                else                                while(1);/* Fatal Error*/                           
-                break;
-                
-            case I2C_SR1_BERR_Pos : 
-                Master_BERR_Handler();
-                break;
-                
-            case I2C_SR1_ARLO_Pos : 
-                Master_AL_Handler(); 
-                break;
-                
-            case I2C_SR1_AF_Pos :
-                if     (m_I2CState == MASTER_TX)     Master_AF_Handler(); 
-                else if(m_I2CState == SLAVE_TX )     Slave_AF_Handler();
-                else                                while(1);/* Fatal Error*/   
-                break;
-                
-            case I2C_SR1_OVR_Pos : 
-                Master_OVR_Handler(); 
-                break;
-                
-            case I2C_SR1_PECERR_Pos :
-                while(1);
-                break;
-                
-            default : /*while(1);*/return;
-            }
-            //}
-        }       
-        
-		void I2c::Master_SB_Handler()
-        {
-            if( (m_I2CState == MASTER_TX) || (m_I2CState == MASTER_TX_DMA) )
-            {
-                m_I2Cx->DR = m_Transaction.SlaveAddress & I2C_DIR_WRITE; 
-                I2C_LOG_STATES(I2C_LOG_SB_MASTER_TX);
-            }
-            else if((m_I2CState == MASTER_RX) || (m_I2CState == MASTER_RX_DMA))  
-            {
-                /* start listening RxNE and TxE interrupts */  
-                if((m_I2CState == MASTER_RX))
-                    Enable_BUF_Interrupt();
-                
-#ifndef I2C_RX_METHOD_1                
-                if(m_Transaction.RxLen == 2U) 
+            case SB : 
+                I2C_LOG_EVENTS(I2C_LOG_SB); 
+                if( (m_I2CState == MASTER_TX) || (m_I2CState == MASTER_TX_DMA) )
                 {
-                    /* Enable Pos */
-                    m_I2Cx->CR1 |= I2C_CR1_POS;
+                    m_I2Cx->DR = m_Transaction.SlaveAddress & I2C_DIR_WRITE; 
+                    I2C_LOG_STATES(I2C_LOG_SB_MASTER_TX);
                 }
+                else if((m_I2CState == MASTER_RX) || (m_I2CState == MASTER_RX_DMA))  
+                {
+                    /* start listening RxNE and TxE interrupts */  
+                    if((m_I2CState == MASTER_RX))
+                        Enable_BUF_Interrupt();
+                    
+#ifndef I2C_RX_METHOD_1                
+                    if(m_Transaction.RxLen == 2U) 
+                    {
+                        /* Enable Pos */
+                        m_I2Cx->CR1 |= I2C_CR1_POS;
+                    }
 #endif 
-                m_I2Cx->DR = m_Transaction.SlaveAddress | I2C_DIR_READ;
-                
-                I2C_LOG_STATES(I2C_LOG_SB_MASTER_RX);
-            }
-            else if(m_I2CState == MASTER_RX_REPEATED_START)
-            {
-                /* Repeated start is handled here, clear the flag*/
-                m_Transaction.RepeatedStart = 0;         
-                
+                    m_I2Cx->DR = m_Transaction.SlaveAddress | I2C_DIR_READ;
+                    
+                    I2C_LOG_STATES(I2C_LOG_SB_MASTER_RX);
+                }
+                else if(m_I2CState == MASTER_RX_REPEATED_START)
+                {
+                    /* Repeated start is handled here, clear the flag*/
+                    m_Transaction.RepeatedStart = 0;         
+                    
 #ifndef I2C_RX_METHOD_1                
-                if(m_Transaction.RxLen == 2U) 
-                {
-                    /* Enable Pos */
-                    m_I2Cx->CR1 |= I2C_CR1_POS;
-                }
+                    if(m_Transaction.RxLen == 2U) 
+                    {
+                        /* Enable Pos */
+                        m_I2Cx->CR1 |= I2C_CR1_POS;
+                    }
 #endif          
-                m_I2Cx->DR = m_Transaction.SlaveAddress | I2C_DIR_READ;  
-                
-                if(m_I2Cx->CR2 & I2C_CR2_DMAEN)
-                {
-                    m_I2CState = MASTER_RX_DMA;
-					I2C_LOG_STATES(I2C_LOG_REPEATED_START_MASTER_RX_DMA);
+                    m_I2Cx->DR = m_Transaction.SlaveAddress | I2C_DIR_READ;  
+                    
+                    if(m_I2Cx->CR2 & I2C_CR2_DMAEN)
+                    {
+                        m_I2CState = MASTER_RX_DMA;
+                        I2C_LOG_STATES(I2C_LOG_REPEATED_START_MASTER_RX_DMA);
+                    }
+                    else
+                    {
+                        /* start listening RxNE and TxE interrupts */                
+                        Enable_BUF_Interrupt();
+                        
+                        m_I2CState = MASTER_RX;
+                        
+                        I2C_LOG_STATES(I2C_LOG_SB_MASTER_RX_REPEATED_START);
+                    }
                 }
                 else
                 {
-                 	/* start listening RxNE and TxE interrupts */                
-                	Enable_BUF_Interrupt();
-					
-                    m_I2CState = MASTER_RX;
-
-					I2C_LOG_STATES(I2C_LOG_SB_MASTER_RX_REPEATED_START);
-                }
-            }
-            else
-            {
-                while(1);
-            }
-        }
-        
-        void I2c::Master_ADDR_Handler()
-        {
-            if(m_I2CState == MASTER_RX)
-            {
-                if(m_Transaction.RxLen == 1U)   
+                    while(1);
+                }						
+                break;
+            case ADDR: 
+				I2C_LOG_EVENTS(I2C_LOG_ADDR); 
+                if(m_I2CState == MASTER_RX)
                 {
-                    /* Clear ADDR flag */
-                    LL_I2C_ClearFlag_ADDR(m_I2Cx);
-                    
-                    /* Disable Acknowledge */
-                    m_I2Cx->CR1 &= ~I2C_CR1_ACK;
-                    
-                    /* Generate Stop */
-                    m_I2Cx->CR1 |= I2C_CR1_STOP;
-                    
-                    I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_1);                                       
-                }   
+                    if(m_Transaction.RxLen == 1U)   
+                    {
+                        /* Clear ADDR flag */
+                        LL_I2C_ClearFlag_ADDR(m_I2Cx);
+                        
+                        /* Disable Acknowledge */
+                        m_I2Cx->CR1 &= ~I2C_CR1_ACK;
+                        
+                        /* Generate Stop */
+                        m_I2Cx->CR1 |= I2C_CR1_STOP;
+                        
+                        I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_1);                                       
+                    }   
 #ifndef I2C_RX_METHOD_1 
-                else if(m_Transaction.RxLen == 2U)   
-                {
+                    else if(m_Transaction.RxLen == 2U)   
+                    {
+                        /* Clear ADDR flag */
+                        LL_I2C_ClearFlag_ADDR(m_I2Cx);
+                        
+                        /* Disable Acknowledge */
+                        m_I2Cx->CR1 &= ~I2C_CR1_ACK;
+                        
+                        I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_2);                       
+                    }
+#endif
+                    else
+                    {                    
+                        /* Clear ADDR flag */
+                        LL_I2C_ClearFlag_ADDR(m_I2Cx);
+                        
+                        I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_OTHER);
+                    }  
+                }
+                else if(m_I2CState == MASTER_TX)
+                {                
                     /* Clear ADDR flag */
                     LL_I2C_ClearFlag_ADDR(m_I2Cx);
                     
-                    /* Disable Acknowledge */
-                    m_I2Cx->CR1 &= ~I2C_CR1_ACK;
-                    
-                    I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_2);                       
+                    if(m_Transaction.TxLen > 0)
+                    {                    
+                        m_I2Cx->DR = (*m_Transaction.TxBuf++);
+                        m_Transaction.TxLen--;
+                        I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_TX_SIZE_GT_0);
+                    }
+                    else
+                    {
+                        //while(1);
+                    }
                 }
-#endif
-                else
-                {                    
+                else if( m_I2CState == MASTER_TX_DMA)
+                {                 
                     /* Clear ADDR flag */
                     LL_I2C_ClearFlag_ADDR(m_I2Cx);
                     
-                    I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_OTHER);
-                }  
-            }
-            else if(m_I2CState == MASTER_TX)
-            {                
-                /* Clear ADDR flag */
-                LL_I2C_ClearFlag_ADDR(m_I2Cx);
-                
-                if(m_Transaction.TxLen > 0)
-                {                    
-                    m_I2Cx->DR = (*m_Transaction.TxBuf++);
-                    m_Transaction.TxLen--;
-                    I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_TX_SIZE_GT_0);
+                    I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_TX_DMA);
+                }
+                else if(m_I2CState == MASTER_RX_DMA)
+                {                
+                    /* Clear ADDR flag */
+                    LL_I2C_ClearFlag_ADDR(m_I2Cx);
+                    
+                    I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_RX_DMA);
+                }
+                else if((m_I2CState == READY) || (m_I2CState == SLAVE_RX) || (m_I2CState == MASTER_TX_DMA))    
+                {
+                     // changing state to Slave Tx here
+                    /* Check the addressing mode*/
+                    if( (m_I2Cx->SR2 & LL_I2C_SR2_DUALF) == RESET)
+                    {
+                        m_Transaction.SlaveAddress = (m_I2Cx->OAR1 & 0x00FE); // Bit 1-7 are address
+                    }
+                    else
+                    {
+                        m_Transaction.SlaveAddress = (m_I2Cx->OAR2 & 0x00FE); // Bit 1-7 are address
+                    }            
+                    /* Transfer Direction requested by Master */
+                    if( (m_I2Cx->SR2 & LL_I2C_SR2_TRA) == RESET)
+                    {
+                        m_I2CState = SLAVE_RX;               
+                    }
+                    else
+                    {
+                        m_I2CState = SLAVE_TX;
+                    }
                 }
                 else
                 {
-                    //while(1);
+                    while(1);/* Fatal Error*/      
                 }
-            }
-            else if( m_I2CState == MASTER_TX_DMA)
-            {                 
-                /* Clear ADDR flag */
-                LL_I2C_ClearFlag_ADDR(m_I2Cx);
+                break;
                 
-                I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_TX_DMA);
-            }
-            else if(m_I2CState == MASTER_RX_DMA)
-            {                
-                /* Clear ADDR flag */
-                LL_I2C_ClearFlag_ADDR(m_I2Cx);
+            case BTF : 
+				I2C_LOG_EVENTS(I2C_LOG_BTF);
                 
-                I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_RX_DMA);
-            }
-            else
-            {
-                while(1);
-            }
-        }
-        
-        void I2c::Master_RxNE_Handler()
-        {
-#ifdef I2C_RX_METHOD_1
-            if(m_Transaction.RxLen == 2U)
-            {
-                /* Read data from DR */
-                (*m_Transaction.RxBuf++) = m_I2Cx->DR;                
-                m_Transaction.RxLen--;
-                
-                /* Disable Acknowledge */
-                m_I2Cx->CR1 &= ~I2C_CR1_ACK;
-                
-                /* Generate Stop */
-                m_I2Cx->CR1 |= I2C_CR1_STOP;   
-                
-                I2C_LOG_STATES(I2C_LOG_RXNE_MASTER_SIZE_2);
-            }
-            else if(m_Transaction.RxLen == 1U)
-            {
-                /* Read data from DR */
-                (*m_Transaction.RxBuf++) = m_I2Cx->DR;                
-                m_Transaction.RxLen--;
-                
-                /* Disable EVT, BUF and ERR interrupt */
-                Disable_EVT_BUF_ERR_Interrupt();
-                
-                I2C_LOG_STATES(I2C_LOG_RXNE_MASTER_SIZE_1);
-                
-                //Stop();
-                /*STOP = FALSE*/
-                TxnDoneHandler(0);                
-            }
-            else
-            {
-                /* Read data from DR */
-                (*m_Transaction.RxBuf++) = m_I2Cx->DR;                 
-                m_Transaction.RxLen--;
-                
-                I2C_LOG_STATES(I2C_LOG_RXNE_MASTER);
-            }
-#else
-            if(m_Transaction.RxLen > 3U)
-            {
-                /* Read data from DR */
-                (*m_Transaction.RxBuf++) = m_I2Cx->DR;                
-                m_Transaction.RxLen--;                
-            }
-            else if( (m_Transaction.RxLen == 2U) || (m_Transaction.RxLen == 3U) )
-            {
-                // Do nothing here, data 3 is here in data register.
-                // Let the data 2 also accumulate in shift register in next BTF.
-                // After that we read data 3 and data2 in the Master Rx BTF handler
-                I2C_LOG_STATES(I2C_LOG_RXNE_MASTER_SIZE_2_OR_3);
-            }
-            else
-            {    // This is for the case when Last byte/data1 is to be read
-                
-                /* Read data from DR */
-                (*m_Transaction.RxBuf++) = m_I2Cx->DR;                
-                m_Transaction.RxLen--;
-                
-                /* Disable EVT, BUF and ERR interrupt */
-                Disable_EVT_BUF_ERR_Interrupt();
-                
-                I2C_LOG_STATES(I2C_LOG_RXNE_MASTER_LAST);
-                
-                //Stop();
-                /*STOP = FALSE*/
-                TxnDoneHandler(0);                
-            }            
-#endif
-        }        
-        void I2c::Master_Rx_BTF_Handler()
-        {
-            if( m_I2CState == MASTER_RX_REPEATED_START)
-                return;            
-            
-            if(m_I2CState == MASTER_RX_DMA)            
-			{                
-
-				while(1);
-//                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_DMA_STOP);                
-//                TxnDoneHandler(I2C_CR1_STOP); 
-//                return;
-            }            
-            if(m_Transaction.RxLen == 3U)
-            {
-                /* Disable Acknowledge */
-                m_I2Cx->CR1 &= ~I2C_CR1_ACK;
-                
-                // Read data3
-                (*m_Transaction.RxBuf++) = m_I2Cx->DR;
-                m_Transaction.RxLen--;
-                
-                /* Generate Stop */
-                m_I2Cx->CR1 |= I2C_CR1_STOP; 
-                
-                // Read data2
-                (*m_Transaction.RxBuf++) = m_I2Cx->DR;
-                m_Transaction.RxLen--;                
-                
-                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_SIZE_3);
-            }
-            else if(m_Transaction.RxLen == 2U)
-            {                 
-                /* Generate Stop */
-                m_I2Cx->CR1 |= I2C_CR1_STOP;         
-                
-                // Read data2
-                (*m_Transaction.RxBuf++) = m_I2Cx->DR;
-                m_Transaction.RxLen--;
-                
-                // Read data1
-                (*m_Transaction.RxBuf++) = m_I2Cx->DR;
-                m_Transaction.RxLen--; 
-                
-                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_SIZE_2_STOPED);
-                
-                if (StopFlagCleared(I2C_TIMEOUT) == true)
+                if(m_I2CState == MASTER_RX_REPEATED_START ) 
                 {
-                    m_I2CStatus = I2C_STOP_TIMEOUT;
-                    (*m_Transaction.pStatus) = I2C_STOP_TIMEOUT;
+                    return;
                 }
+                else if((m_I2CState == MASTER_RX) || (m_I2CState == MASTER_RX_DMA))
+                {
+                    if( m_I2CState == MASTER_RX_REPEATED_START)
+                        return;            
+                    
+                    if(m_I2CState == MASTER_RX_DMA)            
+                    {                
+                        
+                        while(1);
+                        //                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_DMA_STOP);                
+                        //                TxnDoneHandler(I2C_CR1_STOP); 
+                        //                return;
+                    }            
+                    if(m_Transaction.RxLen == 3U)
+                    {
+                        /* Disable Acknowledge */
+                        m_I2Cx->CR1 &= ~I2C_CR1_ACK;
+                        
+                        // Read data3
+                        (*m_Transaction.RxBuf++) = m_I2Cx->DR;
+                        m_Transaction.RxLen--;
+                        
+                        /* Generate Stop */
+                        m_I2Cx->CR1 |= I2C_CR1_STOP; 
+                        
+                        // Read data2
+                        (*m_Transaction.RxBuf++) = m_I2Cx->DR;
+                        m_Transaction.RxLen--;                
+                        
+                        I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_SIZE_3);
+                    }
+                    else if(m_Transaction.RxLen == 2U)
+                    {                 
+                        /* Generate Stop */
+                        m_I2Cx->CR1 |= I2C_CR1_STOP;         
+                        
+                        // Read data2
+                        (*m_Transaction.RxBuf++) = m_I2Cx->DR;
+                        m_Transaction.RxLen--;
+                        
+                        // Read data1
+                        (*m_Transaction.RxBuf++) = m_I2Cx->DR;
+                        m_Transaction.RxLen--; 
+                        
+                        I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_SIZE_2_STOPED);
+                        
+                        if (StopFlagCleared(I2C_TIMEOUT) == true)
+                        {
+                            m_I2CStatus = I2C_STOP_TIMEOUT;
+                            (*m_Transaction.pStatus) = I2C_STOP_TIMEOUT;
+                        }
+                        TxnDoneHandler(0); 
+                    }
+                    else 
+                    {
+                        /* Read data from DR */
+                        (*m_Transaction.RxBuf++) = m_I2Cx->DR;
+                        m_Transaction.RxLen--;
+                        I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_SIZE_GT_3);
+                    } 
+                }
+                else if((m_I2CState == MASTER_TX) || (m_I2CState == MASTER_TX_DMA))
+                {
+                    if(m_I2CState == MASTER_TX_DMA)
+                    {
+                        //                if(m_Transaction.RxLen != 0)
+                        //				{
+                        //                    /* Load DMA Rx transaction*/
+                        //	                m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)m_Transaction.RxBuf, (uint32_t)&(m_I2Cx->DR), m_Transaction.RxLen, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
+                        //				}                
+                        I2C_LOG_STATES(I2C_LOG_BTF_MASTER_TX_DMA_STOP);
+                        TxnDoneHandler(I2C_CR1_STOP);  
+                    }            
+                    else if(m_Transaction.TxLen > 0)
+                    {
+                        m_I2Cx->DR = (*m_Transaction.TxBuf++);
+                        m_Transaction.TxLen--;
+                        I2C_LOG_STATES(I2C_LOG_BTF_MASTER_TX_GT_0);
+                    }
+                    else
+                    {
+                        TxnDoneHandler(I2C_CR1_STOP);
+                    }
+                    
+                }
+                else if(m_I2CState == SLAVE_RX )
+                {
+                    /* Queue the received data */
+                    if(m_I2CSlaveRxQueue.IsQueueFull() == false)
+                    {
+                        m_I2CSlaveRxQueue.Write(m_I2Cx->DR);
+                        I2C_LOG_STATES(I2C_LOG_BTF_SLAVE_RX_QUEUED);
+                    }
+                    else
+                    {                
+                        I2C_LOG_STATES(I2C_LOG_BTF_SLAVE_RX_QUEUE_FULL);
+                    }
+                }
+                else if(m_I2CState == SLAVE_TX )    
+                {
+                    uint8_t Data;
+                    if(m_I2CSlaveTxQueue.IsQueueEmpty() != true)
+                    {
+                        m_I2CSlaveTxQueue.Read(Data);
+                        
+                        m_I2Cx->DR = Data;
+                        
+                        I2C_LOG_STATES(I2C_LOG_BTF_SLAVE_TX);
+                    }
+                    else
+                    {                
+                        m_I2Cx->DR = 0xDE; // Send some junk data
+                        
+                        I2C_LOG_STATES(I2C_LOG_BTF_SLAVE_TX_QUEUE_EMPTY);
+                        
+                        if(m_TxQueueEmptyCallback)
+                            m_TxQueueEmptyCallback->CallbackFunction();
+                    }
+                }
+                else
+                {
+                    while(1);/* Fatal Error*/ 
+                }
+                break;
                 
-                //Stop();
-                /*STOP = FALSE*/
-                TxnDoneHandler(0); 
-            }
-            else 
-            {
-                /* Read data from DR */
-                (*m_Transaction.RxBuf++) = m_I2Cx->DR;
-                m_Transaction.RxLen--;
-                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_SIZE_GT_3);
-            }              
-             
-        }        
-        
-        void I2c::Master_TxE_Handler()
-        {
-            if( m_I2CState == MASTER_RX_REPEATED_START)
-                return;
-            
-            if(m_Transaction.TxLen > 0)
-            {
-                m_I2Cx->DR = (*m_Transaction.TxBuf++);
-                m_Transaction.TxLen--;
-                I2C_LOG_STATES(I2C_LOG_TXE);
-            } 
-            else
-            {
-                I2C_LOG_STATES(I2C_LOG_TXE_DONE);
-                TxnDoneHandler(I2C_CR1_STOP);
-            }
-        }
-        
-        void I2c::Master_Tx_BTF_Handler()
-        {
-            if(m_I2CState == MASTER_TX_DMA)
-            {
-//                if(m_Transaction.RxLen != 0)
-//				{
-//                    /* Load DMA Rx transaction*/
-//	                m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)m_Transaction.RxBuf, (uint32_t)&(m_I2Cx->DR), m_Transaction.RxLen, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
-//				}                
-				I2C_LOG_STATES(I2C_LOG_BTF_MASTER_TX_DMA_STOP);
-                TxnDoneHandler(I2C_CR1_STOP);  
-            }            
-            else if(m_Transaction.TxLen > 0)
-            {
-                m_I2Cx->DR = (*m_Transaction.TxBuf++);
-                m_Transaction.TxLen--;
-                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_TX_GT_0);
-            }
-            else
-            {
-                TxnDoneHandler(I2C_CR1_STOP);
-            }
-        }
-        
-        void I2c::Slave_ADDR_Handler()
-        {            
-            /* Check the addressing mode*/
-            if( (m_I2Cx->SR2 & LL_I2C_SR2_DUALF) == RESET)
-            {
-                m_Transaction.SlaveAddress = (m_I2Cx->OAR1 & 0x00FE); // Bit 1-7 are address
-            }
-            else
-            {
-                m_Transaction.SlaveAddress = (m_I2Cx->OAR2 & 0x00FE); // Bit 1-7 are address
-            }            
-            /* Transfer Direction requested by Master */
-            if( (m_I2Cx->SR2 & LL_I2C_SR2_TRA) == RESET)
-            {
-                m_I2CState = SLAVE_RX;               
-            }
-            else
-            {
-                m_I2CState = SLAVE_TX;
-            }             
-        }
-        
-        void I2c::Slave_Tx_BTF_Handler()
-        {
-            uint8_t Data;
-            if(m_I2CSlaveTxQueue.IsQueueEmpty() != true)
-            {
-                m_I2CSlaveTxQueue.Read(Data);
+            case ADD10 : 
+                I2C_LOG_EVENTS(I2C_LOG_ADD10);
+                break;
                 
-                m_I2Cx->DR = Data;
-                
-                I2C_LOG_STATES(I2C_LOG_BTF_SLAVE_TX);
-            }
-            else
-            {                
-                m_I2Cx->DR = 0xDE; // Send some junk data
-                
-                I2C_LOG_STATES(I2C_LOG_BTF_SLAVE_TX_QUEUE_EMPTY);
-                
-                if(m_TxQueueEmptyCallback)
-                    m_TxQueueEmptyCallback->CallbackFunction();
-            }
-        }
-        
-        void I2c::Slave_Rx_BTF_Handler()
-        {
-            /* Queue the received data */
-            if(m_I2CSlaveRxQueue.IsQueueFull() == false)
-            {
-                m_I2CSlaveRxQueue.Write(m_I2Cx->DR);
-                I2C_LOG_STATES(I2C_LOG_BTF_SLAVE_RX_QUEUED);
-            }
-            else
-            {                
-                I2C_LOG_STATES(I2C_LOG_BTF_SLAVE_RX_QUEUE_FULL);
-            }
-        }
-        
-        void I2c::Slave_TxE_Handler()
-        {
-            uint8_t Data;
-            if(m_I2CSlaveTxQueue.IsQueueEmpty() != true)
-            {
-                m_I2CSlaveTxQueue.Read(Data);
-                
-                m_I2Cx->DR = Data;
-                
-                I2C_LOG_STATES(I2C_LOG_TxE_SLAVE_TX);
-            }
-            else
-            {                
-                m_I2Cx->DR = 0xDE; // Send some junk data
-                
-                I2C_LOG_STATES(I2C_LOG_TxE_SLAVE_TX_QUEUE_EMPTY);
-                
-                if(m_TxQueueEmptyCallback)
-                    m_TxQueueEmptyCallback->CallbackFunction();
-            }            
-        }
-        
-        void I2c::Slave_RxNE_Handler()
-        {
-            /* Queue the received data */
-            if(m_I2CSlaveRxQueue.IsQueueFull() == false)
-            {
-                m_I2CSlaveRxQueue.Write(m_I2Cx->DR);
-                I2C_LOG_STATES(I2C_LOG_RXNE_SLAVE_RX_QUEUED);
-            }
-            else
-            {
-                if(m_RxQueueFullCallback)
-                    m_RxQueueFullCallback->CallbackFunction();
-                
-                I2C_LOG_STATES(I2C_LOG_RXNE_SLAVE_RX_QUEUE_FULL);
-            }           
-        }
-        
-        void I2c::Slave_STOP_Handler()
-        {
-            LL_I2C_ClearFlag_STOP(m_I2Cx);            
+            case STOPF : 
+			I2C_LOG_EVENTS(I2C_LOG_STOPF);
+            LL_I2C_ClearFlag_STOP(m_I2Cx);  
             
             /* Execute the RxDone Callback */
             if(m_SlaveRxDoneCallback)
@@ -1394,49 +1212,199 @@ namespace HAL
             m_I2CState = READY;
             
             I2C_LOG_STATES(I2C_LOG_STOPF_FLAG);
+            break;
+            case RXNE :
+				I2C_LOG_EVENTS(I2C_LOG_RXNE);
+                if(m_I2CState == MASTER_RX)
+                {
+#ifdef I2C_RX_METHOD_1
+                    if(m_Transaction.RxLen == 2U)
+                    {
+                        /* Read data from DR */
+                        (*m_Transaction.RxBuf++) = m_I2Cx->DR;                
+                        m_Transaction.RxLen--;
+                        
+                        /* Disable Acknowledge */
+                        m_I2Cx->CR1 &= ~I2C_CR1_ACK;
+                        
+                        /* Generate Stop */
+                        m_I2Cx->CR1 |= I2C_CR1_STOP;   
+                        
+                        I2C_LOG_STATES(I2C_LOG_RXNE_MASTER_SIZE_2);
+                    }
+                    else if(m_Transaction.RxLen == 1U)
+                    {
+                        /* Read data from DR */
+                        (*m_Transaction.RxBuf++) = m_I2Cx->DR;                
+                        m_Transaction.RxLen--;
+                        
+                        /* Disable EVT, BUF and ERR interrupt */
+                        Disable_EVT_BUF_ERR_Interrupt();
+                        
+                        I2C_LOG_STATES(I2C_LOG_RXNE_MASTER_SIZE_1);
+                        
+                        TxnDoneHandler(0);                
+                    }
+                    else
+                    {
+                        /* Read data from DR */
+                        (*m_Transaction.RxBuf++) = m_I2Cx->DR;                 
+                        m_Transaction.RxLen--;
+                        
+                        I2C_LOG_STATES(I2C_LOG_RXNE_MASTER);
+                    }
+#else
+                    if(m_Transaction.RxLen > 3U)
+                    {
+                        /* Read data from DR */
+                        (*m_Transaction.RxBuf++) = m_I2Cx->DR;                
+                        m_Transaction.RxLen--;                
+                    }
+                    else if( (m_Transaction.RxLen == 2U) || (m_Transaction.RxLen == 3U) )
+                    {
+                        // Do nothing here, data 3 is here in data register.
+                        // Let the data 2 also accumulate in shift register in next BTF.
+                        // After that we read data 3 and data2 in the Master Rx BTF handler
+                        I2C_LOG_STATES(I2C_LOG_RXNE_MASTER_SIZE_2_OR_3);
+                    }
+                    else
+                    {      
+                        // This is for the case when Last byte/data1 is to be read
+                        /* Read data from DR */
+                        (*m_Transaction.RxBuf++) = m_I2Cx->DR;                
+                        m_Transaction.RxLen--;
+                        
+                        /* Disable EVT, BUF and ERR interrupt */
+                        Disable_EVT_BUF_ERR_Interrupt();
+                        
+                        I2C_LOG_STATES(I2C_LOG_RXNE_MASTER_LAST);
+                        TxnDoneHandler(0);                
+                    }        
+#endif
+                }
+                else if(m_I2CState == SLAVE_RX )
+                {
+                    /* Queue the received data */
+                    if(m_I2CSlaveRxQueue.IsQueueFull() == false)
+                    {
+                        m_I2CSlaveRxQueue.Write(m_I2Cx->DR);
+                        I2C_LOG_STATES(I2C_LOG_RXNE_SLAVE_RX_QUEUED);
+                    }
+                    else
+                    {
+                        if(m_RxQueueFullCallback)
+                            m_RxQueueFullCallback->CallbackFunction();
+                        
+                        I2C_LOG_STATES(I2C_LOG_RXNE_SLAVE_RX_QUEUE_FULL);
+                    } 
+                }
+                else
+                {
+                    while(1);/* Fatal Error*/ 
+                }
+                break;
+                
+            case TXE : 
+				I2C_LOG_EVENTS(I2C_LOG_TXE);
+                if(m_I2CState == MASTER_TX)   
+                {
+                    if( m_I2CState == MASTER_RX_REPEATED_START)
+                        return;
+                    
+                    if(m_Transaction.TxLen > 0)
+                    {
+                        m_I2Cx->DR = (*m_Transaction.TxBuf++);
+                        m_Transaction.TxLen--;
+                        I2C_LOG_STATES(I2C_LOG_TXE_GT_0);
+                    } 
+                    else
+                    {
+                        I2C_LOG_STATES(I2C_LOG_TXE_DONE);
+                        TxnDoneHandler(I2C_CR1_STOP);
+                    }
+                }
+                else if(m_I2CState == SLAVE_TX )  
+                {
+                    uint8_t Data;
+                    if(m_I2CSlaveTxQueue.IsQueueEmpty() != true)
+                    {
+                        m_I2CSlaveTxQueue.Read(Data);
+                        
+                        m_I2Cx->DR = Data;
+                        
+                        I2C_LOG_STATES(I2C_LOG_TxE_SLAVE_TX);
+                    }
+                    else
+                    {                
+                        m_I2Cx->DR = 0xDE; // Send some junk data
+                        
+                        I2C_LOG_STATES(I2C_LOG_TxE_SLAVE_TX_QUEUE_EMPTY);
+                        
+                        if(m_TxQueueEmptyCallback)
+                            m_TxQueueEmptyCallback->CallbackFunction();
+                    }            
+                }
+                else
+                {
+                    while(1);/* Fatal Error*/  
+                }
+                break;
+                
+            case BERR : 
+				I2C_LOG_EVENTS(I2C_LOG_BERR);
+                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_BERR);
+                LL_I2C_ClearFlag_BERR(m_I2Cx);
+                /* Workaround: Start cannot be generated after a misplaced Stop */
+                SoftReset();
+                m_I2CStatus = I2C_BUS_ERROR; 
+                break;
+                
+            case ARLO : 
+				I2C_LOG_EVENTS(I2C_LOG_ARLO);
+                m_I2CStatus = I2C_ARB_LOST;
+                LL_I2C_ClearFlag_ARLO(m_I2Cx);
+                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_ARB_LOST);
+                break;
+                
+            case AF :
+				I2C_LOG_EVENTS(I2C_LOG_AF);
+                if(m_I2CState == MASTER_TX)  
+                {
+                    m_I2CStatus = I2C_ACK_FAIL;
+                    LL_I2C_ClearFlag_AF(m_I2Cx);
+                    I2C_LOG_STATES(I2C_LOG_BTF_MASTER_ACK_FAIL);
+                }
+                else if(m_I2CState == SLAVE_TX ) 
+                {
+                    LL_I2C_ClearFlag_AF(m_I2Cx);  
+                    
+                    if(m_SlaveTxDoneCallback)
+                        m_SlaveTxDoneCallback->CallbackFunction();
+                    
+                    m_I2CState = READY;                    
+                    I2C_LOG_STATES(I2C_LOG_AF_SLAVE_ACK_FAIL);
+                }
+                else                                
+                {
+                    while(1);/* Fatal Error*/   
+                }
+                break;
+                
+            case OVR : 
+				I2C_LOG_EVENTS(I2C_LOG_OVR);
+                m_I2CStatus = I2C_DATA_OVR;
+                LL_I2C_ClearFlag_OVR(m_I2Cx);
+                I2C_LOG_STATES(I2C_LOG_BTF_MASTER_DATA_OVR);
+                break;
+                
+            case PECERR :
+				I2C_LOG_EVENTS(I2C_LOG_PECERR);
+                while(1); // Not Implemented currently
+                break;
+                
+            default : /*while(1);*/return;
+            }
         }       
-        
-        void I2c::Slave_AF_Handler()
-        {            
-            LL_I2C_ClearFlag_AF(m_I2Cx);            
-            
-            if(m_SlaveTxDoneCallback)
-                m_SlaveTxDoneCallback->CallbackFunction();
-            
-            m_I2CState = READY;
-            
-            I2C_LOG_STATES(I2C_LOG_AF_SLAVE_ACK_FAIL);
-        }
-        
-        void I2c::Master_BERR_Handler()
-        {
-            I2C_LOG_STATES(I2C_LOG_BTF_MASTER_BERR);
-            LL_I2C_ClearFlag_BERR(m_I2Cx);
-            /* Workaround: Start cannot be generated after a misplaced Stop */
-            SoftReset();
-            m_I2CStatus = I2C_BUS_ERROR;
-        }
-        
-        void I2c::Master_AF_Handler()
-        {
-            m_I2CStatus = I2C_ACK_FAIL;
-            LL_I2C_ClearFlag_AF(m_I2Cx);
-            I2C_LOG_STATES(I2C_LOG_BTF_MASTER_ACK_FAIL);
-        }
-        
-        void I2c::Master_AL_Handler()
-        {
-            m_I2CStatus = I2C_ARB_LOST;
-            LL_I2C_ClearFlag_ARLO(m_I2Cx);
-            I2C_LOG_STATES(I2C_LOG_BTF_MASTER_ARB_LOST);
-        }
-        
-        void I2c::Master_OVR_Handler()
-        {
-            m_I2CStatus = I2C_DATA_OVR;
-            LL_I2C_ClearFlag_OVR(m_I2Cx);
-            I2C_LOG_STATES(I2C_LOG_BTF_MASTER_DATA_OVR);
-        }  
 #endif
         
 #if I2C_DMA
@@ -1473,7 +1441,7 @@ namespace HAL
                 m_I2Cx->CR2 |= I2C_CR2_LAST;
             }
             
-             /* Load DMA Tx transaction*/
+            /* Load DMA Tx transaction*/
             m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(m_I2Cx->DR), (uint32_t)TxBuf, TxLen, LL_DMA_DIRECTION_MEMORY_TO_PERIPH);
             
             m_I2CState = MASTER_TX_DMA;
@@ -1498,12 +1466,12 @@ namespace HAL
         }
         
         I2c::I2CStatus_t I2c:: MasterTxRx_DMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf, uint32_t RxLen, 
-                                                      uint8_t RepeatedStart,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback)
+                                              uint8_t RepeatedStart,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback)
         {             
             if(m_I2CState != READY)
                 return I2C_BUSY;
             
-           if( ((TxBuf == nullptr) && (RxBuf == nullptr)) || (pStatus == nullptr) )
+            if( ((TxBuf == nullptr) && (RxBuf == nullptr)) || (pStatus == nullptr) )
             {       
                 I2C_DEBUG_LOG(I2C_INVALID_PARAMS);                
                 return I2C_INVALID_PARAMS;                
@@ -1541,7 +1509,7 @@ namespace HAL
             
             /* Enable Last DMA bit */
             m_I2Cx->CR2 |= I2C_CR2_LAST;
-                
+            
             /* Disable Pos */
             m_I2Cx->CR1 &= ~I2C_CR1_POS;
             
@@ -1590,7 +1558,7 @@ namespace HAL
             
             /* Load DMA Rx transaction*/
             m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(m_I2Cx->DR), (uint32_t)RxBuf, RxLen, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
-             
+            
             if(RxLen == 1)
             {
                 /* Set the last data xfer bit*/
@@ -1630,7 +1598,7 @@ namespace HAL
             }
             
             return MasterTxRx_DMA(pTransaction->SlaveAddress, pTransaction->TxBuf ,pTransaction->TxLen, pTransaction->RxBuf ,
-                              pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus, pTransaction->XferDoneCallback);            
+                                  pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus, pTransaction->XferDoneCallback);            
         }     
         
         I2c::I2CStatus_t I2c::SlaveRx_Intr(uint8_t* RxBuf, uint32_t RxLen, I2CCallback_t XferDoneCallback )
@@ -1665,7 +1633,7 @@ namespace HAL
                 
                 // This varoable is used by TxnDoneHandler() to keep track of completion status
                 m_Transaction.TxLen = 0;                				
-					
+                
                 I2C_LOG_STATES(I2c::I2C_LOG_DMA_TX_DONE);
             }     
             /* Half Transfer Complete Interrupt management ******************************/
@@ -1724,15 +1692,15 @@ namespace HAL
                 
                 /* Clear the half transfer complete flag */
                 LL_DMA_ClearFlag_HT7(m_DMAx->_DMAx);        
-                 
+                
                 /* Generate Stop */
                 m_I2Cx->CR1 |= I2C_CR1_STOP;
                 
-				 // This variable is used by TxnDoneHandler() to keep track of completion status
+                // This variable is used by TxnDoneHandler() to keep track of completion status
 				m_Transaction.RxLen = 0;
                 
                 I2C_LOG_STATES(I2c::I2C_LOG_DMA_RX_DONE);
-				 
+                
                 TxnDoneHandler(0); 
             }           
             /* Half Transfer Complete Interrupt management ******************************/

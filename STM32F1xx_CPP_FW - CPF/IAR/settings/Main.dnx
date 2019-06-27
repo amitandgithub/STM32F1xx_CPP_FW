@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <settings>
     <DebugChecksum>
-        <Checksum>3370356675</Checksum>
+        <Checksum>25596320</Checksum>
     </DebugChecksum>
     <StLinkDriver>
+        <stlinkserialNo>20491587</stlinkserialNo>
+        <stlinkfoundProbes />
         <CStepIntDis>_ 0</CStepIntDis>
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
         <stlinkResetStyle>0</stlinkResetStyle>
         <stlinkResetStrategy>1</stlinkResetStrategy>
-        <stlinkserialNo>20491587</stlinkserialNo>
-        <stlinkfoundProbes />
     </StLinkDriver>
     <CodeCoverage>
         <Enabled>_ 0</Enabled>
@@ -26,8 +26,8 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <Disassembly>
-        <MixedMode>1</MixedMode>
         <InstrCount>0</InstrCount>
+        <MixedMode>1</MixedMode>
     </Disassembly>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -57,6 +57,7 @@
     <Registers>
         <regBase0>R0 10</regBase0>
         <regBase1>R4 10</regBase1>
+        <regBase2>DWT_CYCCNT 10</regBase2>
     </Registers>
     <Trace1>
         <Enabled>0</Enabled>
@@ -77,10 +78,6 @@
         <FreqHi>0</FreqHi>
         <MultiCoreRunAll>1</MultiCoreRunAll>
     </Simulator>
-    <struct_types>
-        <Fmt0>class Utils::DebugLog&lt;unsigned int, 5U, 7U, 20U, 100U&gt;-Overflow_Counter	4	0</Fmt0>
-        <Fmt1>class Utils::DebugLog&lt;unsigned int, 5U, 7U, 20U, 100U&gt;-m_ModuleEnableMask	4	0</Fmt1>
-    </struct_types>
     <Trace2>
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>
@@ -132,6 +129,10 @@
     <Breakpoints2>
         <Count>0</Count>
     </Breakpoints2>
+    <TermIOLog>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+    </TermIOLog>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -156,8 +157,4 @@
     <CallStackStripe>
         <ShowTiming>1</ShowTiming>
     </CallStackStripe>
-    <TermIOLog>
-        <LoggingEnabled>_ 0</LoggingEnabled>
-        <LogFile>_ ""</LogFile>
-    </TermIOLog>
 </settings>

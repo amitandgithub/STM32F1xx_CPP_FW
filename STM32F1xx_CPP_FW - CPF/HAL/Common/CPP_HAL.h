@@ -35,21 +35,26 @@ typedef void (*HALCallback_t)();
 
 }
 
-//#define SET_BIT(REG, BIT)     ((REG) |= (BIT))
-//
-//#define CLEAR_BIT(REG, BIT)   ((REG) &= ~(BIT))
-//
-//#define READ_BIT(REG, BIT)    ((REG) & (BIT))
-//
-//#define CLEAR_REG(REG)        ((REG) = (0x0))
-//
-//#define WRITE_REG(REG, VAL)   ((REG) = (VAL))
-//
-//#define READ_REG(REG)         ((REG))
-//
-//#define MODIFY_REG(REG, CLEARMASK, SETMASK)  WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
-//
-//#define POSITION_VAL(VAL)     (__CLZ(__RBIT(VAL))) 
+#if 0
+void delayUS_DWT(uint32_t us) {
+	volatile uint32_t cycles = (SystemCoreClock/1000000L)*us;
+	volatile uint32_t start = DWT->CYCCNT;
+	do  {
+	} while(DWT->CYCCNT - start < cycles);
+}
+
+
+uint32_t cycles = 0;
+
+/* DWT struct is defined inside the core_cm4.h file */
+DWT->CTRL |= 1 ; // enable the counter
+DWT->CYCCNT = 0; // reset the counter
+delayUS(1);
+cycles = DWT->CYCCNT;
+cycles--; /* We subtract the cycle used to transfer 
+             CYCCNT content to cycles variable */
+			 	
+#endif
 
 /* Private define ------------------------------------------------------------*/
 

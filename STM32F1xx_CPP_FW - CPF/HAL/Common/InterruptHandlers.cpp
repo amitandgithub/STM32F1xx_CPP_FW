@@ -30,6 +30,7 @@ namespace HAL
 ///
 /// @param type The IRQ number that was called
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 void Nvic_Handler( InterruptManager::IRQn_t IRQNumber )
 {
     //ASSERT_CRITICAL_IF(InterruptManager::m_IrqConfigs[type].m_pInterruptSource == NULL, "Null Pointer");
@@ -38,9 +39,8 @@ void Nvic_Handler( InterruptManager::IRQn_t IRQNumber )
     {
         InterruptManager::_InterruptSourceArray[IRQNumber]->ISR(IRQNumber);
     }
-
     // Clear the interrupt
-    InterruptManager::GetInstance()->ClearInterrupt(IRQNumber);
+    NVIC->ICPR[(((uint32_t)(int32_t)IRQNumber) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQNumber) & 0x1FUL));
 }
 
 
