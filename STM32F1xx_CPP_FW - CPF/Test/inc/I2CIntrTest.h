@@ -12,6 +12,8 @@ static uint8_t VoltageReg = 2,CurrentReg = 4;
 static uint16_t VoltageValue,CurrentValue;
 static I2c::I2CStatus_t Status,CurrentTxnStatus,VoltageTxnStatus;
 
+#if (I2C_INT) || (I2C_DMA) 
+
 class I2CCallback : public Callback
 {
     void CallbackFunction()
@@ -75,15 +77,16 @@ class I2CRxDoneCallback_t : public Callback
         I2CDevIntr.m_I2CSlaveTxQueue.Write(I2CDevIntr.ReadRxData()+1);        
     }
 };
-
+#endif
 void I2c_Test()
 {        
     static INA219 INA219_Dev(&I2CDevIntr,0x80U);
     static float Voltage,Current;
-    
+#if (I2C_INT) || (I2C_DMA)   
     static class I2CCallback I2C_XferDone_Callback;
     static class I2CRxFullCallback_t I2CRxQueueFullCallback;
     static class I2CRxDoneCallback_t I2CRxDoneCallback;
+#endif
     uint8_t RepeatedStart;
    
     static uint32_t Q_Sucess,Q_Fail;
@@ -98,18 +101,20 @@ void I2c_Test()
     INA219_Dev.HwInit();
     
     B13.HwInit();
+#if I2C_INT
     Transaction.XferDoneCallback = &I2C_XferDone_Callback;
-    
     I2CDevIntr.SetCallback(HAL::I2c::I2C_RX_QUEUE_FULL_CALLBACK,&I2CRxQueueFullCallback);
     I2CDevIntr.SetCallback(HAL::I2c::I2C_SLAVE_RX_COMPLETE_CALLBACK,&I2CRxDoneCallback);
     //I2CDevIntr.StartListening();
-    
-    testID = 21;
+#endif    
+    testID = 20;
     
     while(1)
     {
         switch(testID)
         {
+            
+#if I2C_INT
         case 0:  // Send 16 bytes
             I2CDevIntr.MasterTx_Intr(slaveaddress,name,sizeof(name)/sizeof(uint8_t),&Status); 
             while(I2CDevIntr.GetState() != HAL::I2c::READY);
@@ -503,7 +508,8 @@ void I2c_Test()
             }
             //testID = 7;
             break;    
-            
+#endif        
+#if I2C_DMA
             case 15: // INA219 with DMA   
             /* INA219 Test without repeated start*/                
             reg = 2;
@@ -625,13 +631,9 @@ void I2c_Test()
             I2CDevIntr.Post(&Transaction1,1);
             I2CDevIntr.Post(&Transaction2,1);
             
-            //testID = 15; 
-            //LL_mDelay(200);
-           // printf("0x%x \n",I2CDevIntr.I2CStates[logidx++]);
-           // if(logidx == 1498)
-           //     logidx = 0;
+            //testID = 15;             
             break;
-            
+#endif           
         default: break;
         
         }

@@ -23,7 +23,7 @@
 namespace HAL
 {    
     
-#define I2C_INT   1
+#define I2C_INT   0
 #define I2C_DMA   1
     
 #define I2C_DEBUG 
@@ -87,17 +87,18 @@ namespace HAL
 		typedef enum 
         {
 			SB = 0U,
-            ADDR,
-            BTF,
-            ADD10,
-			STOPF,
-            RXNE,
-            TXE,
-            BERR,
-            ARLO,
-            AF,
-            OVR,
-            PECERR
+            ADDR = 1U,
+            BTF = 2U,
+            ADD10 = 3U,
+			STOPF = 4U,
+            RSVD = 5U,
+            RXNE = 6U,
+            TXE = 7U,
+            BERR = 8U,
+            ARLO = 9U,
+            AF = 10U,
+            OVR = 11U,
+            PECERR = 12U
         }I2C_Interrupts_t;
 		
         typedef enum
@@ -640,7 +641,7 @@ namespace HAL
     //#define I2C_LOG_STATES(log) (I2CStates[I2CStates_Idx++  % I2C_LOG_STATES_SIZE] = (log))
 #define I2C_DEBUG_LOG(log) (m_I2CStatus = (log))  // 108 bytes of ROM
 #define I2C_LOG_STATES(log) LogStates(log)
-#define I2C_LOG_EVENTS(log) LogStates(log)
+#define I2C_LOG_EVENTS(log) //LogStates(log)
     
 #else
     
