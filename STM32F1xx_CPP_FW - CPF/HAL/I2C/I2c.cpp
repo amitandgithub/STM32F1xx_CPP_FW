@@ -574,13 +574,7 @@ namespace HAL
             }
             
             if (RxLen != 0)
-            {                
-                /* Wait until BUSY flag is reset */
-//                if( Busy(I2C_TIMEOUT) == true )
-//                {
-//                    I2C_DEBUG_LOG(I2C_BUSY_TIMEOUT);
-//                    return I2C_BUSY_TIMEOUT;
-//                }
+            {
                 
                 /* Disable Pos */
                 m_I2Cx->CR1 &= ~I2C_CR1_POS;
