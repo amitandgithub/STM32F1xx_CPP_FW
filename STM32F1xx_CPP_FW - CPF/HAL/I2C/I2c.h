@@ -22,16 +22,15 @@
 
 namespace HAL
 {    
-    
-#define I2C_INT   0
+
+#define I2C_POLL  1
+#define I2C_INT   1
 #define I2C_DMA   1
     
 #define I2C_DEBUG 
 #define I2C_LOG_STATES_SIZE 1500
     
-#define I2C_RX_METHOD_1
-    
-    
+#define I2C_RX_METHOD_1 
     
     class I2c : public InterruptSource
     {
@@ -193,24 +192,24 @@ namespace HAL
             I2C_LOG_AF										=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,88),
             I2C_LOG_OVR										=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,89),
             I2C_LOG_PECERR									=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,90),
-            I2C_LOG_ADD10                                	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,91),/*
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,92),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,93),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,94),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,95),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,96),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,97),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,98),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,99),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,100),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,101),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,102),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,103),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,104),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,105),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,106),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,107),
-            I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,108),
+            I2C_LOG_ADD10                                	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,91),
+            I2C_LOG_START_TIMEOUT                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,92),
+            I2C_LOG_START_DONE                              =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,93),
+            I2C_LOG_ADDR_TIMEOUT                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,94),
+            I2C_LOG_ADDR_SENT                               =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,95),
+            I2C_LOG_TXE_TIMEOUT                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,96),
+            I2C_LOG_TX_DONE                                 =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,97),
+            I2C_LOG_RX_DONE                                 =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,98),
+            I2C_LOG_RXNE_TIMEOUT                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,99),
+            I2C_LOG_BTF_TIMEOUT                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,100),
+            I2C_LOG_RX_1                                    =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,101),
+            I2C_LOG_RX_2                                    =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,102),
+            I2C_LOG_RX_GT_2                                 =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,103),
+            I2C_LOG_RX_1_DONE                               =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,104),
+            I2C_LOG_RX_2_DONE                               =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,105),
+            I2C_LOG_RX_3_DONE                               =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,106),
+            I2C_LOG_START                                   =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,107),
+            I2C_LOG_STOP                                    =	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,108),/*
             I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,109),
             I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,110),
             I2C_LOG_                         	=	DBG_LOG_CREATE_ID(DBG_LOG_MODULE_ID_I2C,111),
@@ -344,6 +343,19 @@ namespace HAL
         
         I2CStatus_t MasterTxRx_DMA(Transaction_t* pTransaction);
         
+        
+        I2CStatus_t     XferPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf=nullptr, uint32_t RxLen=0,uint8_t RepeatedStart=0,I2CStatus_t* pStatus=nullptr, I2CCallback_t XferDoneCallback = nullptr);
+        
+        I2CStatus_t     XferPoll(Transaction_t* pTransaction);
+        
+        I2CStatus_t     XferIntr(uint16_t SlaveAddress,I2CStatus_t* pStatus,uint8_t* TxBuf, uint32_t TxLen,I2CCallback_t XferDoneCallback = nullptr,uint8_t* RxBuf = nullptr, uint32_t RxLen = 0);
+        
+        I2CStatus_t     XferIntr(Transaction_t* pTransaction);
+        
+        I2CStatus_t     XferDMA(uint16_t SlaveAddress,I2CStatus_t* pStatus,uint8_t* TxBuf, uint32_t TxLen,I2CCallback_t XferDoneCallback = nullptr,uint8_t* RxBuf = nullptr, uint32_t RxLen = 0);
+        
+        I2CStatus_t     XferDMA(Transaction_t* pTransaction);
+        
         inline uint8_t ReadRxData();
         
         inline bool StartConditionGenerated(uint32_t timeout);
@@ -399,40 +411,6 @@ namespace HAL
         inline I2CStatus_t StartListening();
         
         inline bool StopFlagCleared(uint32_t timeout);
-        
-        void Master_SB_Handler(); 
-        
-        void Master_ADDR_Handler(); 
-        
-        void Master_TxE_Handler();
-        
-        void Master_Tx_BTF_Handler();
-        
-        void Master_Rx_BTF_Handler(); 
-        
-        void Slave_Tx_BTF_Handler();
-        
-        void Slave_Rx_BTF_Handler(); 
-        
-        void Master_RxNE_Handler();
-        
-        void Slave_STOP_Handler();
-        
-        void Master_BERR_Handler();
-        
-        void Master_AF_Handler();
-        
-        void Master_AL_Handler();
-        
-        void Master_OVR_Handler();
-        
-        void Slave_RxNE_Handler();
-        
-        void Slave_ADDR_Handler();
-        
-        void Slave_AF_Handler();
-        
-        void Slave_TxE_Handler();
         
 		void I2C1_DMA_Tx_Done_Handler();
         
@@ -629,7 +607,7 @@ namespace HAL
 #pragma inline = forced
     void I2c::LogStates(I2CLogs_t log)
     {
-#if 0
+#if 1
         I2CStates[I2CStates_Idx++  % I2C_LOG_STATES_SIZE] = log;
         if(I2CStates_Idx == I2C_LOG_STATES_SIZE )
             I2CStates_Idx = 0;
@@ -641,7 +619,7 @@ namespace HAL
     //#define I2C_LOG_STATES(log) (I2CStates[I2CStates_Idx++  % I2C_LOG_STATES_SIZE] = (log))
 #define I2C_DEBUG_LOG(log) (m_I2CStatus = (log))  // 108 bytes of ROM
 #define I2C_LOG_STATES(log) LogStates(log)
-#define I2C_LOG_EVENTS(log) //LogStates(log)
+#define I2C_LOG_EVENTS(log) LogStates(log)
     
 #else
     
