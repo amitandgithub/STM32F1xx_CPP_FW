@@ -27,7 +27,7 @@ namespace HAL
 #define I2C_INT   1
 #define I2C_DMA   1
     
-#define I2C_DEBUG 
+#define I2C_DEBUG 1 
 #define I2C_LOG_STATES_SIZE 1500
     
 #define I2C_RX_METHOD_1 
@@ -603,7 +603,7 @@ namespace HAL
     
     
     
-#ifdef I2C_DEBUG     
+#if I2C_DEBUG     
 #pragma inline = forced
     void I2c::LogStates(I2CLogs_t log)
     {

@@ -54,10 +54,10 @@ namespace HAL
         I2c::I2CStatus_t I2c::HwInit(void *pInitStruct)
         {        	
             LL_I2C_InitTypeDef I2C_InitStruct;
-            
+#if I2C_DEBUG
             dbg_log_instance = Utils::DebugLog<DBG_LOG_TYPE>::GetInstance();
             dbg_log_instance->Enable(Utils::DebugLog<DBG_LOG_TYPE>::DBG_LOG_MODULE_ID_I2C);
-            
+#endif            
             /* Set I2C_InitStruct fields to default values */
             I2C_InitStruct.PeripheralMode  = LL_I2C_MODE_I2C;
             I2C_InitStruct.ClockSpeed      = m_hz;
@@ -173,8 +173,9 @@ namespace HAL
                 LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_I2C2);
             }        
         }
-#if (I2C_POLL)       
-        I2c::I2CStatus_t I2c::TxPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen)
+#if (I2C_POLL) 
+#if 1
+        I2c::I2CStatus_t I2c::TxPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen) // 556 bytes
         {
             if(m_I2CState != READY)
                 return I2C_BUSY;
@@ -252,7 +253,7 @@ namespace HAL
             return I2C_OK; 
         }
         
-        I2c::I2CStatus_t I2c::RxPoll(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen)
+        I2c::I2CStatus_t I2c::RxPoll(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen) // 1288 bytes
         {
             if(m_I2CState != READY)
                 return I2C_BUSY;
@@ -475,7 +476,8 @@ namespace HAL
             I2C_LOG_STATES(I2C_LOG_RX_DONE);
             return I2C_OK;
         }
-        
+#endif       
+		// 2326 bytes
         I2c::I2CStatus_t I2c::XferPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf, uint32_t RxLen, uint8_t RepeatedStart,I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback)
         {
             if(m_I2CState != READY)
@@ -498,12 +500,10 @@ namespace HAL
 			{
                 /* RepeatedStart is only valid for TX and Rx type transfer */
                 RepeatedStart = 0;
-            }
-			
+            }         
+
             /* Disable Pos */
             m_I2Cx->CR1 &= ~I2C_CR1_POS;
-            
-
             
             if(TxLen != 0)
             {
@@ -551,10 +551,13 @@ namespace HAL
                     
                     I2C_LOG_EVENTS(I2C_LOG_TXE);    
                     
-                    if( (bool)LL_I2C_IsActiveFlag_BTF(m_I2Cx) == true)
+					if((bool)LL_I2C_IsActiveFlag_BTF(m_I2Cx) == true)
                     {
-                        I2C_LOG_EVENTS(I2C_LOG_BTF);                    
-                    }                               
+                        /* Write data to DR */
+                    	m_I2Cx->DR = *TxBuf++;                
+                    	TxLen--;
+                        I2C_LOG_EVENTS(I2C_LOG_BTF);
+                    }
                 }
                 
                 if(RepeatedStart == 0)
@@ -575,10 +578,6 @@ namespace HAL
             
             if (RxLen != 0)
             {
-                
-                /* Disable Pos */
-                m_I2Cx->CR1 &= ~I2C_CR1_POS;
-                
                 /* Enable Acknowledge,Generate Start */
                 m_I2Cx->CR1 |= I2C_CR1_ACK | I2C_CR1_START;
                 
@@ -990,9 +989,9 @@ namespace HAL
                 return I2C_BUSY_TIMEOUT;                
             }
 
-			if(TxLen == 0)
+			if((TxLen == 0) || (RxLen == 0))
 			{
-                /* RepeatedStart is not valid for Rx only transfer */
+                /* RepeatedStart is only valid for TX and Rx type transfer */
                 RepeatedStart = 0;
             }
 			
@@ -2020,9 +2019,9 @@ namespace HAL
                 return I2C_BUSY_TIMEOUT;
             }
 
-			if(TxLen == 0)
+			if((TxLen == 0) || (RxLen == 0))
 			{
-                /* RepeatedStart is not valid for Rx only transfer */
+                /* RepeatedStart is only valid for TX and Rx type transfer */
                 RepeatedStart = 0;
             }
 			

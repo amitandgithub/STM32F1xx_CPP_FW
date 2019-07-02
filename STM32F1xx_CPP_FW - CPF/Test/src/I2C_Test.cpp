@@ -86,7 +86,7 @@ void I2c_Poll_Tests()
         case I2C_POLL_DS1307_RTC_RAM_REPEATED_START: 
             TxLen = RxLen = 56;           
             I2CDevIntr.XferPoll(SlaveAddress,TxBuf,TxLen+1);
-            I2CDevIntr.XferPoll(SlaveAddress,TxBuf,1,RxBuf,RxLen,1);            
+            I2CDevIntr.XferPoll(SlaveAddress,TxBuf,1,RxBuf,RxLen,1);           
             Test_Condition( !(std::memcmp( (const void*) &TxBuf[1],(const void*) RxBuf, TxLen )), STR("I2C_POLL_DS1307_RTC_RAM_REPEATED_START = Pass"), STR("I2C_POLL_DS1307_RTC_RAM_REPEATED_START = Fail"));
             I2c_test_id = I2C_POLL_TX_1_RX_1;
             RepeatedStart = !RepeatedStart;
