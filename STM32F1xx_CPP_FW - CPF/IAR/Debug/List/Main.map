@@ -1,90 +1,90 @@
 ###############################################################################
 #
-# IAR ELF Linker V8.32.3.193/W32 for ARM                  18/Jul/2019  20:18:56
+# IAR ELF Linker V8.32.3.193/W32 for ARM                  21/Jul/2019  15:39:42
 # Copyright 2007-2019 IAR Systems AB.
 #
 #    Output file  =  
-#        C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Exe\Main.out
+#        C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Exe\Main.out
 #    Map file     =  
-#        C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\List\Main.map
+#        C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\List\Main.map
 #    Command line =  
-#        -f C:\Users\achaudha\AppData\Local\Temp\EW56C1.tmp
-#        ("C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\BMP280.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\BtnInt.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\BtnPoll.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\CPP_HAL.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\DMA.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\Gpio.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\GpioInput.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\GpioOutput.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\I2c.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\I2C_Test.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\INA219.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\InterruptHandlers.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\InterruptManager.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\Led.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\main.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\printf.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\RotaryEncoderIntr.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\RotaryEncoderPoll.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\startup_stm32f103xb.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_hal.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_hal_cortex.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_hal_pwr.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_hal_rcc.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_hal_rcc_ex.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_it.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_ll_dma.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_ll_exti.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_ll_gpio.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_ll_i2c.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_ll_pwr.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_ll_rcc.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\stm32f1xx_ll_utils.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\system_stm32f1xx.o"
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Obj\Utils.o" --no_out_extension -o
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\Exe\Main.out" --redirect _Printf=_PrintfFullNoMb
+#        -f C:\Users\amit4\AppData\Local\Temp\EWE724.tmp
+#        ("C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\BMP280.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\BtnInt.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\BtnPoll.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\CPP_HAL.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\DMA.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\Gpio.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\GpioInput.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\GpioOutput.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\I2c.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\I2C_Test.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\INA219.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\InterruptHandlers.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\InterruptManager.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\Led.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\main.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\printf.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\RotaryEncoderIntr.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\RotaryEncoderPoll.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\startup_stm32f103xb.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_hal.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_hal_cortex.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_hal_pwr.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_hal_rcc.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_hal_rcc_ex.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_it.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_ll_dma.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_ll_exti.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_ll_gpio.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_ll_i2c.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_ll_pwr.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_ll_rcc.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\stm32f1xx_ll_utils.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\system_stm32f1xx.o"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Obj\Utils.o" --no_out_extension -o
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\Exe\Main.out" --redirect _Printf=_PrintfFullNoMb
 #        --redirect _Scanf=_ScanfFullNoMb --map
-#        "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW
-#        - CPF\IAR\Debug\List\Main.map" --config "C:\Program Files (x86)\IAR
-#        Systems\Embedded Workbench 8.2\arm\config\linker\ST\stm32f103x8.icf"
+#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        CPF\IAR\Debug\List\Main.map" --config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.3.2\arm\config\linker\ST\stm32f103x8.icf"
 #        --semihosting --entry __iar_program_start --vfe --text_out locale)
 #
 ###############################################################################
@@ -387,7 +387,7 @@ command line/config:
     -------------------------------------------------
     Total:
 
-C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\Debug\Obj: [1]
+C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\Debug\Obj: [1]
     DMA.o                       408        8       32
     Gpio.o                      140
     GpioOutput.o                162
@@ -1032,7 +1032,7 @@ uwTickFreq              0x2000'0012     0x1  Data  Gb  stm32f1xx_hal.o [1]
 uwTickPrio              0x2000'0000     0x4  Data  Gb  stm32f1xx_hal.o [1]
 
 
-[1] = C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\Debug\Obj
+[1] = C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\Debug\Obj
 [2] = dl7M_tln.a
 [3] = dlpp7M_tl_nc.a
 [4] = m7M_tl.a
