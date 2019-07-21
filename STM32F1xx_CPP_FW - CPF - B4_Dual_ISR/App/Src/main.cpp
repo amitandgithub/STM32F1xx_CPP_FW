@@ -50,8 +50,8 @@ int main(void)
         //KeypadIntr_Test();
         //I2CPoll_Test();
         //INA219_Test();
-          I2c_Test();
-         // BMP280_Test();
+          //I2c_Test();
+         BMP280_Test();
     }
     
 }

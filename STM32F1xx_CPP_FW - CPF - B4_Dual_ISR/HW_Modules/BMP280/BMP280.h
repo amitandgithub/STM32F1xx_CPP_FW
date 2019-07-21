@@ -55,6 +55,27 @@ enum {
     BMP280_REGISTER_CONFIG = 0xF5,
     BMP280_REGISTER_PRESSUREDATA = 0xF7,
     BMP280_REGISTER_TEMPDATA = 0xFA,
+    
+    BME280_REGISTER_DIG_H1 = 0xA1,
+    BME280_REGISTER_DIG_H2 = 0xE1,
+    BME280_REGISTER_DIG_H3 = 0xE3,
+    BME280_REGISTER_DIG_H4 = 0xE4,
+    BME280_REGISTER_DIG_H5 = 0xE5,
+    BME280_REGISTER_DIG_H6 = 0xE7,
+    
+    BME280_REGISTER_CHIPID = 0xD0,
+    BME280_REGISTER_VERSION = 0xD1,
+    BME280_REGISTER_SOFTRESET = 0xE0,
+    
+    BME280_REGISTER_CAL26 = 0xE1, // R calibration stored in 0xE1-0xF0
+    
+    BME280_REGISTER_CONTROLHUMID = 0xF2,
+    BME280_REGISTER_STATUS = 0XF3,
+    BME280_REGISTER_CONTROL = 0xF4,
+    BME280_REGISTER_CONFIG = 0xF5,
+    BME280_REGISTER_PRESSUREDATA = 0xF7,
+    BME280_REGISTER_TEMPDATA = 0xFA,
+    BME280_REGISTER_HUMIDDATA = 0xFD
 };
 
 /*!
@@ -143,25 +164,35 @@ public:
     };
     
     /** Standby duration in ms */
-    enum standby_duration {
-        /** 1 ms standby. */
-        STANDBY_MS_1 = 0x00,
-        /** 63 ms standby. */
-        STANDBY_MS_63 = 0x01,
-        /** 125 ms standby. */
-        STANDBY_MS_125 = 0x02,
-        /** 250 ms standby. */
-        STANDBY_MS_250 = 0x03,
-        /** 500 ms standby. */
-        STANDBY_MS_500 = 0x04,
-        /** 1000 ms standby. */
-        STANDBY_MS_1000 = 0x05,
-        /** 2000 ms standby. */
-        STANDBY_MS_2000 = 0x06,
-        /** 4000 ms standby. */
-        STANDBY_MS_4000 = 0x07
-    };
+//    enum standby_duration {
+//        /** 1 ms standby. */
+//        STANDBY_MS_1 = 0x00,
+//        /** 63 ms standby. */
+//        STANDBY_MS_63 = 0x01,
+//        /** 125 ms standby. */
+//        STANDBY_MS_125 = 0x02,
+//        /** 250 ms standby. */
+//        STANDBY_MS_250 = 0x03,
+//        /** 500 ms standby. */
+//        STANDBY_MS_500 = 0x04,
+//        /** 1000 ms standby. */
+//        STANDBY_MS_1000 = 0x05,
+//        /** 2000 ms standby. */
+//        STANDBY_MS_2000 = 0x06,
+//        /** 4000 ms standby. */
+//        STANDBY_MS_4000 = 0x07
+//    };
     
+      enum standby_duration {
+    STANDBY_MS_0_5 = 0b000,
+    STANDBY_MS_10 = 0b110,
+    STANDBY_MS_20 = 0b111,
+    STANDBY_MS_62_5 = 0b001,
+    STANDBY_MS_125 = 0b010,
+    STANDBY_MS_250 = 0b011,
+    STANDBY_MS_500 = 0b100,
+    STANDBY_MS_1000 = 0b101
+  };
     BMP280(I2CDev pI2CDrv,uint8_t BMP280_Address);
     
     ~BMP280(){};
@@ -186,19 +217,30 @@ public:
      
     //bool begin(uint8_t addr = BMP280_ADDRESS, uint8_t chipid = BMP280_CHIPID);
     
+    uint8_t getChipID(){return ChipID;}
+    
     float readTemperature();
     
     float readPressure(void);
+    
+    float BMP280::readHumidity(void);
     
     float readAltitude(float seaLevelhPa = 1013.25);
     
     void takeForcedMeasurement();
     
+//    void setSampling(sensor_mode mode = MODE_NORMAL,
+//                     sensor_sampling tempSampling = SAMPLING_X16,
+//                     sensor_sampling pressSampling = SAMPLING_X16,
+//                     sensor_filter filter = FILTER_OFF,
+//                     standby_duration duration = STANDBY_MS_1);
+    
     void setSampling(sensor_mode mode = MODE_NORMAL,
-                     sensor_sampling tempSampling = SAMPLING_X16,
-                     sensor_sampling pressSampling = SAMPLING_X16,
-                     sensor_filter filter = FILTER_OFF,
-                     standby_duration duration = STANDBY_MS_1);
+                   sensor_sampling tempSampling = SAMPLING_X16,
+                   sensor_sampling pressSampling = SAMPLING_X16,
+                   sensor_sampling humSampling = SAMPLING_X16,
+                   sensor_filter filter = FILTER_OFF,
+                   standby_duration duration = STANDBY_MS_0_5);
     
     
 private:
@@ -228,6 +270,23 @@ private:
         uint8_t get() { return (osrs_t << 5) | (osrs_p << 2) | mode; }
     };
     
+      struct ctrl_hum {
+    /// unused - don't set
+    unsigned int none : 5;
+
+    // pressure oversampling
+    // 000 = skipped
+    // 001 = x1
+    // 010 = x2
+    // 011 = x4
+    // 100 = x8
+    // 101 and above = x16
+    unsigned int osrs_h : 3; ///< pressure oversampling
+
+    /// @return combined ctrl hum register
+    unsigned int get() { return (osrs_h); }
+  };
+    
     void readCoefficients(void);
     uint8_t spixfer(uint8_t x);
     void write8(byte reg, byte value);
@@ -242,10 +301,12 @@ private:
     bmp280_calib_data   _bmp280_calib;
     config              _configReg;
     ctrl_meas           _measReg;    
+    ctrl_hum            _humReg;
     I2CDev              m_pI2CDrv;
     int8_t              m_BMP280_Address;
     uint8_t             buf[5];
     I2CStatus_t         I2C_Status;
+    uint8_t             ChipID;
 };
 
 #endif

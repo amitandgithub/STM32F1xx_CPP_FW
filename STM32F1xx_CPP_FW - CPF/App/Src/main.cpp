@@ -34,14 +34,16 @@ int main(void)
     HAL_Init();
     
     /* Configure the system clock */
-    SystemClock_Config();
+   // SystemClock_Config();
     
     DWT->CTRL |= 1 ; // enable the counter
     //DWT->CYCCNT = 0; // reset the counter
 
     while(1)
     {
+        //BMP280_Test();
         I2c_Poll_Tests();
+        I2c_Intr_Tests();
     }
     
 }

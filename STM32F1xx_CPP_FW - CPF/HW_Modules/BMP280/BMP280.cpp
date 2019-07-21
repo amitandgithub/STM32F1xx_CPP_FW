@@ -25,6 +25,7 @@
 #define BMP280_CHIP_ID2                      UINT8_C(0x57)
 #define BMP280_CHIP_ID3                      UINT8_C(0x58)
 
+
 BMP280::BMP280(I2CDev pI2CDrv,uint8_t BMP280_Address): m_pI2CDrv(pI2CDrv), m_BMP280_Address(BMP280_Address)
 {
     
@@ -32,14 +33,15 @@ BMP280::BMP280(I2CDev pI2CDrv,uint8_t BMP280_Address): m_pI2CDrv(pI2CDrv), m_BMP
 
 uint8_t BMP280::HwInit()
 {
-    uint8_t ChipID;
+    
     
     m_pI2CDrv->HwInit();
     
     ChipID = read8(BMP280_REGISTER_CHIPID);
     
-    if ( ChipID != 0x58)
-        return false;
+    printf("BMP/BME ChipID : 0x%x",ChipID);
+
+        
         
     readCoefficients();
    // write8(BMP280_REGISTER_CONTROL, 0x3F); /* needed? */
@@ -63,23 +65,46 @@ uint8_t BMP280::HwInit()
 * @param duration
 *        The sampling duration.
 */
-void BMP280::setSampling(sensor_mode mode,
-                         sensor_sampling tempSampling,
-                         sensor_sampling pressSampling,
-                         sensor_filter filter,
-                         standby_duration duration) {
-                             _measReg.mode = mode;
-                             _measReg.osrs_t = tempSampling;
-                             _measReg.osrs_p = pressSampling;
-                             
-                             _configReg.filter = filter;
-                             _configReg.t_sb = duration;
-                             
-                             write8(BMP280_REGISTER_CONFIG, _configReg.get());
-                             write8(BMP280_REGISTER_CONTROL, _measReg.get());
-                         }
+//void BMP280::setSampling(sensor_mode mode,
+//                         sensor_sampling tempSampling,
+//                         sensor_sampling pressSampling,
+//                         sensor_filter filter,
+//                         standby_duration duration) {
+//                             _measReg.mode = mode;
+//                             _measReg.osrs_t = tempSampling;
+//                             _measReg.osrs_p = pressSampling;
+//                             
+//                             _configReg.filter = filter;
+//                             _configReg.t_sb = duration;
+//                             
+//                             write8(BMP280_REGISTER_CONFIG, _configReg.get());
+//                             write8(BMP280_REGISTER_CONTROL, _measReg.get());
+//                         }
                          
                          
+                         void BMP280::setSampling(sensor_mode mode,
+                                                           sensor_sampling tempSampling,
+                                                           sensor_sampling pressSampling,
+                                                           sensor_sampling humSampling,
+                                                           sensor_filter filter,
+                                                           standby_duration duration) 
+                         {
+                           _measReg.mode = mode;
+                           _measReg.osrs_t = tempSampling;
+                           _measReg.osrs_p = pressSampling;
+                           
+                           _humReg.osrs_h = humSampling;
+                           _configReg.filter = filter;
+                           _configReg.t_sb = duration;
+                           
+                           // you must make sure to also set REGISTER_CONTROL after setting the
+                           // CONTROLHUMID register, otherwise the values won't be applied (see
+                           // DS 5.4.3)
+                           write8(BME280_REGISTER_CONTROLHUMID, _humReg.get());
+                           write8(BME280_REGISTER_CONFIG, _configReg.get());
+                           write8(BME280_REGISTER_CONTROL, _measReg.get());
+                        }
+  
                          /**************************************************************************/
                          /*!
                          @brief  Writes an 8 bit value over I2C/SPI
@@ -172,6 +197,15 @@ void BMP280::setSampling(sensor_mode mode,
                              _bmp280_calib.dig_P8 = readS16_LE(BMP280_REGISTER_DIG_P8);
                              _bmp280_calib.dig_P9 = readS16_LE(BMP280_REGISTER_DIG_P9);
                              
+                              _bmp280_calib.dig_H1 = read8(BME280_REGISTER_DIG_H1);
+                              _bmp280_calib.dig_H2 = readS16_LE(BME280_REGISTER_DIG_H2);
+                              _bmp280_calib.dig_H3 = read8(BME280_REGISTER_DIG_H3);
+                              _bmp280_calib.dig_H4 = (read8(BME280_REGISTER_DIG_H4) << 4) |
+                                                     (read8(BME280_REGISTER_DIG_H4 + 1) & 0xF);
+                              _bmp280_calib.dig_H5 = (read8(BME280_REGISTER_DIG_H5 + 1) << 4) |
+                                                     (read8(BME280_REGISTER_DIG_H5) >> 4);
+                              _bmp280_calib.dig_H6 = (int8_t)read8(BME280_REGISTER_DIG_H6);
+                             
 //                             printf("_bmp280_calib.dig_T1 = %d \n",_bmp280_calib.dig_T1);
 //                             printf("_bmp280_calib.dig_T2 = %d \n",_bmp280_calib.dig_T2);
 //                             printf("_bmp280_calib.dig_T3 = %d \n",_bmp280_calib.dig_T3);
@@ -260,26 +294,46 @@ void BMP280::setSampling(sensor_mode mode,
                              
                              return altitude;
                          }
-                         
+
                          /*!
-                         *  @brief  Take a new measurement (only possible in forced mode)
-                         *  !!!todo!!!
+                         *  @brief  Returns the humidity from the sensor
+                         *  @returns the humidity value read from the device
                          */
-                         /*
-                         void BMP280::takeForcedMeasurement()
+                         float BMP280::readHumidity(void) 
                          {
-                         // If we are in forced mode, the BME sensor goes back to sleep after each
-                         // measurement and we need to set it to forced mode once at this point, so
-                         // it will take the next measurement and then return to sleep again.
-                         // In normal mode simply does new measurements periodically.
-                         if (_measReg.mode == MODE_FORCED) {
-                         // set to forced mode, i.e. "take next measurement"
-                         write8(BMP280_REGISTER_CONTROL, _measReg.get());
-                         // wait until measurement has been completed, otherwise we would read
-                         // the values from the last measurement
-                         while (read8(BMP280_REGISTER_STATUS) & 0x08)
-                         delay(1);
-    }
-}
-                         */
+                             if(ChipID != 0x60)
+                                 return 0.0;
+                             
+                             readTemperature(); // must be done first to get t_fine
+                             
+                             int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
+                             if (adc_H == 0x8000) // value in case humidity measurement was disabled
+                                 return NAN;
+                             
+                             int32_t v_x1_u32r;
+                             
+                             v_x1_u32r = (t_fine - ((int32_t)76800));
+                             
+                             v_x1_u32r = (((((adc_H << 14) - (((int32_t)_bmp280_calib.dig_H4) << 20) -
+                                             (((int32_t)_bmp280_calib.dig_H5) * v_x1_u32r)) +
+                                            ((int32_t)16384)) >>
+                                           15) *
+                                          (((((((v_x1_u32r * ((int32_t)_bmp280_calib.dig_H6)) >> 10) *
+                                               (((v_x1_u32r * ((int32_t)_bmp280_calib.dig_H3)) >> 11) +
+                                                ((int32_t)32768))) >>
+                                              10) +
+                                             ((int32_t)2097152)) *
+                                            ((int32_t)_bmp280_calib.dig_H2) +
+                                                8192) >>
+                                           14));
+                             
+                             v_x1_u32r = (v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) *
+                                                        ((int32_t)_bmp280_calib.dig_H1)) >>
+                                                       4));
+                             
+                             v_x1_u32r = (v_x1_u32r < 0) ? 0 : v_x1_u32r;
+                             v_x1_u32r = (v_x1_u32r > 419430400) ? 419430400 : v_x1_u32r;
+                             float h = (v_x1_u32r >> 12);
+                             return h / 1024.0;
+                         }
                          
