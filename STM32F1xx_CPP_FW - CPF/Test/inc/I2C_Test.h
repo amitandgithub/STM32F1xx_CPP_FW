@@ -17,30 +17,32 @@ void MemSet(uint8_t* mem, uint8_t data, uint32_t size);
 
 typedef enum
 {
+	/* Tests with Polling*/
     I2C_POLL_TX_1_RX_1,
     I2C_POLL_TX_1_RX_2,
     I2C_POLL_TX_1_RX_3,
     I2C_POLL_TX_2_RX_2,
     I2C_POLL_TX_3_RX_3,
     I2C_INT_POLL_40_RX_40,
-    
+
+	/* Tests with Interrupts*/
     I2C_INT_TX_1_RX_1,
     I2C_INT_TX_1_RX_2,
     I2C_INT_TX_1_RX_3,
     I2C_INT_TX_2_RX_2,
     I2C_INT_TX_3_RX_3,
     I2C_INT_TX_40_RX_40,
+
+	/* Tests with Transaction*/
     I2C_INT_TX_1_RX_1_TXN,
     I2C_INT_TX_1_RX_2_TXN,
     I2C_INT_TX_1_RX_3_TXN,
     I2C_INT_TX_2_RX_2_TXN,
     I2C_INT_TX_3_RX_3_TXN,
     I2C_INT_TX_40_RX_40_TXN,
+    
+    /* Tests with Queue*/
     I2C_INT_TX_QUEUE,
-
-
-
-
 	
     I2C_INT_DS1307_RTC_TIME,
     I2C_INT_DS1307_RTC_RAM,

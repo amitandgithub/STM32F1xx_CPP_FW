@@ -113,7 +113,7 @@ void I2c_Intr_Tests()
     //sprintf(text[0], "Sum of %d and %d is %d", 1, 2, 10);
     
     I2CDevIntr.HwInit();
-    
+    RepeatedStart = 0;	
     //I2CDevIntr.ScanBus(RxBuf,20);
     SlaveAddress = 0x68<<1;
     I2c_test_id = I2C_INT_TX_1_RX_1;
@@ -328,26 +328,49 @@ void I2c_Intr_Tests()
             Transaction.RxBuf = RxBuf;
             Transaction.RxLen = RxLen;
             
-           I2CDevIntr.XferIntr(&Transaction);
-			while(I2CDevIntr.GetState() != HAL::I2c::READY);            
+            I2CDevIntr.XferIntr(&Transaction);
+            while(I2CDevIntr.GetState() != HAL::I2c::READY);            
             
             Test_Condition( !(std::memcmp( (const void*) &TxBuf[1],(const void*) RxBuf, TxLen )), STR("I2C_INT_TX_40_RX_40_TXN = Pass"), STR("I2C_INT_TX_40_RX_40_TXN = Fail"));
+            I2c_test_id = I2C_INT_TX_QUEUE;			
+            break;
+        case I2C_INT_TX_QUEUE:
+            int Posts=0;
+            count = I2CCallback.get_XferComplete();
+            TxLen = RxLen = 4;   
+            Transaction.SlaveAddress = SlaveAddress;
+            Transaction.TxBuf = TxBuf;
+            Transaction.TxLen = TxLen+1;
+            Transaction.RxBuf = nullptr;
+            Transaction.RxLen = 0;
+            Transaction.RepeatedStart = RepeatedStart;
+            Transaction.pStatus = &Status;
+            Transaction.XferDoneCallback = &I2CCallback;            
+            Status = I2CDevIntr.Post(&Transaction);
+            while(I2CDevIntr.Post(&Transaction) != I2c::I2C_TXN_QUEUE_ERROR)
+            {
+                Posts++;
+            }
+            printf("Q posts = %d \n",Posts);
             
-			if(RepeatedStart == 0)
-			{
-				I2c_test_id = I2C_INT_TX_1_RX_1;
-            	RepeatedStart = 1;	
+            while(I2CCallback.get_XferComplete() < (count+Posts));
+            
+            Test_Condition( 1, STR("I2C_INT_TX_QUEUE = Pass"), STR("I2C_INT_TX_QUEUE = Fail"));
+        default:         
+            if(RepeatedStart == 0)
+            {
+                I2c_test_id = I2C_INT_TX_1_RX_1;
+                RepeatedStart = 1;	
                 printf("\n\nRe-Testing test cases with repeated start \n\n");
-			}
+            }
             else
             {
                 return;
             }
             break;
             
-        default: break;
         }
-        
+
         MemSet(RxBuf,0,100);
         LL_mDelay(50);
     }

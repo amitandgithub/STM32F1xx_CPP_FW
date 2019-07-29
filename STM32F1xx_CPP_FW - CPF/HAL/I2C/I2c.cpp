@@ -1005,8 +1005,16 @@ namespace HAL
             m_Transaction.RepeatedStart      = RepeatedStart;  
             m_Transaction.pStatus            = pStatus ? pStatus : &m_I2CStatus; 
             m_Transaction.XferDoneCallback   = XferDoneCallback;
-			
-            m_I2CState = MASTER_TX;
+
+			if(TxLen)
+			{
+				m_I2CState = MASTER_TX;
+			}
+			else
+			{
+				m_I2CState = MASTER_RX;
+			}
+            
             
             /* Disable Pos */
             m_I2Cx->CR1 &= ~I2C_CR1_POS;
@@ -1067,17 +1075,22 @@ namespace HAL
                 if(Mode == 0)
                 {
 #if (I2C_INT)
-                    return MasterTxRx_Intr(pTransaction->SlaveAddress, pTransaction->TxBuf ,pTransaction->TxLen, pTransaction->RxBuf ,
-                                           pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus,pTransaction->XferDoneCallback);  
+                    return XferIntr(pTransaction->SlaveAddress, pTransaction->TxBuf ,pTransaction->TxLen, pTransaction->RxBuf ,
+                                   pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus, pTransaction->XferDoneCallback); 
+#else
+				    return I2C_INVALID_PARAMS; 
 #endif
+
                 }
                 else
                 {
 #if (I2C_DMA)
                     return MasterTxRx_DMA(pTransaction->SlaveAddress, pTransaction->TxBuf ,pTransaction->TxLen, pTransaction->RxBuf ,
                                           pTransaction->RxLen, pTransaction->RepeatedStart,pTransaction->pStatus,pTransaction->XferDoneCallback);
+#else
+				    return I2C_INVALID_PARAMS; 
 #endif
-                    
+
                 }
             }                      
         }      
@@ -1965,6 +1978,72 @@ namespace HAL
 #endif
         
 #if I2C_DMA
+			I2c::I2CStatus_t I2c::XferDMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf, uint32_t RxLen, uint8_t RepeatedStart,volatile I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback)
+				{
+					if(m_I2CState != READY)
+						return I2C_BUSY;
+					
+					 if( ((TxLen == 0) || (TxBuf == nullptr)) && ((RxLen == 0) || (RxBuf == nullptr)) )
+					{		
+						I2C_DEBUG_LOG(I2C_INVALID_PARAMS);				  
+						return I2C_INVALID_PARAMS;				  
+					}
+					
+					/* Wait until BUSY flag is reset */
+					if( Busy(I2C_TIMEOUT) == true ) 
+					{		   
+						I2C_DEBUG_LOG(I2C_BUSY_TIMEOUT);
+						return I2C_BUSY_TIMEOUT;				
+					}
+		
+					if((TxLen == 0) || (RxLen == 0))
+					{
+						/* RepeatedStart is only valid for TX and Rx type transfer */
+						RepeatedStart = 0;
+					}
+					
+					m_Transaction.SlaveAddress		 = SlaveAddress;
+					m_Transaction.TxBuf 			 = TxBuf;
+					m_Transaction.TxLen 			 = TxLen;
+					m_Transaction.RxBuf 			 = RxBuf;
+					m_Transaction.RxLen 			 = RxLen;  
+					m_Transaction.RepeatedStart 	 = RepeatedStart;  
+					m_Transaction.pStatus			 = pStatus ? pStatus : &m_I2CStatus; 
+					m_Transaction.XferDoneCallback	 = XferDoneCallback;
+		
+					if(TxLen)
+					{
+						/* Load DMA Tx transaction*/
+            			m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(m_I2Cx->DR), (uint32_t)TxBuf, TxLen, LL_DMA_DIRECTION_MEMORY_TO_PERIPH);
+						m_I2CState = MASTER_TX_DMA;
+					}
+					else
+					{
+						m_I2CState = MASTER_RX_DMA;
+						/* Load DMA Rx transaction*/
+            			m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(m_I2Cx->DR), (uint32_t)RxBuf, RxLen, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
+					}
+					
+					
+					/* Disable Pos */
+					m_I2Cx->CR1 &= ~I2C_CR1_POS;
+					
+					/* Enable Acknowledge */
+					m_I2Cx->CR1 |= I2C_CR1_ACK;
+					
+					Enable_EVT_BUF_ERR_Interrupt();
+					
+					/* Generate Start */
+					m_I2Cx->CR1 |= I2C_CR1_START;
+					
+					I2C_LOG_STATES(I2C_LOG_START_MASTER_TXRX);
+					
+					I2C_DEBUG_LOG(I2C_OK);
+					
+					return I2C_OK;			 
+				}		 
+
+
         I2c::I2CStatus_t I2c:: MasterTx_DMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen,volatile I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback)
         { 
             if(m_I2CState != READY)
