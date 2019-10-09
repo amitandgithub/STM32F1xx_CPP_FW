@@ -35,13 +35,13 @@ namespace HAL
   
 #define I2C_RX_METHOD_1 
   
-#define I2C_BUF_BYTE_IN(__I2C_BUF)              (*__I2C_BUF->RxBuf++) = I2C_DATA_REG(m_I2Cx); __I2C_BUF->RxLen--
+#define I2C_BUF_BYTE_IN(__I2C_BUF)              __I2C_BUF->RxBuf.Buf[__I2C_BUF->RxBuf.Idx++] = I2C_DATA_REG(m_I2Cx)
 
-#define I2C_BUF_BYTE_OUT(__I2C_BUF)             I2C_DATA_REG(m_I2Cx) = (*__I2C_BUF->TxBuf++); __I2C_BUF->TxLen--
+#define I2C_BUF_BYTE_OUT(__I2C_BUF)             I2C_DATA_REG(m_I2Cx) = __I2C_BUF->TxBuf.Buf[__I2C_BUF->TxBuf.Idx++]
 
-#define I2C_SLAVE_BUF_BYTE_IN(__I2C_BUF)        __I2C_BUF.RxBuf->Buf[__I2C_BUF.RxBuf->Idx++] = I2C_DATA_REG
+#define I2C_SLAVE_BUF_BYTE_IN(__I2C_BUF)        __I2C_BUF.RxBuf->Buf[__I2C_BUF.RxBuf->Idx++] = I2C_DATA_REG(m_I2Cx) 
 
-#define I2C_SLAVE_BUF_BYTE_OUT(__I2C_BUF)        I2C_DATA_REG = __I2C_BUF.TxBuf->Buf[__I2C_BUF.TxBuf->Idx++]
+#define I2C_SLAVE_BUF_BYTE_OUT(__I2C_BUF)        I2C_DATA_REG(m_I2Cx)  = __I2C_BUF.TxBuf->Buf[__I2C_BUF.TxBuf->Idx++]
   
   class I2c : public InterruptSource
   {
@@ -96,10 +96,8 @@ namespace HAL
     {
       uint16_t                SlaveAddress;
       uint8_t                 RepeatedStart;
-      uint8_t                 TxLen;
-      uint8_t                 RxLen; 
-      uint8_t*                TxBuf; 
-      uint8_t*                RxBuf;
+      i2cBuf_t                TxBuf;
+      i2cBuf_t                RxBuf;
       I2CCallback_t           XferDoneCallback;
     }MasterTxn_t;
     

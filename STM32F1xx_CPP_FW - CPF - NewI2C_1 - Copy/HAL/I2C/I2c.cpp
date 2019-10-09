@@ -515,10 +515,12 @@ namespace HAL
        if(m_I2CState != READY)
         return I2C_BUSY;
        
-      if(pTransaction == 0)
+      if( (pTransaction == 0) || ( (!pTransaction->TxBuf.Buf) && (!pTransaction->RxBuf.Buf) ) )
       {
         return I2C_INVALID_PARAMS;
       }
+      
+      m_MasterTxn = pTransaction;
       
        /* Wait while BUSY flag is set */
       if (WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_I2Cx,I2C_TIMEOUT))
@@ -527,12 +529,7 @@ namespace HAL
         return I2C_BUSY_TIMEOUT; 
       }
       
-      m_MasterTxn = pTransaction;
-      
-      if( (!m_MasterTxn->TxBuf) && (!m_MasterTxn->RxBuf) )
-        return I2C_INVALID_PARAMS;
-      
-      if((m_MasterTxn->TxLen == 0) || (m_MasterTxn->RxLen == 0))
+      if((m_MasterTxn->TxBuf.Len == 0) || (m_MasterTxn->RxBuf.Len == 0))
       {
         /* RepeatedStart is only valid for TX and Rx type transfer */
         m_MasterTxn->RepeatedStart = 0;
@@ -541,7 +538,7 @@ namespace HAL
       /* Disable Pos */
       I2C_DISABLE_POS(m_I2Cx);
       
-      if(m_MasterTxn->TxLen)
+      if(m_MasterTxn->TxBuf.Len) 
       {
         m_I2CState = MASTER_TX;
       }
@@ -565,7 +562,7 @@ namespace HAL
     
     I2c::I2CStatus_t I2c::Post(MasterTxn_t* pTransaction, uint32_t Mode)
     {            
-      if( (pTransaction == nullptr) || ((pTransaction->TxBuf == nullptr) && (pTransaction->RxBuf == nullptr))  )
+      if( (pTransaction == nullptr) || ((pTransaction->TxBuf.Buf == nullptr) && (pTransaction->RxBuf.Buf == nullptr))  )
       {          
         I2C_DEBUG_LOG(I2C_INVALID_PARAMS);                
         return I2C_INVALID_PARAMS;                
@@ -610,7 +607,7 @@ namespace HAL
     
     void I2c::TxnDoneHandler(uint32_t StopFlag)
     {            
-      if(m_MasterTxn->RxLen != 0)
+      if(m_MasterTxn->RxBuf.Len != 0) 
       {              
         // From here we don't expect buffer interrupts till SB,ADDR is handled
         Disable_BUF_Interrupt();
@@ -684,15 +681,15 @@ namespace HAL
 //        {
 //          m_MasterTxn->SlaveAddress       = _pCurrentTxn->SlaveAddress;
 //          m_MasterTxn->TxBuf              = _pCurrentTxn->TxBuf;
-//          m_MasterTxn->TxLen              = _pCurrentTxn->TxLen;
+//          m_MasterTxn->TxBuf.Len              = _pCurrentTxn->TxLen;
 //          m_MasterTxn->RxBuf              = _pCurrentTxn->RxBuf;
-//          m_MasterTxn->RxLen              = _pCurrentTxn->RxLen;  
+//          m_MasterTxn->RxBuf.Len              = _pCurrentTxn->RxLen;  
 //          m_MasterTxn->RepeatedStart      = _pCurrentTxn->RepeatedStart; 
 //          //m_MasterTxn->pStatus            = _pCurrentTxn->pStatus ? _pCurrentTxn->pStatus : &m_I2CStatus ; 
 //          m_MasterTxn->XferDoneCallback   = _pCurrentTxn->XferDoneCallback;
 //        }
         
-        if(m_MasterTxn->TxLen) 
+        if(m_MasterTxn->TxBuf.Len) 
         {
           // Next transaction starts with Tx mode first
           if ( (m_I2CState == MASTER_TX) || (m_I2CState == MASTER_RX) )
@@ -704,10 +701,10 @@ namespace HAL
 #if I2C_DMA
             m_I2CState = MASTER_TX_DMA;
             /* Load DMA Tx transaction*/
-            m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), (uint32_t)m_MasterTxn->TxBuf, m_MasterTxn->TxLen, LL_DMA_DIRECTION_MEMORY_TO_PERIPH );
+            m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), (uint32_t)m_MasterTxn->TxBuf.Buf, m_MasterTxn->TxBuf.Len, LL_DMA_DIRECTION_MEMORY_TO_PERIPH );
             
             /* Load DMA Rx transaction*/
-            m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), (uint32_t)m_MasterTxn->RxBuf, m_MasterTxn->RxLen, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
+            m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), (uint32_t)m_MasterTxn->RxBuf.Buf, m_MasterTxn->RxBuf.Len, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
             
             /* Enable DMA Request */
             m_I2Cx->CR2 |= I2C_CR2_DMAEN;
@@ -727,7 +724,7 @@ namespace HAL
             m_I2CState = MASTER_RX_DMA; 
             
             /* Load DMA Rx transaction*/
-            m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), (uint32_t)m_MasterTxn->RxBuf, m_MasterTxn->RxLen, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
+            m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), (uint32_t)m_MasterTxn->RxBuf.Buf, m_MasterTxn->RxBuf.Len, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
             
             /* Enable DMA Request */
             m_I2Cx->CR2 |= I2C_CR2_DMAEN;
@@ -807,7 +804,7 @@ namespace HAL
             Enable_BUF_Interrupt();
           
 #ifndef I2C_RX_METHOD_1                
-          if(m_MasterTxn->RxLen == 2U) 
+          if(m_MasterTxn->RxBuf.Len == 2U) 
           {
             /* Enable Pos */
             I2C_DISABLE_POS(m_I2Cx); 
@@ -823,7 +820,7 @@ namespace HAL
           m_MasterTxn->RepeatedStart = 0;         
           
 #ifndef I2C_RX_METHOD_1                
-          if(m_MasterTxn->RxLen == 2U) 
+          if(m_MasterTxn->RxBuf.Len == 2U) 
           {
             /* Enable Pos */
             I2C_DISABLE_POS(m_I2Cx);
@@ -855,7 +852,7 @@ namespace HAL
         I2C_LOG_EVENTS(I2C_LOG_ADDR); 
         if(m_I2CState == MASTER_RX)
         {
-          if(m_MasterTxn->RxLen == 1U)   
+          if(m_MasterTxn->RxBuf.Len == 1U)   
           {
             /* Clear ADDR flag */
             LL_I2C_ClearFlag_ADDR(m_I2Cx);
@@ -869,7 +866,7 @@ namespace HAL
             I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_RX_SIZE_1);                                       
           }   
 #ifndef I2C_RX_METHOD_1 
-          else if(m_MasterTxn->RxLen == 2U)   
+          else if(m_MasterTxn->RxBuf.Len == 2U)   
           {
             /* Clear ADDR flag */
             LL_I2C_ClearFlag_ADDR(m_I2Cx);
@@ -893,7 +890,7 @@ namespace HAL
           /* Clear ADDR flag */
           LL_I2C_ClearFlag_ADDR(m_I2Cx);
           
-          if(m_MasterTxn->TxLen > 0)
+          if(m_MasterTxn->TxBuf.Len > 0)
           {                    
             I2C_BUF_BYTE_OUT(m_MasterTxn);
             I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_TX_SIZE_GT_0);
@@ -972,7 +969,7 @@ namespace HAL
             /* BTF event never comes in DMA rx mode*/
             while(1);
           }            
-          if(m_MasterTxn->RxLen == 3U)
+          if(m_MasterTxn->RxBuf.Len == 3U)
           {
             /* Disable Acknowledge */
             I2C_DISABLE_ACK(m_I2Cx);
@@ -988,7 +985,7 @@ namespace HAL
             
             I2C_LOG_STATES(I2C_LOG_BTF_MASTER_RX_SIZE_3);
           }
-          else if(m_MasterTxn->RxLen == 2U)
+          else if(m_MasterTxn->RxBuf.Len == 2U)
           {                 
             /* Generate Stop */
             I2C_GENERATE_STOP(m_I2Cx);         
@@ -1019,15 +1016,15 @@ namespace HAL
         {
           if(m_I2CState == MASTER_TX_DMA)
           {
-            //                if(m_MasterTxn->RxLen != 0)
+            //                if(m_MasterTxn->RxBuf.Len != 0)
             //				{
             //                    /* Load DMA Rx transaction*/
-            //	                m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)m_MasterTxn->RxBuf, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), m_MasterTxn->RxLen, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
+            //	                m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)m_MasterTxn->RxBuf, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), m_MasterTxn->RxBuf.Len, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );
             //				}                
             I2C_LOG_STATES(I2C_LOG_BTF_MASTER_TX_DMA_STOP);
             TxnDoneHandler(I2C_CR1_STOP);  
           }            
-          else if(m_MasterTxn->TxLen > 0)
+          else if(m_MasterTxn->TxBuf.Len > 0)
           {
             I2C_BUF_BYTE_OUT(m_MasterTxn);
             I2C_LOG_STATES(I2C_LOG_BTF_MASTER_TX_GT_0);
@@ -1102,7 +1099,7 @@ namespace HAL
         if(m_I2CState == MASTER_RX)
         {
 #ifdef I2C_RX_METHOD_1
-          if(m_MasterTxn->RxLen == 2U)
+          if(m_MasterTxn->RxBuf.Len == 2U)
           {
             /* Read data from DR */
             I2C_BUF_BYTE_IN(m_MasterTxn);
@@ -1115,7 +1112,7 @@ namespace HAL
             
             I2C_LOG_STATES(I2C_LOG_RXNE_MASTER_SIZE_2);
           }
-          else if(m_MasterTxn->RxLen == 1U)
+          else if(m_MasterTxn->RxBuf.Len == 1U)
           {
             /* Read data from DR */
             I2C_BUF_BYTE_IN(m_MasterTxn);
@@ -1135,12 +1132,12 @@ namespace HAL
             I2C_LOG_STATES(I2C_LOG_RXNE_MASTER);
           }
 #else
-          if(m_MasterTxn->RxLen > 3U)
+          if(m_MasterTxn->RxBuf.Len > 3U)
           {
             /* Read data from DR */
             I2C_BUF_BYTE_IN(m_MasterTxn);                
           }
-          else if( (m_MasterTxn->RxLen == 2U) || (m_MasterTxn->RxLen == 3U) )
+          else if( (m_MasterTxn->RxBuf.Len == 2U) || (m_MasterTxn->RxBuf.Len == 3U) )
           {
             // Do nothing here, data 3 is here in data register.
             // Let the data 2 also accumulate in shift register in next BTF.
@@ -1190,7 +1187,7 @@ namespace HAL
           if( m_I2CState == MASTER_RX_REPEATED_START)
             return;
           
-          if(m_MasterTxn->TxLen > 0)
+          if(m_MasterTxn->TxBuf.Len > 0)
           {
             I2C_BUF_BYTE_OUT(m_MasterTxn);
             I2C_LOG_STATES(I2C_LOG_TXE_GT_0);
@@ -1505,10 +1502,10 @@ namespace HAL
       }
       
       m_MasterTxn->SlaveAddress		 = SlaveAddress;
-      m_MasterTxn->TxBuf 			 = TxBuf;
-      m_MasterTxn->TxLen 			 = TxLen;
-      m_MasterTxn->RxBuf 			 = RxBuf;
-      m_MasterTxn->RxLen 			 = RxLen;  
+      m_MasterTxn->TxBuf.Buf 			 = TxBuf;
+      m_MasterTxn->TxBuf.Len 			 = TxLen;
+      m_MasterTxn->RxBuf.Buf 			 = RxBuf;
+      m_MasterTxn->RxBuf.Len 			 = RxLen;  
       m_MasterTxn->RepeatedStart 	 = RepeatedStart;  
       //m_MasterTxn->pStatus			 = pStatus ? pStatus : &m_I2CStatus; 
       m_MasterTxn->XferDoneCallback	 = XferDoneCallback;
@@ -1565,10 +1562,10 @@ namespace HAL
       }
       
       m_MasterTxn->SlaveAddress       = SlaveAddress;
-      m_MasterTxn->TxBuf              = TxBuf;
-      m_MasterTxn->TxLen              = TxLen;
-      m_MasterTxn->RxBuf              = nullptr;
-      m_MasterTxn->RxLen              = 0;  
+      m_MasterTxn->TxBuf.Buf              = TxBuf;
+      m_MasterTxn->TxBuf.Len              = TxLen;
+      m_MasterTxn->RxBuf.Buf              = nullptr;
+      m_MasterTxn->RxBuf.Len              = 0;  
       m_MasterTxn->RepeatedStart      = 0;  
      // m_MasterTxn->pStatus            = pStatus ? pStatus : &m_I2CStatus; 
       m_MasterTxn->XferDoneCallback   = XferDoneCallback;
@@ -1629,10 +1626,10 @@ namespace HAL
       }
       
       m_MasterTxn->SlaveAddress       = SlaveAddress;
-      m_MasterTxn->TxBuf              = TxBuf;
-      m_MasterTxn->TxLen              = TxLen;
-      m_MasterTxn->RxBuf              = RxBuf;
-      m_MasterTxn->RxLen              = RxLen;  
+      m_MasterTxn->TxBuf.Buf              = TxBuf;
+      m_MasterTxn->TxBuf.Len              = TxLen;
+      m_MasterTxn->RxBuf.Buf              = RxBuf;
+      m_MasterTxn->RxBuf.Len              = RxLen;  
       m_MasterTxn->RepeatedStart      = RepeatedStart;  
      // m_MasterTxn->pStatus            = pStatus ? pStatus : &m_I2CStatus;
       m_MasterTxn->XferDoneCallback   = XferDoneCallback;            
@@ -1694,10 +1691,10 @@ namespace HAL
       }
       
       m_MasterTxn->SlaveAddress = SlaveAddress;
-      m_MasterTxn->TxBuf              = nullptr;
-      m_MasterTxn->TxLen              = 0;
-      m_MasterTxn->RxBuf              = RxBuf;
-      m_MasterTxn->RxLen              = RxLen;  
+      m_MasterTxn->TxBuf.Buf              = nullptr;
+      m_MasterTxn->TxBuf.Len              = 0;
+      m_MasterTxn->RxBuf.Buf              = RxBuf;
+      m_MasterTxn->RxBuf.Len              = RxLen;  
       m_MasterTxn->RepeatedStart      = 0;  
      // m_MasterTxn->pStatus            = pStatus ? pStatus : &m_I2CStatus;
       m_MasterTxn->XferDoneCallback   = XferDoneCallback;
@@ -1778,7 +1775,7 @@ namespace HAL
         LL_DMA_ClearFlag_HT6(m_DMAx->_DMAx);                 
         
         // This varoable is used by TxnDoneHandler() to keep track of Tx completion status
-        m_MasterTxn->TxLen = 0;                				
+        m_MasterTxn->TxBuf.Len = 0;                				
         
         I2C_LOG_STATES(I2c::I2C_LOG_DMA_TX_DONE);
       }     
@@ -1843,7 +1840,7 @@ namespace HAL
         I2C_GENERATE_STOP(m_I2Cx);
         
         // This variable is used by TxnDoneHandler() to keep track of completion status
-        m_MasterTxn->RxLen = 0;
+        m_MasterTxn->RxBuf.Len = 0;
         
         I2C_LOG_STATES(I2c::I2C_LOG_DMA_RX_DONE);
         

@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include"Test.h"
+#include "printf.h"
 
 #define NEW_BOARD 0
 
@@ -17,19 +18,20 @@ void _Error_Handler(char *, int);
 #endif
 
 
-#include "printf.h"
-
 
 void SystemClock_Config(void);
 void SystemClock_Config_LL(void);
 //static void LL_Init(void);
 void putc ( void* p, char c);
 
+
 //Micros = Millis*1000 + 1000 – SysTick->VAL/72
 //if you are free to use 32 bit timer you can even do it without IRQ, just simply time= TIMx->CNT. 
 uint32_t count;
 int main(void)
 {	   
+    
+      
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();
     
@@ -42,7 +44,7 @@ int main(void)
     while(1)
     {
         //BMP280_Test();
-        //I2c_Poll_Tests();
+        I2c_Poll_Tests();
         I2c_Intr_Tests();
     }
     
@@ -274,3 +276,62 @@ void assert_failed(uint8_t* file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
+
+
+#if 0
+
+
+void Dummy(void* d){};
+
+typedef void (*fptr_t)(void* pThis);
+
+struct Int_Element
+{
+  fptr_t fptr;
+  void*  pParam;
+};
+
+struct Int_Element Int_Array[10] = { 
+                                    {Dummy,0},
+                                    {Dummy,0},
+                                    {Dummy,0},
+                                    {Dummy,0},
+                                    {Dummy,0},
+                                    {Dummy,0},
+                                    {Dummy,0},
+                                    {Dummy,0},
+                                    {Dummy,0},
+                                    {Dummy,0}
+                                    };
+
+
+
+uint32_t Register_var(fptr_t fptr, void* pThis)
+{  
+  Int_Array[0].fptr = fptr;
+  Int_Array[0].pParam = pThis;
+}
+
+class One
+{
+  uint32_t var;
+public:
+  One(){var = 32;}
+  uint32_t get(){return var;}
+  static void ISR_1(void* pThis)
+  {
+    One* pOne = static_cast<One*>(pThis);
+    uint32_t i = pOne->get();
+    i += pOne->var;
+  }  
+};
+
+One One_OBJ;
+Register_var(One::ISR_1, &One_OBJ);
+
+Int_Array[0].fptr(Int_Array[0].pParam);
+
+    
+    
+#endif
