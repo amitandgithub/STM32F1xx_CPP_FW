@@ -151,7 +151,7 @@ namespace HAL
       
       return I2C_OK;            
     }
-    
+
     bool I2c::WaitOnFlag(volatile uint32_t* reg, uint32_t bitmask, uint32_t status, uint32_t timeout) // 35(0x25)bytes // stm32 0x28
     {
       while( ((*reg & bitmask) == status) && timeout-- );    
@@ -203,7 +203,6 @@ namespace HAL
       I2C_ENABLE_ACK_AND_START(m_I2Cx);
       
       /* Wait while SB flag is 0 */
-      //if( WAIT_FOR_SB_FLAG_TO_SET(I2C_TIMEOUT)) 
       if( WAIT_FOR_SB_FLAG_TO_SET(m_I2Cx,I2C_TIMEOUT))
       {         
         I2C_LOG_STATES(I2C_LOG_START_TIMEOUT); 
@@ -237,7 +236,7 @@ namespace HAL
       return I2C_OK;
     }
     
-    // 2326 bytes
+    // 2326 bytes -> 1160 bytes(O3)
     I2c::I2CStatus_t I2c::XferPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf, uint32_t RxLen, uint8_t RepeatedStart)
     {
       
@@ -477,7 +476,7 @@ namespace HAL
       return I2C_OK;    
     }
     
-    I2c::I2CStatus_t I2c::XferPoll(Transaction_t* pTransaction)
+    I2c::I2CStatus_t I2c::XferPoll(MasterTxn_t* pTransaction)
     {
       if( pTransaction == nullptr )
       {          
@@ -485,7 +484,7 @@ namespace HAL
         return I2C_INVALID_PARAMS;                
       }
       
-      return XferPoll(pTransaction->SlaveAddress, pTransaction->TxBuf ,pTransaction->TxLen, pTransaction->RxBuf ,
+      return XferPoll(pTransaction->SlaveAddress, pTransaction->TxBuf ,pTransaction->TxLen, pTransaction->RxBuf,
                       pTransaction->RxLen, pTransaction->RepeatedStart);            
     } 
     
@@ -510,7 +509,7 @@ namespace HAL
     
 #if I2C_INT
     
-    I2c::I2CStatus_t I2c::XferIntr(MasterTxn_t* pTransaction) 
+    I2c::I2CStatus_t I2c::XferIntr(MasterTxn_t* pTransaction)  // 178 bytes
     {
        if(m_I2CState != READY)
         return I2C_BUSY;
@@ -550,7 +549,6 @@ namespace HAL
         m_I2CState = MASTER_RX;
       }
       
-      //I2C_ENABLE_INT_EVT_BUF_ERR();
       I2C_ENABLE_INT_EVT_BUF_ERR(m_I2Cx);
       
       /* Enable Acknowledge, Generate Start */
@@ -658,8 +656,6 @@ namespace HAL
         // TxLen and RxLen is 0, Txn finished, Load next Txn if available                
         /* Generate Stop */
         I2C_SET_STOPF(m_I2Cx,StopFlag);
-        
-        //(*m_MasterTxn->pStatus) = I2C_XFER_DONE;
         
         // Transaction ended here, call the completion callback
         if(m_MasterTxn->XferDoneCallback)

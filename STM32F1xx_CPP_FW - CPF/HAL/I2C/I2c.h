@@ -25,7 +25,7 @@ namespace HAL
 
 #define I2C_POLL  1
 #define I2C_INT   1
-#define I2C_DMA   1
+#define I2C_DMA   0
 
 /* This flag enables the Slave receiver in DMA mode instead of Interrupt mode*/
 #define I2C_SLAVE_IN_DMA_MODE 1

@@ -25,7 +25,7 @@ namespace HAL
   
 #define I2C_POLL  1
 #define I2C_INT   1
-#define I2C_DMA   1
+#define I2C_DMA   0
   
   /* This flag enables the Slave receiver in DMA mode instead of Interrupt mode*/
 #define I2C_SLAVE_IN_DMA_MODE 1
@@ -392,7 +392,7 @@ namespace HAL
     
     I2CStatus_t     XferPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf=nullptr, uint32_t RxLen=0,uint8_t RepeatedStart=0);
     
-    I2CStatus_t     XferPoll(Transaction_t* pTransaction);
+    I2CStatus_t     XferPoll(MasterTxn_t* pTransaction);
     
     I2CStatus_t     XferIntr(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf=nullptr, uint32_t RxLen=0,uint8_t RepeatedStart=0,volatile I2CStatus_t* pStatus=nullptr, I2CCallback_t XferDoneCallback = nullptr);
     
