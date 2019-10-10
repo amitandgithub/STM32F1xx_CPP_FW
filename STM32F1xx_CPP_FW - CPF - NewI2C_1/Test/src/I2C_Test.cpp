@@ -131,7 +131,7 @@ void I2c_Intr_Tests()
 #if 0
     case I2C_INT_TX_1_RX_1:
       TxLen = RxLen = 1;
-      I2CDevIntr.XferIntr(SlaveAddress,TxBuf,TxLen+1,nullptr,0,0,&Status);
+      I2CDevIntr.XferIntr(SlaveAddress,TxBuf,TxLen+1,nullptr,0,0);
       while(I2CDevIntr.GetState() != HAL::I2c::READY);
       I2CDevIntr.XferIntr(SlaveAddress,TxBuf,1,RxBuf,RxLen,RepeatedStart); 
       while(I2CDevIntr.GetState() != HAL::I2c::READY);
@@ -204,6 +204,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
@@ -229,6 +230,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
@@ -254,6 +256,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
@@ -278,6 +281,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
@@ -302,6 +306,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
@@ -327,6 +332,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       

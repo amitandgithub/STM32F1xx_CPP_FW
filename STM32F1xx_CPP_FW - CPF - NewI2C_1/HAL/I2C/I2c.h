@@ -96,8 +96,8 @@ namespace HAL
     {
       uint16_t                SlaveAddress;
       uint8_t                 RepeatedStart;
-      uint16_t                 TxLen;
-      uint16_t                 RxLen; 
+      uint8_t                 TxLen;
+      uint8_t                 RxLen; 
       uint8_t*                TxBuf; 
       uint8_t*                RxBuf;
       I2CCallback_t           XferDoneCallback;

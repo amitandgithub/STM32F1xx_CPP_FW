@@ -1,16 +1,16 @@
 ###############################################################################
 #
-# IAR ELF Linker V8.32.3.193/W32 for ARM                  08/Oct/2019  20:21:24
+# IAR ELF Linker V8.40.2.214/W32 for ARM                  10/Oct/2019  05:31:58
 # Copyright 2007-2019 IAR Systems AB.
 #
-#    Output file  =  
+#    Output file  =
 #        C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
 #        CPF\IAR\Debug\Exe\Main.out
-#    Map file     =  
+#    Map file     =
 #        C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
 #        CPF\IAR\Debug\List\Main.map
-#    Command line =  
-#        -f C:\Users\amit4\AppData\Local\Temp\EW4BE9.tmp
+#    Command line =
+#        -f C:\Users\amit4\AppData\Local\Temp\EW9864.tmp
 #        ("C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
 #        CPF\IAR\Debug\Obj\BMP280.o"
 #        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
@@ -84,7 +84,7 @@
 #        --redirect _Scanf=_ScanfFullNoMb --map
 #        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
 #        CPF\IAR\Debug\List\Main.map" --config "C:\Program Files (x86)\IAR
-#        Systems\Embedded Workbench 8.3.2\arm\config\linker\ST\stm32f103x8.icf"
+#        Systems\Embedded Workbench 8.4\arm\config\linker\ST\stm32f103x8.icf"
 #        --semihosting --entry __iar_program_start --vfe --text_out locale)
 #
 ###############################################################################
@@ -116,7 +116,7 @@ application.
 *** PLACEMENT SUMMARY
 ***
 
-"A0":  place at 0x800'0000 { ro section .intvec };
+"A0":  place at address 0x800'0000 { ro section .intvec };
 "P1":  place in [from 0x800'0000 to 0x800'ffff] { ro };
 define block CSTACK with size = 2K, alignment = 8 { };
 define block HEAP with size = 2K, alignment = 8 { };
@@ -130,7 +130,7 @@ initialize by copy { rw };
   .intvec                ro code   0x800'0000    0xec  startup_stm32f103xb.o [1]
                                  - 0x800'00ec    0xec
 
-"P1":                                          0x6ca8
+"P1":                                          0x6e68
   .text                  ro code   0x800'00ec  0x1e34  I2c.o [1]
   .text                  ro code   0x800'1f20    0x18  I2c.o [1]
   .text                  ro code   0x800'1f38     0xe  I2c.o [1]
@@ -140,182 +140,183 @@ initialize by copy { rw };
   .text                  ro code   0x800'1f98     0xc  I2c.o [1]
   .text                  ro code   0x800'1fa4     0xc  I2c.o [1]
   .text                  ro code   0x800'1fb0     0xe  I2c.o [1]
-  .rodata                const     0x800'1fbe     0x2  stm32f1xx_hal_rcc.o [1]
-  .text                  ro code   0x800'1fc0    0x30  I2c.o [1]
-  .text                  ro code   0x800'1ff0     0xc  I2c.o [1]
-  .text                  ro code   0x800'1ffc    0xa2  GpioOutput.o [1]
-  .text                  ro code   0x800'209e    0x1c  I2c.o [1]
-  .rodata                const     0x800'20ba     0x1  unwind_debug.o [6]
-  .text                  ro code   0x800'20bc    0x30  I2c.o [1]
-  .text                  ro code   0x800'20ec   0x13e  stm32f1xx_ll_i2c.o [1]
-  .text                  ro code   0x800'222c    0xb8  InterruptManager.o [1]
-  .text                  ro code   0x800'22e4    0x50  I2c.o [1]
-  .text                  ro code   0x800'2334   0x198  DMA.o [1]
-  .text                  ro code   0x800'24cc    0x10  I2c.o [1]
-  .text                  ro code   0x800'24dc    0x2c  I2c.o [1]
+  .text                  ro code   0x800'1fbe    0x2e  copy_init3.o [5]
+  .text                  ro code   0x800'1fec    0x30  I2c.o [1]
+  .text                  ro code   0x800'201c     0xc  I2c.o [1]
+  .text                  ro code   0x800'2028    0xa2  GpioOutput.o [1]
+  .text                  ro code   0x800'20ca    0x1c  I2c.o [1]
+  .rodata                const     0x800'20e6     0x2  stm32f1xx_hal_rcc.o [1]
+  .text                  ro code   0x800'20e8    0x30  I2c.o [1]
+  .text                  ro code   0x800'2118   0x13e  stm32f1xx_ll_i2c.o [1]
+  .rodata                const     0x800'2256     0x1  unwind_debug.o [6]
+  .text                  ro code   0x800'2258    0xb8  InterruptManager.o [1]
+  .text                  ro code   0x800'2310    0x50  I2c.o [1]
+  .text                  ro code   0x800'2360   0x198  DMA.o [1]
+  .text                  ro code   0x800'24f8    0x10  I2c.o [1]
   .text                  ro code   0x800'2508    0x2c  I2c.o [1]
   .text                  ro code   0x800'2534    0x2c  I2c.o [1]
   .text                  ro code   0x800'2560    0x2c  I2c.o [1]
-  .text                  ro code   0x800'258c    0x34  I2c.o [1]
-  .text                  ro code   0x800'25c0    0x2c  I2c.o [1]
+  .text                  ro code   0x800'258c    0x2c  I2c.o [1]
+  .text                  ro code   0x800'25b8    0x34  I2c.o [1]
   .text                  ro code   0x800'25ec    0x2c  I2c.o [1]
-  .text                  ro code   0x800'2618    0x28  printf.o [2]
-  .text                  ro code   0x800'2640     0xe  I2c.o [1]
-  .text                  ro code   0x800'264e    0x34  I2c.o [1]
-  .text                  ro code   0x800'2682     0xe  I2c.o [1]
-  .text                  ro code   0x800'2690     0x4  I2c.o [1]
-  .text                  ro code   0x800'2694    0x36  I2c.o [1]
-  .text                  ro code   0x800'26ca     0xe  I2c.o [1]
-  .text                  ro code   0x800'26d8     0xe  I2c.o [1]
-  .text                  ro code   0x800'26e6    0x18  I2c.o [1]
-  .text                  ro code   0x800'26fe    0x2c  I2c.o [1]
-  .text                  ro code   0x800'272a    0x12  main.o [1]
-  .text                  ro code   0x800'273c    0x2e  main.o [1]
-  .text                  ro code   0x800'276a    0x1a  I2c.o [1]
-  .text                  ro code   0x800'2784     0xe  I2c.o [1]
-  .text                  ro code   0x800'2792    0x10  I2c.o [1]
-  .text                  ro code   0x800'27a2    0x10  I2c.o [1]
-  .text                  ro code   0x800'27b2    0x10  I2c.o [1]
-  .text                  ro code   0x800'27c2     0xe  I2c.o [1]
-  .text                  ro code   0x800'27d0    0x14  I2c.o [1]
-  .text                  ro code   0x800'27e4    0x38  I2c.o [1]
-  .text                  ro code   0x800'281c    0x8c  Gpio.o [1]
-  .text                  ro code   0x800'28a8   0x164  stm32f1xx_ll_gpio.o [1]
-  .text                  ro code   0x800'2a0c   0x124  stm32f1xx_ll_rcc.o [1]
-  .text                  ro code   0x800'2b30     0xa  cxxabi.o [3]
-  .text                  ro code   0x800'2b3c    0xb4  stm32f1xx_ll_dma.o [1]
-  .text                  ro code   0x800'2bf0   0xdf2  xprintffull_nomb.o [2]
-  .text                  ro code   0x800'39e2    0x1e  I2c.o [1]
-  .text                  ro code   0x800'3a00    0x12  I2c.o [1]
-  .text                  ro code   0x800'3a12    0x26  I2c.o [1]
-  .text                  ro code   0x800'3a38    0xa6  ABImemcpy.o [5]
-  .text                  ro code   0x800'3ae0    0xa0  cppinit.o [2]
-  .text                  ro code   0x800'3b80    0x16  strchr.o [5]
-  .text                  ro code   0x800'3b98    0x40  xfail_s.o [2]
-  .text                  ro code   0x800'3bd8    0x36  strlen.o [5]
-  .text                  ro code   0x800'3c10    0x58  memchr.o [5]
-  .text                  ro code   0x800'3c68   0x230  I64DivMod.o [5]
-  .text                  ro code   0x800'3e98   0x1a2  DblMul.o [4]
-  .text                  ro code   0x800'403c    0x70  frexp.o [4]
-  .text                  ro code   0x800'40ac    0x2e  DblCmpLe.o [4]
-  .text                  ro code   0x800'40dc    0x2e  DblCmpGe.o [4]
-  .text                  ro code   0x800'410c   0x13a  ldexp.o [4]
-  .text                  ro code   0x800'4248    0x3a  DblToS32.o [4]
-  .text                  ro code   0x800'4284    0x22  S32ToDbl.o [4]
-  .text                  ro code   0x800'42a8    0xe2  DblSub.o [4]
-  .text                  ro code   0x800'438c   0x246  DblDiv.o [4]
-  .text                  ro code   0x800'45d4    0x28  DblToU32.o [4]
-  .text                  ro code   0x800'45fc    0x1a  U32ToDbl.o [4]
-  .text                  ro code   0x800'4618    0x28  I2c.o [1]
-  .text                  ro code   0x800'4640    0x14  I2c.o [1]
-  .text                  ro code   0x800'4654     0x6  abort.o [2]
-  .text                  ro code   0x800'465c     0x2  I64DivZer.o [5]
-  .text                  ro code   0x800'4660   0x16a  DblAdd.o [4]
-  .text                  ro code   0x800'47cc    0x14  exit.o [6]
-  .text                  ro code   0x800'47e0    0x80  iarttio.o [6]
-  .text                  ro code   0x800'4860    0x3c  XShttio.o [2]
-  .text                  ro code   0x800'489c   0xf20  I2C_Test.o [1]
-  .text                  ro code   0x800'57bc    0x10  I2C_Test.o [1]
-  .text                  ro code   0x800'57cc    0x68  memcmp.o [5]
-  .text                  ro code   0x800'5834    0x28  stm32f1xx_ll_utils.o [1]
-  .text                  ro code   0x800'585c     0x6  INA219.o [1]
-  .text                  ro code   0x800'5862     0x4  I2C_Test.o [1]
-  .text                  ro code   0x800'5868   0x62c  stm32f1xx_hal_rcc.o [1]
-  .text                  ro code   0x800'5e94     0xc  stm32f1xx_hal.o [1]
-  .text                  ro code   0x800'5ea0    0x4c  stm32f1xx_hal.o [1]
-  .text                  ro code   0x800'5eec   0x14a  stm32f1xx_hal_cortex.o [1]
-  .text                  ro code   0x800'6038   0x292  InterruptHandlers.o [1]
-  .text                  ro code   0x800'62cc   0x12c  stm32f1xx_hal_rcc_ex.o [1]
-  .text                  ro code   0x800'63f8    0xce  main.o [1]
-  .text                  ro code   0x800'64c8    0x26  stm32f1xx_hal.o [1]
-  .text                  ro code   0x800'64f0    0x58  system_stm32f1xx.o [1]
-  .rodata                const     0x800'6548    0x54  main.o [1]
-  .rodata                const     0x800'659c    0x40  I2c.o [1]
-  .rodata                const     0x800'65dc    0x30  I2C_Test.o [1]
-  .text                  ro code   0x800'660c    0x2c  main.o [1]
-  .text                  ro code   0x800'6638     0x2  main.o [1]
-  .text                  ro code   0x800'663a     0x2  main.o [1]
-  .text                  ro code   0x800'663c    0x2c  copy_init3.o [5]
-  .text                  ro code   0x800'6668    0x28  data_init.o [5]
-  .rodata                const     0x800'6690    0x24  I2c.o [1]
-  .rodata                const     0x800'66b4    0x24  I2c.o [1]
-  .text                  ro code   0x800'66d8    0x22  iarwrite.o [6]
-  .iar.init_table        const     0x800'66fc    0x28  - Linker created -
-  .rodata                const     0x800'6724    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'6744    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'6764    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'6784    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'67a4    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'67c4    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'67e4    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'6804    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'6824    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'6844    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'6864    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'6884    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'68a4    0x20  I2C_Test.o [1]
-  .rodata                const     0x800'68c4    0x20  I2C_Test.o [1]
-  .text                  ro code   0x800'68e4    0x20  putchar.o [2]
-  .text                  ro code   0x800'6904    0x10  write.o [6]
-  .text                  ro code   0x800'6914    0x1e  dwrite.o [6]
-  .text                  ro code   0x800'6932    0x20  iarwstd.o [6]
-  .text                  ro code   0x800'6954    0x20  cmain_call_ctors.o [5]
-  .text                  ro code   0x800'6974    0x1e  cmain.o [5]
-  .text                  ro code   0x800'6992     0x4  low_level_init.o [2]
-  .text                  ro code   0x800'6996     0x4  exit.o [2]
-  .text                  ro code   0x800'699c     0xe  cexit.o [5]
-  .rodata                const     0x800'69ac    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'69c8    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'69e4    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6a00    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6a1c    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6a38    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6a54    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6a70    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6a8c    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6aa8    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6ac4    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6ae0    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6afc    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6b18    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6b34    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6b50    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6b6c    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6b88    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6ba4    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6bc0    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6bdc    0x1c  I2C_Test.o [1]
-  .rodata                const     0x800'6bf8    0x1c  I2C_Test.o [1]
-  .text                  ro code   0x800'6c14    0x1c  stm32f1xx_it.o [1]
-  .text                  ro code   0x800'6c30    0x18  stm32f1xx_hal.o [1]
-  .rodata                const     0x800'6c48    0x18  I2C_Test.o [1]
-  .rodata                const     0x800'6c60    0x18  I2C_Test.o [1]
-  .text                  ro code   0x800'6c78    0x16  xprout.o [2]
-  .rodata                const     0x800'6c90    0x14  I2c.o [1]
-  .rodata                const     0x800'6ca4    0x14  I2c.o [1]
-  .rodata                const     0x800'6cb8    0x14  I2c.o [1]
-  .rodata                const     0x800'6ccc    0x14  I2c.o [1]
-  .rodata                const     0x800'6ce0    0x14  I2c.o [1]
-  .rodata                const     0x800'6cf4    0x14  I2C_Test.o [1]
-  Initializer bytes      const     0x800'6d08    0x14  <for P2-1>
-  .rodata                const     0x800'6d1c    0x10  I2C_Test.o [1]
-  .rodata                const     0x800'6d2c    0x10  stm32f1xx_hal_rcc.o [1]
-  .rodata                const     0x800'6d3c    0x10  system_stm32f1xx.o [1]
-  .text                  ro code   0x800'6d4c    0x10  startup_stm32f103xb.o [1]
-  .text                  ro code   0x800'6d5c     0xc  cstartup_M.o [5]
-  .rodata                const     0x800'6d68     0x8  DMA.o [1]
-  .rodata                const     0x800'6d70     0x8  I2c.o [1]
-  .rodata                const     0x800'6d78     0x8  stm32f1xx_ll_dma.o [1]
-  .rodata                const     0x800'6d80     0x8  system_stm32f1xx.o [1]
-  .text                  ro code   0x800'6d88     0x8  I2C_Test.o [1]
-  SHT$$PREINIT_ARRAY               0x800'6d90     0x0  <Block>
-  SHT$$INIT_ARRAY                  0x800'6d90     0x4  <Block>
-    .init_array          const     0x800'6d90     0x4  I2C_Test.o [1]
-  __iar_tls$$INIT_ARRAY            0x800'6d94     0x0  <Block>
-  .text                  ro code   0x800'6d94     0x0  cstart_call_dtors.o [5]
-  .rodata                const     0x800'6d94     0x0  zero_init3.o [5]
-  .rodata                const     0x800'6d94     0x0  copy_init3.o [5]
-                                 - 0x800'6d94  0x6ca8
+  .text                  ro code   0x800'2618    0x2c  I2c.o [1]
+  .text                  ro code   0x800'2644    0x28  printf.o [2]
+  .text                  ro code   0x800'266c     0xe  I2c.o [1]
+  .text                  ro code   0x800'267a    0x34  I2c.o [1]
+  .text                  ro code   0x800'26ae     0xe  I2c.o [1]
+  .text                  ro code   0x800'26bc     0x4  I2c.o [1]
+  .text                  ro code   0x800'26c0    0x36  I2c.o [1]
+  .text                  ro code   0x800'26f6     0xe  I2c.o [1]
+  .text                  ro code   0x800'2704     0xe  I2c.o [1]
+  .text                  ro code   0x800'2712    0x18  I2c.o [1]
+  .text                  ro code   0x800'272a    0x2c  I2c.o [1]
+  .text                  ro code   0x800'2756    0x12  main.o [1]
+  .text                  ro code   0x800'2768    0x2e  main.o [1]
+  .text                  ro code   0x800'2796    0x1a  I2c.o [1]
+  .text                  ro code   0x800'27b0     0xe  I2c.o [1]
+  .text                  ro code   0x800'27be    0x10  I2c.o [1]
+  .text                  ro code   0x800'27ce    0x10  I2c.o [1]
+  .text                  ro code   0x800'27de    0x10  I2c.o [1]
+  .text                  ro code   0x800'27ee     0xe  I2c.o [1]
+  .text                  ro code   0x800'27fc    0x14  I2c.o [1]
+  .text                  ro code   0x800'2810    0x38  I2c.o [1]
+  .text                  ro code   0x800'2848    0x8c  Gpio.o [1]
+  .text                  ro code   0x800'28d4   0x164  stm32f1xx_ll_gpio.o [1]
+  .text                  ro code   0x800'2a38   0x124  stm32f1xx_ll_rcc.o [1]
+  .text                  ro code   0x800'2b5c     0xa  cxxabi.o [3]
+  .text                  ro code   0x800'2b68    0xb4  stm32f1xx_ll_dma.o [1]
+  .text                  ro code   0x800'2c1c   0xfaa  xprintffull_nomb.o [2]
+  .text                  ro code   0x800'3bc6    0x1e  I2c.o [1]
+  .text                  ro code   0x800'3be4    0x12  I2c.o [1]
+  .text                  ro code   0x800'3bf6    0x26  I2c.o [1]
+  .text                  ro code   0x800'3c1c    0xa6  ABImemcpy.o [5]
+  .text                  ro code   0x800'3cc4    0xa0  cppinit.o [2]
+  .text                  ro code   0x800'3d64    0x16  strchr.o [5]
+  .text                  ro code   0x800'3d7c    0x40  xfail_s.o [2]
+  .text                  ro code   0x800'3dbc    0x36  strlen.o [5]
+  .text                  ro code   0x800'3df4    0x58  memchr.o [5]
+  .text                  ro code   0x800'3e4c    0x70  frexp.o [4]
+  .text                  ro code   0x800'3ebc    0x2e  DblCmpLe.o [4]
+  .text                  ro code   0x800'3eec    0x2e  DblCmpGe.o [4]
+  .text                  ro code   0x800'3f1c   0x13a  ldexp.o [4]
+  .text                  ro code   0x800'4058    0x3a  DblToS32.o [4]
+  .text                  ro code   0x800'4094    0x22  S32ToDbl.o [4]
+  .text                  ro code   0x800'40b8    0xe2  DblSub.o [4]
+  .text                  ro code   0x800'419c   0x246  DblDiv.o [4]
+  .text                  ro code   0x800'43e4    0x28  DblToU32.o [4]
+  .text                  ro code   0x800'440c    0x1a  U32ToDbl.o [4]
+  .text                  ro code   0x800'4428   0x1a2  DblMul.o [4]
+  .text                  ro code   0x800'45cc   0x230  I64DivMod.o [5]
+  .text                  ro code   0x800'47fc    0x28  I2c.o [1]
+  .text                  ro code   0x800'4824    0x14  I2c.o [1]
+  .text                  ro code   0x800'4838     0x6  abort.o [2]
+  .text                  ro code   0x800'4840   0x16a  DblAdd.o [4]
+  .text                  ro code   0x800'49ac     0x2  I64DivZer.o [5]
+  .text                  ro code   0x800'49b0    0x14  exit.o [6]
+  .text                  ro code   0x800'49c4    0x7c  iarttio.o [6]
+  .text                  ro code   0x800'4a40    0x3c  XShttio.o [2]
+  .text                  ro code   0x800'4a7c   0xf20  I2C_Test.o [1]
+  .text                  ro code   0x800'599c    0x10  I2C_Test.o [1]
+  .text                  ro code   0x800'59ac    0x68  memcmp.o [5]
+  .text                  ro code   0x800'5a14    0x28  stm32f1xx_ll_utils.o [1]
+  .text                  ro code   0x800'5a3c     0x6  INA219.o [1]
+  .text                  ro code   0x800'5a42     0x4  I2C_Test.o [1]
+  .text                  ro code   0x800'5a48   0x630  stm32f1xx_hal_rcc.o [1]
+  .text                  ro code   0x800'6078     0xc  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'6084    0x4c  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'60d0   0x14a  stm32f1xx_hal_cortex.o [1]
+  .text                  ro code   0x800'621c   0x292  InterruptHandlers.o [1]
+  .text                  ro code   0x800'64b0   0x12c  stm32f1xx_hal_rcc_ex.o [1]
+  .text                  ro code   0x800'65dc    0xce  main.o [1]
+  .text                  ro code   0x800'66ac    0x26  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'66d4    0x58  system_stm32f1xx.o [1]
+  .rodata                const     0x800'672c    0x54  main.o [1]
+  .rodata                const     0x800'6780    0x40  I2c.o [1]
+  .rodata                const     0x800'67c0    0x30  I2C_Test.o [1]
+  .text                  ro code   0x800'67f0    0x2c  main.o [1]
+  .text                  ro code   0x800'681c     0x2  main.o [1]
+  .text                  ro code   0x800'681e     0x2  main.o [1]
+  .text                  ro code   0x800'6820    0x28  data_init.o [5]
+  .rodata                const     0x800'6848    0x24  I2c.o [1]
+  .rodata                const     0x800'686c    0x24  I2c.o [1]
+  .text                  ro code   0x800'6890    0x22  iarwrite.o [6]
+  .iar.init_table        const     0x800'68b4    0x28  - Linker created -
+  .rodata                const     0x800'68dc    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'68fc    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'691c    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'693c    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'695c    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'697c    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'699c    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'69bc    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'69dc    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'69fc    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'6a1c    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'6a3c    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'6a5c    0x20  I2C_Test.o [1]
+  .rodata                const     0x800'6a7c    0x20  I2C_Test.o [1]
+  .text                  ro code   0x800'6a9c    0x20  putchar.o [2]
+  .text                  ro code   0x800'6abc    0x10  write.o [6]
+  .text                  ro code   0x800'6acc    0x1e  dwrite.o [6]
+  .text                  ro code   0x800'6aea    0x20  iarwstd.o [6]
+  .text                  ro code   0x800'6b0c    0x20  cmain_call_ctors.o [5]
+  .text                  ro code   0x800'6b2c    0x1e  cmain.o [5]
+  .text                  ro code   0x800'6b4a     0x4  low_level_init.o [2]
+  .text                  ro code   0x800'6b4e     0x4  exit.o [2]
+  .text                  ro code   0x800'6b54     0xe  cexit.o [5]
+  .rodata                const     0x800'6b64    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6b80    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6b9c    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6bb8    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6bd4    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6bf0    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6c0c    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6c28    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6c44    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6c60    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6c7c    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6c98    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6cb4    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6cd0    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6cec    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6d08    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6d24    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6d40    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6d5c    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6d78    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6d94    0x1c  I2C_Test.o [1]
+  .rodata                const     0x800'6db0    0x1c  I2C_Test.o [1]
+  .text                  ro code   0x800'6dcc    0x1c  stm32f1xx_it.o [1]
+  .text                  ro code   0x800'6de8    0x18  stm32f1xx_hal.o [1]
+  .rodata                const     0x800'6e00    0x18  I2C_Test.o [1]
+  .rodata                const     0x800'6e18    0x18  I2C_Test.o [1]
+  .text                  ro code   0x800'6e30    0x16  xprout.o [2]
+  .rodata                const     0x800'6e48    0x14  I2c.o [1]
+  .rodata                const     0x800'6e5c    0x14  I2c.o [1]
+  .rodata                const     0x800'6e70    0x14  I2c.o [1]
+  .rodata                const     0x800'6e84    0x14  I2c.o [1]
+  .rodata                const     0x800'6e98    0x14  I2c.o [1]
+  .rodata                const     0x800'6eac    0x14  I2C_Test.o [1]
+  Initializer bytes      const     0x800'6ec0    0x14  <for P2-1>
+  .rodata                const     0x800'6ed4    0x10  I2C_Test.o [1]
+  .rodata                const     0x800'6ee4    0x10  stm32f1xx_hal_rcc.o [1]
+  .rodata                const     0x800'6ef4    0x10  system_stm32f1xx.o [1]
+  .text                  ro code   0x800'6f04    0x10  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'6f14     0xc  cstartup_M.o [5]
+  .rodata                const     0x800'6f20     0x8  DMA.o [1]
+  .rodata                const     0x800'6f28     0x8  I2c.o [1]
+  .rodata                const     0x800'6f30     0x8  stm32f1xx_ll_dma.o [1]
+  .rodata                const     0x800'6f38     0x8  system_stm32f1xx.o [1]
+  .rodata                const     0x800'6f40     0x8  xprintffull_nomb.o [2]
+  .text                  ro code   0x800'6f48     0x8  I2C_Test.o [1]
+  SHT$$PREINIT_ARRAY               0x800'6f50     0x0  <Block>
+  SHT$$INIT_ARRAY                  0x800'6f50     0x4  <Block>
+    .init_array          const     0x800'6f50     0x4  I2C_Test.o [1]
+  __iar_tls$$INIT_ARRAY            0x800'6f54     0x0  <Block>
+  .text                  ro code   0x800'6f54     0x0  cstart_call_dtors.o [5]
+  .rodata                const     0x800'6f54     0x0  zero_init3.o [5]
+  .rodata                const     0x800'6f54     0x0  copy_init3.o [5]
+                                 - 0x800'6f54  0x6e68
 
 "P2", part 1 of 3:                               0x14
   P2-1                            0x2000'0000    0x13  <Init block>
@@ -366,7 +367,7 @@ Unused ranges:
 
          From           To    Size
          ----           --    ----
-   0x800'6d94   0x800'ffff  0x926c
+   0x800'6f54   0x800'ffff  0x90ac
   0x2000'2648  0x2000'4fff  0x29b8
 
 
@@ -382,7 +383,7 @@ Zero (__iar_zero_init3)
 
 Copy (__iar_copy_init3)
     1 source range, total size 0x14 (105% of destination):
-           0x800'6d08    0x14
+           0x800'6ec0    0x14
     1 destination range, total size 0x13:
           0x2000'0000    0x13
 
@@ -404,8 +405,8 @@ C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\Debug\Obj
     DMA.o                       408        8       32
     Gpio.o                      140
     GpioOutput.o                162
-    I2C_Test.o                3 900    1 202    6 560
-    I2c.o                     8 938      244      430
+    I2C_Test.o                3'900    1'202    6'560
+    I2c.o                     8'938      244      430
     INA219.o                      6
     InterruptHandlers.o         658
     InterruptManager.o          184               258
@@ -413,7 +414,7 @@ C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\Debug\Obj
     startup_stm32f103xb.o       252
     stm32f1xx_hal.o             150        5        9
     stm32f1xx_hal_cortex.o      330
-    stm32f1xx_hal_rcc.o       1 580       18
+    stm32f1xx_hal_rcc.o       1'584       18
     stm32f1xx_hal_rcc_ex.o      300
     stm32f1xx_it.o               28
     stm32f1xx_ll_dma.o          180        8
@@ -423,7 +424,7 @@ C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF\IAR\Debug\Obj
     stm32f1xx_ll_utils.o         40
     system_stm32f1xx.o           88       28        4
     -------------------------------------------------
-    Total:                   18 628    1 597    7 293
+    Total:                   18'632    1'597    7'293
 
 dl7M_tln.a: [2]
     XShttio.o                    60        8        9
@@ -434,10 +435,10 @@ dl7M_tln.a: [2]
     printf.o                     40
     putchar.o                    32
     xfail_s.o                    64                 4
-    xprintffull_nomb.o        3 570
+    xprintffull_nomb.o        4'010        8
     xprout.o                     22
     -------------------------------------------------
-    Total:                    3 962        8       33
+    Total:                    4'402       16       33
 
 dlpp7M_tl_nc.a: [3]
     cxxabi.o                     10
@@ -458,7 +459,7 @@ m7M_tl.a: [4]
     frexp.o                     112
     ldexp.o                     314
     -------------------------------------------------
-    Total:                    2 264
+    Total:                    2'264
 
 rt7M_tl.a: [5]
     ABImemcpy.o                 166
@@ -467,7 +468,7 @@ rt7M_tl.a: [5]
     cexit.o                      14
     cmain.o                      30
     cmain_call_ctors.o           32
-    copy_init3.o                 44
+    copy_init3.o                 46
     cstart_call_dtors.o
     cstartup_M.o                 12
     data_init.o                  40
@@ -477,23 +478,23 @@ rt7M_tl.a: [5]
     strlen.o                     54
     zero_init3.o                 58
     -------------------------------------------------
-    Total:                    1 226
+    Total:                    1'228
 
 shb_l.a: [6]
     dwrite.o                     30
     exit.o                       20
-    iarttio.o                   128
+    iarttio.o                   124
     iarwrite.o                   34
     iarwstd.o                    32
     unwind_debug.o                         1
     write.o                      16
     -------------------------------------------------
-    Total:                      260        1
+    Total:                      256        1
 
-    Gaps                         49        6
-    Linker created                        41    2 468
+    Gaps                         47        6
+    Linker created                        41    2'468
 -----------------------------------------------------
-    Grand Total:             26 399    1 653    9 794
+    Grand Total:             26'839    1'661    9'794
 
 
 *******************************************************************************
@@ -504,112 +505,112 @@ Entry                       Address    Size  Type      Object
 -----                       -------    ----  ----      ------
 .iar.dynexit$$Base      0x2000'1c94           --   Gb  - Linker created -
 .iar.dynexit$$Limit     0x2000'1e44           --   Gb  - Linker created -
-.iar.init_table$$Base    0x800'66fc           --   Gb  - Linker created -
-.iar.init_table$$Limit   0x800'6724           --   Gb  - Linker created -
-?main                    0x800'6975          Code  Gb  cmain.o [5]
-ADC1_2_IRQHandler        0x800'61d1     0xa  Code  Gb  InterruptHandlers.o [1]
-AHBPrescTable            0x800'6d3c    0x10  Data  Gb  system_stm32f1xx.o [1]
-APBPrescTable            0x800'6d80     0x8  Data  Gb  system_stm32f1xx.o [1]
-BusFault_Handler         0x800'6c1b     0x2  Code  Gb  stm32f1xx_it.o [1]
-CAN1_RX1_IRQHandler      0x800'61ef     0xa  Code  Gb  InterruptHandlers.o [1]
-CAN1_SCE_IRQHandler      0x800'61f9     0xa  Code  Gb  InterruptHandlers.o [1]
-CHANNEL_OFFSET_TAB       0x800'6d68     0x8  Data  Lc  DMA.o [1]
-CHANNEL_OFFSET_TAB       0x800'6d70     0x8  Data  Lc  I2c.o [1]
-CHANNEL_OFFSET_TAB       0x800'6d78     0x8  Data  Lc  stm32f1xx_ll_dma.o [1]
+.iar.init_table$$Base    0x800'68b4           --   Gb  - Linker created -
+.iar.init_table$$Limit   0x800'68dc           --   Gb  - Linker created -
+?main                    0x800'6b2d          Code  Gb  cmain.o [5]
+ADC1_2_IRQHandler        0x800'63b5     0xa  Code  Gb  InterruptHandlers.o [1]
+AHBPrescTable            0x800'6ef4    0x10  Data  Gb  system_stm32f1xx.o [1]
+APBPrescTable            0x800'6f38     0x8  Data  Gb  system_stm32f1xx.o [1]
+BusFault_Handler         0x800'6dd3     0x2  Code  Gb  stm32f1xx_it.o [1]
+CAN1_RX1_IRQHandler      0x800'63d3     0xa  Code  Gb  InterruptHandlers.o [1]
+CAN1_SCE_IRQHandler      0x800'63dd     0xa  Code  Gb  InterruptHandlers.o [1]
+CHANNEL_OFFSET_TAB       0x800'6f20     0x8  Data  Lc  DMA.o [1]
+CHANNEL_OFFSET_TAB       0x800'6f28     0x8  Data  Lc  I2c.o [1]
+CHANNEL_OFFSET_TAB       0x800'6f30     0x8  Data  Lc  stm32f1xx_ll_dma.o [1]
 CSTACK$$Base            0x2000'1e48           --   Gb  - Linker created -
 CSTACK$$Limit           0x2000'2648           --   Gb  - Linker created -
 DMA1_Channel1_IRQHandler
-                         0x800'60ff    0x1c  Code  Gb  InterruptHandlers.o [1]
+                         0x800'62e3    0x1c  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel2_IRQHandler
-                         0x800'611b    0x1c  Code  Gb  InterruptHandlers.o [1]
+                         0x800'62ff    0x1c  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel3_IRQHandler
-                         0x800'6137    0x1c  Code  Gb  InterruptHandlers.o [1]
+                         0x800'631b    0x1c  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel4_IRQHandler
-                         0x800'6153    0x1c  Code  Gb  InterruptHandlers.o [1]
+                         0x800'6337    0x1c  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel5_IRQHandler
-                         0x800'616f    0x1c  Code  Gb  InterruptHandlers.o [1]
+                         0x800'6353    0x1c  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel6_IRQHandler
-                         0x800'618b    0x1c  Code  Gb  InterruptHandlers.o [1]
+                         0x800'636f    0x1c  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel7_IRQHandler
-                         0x800'61a7    0x1c  Code  Gb  InterruptHandlers.o [1]
-DebugMon_Handler         0x800'6c21     0x2  Code  Gb  stm32f1xx_it.o [1]
+                         0x800'638b    0x1c  Code  Gb  InterruptHandlers.o [1]
+DebugMon_Handler         0x800'6dd9     0x2  Code  Gb  stm32f1xx_it.o [1]
 DtorRecArray            0x2000'1c94     0xc  Data  Lc  cppinit.o [2]
-EXTI0_IRQHandler         0x800'60cd     0xa  Code  Gb  InterruptHandlers.o [1]
-EXTI15_10_IRQHandler     0x800'62ad     0xa  Code  Gb  InterruptHandlers.o [1]
-EXTI1_IRQHandler         0x800'60d7     0xa  Code  Gb  InterruptHandlers.o [1]
-EXTI2_IRQHandler         0x800'60e1     0xa  Code  Gb  InterruptHandlers.o [1]
-EXTI3_IRQHandler         0x800'60eb     0xa  Code  Gb  InterruptHandlers.o [1]
-EXTI4_IRQHandler         0x800'60f5     0xa  Code  Gb  InterruptHandlers.o [1]
-EXTI9_5_IRQHandler       0x800'6203     0xa  Code  Gb  InterruptHandlers.o [1]
-FLASH_IRQHandler         0x800'60b9     0xa  Code  Gb  InterruptHandlers.o [1]
+EXTI0_IRQHandler         0x800'62b1     0xa  Code  Gb  InterruptHandlers.o [1]
+EXTI15_10_IRQHandler     0x800'6491     0xa  Code  Gb  InterruptHandlers.o [1]
+EXTI1_IRQHandler         0x800'62bb     0xa  Code  Gb  InterruptHandlers.o [1]
+EXTI2_IRQHandler         0x800'62c5     0xa  Code  Gb  InterruptHandlers.o [1]
+EXTI3_IRQHandler         0x800'62cf     0xa  Code  Gb  InterruptHandlers.o [1]
+EXTI4_IRQHandler         0x800'62d9     0xa  Code  Gb  InterruptHandlers.o [1]
+EXTI9_5_IRQHandler       0x800'63e7     0xa  Code  Gb  InterruptHandlers.o [1]
+FLASH_IRQHandler         0x800'629d     0xa  Code  Gb  InterruptHandlers.o [1]
 HAL::DMA::ClockEnable()
-                         0x800'23fb    0x14  Code  Gb  DMA.o [1]
+                         0x800'2427    0x14  Code  Gb  DMA.o [1]
 HAL::DMA::DMA(unsigned int)
-                         0x800'23eb     0xe  Code  Gb  DMA.o [1]
+                         0x800'2417     0xe  Code  Gb  DMA.o [1]
 HAL::DMA::DisableHalfTransferCompleteInterrupt(unsigned int)
-                         0x800'2793    0x10  Code  Gb  I2c.o [1]
+                         0x800'27bf    0x10  Code  Gb  I2c.o [1]
 HAL::DMA::DisableTransferCompleteInterrupt(unsigned int)
-                         0x800'27a3    0x10  Code  Gb  I2c.o [1]
+                         0x800'27cf    0x10  Code  Gb  I2c.o [1]
 HAL::DMA::DisableTransferErrorInterrupt(unsigned int)
-                         0x800'27b3    0x10  Code  Gb  I2c.o [1]
+                         0x800'27df    0x10  Code  Gb  I2c.o [1]
 HAL::DMA::EnableTransferCompleteInterrupt(unsigned int)
-                         0x800'24cd    0x10  Code  Gb  I2c.o [1]
+                         0x800'24f9    0x10  Code  Gb  I2c.o [1]
 HAL::DMA::GetInstance(unsigned int)
-                         0x800'22e5    0x50  Code  Gb  I2c.o [1]
+                         0x800'2311    0x50  Code  Gb  I2c.o [1]
 HAL::DMA::GetInstance(unsigned int)::DMAObj
                         0x2000'1c70     0x4  Data  Gb  I2c.o [1]
 HAL::DMA::HwInit(void *)
-                         0x800'240f    0x10  Code  Gb  DMA.o [1]
+                         0x800'243b    0x10  Code  Gb  DMA.o [1]
 HAL::DMA::Load(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)
-                         0x800'244d    0x52  Code  Gb  DMA.o [1]
+                         0x800'2479    0x52  Code  Gb  DMA.o [1]
 HAL::DMA::RegisterCallback(unsigned int, HAL::Callback *)
-                         0x800'249f    0x18  Code  Gb  DMA.o [1]
+                         0x800'24cb    0x18  Code  Gb  DMA.o [1]
 HAL::DMA::XferConfig(LL_DMA_InitTypeDef *, unsigned int)
-                         0x800'241f    0x2e  Code  Gb  DMA.o [1]
+                         0x800'244b    0x2e  Code  Gb  DMA.o [1]
 HAL::DMA::_DMA1Callbacks
                         0x2000'1c2c    0x1c  Data  Gb  DMA.o [1]
 HAL::DMA::_DMA1Instance
                         0x2000'1c68     0x4  Data  Gb  DMA.o [1]
-HAL::DMA::~DMA()         0x800'23f9     0x2  Code  Gb  DMA.o [1]
+HAL::DMA::~DMA()         0x800'2425     0x2  Code  Gb  DMA.o [1]
 HAL::Gpio::ClockEnable()
-                         0x800'2833    0x5c  Code  Gb  Gpio.o [1]
+                         0x800'285f    0x5c  Code  Gb  Gpio.o [1]
 HAL::Gpio::Gpio(HAL::Gpio::Pin_t)
-                         0x800'3a13    0x26  Code  Gb  I2c.o [1]
+                         0x800'3bf7    0x26  Code  Gb  I2c.o [1]
 HAL::Gpio::Gpio(HAL::Gpio::Pin_t) [subobject]
-                         0x800'27c3     0xe  Code  Gb  I2c.o [1]
+                         0x800'27ef     0xe  Code  Gb  I2c.o [1]
 HAL::Gpio::getPin(HAL::Gpio::Pin_t)
-                         0x800'4641    0x14  Code  Gb  I2c.o [1]
+                         0x800'4825    0x14  Code  Gb  I2c.o [1]
 HAL::Gpio::getPort(HAL::Gpio::Pin_t)
-                         0x800'4619    0x28  Code  Gb  I2c.o [1]
+                         0x800'47fd    0x28  Code  Gb  I2c.o [1]
 HAL::Gpio::get_LL_pin(unsigned short) const
-                         0x800'27e5    0x38  Code  Gb  I2c.o [1]
+                         0x800'2811    0x38  Code  Gb  I2c.o [1]
 HAL::GpioOutput::GpioOutput(HAL::Gpio::Pin_t, HAL::GpioOutput::GpioOutput_Params_t)
                          0x800'1f21    0x18  Code  Gb  I2c.o [1]
 HAL::GpioOutput::HwInit(void *)
-                         0x800'205f    0x40  Code  Gb  GpioOutput.o [1]
+                         0x800'208b    0x40  Code  Gb  GpioOutput.o [1]
 HAL::GpioOutput::SetPinSpeed(HAL::GpioOutput::GpioOutputSpeed_t)
-                         0x800'209f    0x1c  Code  Gb  I2c.o [1]
+                         0x800'20cb    0x1c  Code  Gb  I2c.o [1]
 HAL::GpioOutput::get_GPIO_InitTypeDef(LL_GPIO_InitTypeDef *)
-                         0x800'1ffd    0x62  Code  Gb  GpioOutput.o [1]
+                         0x800'2029    0x62  Code  Gb  GpioOutput.o [1]
 HAL::I2c::Busy(unsigned int)
-                         0x800'24dd    0x2c  Code  Gb  I2c.o [1]
+                         0x800'2509    0x2c  Code  Gb  I2c.o [1]
 HAL::I2c::ClockEnable()
-                         0x800'20bd    0x30  Code  Gb  I2c.o [1]
+                         0x800'20e9    0x30  Code  Gb  I2c.o [1]
 HAL::I2c::DataAvailableRXNE(unsigned int)
-                         0x800'25c1    0x2c  Code  Gb  I2c.o [1]
+                         0x800'25ed    0x2c  Code  Gb  I2c.o [1]
 HAL::I2c::DetectSlave(unsigned char)
                          0x800'0b67    0x6a  Code  Gb  I2c.o [1]
 HAL::I2c::Disable_BUF_Interrupt()
-                         0x800'2683     0xe  Code  Gb  I2c.o [1]
+                         0x800'26af     0xe  Code  Gb  I2c.o [1]
 HAL::I2c::Disable_EVT_BUF_ERR_Interrupt()
-                         0x800'26cb     0xe  Code  Gb  I2c.o [1]
+                         0x800'26f7     0xe  Code  Gb  I2c.o [1]
 HAL::I2c::Enable_BUF_Interrupt()
-                         0x800'26d9     0xe  Code  Gb  I2c.o [1]
+                         0x800'2705     0xe  Code  Gb  I2c.o [1]
 HAL::I2c::Enable_EVT_BUF_ERR_Interrupt()
-                         0x800'2641     0xe  Code  Gb  I2c.o [1]
+                         0x800'266d     0xe  Code  Gb  I2c.o [1]
 HAL::I2c::Enable_EVT_ERR_Interrupt()
-                         0x800'2785     0xe  Code  Gb  I2c.o [1]
-HAL::I2c::GetState()     0x800'585d     0x6  Code  Gb  INA219.o [1]
+                         0x800'27b1     0xe  Code  Gb  I2c.o [1]
+HAL::I2c::GetState()     0x800'5a3d     0x6  Code  Gb  INA219.o [1]
 HAL::I2c::HwInit(void *)
                          0x800'03a5   0x196  Code  Gb  I2c.o [1]
 HAL::I2c::I2C1_DMA_Rx_Callback::CallbackFunction()
@@ -645,18 +646,18 @@ HAL::I2c::Post(HAL::I2c::Transaction_t *, unsigned int)
 HAL::I2c::ScanBus(unsigned char *, unsigned char)
                          0x800'0bd1    0x5c  Code  Gb  I2c.o [1]
 HAL::I2c::SlaveAddressSent(unsigned int)
-                         0x800'2535    0x2c  Code  Gb  I2c.o [1]
-HAL::I2c::SoftReset()    0x800'276b    0x1a  Code  Gb  I2c.o [1]
+                         0x800'2561    0x2c  Code  Gb  I2c.o [1]
+HAL::I2c::SoftReset()    0x800'2797    0x1a  Code  Gb  I2c.o [1]
 HAL::I2c::StartConditionGenerated(unsigned int)
-                         0x800'2509    0x2c  Code  Gb  I2c.o [1]
+                         0x800'2535    0x2c  Code  Gb  I2c.o [1]
 HAL::I2c::StopFlagCleared(unsigned int)
-                         0x800'258d    0x34  Code  Gb  I2c.o [1]
+                         0x800'25b9    0x34  Code  Gb  I2c.o [1]
 HAL::I2c::StopFlagCleared(unsigned int)::StopCountMax
                         0x2000'1c74     0x4  Data  Gb  I2c.o [1]
 HAL::I2c::TransferDone(unsigned int)
-                         0x800'25ed    0x2c  Code  Gb  I2c.o [1]
+                         0x800'2619    0x2c  Code  Gb  I2c.o [1]
 HAL::I2c::TransmitterEmpty(unsigned int)
-                         0x800'2561    0x2c  Code  Gb  I2c.o [1]
+                         0x800'258d    0x2c  Code  Gb  I2c.o [1]
 HAL::I2c::TxnDoneHandler(unsigned int)
                          0x800'0e5d    0xe4  Code  Gb  I2c.o [1]
 HAL::I2c::XferIntr(HAL::I2c::Transaction_t *)
@@ -665,192 +666,191 @@ HAL::I2c::XferIntr(unsigned short, unsigned char *, unsigned int, unsigned char 
                          0x800'0c31   0x114  Code  Gb  I2c.o [1]
 HAL::I2c::XferPoll(unsigned short, unsigned char *, unsigned int, unsigned char *, unsigned int, unsigned char, HAL::I2c::I2CStatus_t volatile *, HAL::Callback *)
                          0x800'0551   0x616  Code  Gb  I2c.o [1]
-HAL::I2c::~I2c()         0x800'660d    0x2c  Code  Gb  main.o [1]
+HAL::I2c::~I2c()         0x800'67f1    0x2c  Code  Gb  main.o [1]
 HAL::InterruptManager::EnableInterrupt(IRQn_Type)
-                         0x800'2297    0x22  Code  Gb  InterruptManager.o [1]
+                         0x800'22c3    0x22  Code  Gb  InterruptManager.o [1]
 HAL::InterruptManager::GetInstance()
-                         0x800'22b9    0x10  Code  Gb  InterruptManager.o [1]
+                         0x800'22e5    0x10  Code  Gb  InterruptManager.o [1]
 HAL::InterruptManager::GetInstance()::interruptManInst
                         0x2000'1c91     0x1  Data  Lc  InterruptManager.o [1]
 HAL::InterruptManager::GetInstance()::static guard for interruptManInst
                         0x2000'1c90     0x1  Data  Lc  InterruptManager.o [1]
 HAL::InterruptManager::RegisterDeviceInterrupt(IRQn_Type, unsigned int, HAL::InterruptSource *)
-                         0x800'2259    0x3e  Code  Gb  InterruptManager.o [1]
+                         0x800'2285    0x3e  Code  Gb  InterruptManager.o [1]
 HAL::InterruptManager::_InterruptSourceArray
                         0x2000'1a64   0x100  Data  Gb  InterruptManager.o [1]
 HAL::Nvic_Handler(IRQn_Type)
-                         0x800'604f    0x42  Code  Gb  InterruptHandlers.o [1]
-HAL_GetTick              0x800'5e95     0xc  Code  Wk  stm32f1xx_hal.o [1]
-HAL_IncTick              0x800'6c31    0x18  Code  Wk  stm32f1xx_hal.o [1]
-HAL_Init                 0x800'64c9    0x20  Code  Gb  stm32f1xx_hal.o [1]
-HAL_InitTick             0x800'5ea1    0x4c  Code  Wk  stm32f1xx_hal.o [1]
-HAL_NVIC_SetPriority     0x800'5fbd    0x2a  Code  Gb  stm32f1xx_hal_cortex.o [1]
+                         0x800'6233    0x42  Code  Gb  InterruptHandlers.o [1]
+HAL_GetTick              0x800'6079     0xc  Code  Wk  stm32f1xx_hal.o [1]
+HAL_IncTick              0x800'6de9    0x18  Code  Wk  stm32f1xx_hal.o [1]
+HAL_Init                 0x800'66ad    0x20  Code  Gb  stm32f1xx_hal.o [1]
+HAL_InitTick             0x800'6085    0x4c  Code  Wk  stm32f1xx_hal.o [1]
+HAL_NVIC_SetPriority     0x800'61a1    0x2a  Code  Gb  stm32f1xx_hal_cortex.o [1]
 HAL_NVIC_SetPriorityGrouping
-                         0x800'5fb1     0xc  Code  Gb  stm32f1xx_hal_cortex.o [1]
+                         0x800'6195     0xc  Code  Gb  stm32f1xx_hal_cortex.o [1]
 HAL_RCCEx_PeriphCLKConfig
-                         0x800'62cd   0x118  Code  Gb  stm32f1xx_hal_rcc_ex.o [1]
-HAL_RCC_ClockConfig      0x800'5c29   0x190  Code  Gb  stm32f1xx_hal_rcc.o [1]
-HAL_RCC_GetHCLKFreq      0x800'5e29     0x6  Code  Gb  stm32f1xx_hal_rcc.o [1]
+                         0x800'64b1   0x118  Code  Gb  stm32f1xx_hal_rcc_ex.o [1]
+HAL_RCC_ClockConfig      0x800'5e09   0x190  Code  Gb  stm32f1xx_hal_rcc.o [1]
+HAL_RCC_GetHCLKFreq      0x800'6009     0x6  Code  Gb  stm32f1xx_hal_rcc.o [1]
 HAL_RCC_GetSysClockFreq
-                         0x800'5db9    0x70  Code  Gb  stm32f1xx_hal_rcc.o [1]
-HAL_RCC_OscConfig        0x800'5869   0x3c0  Code  Gb  stm32f1xx_hal_rcc.o [1]
+                         0x800'5f99    0x70  Code  Gb  stm32f1xx_hal_rcc.o [1]
+HAL_RCC_OscConfig        0x800'5a49   0x3c0  Code  Gb  stm32f1xx_hal_rcc.o [1]
 HAL_SYSTICK_CLKSourceConfig
-                         0x800'5ff3    0x1c  Code  Gb  stm32f1xx_hal_cortex.o [1]
-HAL_SYSTICK_Config       0x800'5fe7     0xc  Code  Gb  stm32f1xx_hal_cortex.o [1]
-HAL_SYSTICK_IRQHandler   0x800'602d     0x8  Code  Gb  stm32f1xx_hal_cortex.o [1]
-HardFault_Handler        0x800'6c17     0x2  Code  Gb  stm32f1xx_it.o [1]
-I2C1_ER_IRQHandler       0x800'625d     0xa  Code  Gb  InterruptHandlers.o [1]
-I2C1_EV_IRQHandler       0x800'6253     0xa  Code  Gb  InterruptHandlers.o [1]
-I2C2_ER_IRQHandler       0x800'6271     0xa  Code  Gb  InterruptHandlers.o [1]
-I2C2_EV_IRQHandler       0x800'6267     0xa  Code  Gb  InterruptHandlers.o [1]
+                         0x800'61d7    0x1c  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HAL_SYSTICK_Config       0x800'61cb     0xc  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HAL_SYSTICK_IRQHandler   0x800'6211     0x8  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HardFault_Handler        0x800'6dcf     0x2  Code  Gb  stm32f1xx_it.o [1]
+I2C1_ER_IRQHandler       0x800'6441     0xa  Code  Gb  InterruptHandlers.o [1]
+I2C1_EV_IRQHandler       0x800'6437     0xa  Code  Gb  InterruptHandlers.o [1]
+I2C2_ER_IRQHandler       0x800'6455     0xa  Code  Gb  InterruptHandlers.o [1]
+I2C2_EV_IRQHandler       0x800'644b     0xa  Code  Gb  InterruptHandlers.o [1]
 I2CCallback             0x2000'1c60     0x8  Data  Gb  I2C_Test.o [1]
 I2CCallback_t::CallbackFunction()
-                         0x800'6d89     0x8  Code  Gb  I2C_Test.o [1]
+                         0x800'6f49     0x8  Code  Gb  I2C_Test.o [1]
 I2CCallback_t::I2CCallback_t()
-                         0x800'57bd    0x10  Code  Gb  I2C_Test.o [1]
+                         0x800'599d    0x10  Code  Gb  I2C_Test.o [1]
 I2CCallback_t::get_XferComplete()
-                         0x800'5863     0x4  Code  Gb  I2C_Test.o [1]
+                         0x800'5a43     0x4  Code  Gb  I2C_Test.o [1]
 I2CDevIntr              0x2000'0014  0x18b0  Data  Gb  I2C_Test.o [1]
-I2c_Intr_Tests()         0x800'4ced   0x9cc  Code  Gb  I2C_Test.o [1]
-I2c_Poll_Tests()         0x800'48c5   0x3f4  Code  Gb  I2C_Test.o [1]
+I2c_Intr_Tests()         0x800'4ecd   0x9cc  Code  Gb  I2C_Test.o [1]
+I2c_Poll_Tests()         0x800'4aa5   0x3f4  Code  Gb  I2C_Test.o [1]
 Initialization guard variable for HAL::DMA::GetInstance(unsigned int)::DMAObj
                         0x2000'1c8d     0x1  Data  Gb  I2c.o [1]
-LL_DMA_Init              0x800'2ba5    0x4c  Code  Gb  stm32f1xx_ll_dma.o [1]
-LL_GPIO_Init             0x800'297d    0x90  Code  Gb  stm32f1xx_ll_gpio.o [1]
-LL_I2C_Init              0x800'21e5    0x46  Code  Gb  stm32f1xx_ll_i2c.o [1]
+LL_DMA_Init              0x800'2bd1    0x4c  Code  Gb  stm32f1xx_ll_dma.o [1]
+LL_GPIO_Init             0x800'29a9    0x90  Code  Gb  stm32f1xx_ll_gpio.o [1]
+LL_I2C_Init              0x800'2211    0x46  Code  Gb  stm32f1xx_ll_i2c.o [1]
 LL_RCC_GetSystemClocksFreq
-                         0x800'2a53    0x24  Code  Gb  stm32f1xx_ll_rcc.o [1]
-LL_mDelay                0x800'5835    0x24  Code  Gb  stm32f1xx_ll_utils.o [1]
-LoadInt                  0x800'2d9f    0x7a  Code  Lc  xprintffull_nomb.o [2]
-MemManage_Handler        0x800'6c19     0x2  Code  Gb  stm32f1xx_it.o [1]
+                         0x800'2a7f    0x24  Code  Gb  stm32f1xx_ll_rcc.o [1]
+LL_mDelay                0x800'5a15    0x24  Code  Gb  stm32f1xx_ll_utils.o [1]
+MemManage_Handler        0x800'6dd1     0x2  Code  Gb  stm32f1xx_it.o [1]
 MemSet(unsigned char *, unsigned char, unsigned int)
-                         0x800'57ad    0x10  Code  Gb  I2C_Test.o [1]
-NMI_Handler              0x800'6c15     0x2  Code  Gb  stm32f1xx_it.o [1]
-PVD_IRQHandler           0x800'609b     0xa  Code  Gb  InterruptHandlers.o [1]
-PendSV_Handler           0x800'6c23     0x2  Code  Gb  stm32f1xx_it.o [1]
+                         0x800'598d    0x10  Code  Gb  I2C_Test.o [1]
+NMI_Handler              0x800'6dcd     0x2  Code  Gb  stm32f1xx_it.o [1]
+PVD_IRQHandler           0x800'627f     0xa  Code  Gb  InterruptHandlers.o [1]
+PendSV_Handler           0x800'6ddb     0x2  Code  Gb  stm32f1xx_it.o [1]
 RCC_GetHCLKClockFreq(unsigned int)
-                         0x800'2a9f    0x16  Code  Gb  stm32f1xx_ll_rcc.o [1]
+                         0x800'2acb    0x16  Code  Gb  stm32f1xx_ll_rcc.o [1]
 RCC_GetPCLK1ClockFreq(unsigned int)
-                         0x800'2ab5    0x14  Code  Gb  stm32f1xx_ll_rcc.o [1]
+                         0x800'2ae1    0x14  Code  Gb  stm32f1xx_ll_rcc.o [1]
 RCC_GetPCLK2ClockFreq(unsigned int)
-                         0x800'2ac9    0x14  Code  Gb  stm32f1xx_ll_rcc.o [1]
+                         0x800'2af5    0x14  Code  Gb  stm32f1xx_ll_rcc.o [1]
 RCC_GetSystemClockFreq()
-                         0x800'2a77    0x28  Code  Gb  stm32f1xx_ll_rcc.o [1]
-RCC_IRQHandler           0x800'60c3     0xa  Code  Gb  InterruptHandlers.o [1]
+                         0x800'2aa3    0x28  Code  Gb  stm32f1xx_ll_rcc.o [1]
+RCC_IRQHandler           0x800'62a7     0xa  Code  Gb  InterruptHandlers.o [1]
 RCC_PLL_GetFreqDomain_SYS()
-                         0x800'2add    0x3c  Code  Gb  stm32f1xx_ll_rcc.o [1]
-RTC_Alarm_IRQHandler     0x800'62b7     0xa  Code  Gb  InterruptHandlers.o [1]
-RTC_IRQHandler           0x800'60af     0xa  Code  Gb  InterruptHandlers.o [1]
-Region$$Table$$Base      0x800'66fc           --   Gb  - Linker created -
-Region$$Table$$Limit     0x800'6724           --   Gb  - Linker created -
+                         0x800'2b09    0x3c  Code  Gb  stm32f1xx_ll_rcc.o [1]
+RTC_Alarm_IRQHandler     0x800'649b     0xa  Code  Gb  InterruptHandlers.o [1]
+RTC_IRQHandler           0x800'6293     0xa  Code  Gb  InterruptHandlers.o [1]
+Region$$Table$$Base      0x800'68b4           --   Gb  - Linker created -
+Region$$Table$$Limit     0x800'68dc           --   Gb  - Linker created -
 RepeatedStart           0x2000'1c8f     0x1  Data  Gb  I2C_Test.o [1]
 RxBuf                   0x2000'1bc8    0x64  Data  Gb  I2C_Test.o [1]
 RxLen                   0x2000'1c8a     0x2  Data  Gb  I2C_Test.o [1]
-SHT$$INIT_ARRAY$$Base    0x800'6d90           --   Gb  - Linker created -
-SHT$$INIT_ARRAY$$Limit   0x800'6d94           --   Gb  - Linker created -
+SHT$$INIT_ARRAY$$Base    0x800'6f50           --   Gb  - Linker created -
+SHT$$INIT_ARRAY$$Limit   0x800'6f54           --   Gb  - Linker created -
 SHT$$PREINIT_ARRAY$$Base
-                         0x800'6d90           --   Gb  - Linker created -
+                         0x800'6f50           --   Gb  - Linker created -
 SHT$$PREINIT_ARRAY$$Limit
-                         0x800'6d90           --   Gb  - Linker created -
-SPI1_IRQHandler          0x800'627b     0xa  Code  Gb  InterruptHandlers.o [1]
-SPI2_IRQHandler          0x800'6285     0xa  Code  Gb  InterruptHandlers.o [1]
-SVC_Handler              0x800'6c1f     0x2  Code  Gb  stm32f1xx_it.o [1]
+                         0x800'6f50           --   Gb  - Linker created -
+SPI1_IRQHandler          0x800'645f     0xa  Code  Gb  InterruptHandlers.o [1]
+SPI2_IRQHandler          0x800'6469     0xa  Code  Gb  InterruptHandlers.o [1]
+SVC_Handler              0x800'6dd7     0x2  Code  Gb  stm32f1xx_it.o [1]
 SlaveAddress            0x2000'0010     0x2  Data  Gb  I2C_Test.o [1]
 Status                  0x2000'1c8e     0x1  Data  Gb  I2C_Test.o [1]
-SysTick_Handler          0x800'6c25     0xc  Code  Gb  stm32f1xx_it.o [1]
-SystemClock_Config()     0x800'6417    0xa4  Code  Gb  main.o [1]
+SysTick_Handler          0x800'6ddd     0xc  Code  Gb  stm32f1xx_it.o [1]
+SystemClock_Config()     0x800'65fb    0xa4  Code  Gb  main.o [1]
 SystemCoreClock         0x2000'0004     0x4  Data  Gb  system_stm32f1xx.o [1]
-SystemInit               0x800'64f1    0x3e  Code  Gb  system_stm32f1xx.o [1]
-TAMPER_IRQHandler        0x800'60a5     0xa  Code  Gb  InterruptHandlers.o [1]
-TIM1_BRK_IRQHandler      0x800'620d     0xa  Code  Gb  InterruptHandlers.o [1]
-TIM1_CC_IRQHandler       0x800'622b     0xa  Code  Gb  InterruptHandlers.o [1]
+SystemInit               0x800'66d5    0x3e  Code  Gb  system_stm32f1xx.o [1]
+TAMPER_IRQHandler        0x800'6289     0xa  Code  Gb  InterruptHandlers.o [1]
+TIM1_BRK_IRQHandler      0x800'63f1     0xa  Code  Gb  InterruptHandlers.o [1]
+TIM1_CC_IRQHandler       0x800'640f     0xa  Code  Gb  InterruptHandlers.o [1]
 TIM1_TRG_COM_IRQHandler
-                         0x800'6221     0xa  Code  Gb  InterruptHandlers.o [1]
-TIM1_UP_IRQHandler       0x800'6217     0xa  Code  Gb  InterruptHandlers.o [1]
-TIM2_IRQHandler          0x800'6235     0xa  Code  Gb  InterruptHandlers.o [1]
-TIM3_IRQHandler          0x800'623f     0xa  Code  Gb  InterruptHandlers.o [1]
-TIM4_IRQHandler          0x800'6249     0xa  Code  Gb  InterruptHandlers.o [1]
+                         0x800'6405     0xa  Code  Gb  InterruptHandlers.o [1]
+TIM1_UP_IRQHandler       0x800'63fb     0xa  Code  Gb  InterruptHandlers.o [1]
+TIM2_IRQHandler          0x800'6419     0xa  Code  Gb  InterruptHandlers.o [1]
+TIM3_IRQHandler          0x800'6423     0xa  Code  Gb  InterruptHandlers.o [1]
+TIM4_IRQHandler          0x800'642d     0xa  Code  Gb  InterruptHandlers.o [1]
 Test_Condition(bool, char *, char *)
-                         0x800'56bd    0x30  Code  Gb  I2C_Test.o [1]
+                         0x800'589d    0x30  Code  Gb  I2C_Test.o [1]
 Transaction             0x2000'1c48    0x18  Data  Gb  I2C_Test.o [1]
 TxBuf                   0x2000'1b64    0x64  Data  Gb  I2C_Test.o [1]
 TxLen                   0x2000'1c88     0x2  Data  Gb  I2C_Test.o [1]
-USART1_IRQHandler        0x800'628f     0xa  Code  Gb  InterruptHandlers.o [1]
-USART2_IRQHandler        0x800'6299     0xa  Code  Gb  InterruptHandlers.o [1]
-USART3_IRQHandler        0x800'62a3     0xa  Code  Gb  InterruptHandlers.o [1]
-USBWakeUp_IRQHandler     0x800'62c1     0xa  Code  Gb  InterruptHandlers.o [1]
+USART1_IRQHandler        0x800'6473     0xa  Code  Gb  InterruptHandlers.o [1]
+USART2_IRQHandler        0x800'647d     0xa  Code  Gb  InterruptHandlers.o [1]
+USART3_IRQHandler        0x800'6487     0xa  Code  Gb  InterruptHandlers.o [1]
+USBWakeUp_IRQHandler     0x800'64a5     0xa  Code  Gb  InterruptHandlers.o [1]
 USB_HP_CAN1_TX_IRQHandler
-                         0x800'61db     0xa  Code  Gb  InterruptHandlers.o [1]
+                         0x800'63bf     0xa  Code  Gb  InterruptHandlers.o [1]
 USB_LP_CAN1_RX0_IRQHandler
-                         0x800'61e5     0xa  Code  Gb  InterruptHandlers.o [1]
-UsageFault_Handler       0x800'6c1d     0x2  Code  Gb  stm32f1xx_it.o [1]
+                         0x800'63c9     0xa  Code  Gb  InterruptHandlers.o [1]
+UsageFault_Handler       0x800'6dd5     0x2  Code  Gb  stm32f1xx_it.o [1]
 Utils::DebugLog<uint32_t, 5U, 7U, 20U, 100U>::GetInstance(){1}::m_DebugLog
                         0x2000'18c4   0x1a0  Data  Lc  I2c.o [1]
 Utils::DebugLog<uint32_t, 5U, 7U, 20U, 100U>::GetInstance(){1}::static guard for m_DebugLog
                         0x2000'1c8c     0x1  Data  Lc  I2c.o [1]
 Utils::DebugLog<unsigned int, (unsigned int)5, (unsigned int)7, (unsigned int)20, (unsigned int)100>::DebugLog()
-                         0x800'27d1    0x14  Code  Gb  I2c.o [1]
+                         0x800'27fd    0x14  Code  Gb  I2c.o [1]
 Utils::DebugLog<unsigned int, (unsigned int)5, (unsigned int)7, (unsigned int)20, (unsigned int)100>::Enable(Utils::DebugLog<unsigned int, (unsigned int)5, (unsigned int)7, (unsigned int)20, (unsigned int)100>::ModuleId_t)
-                         0x800'1ff1     0xc  Code  Gb  I2c.o [1]
+                         0x800'201d     0xc  Code  Gb  I2c.o [1]
 Utils::DebugLog<unsigned int, (unsigned int)5, (unsigned int)7, (unsigned int)20, (unsigned int)100>::GetInstance()
-                         0x800'1fc1    0x30  Code  Gb  I2c.o [1]
+                         0x800'1fed    0x30  Code  Gb  I2c.o [1]
 Utils::DebugLog<unsigned int, (unsigned int)5, (unsigned int)7, (unsigned int)20, (unsigned int)100>::m_Instance
                         0x2000'1c6c     0x4  Data  Gb  I2c.o [1]
 Utils::Queue<HAL::I2c::Transaction_t *, (unsigned int)10>::Available()
-                         0x800'2691     0x4  Code  Gb  I2c.o [1]
+                         0x800'26bd     0x4  Code  Gb  I2c.o [1]
 Utils::Queue<HAL::I2c::Transaction_t *, (unsigned int)10>::IsQueueEmpty()
-                         0x800'3a01    0x12  Code  Gb  I2c.o [1]
+                         0x800'3be5    0x12  Code  Gb  I2c.o [1]
 Utils::Queue<HAL::I2c::Transaction_t *, (unsigned int)10>::IsQueueFull()
-                         0x800'39e3    0x1e  Code  Gb  I2c.o [1]
+                         0x800'3bc7    0x1e  Code  Gb  I2c.o [1]
 Utils::Queue<HAL::I2c::Transaction_t *, (unsigned int)10>::Queue()
                          0x800'1f39     0xe  Code  Gb  I2c.o [1]
 Utils::Queue<HAL::I2c::Transaction_t *, (unsigned int)10>::Read(HAL::I2c::Transaction_t *&)
-                         0x800'2695    0x36  Code  Gb  I2c.o [1]
+                         0x800'26c1    0x36  Code  Gb  I2c.o [1]
 Utils::Queue<HAL::I2c::Transaction_t *, (unsigned int)10>::Write(HAL::I2c::Transaction_t *)
-                         0x800'264f    0x34  Code  Gb  I2c.o [1]
+                         0x800'267b    0x34  Code  Gb  I2c.o [1]
 Utils::Queue<HAL::I2c::Transaction_t *, (unsigned int)10>::~Queue()
-                         0x800'663b     0x2  Code  Gb  main.o [1]
+                         0x800'681f     0x2  Code  Gb  main.o [1]
 Utils::Queue<unsigned char, (unsigned int)64>::IsQueueEmpty()
-                         0x800'272b    0x12  Code  Gb  main.o [1]
+                         0x800'2757    0x12  Code  Gb  main.o [1]
 Utils::Queue<unsigned char, (unsigned int)64>::IsQueueFull()
-                         0x800'26e7    0x18  Code  Gb  I2c.o [1]
+                         0x800'2713    0x18  Code  Gb  I2c.o [1]
 Utils::Queue<unsigned char, (unsigned int)64>::Queue()
                          0x800'1fb1     0xe  Code  Gb  I2c.o [1]
 Utils::Queue<unsigned char, (unsigned int)64>::Read(unsigned char &)
-                         0x800'273d    0x2e  Code  Gb  main.o [1]
+                         0x800'2769    0x2e  Code  Gb  main.o [1]
 Utils::Queue<unsigned char, (unsigned int)64>::Write(unsigned char)
-                         0x800'26ff    0x2c  Code  Gb  I2c.o [1]
+                         0x800'272b    0x2c  Code  Gb  I2c.o [1]
 Utils::Queue<unsigned char, (unsigned int)64>::~Queue()
-                         0x800'6639     0x2  Code  Gb  main.o [1]
+                         0x800'681d     0x2  Code  Gb  main.o [1]
 Virtual function table for HAL::I2c
-                         0x800'6ce0    0x14  Data  Gb  I2c.o [1]
+                         0x800'6e98    0x14  Data  Gb  I2c.o [1]
 Virtual function table for HAL::I2c::I2C1_DMA_Rx_Callback
-                         0x800'6c90    0x14  Data  Gb  I2c.o [1]
+                         0x800'6e48    0x14  Data  Gb  I2c.o [1]
 Virtual function table for HAL::I2c::I2C1_DMA_Tx_Callback
-                         0x800'6ca4    0x14  Data  Gb  I2c.o [1]
+                         0x800'6e5c    0x14  Data  Gb  I2c.o [1]
 Virtual function table for HAL::I2c::I2C2_DMA_Rx_Callback
-                         0x800'6cb8    0x14  Data  Gb  I2c.o [1]
+                         0x800'6e70    0x14  Data  Gb  I2c.o [1]
 Virtual function table for HAL::I2c::I2C2_DMA_Tx_Callback
-                         0x800'6ccc    0x14  Data  Gb  I2c.o [1]
+                         0x800'6e84    0x14  Data  Gb  I2c.o [1]
 Virtual function table for I2CCallback_t
-                         0x800'6cf4    0x14  Data  Gb  I2C_Test.o [1]
-WWDG_IRQHandler          0x800'6091     0xa  Code  Gb  InterruptHandlers.o [1]
+                         0x800'6eac    0x14  Data  Gb  I2C_Test.o [1]
+WWDG_IRQHandler          0x800'6275     0xa  Code  Gb  InterruptHandlers.o [1]
 [local to DMA_cpp]::LL_AHB1_GRP1_EnableClock(unsigned int)
-                         0x800'2335    0x16  Code  Lc  DMA.o [1]
+                         0x800'2361    0x16  Code  Lc  DMA.o [1]
 [local to DMA_cpp]::LL_DMA_DisableChannel(DMA_TypeDef *, unsigned int)
-                         0x800'2369    0x1e  Code  Lc  DMA.o [1]
+                         0x800'2395    0x1e  Code  Lc  DMA.o [1]
 [local to DMA_cpp]::LL_DMA_EnableChannel(DMA_TypeDef *, unsigned int)
-                         0x800'234b    0x1e  Code  Lc  DMA.o [1]
+                         0x800'2377    0x1e  Code  Lc  DMA.o [1]
 [local to DMA_cpp]::LL_DMA_SetDataLength(DMA_TypeDef *, unsigned int, unsigned int)
-                         0x800'23ab    0x24  Code  Lc  DMA.o [1]
+                         0x800'23d7    0x24  Code  Lc  DMA.o [1]
 [local to DMA_cpp]::LL_DMA_SetDataTransferDirection(DMA_TypeDef *, unsigned int, unsigned int)
-                         0x800'2387    0x24  Code  Lc  DMA.o [1]
+                         0x800'23b3    0x24  Code  Lc  DMA.o [1]
 [local to DMA_cpp]::LL_DMA_SetMemoryAddress(DMA_TypeDef *, unsigned int, unsigned int)
-                         0x800'23cf     0xe  Code  Lc  DMA.o [1]
+                         0x800'23fb     0xe  Code  Lc  DMA.o [1]
 [local to DMA_cpp]::LL_DMA_SetPeriphAddress(DMA_TypeDef *, unsigned int, unsigned int)
-                         0x800'23dd     0xe  Code  Lc  DMA.o [1]
+                         0x800'2409     0xe  Code  Lc  DMA.o [1]
 [local to Gpio_cpp]::LL_APB2_GRP1_EnableClock(unsigned int)
-                         0x800'281d    0x16  Code  Lc  Gpio.o [1]
+                         0x800'2849    0x16  Code  Lc  Gpio.o [1]
 [local to I2c_cpp]::LL_APB1_GRP1_EnableClock(unsigned int)
                          0x800'00ed    0x18  Code  Lc  I2c.o [1]
 [local to I2c_cpp]::LL_DMA_ClearFlag_HT6(DMA_TypeDef *)
@@ -916,156 +916,153 @@ WWDG_IRQHandler          0x800'6091     0xa  Code  Gb  InterruptHandlers.o [1]
 [local to I2c_cpp]::LL_I2C_IsActiveFlag_TXE(I2C_TypeDef *)
                          0x800'022d     0xa  Code  Lc  I2c.o [1]
 [local to InterruptHandlers_cpp]::NVIC_ClearPendingIRQ(IRQn_Type)
-                         0x800'6039    0x16  Code  Lc  InterruptHandlers.o [1]
+                         0x800'621d    0x16  Code  Lc  InterruptHandlers.o [1]
 [local to InterruptManager_cpp]::NVIC_SetPriority(IRQn_Type, unsigned int)
-                         0x800'222d    0x2c  Code  Lc  InterruptManager.o [1]
+                         0x800'2259    0x2c  Code  Lc  InterruptManager.o [1]
 [local to stm32f1xx_hal_cortex_c]::NVIC_EncodePriority(unsigned int, unsigned int, unsigned int)
-                         0x800'5f41    0x40  Code  Lc  stm32f1xx_hal_cortex.o [1]
+                         0x800'6125    0x40  Code  Lc  stm32f1xx_hal_cortex.o [1]
 [local to stm32f1xx_hal_cortex_c]::NVIC_GetPriorityGrouping()
-                         0x800'5f0b     0xa  Code  Lc  stm32f1xx_hal_cortex.o [1]
+                         0x800'60ef     0xa  Code  Lc  stm32f1xx_hal_cortex.o [1]
 [local to stm32f1xx_hal_cortex_c]::NVIC_SetPriority(IRQn_Type, unsigned int)
-                         0x800'5f15    0x2c  Code  Lc  stm32f1xx_hal_cortex.o [1]
+                         0x800'60f9    0x2c  Code  Lc  stm32f1xx_hal_cortex.o [1]
 [local to stm32f1xx_hal_cortex_c]::NVIC_SetPriorityGrouping(unsigned int)
-                         0x800'5eed    0x1e  Code  Lc  stm32f1xx_hal_cortex.o [1]
+                         0x800'60d1    0x1e  Code  Lc  stm32f1xx_hal_cortex.o [1]
 [local to stm32f1xx_hal_cortex_c]::SysTick_Config(unsigned int)
-                         0x800'5f81    0x30  Code  Lc  stm32f1xx_hal_cortex.o [1]
+                         0x800'6165    0x30  Code  Lc  stm32f1xx_hal_cortex.o [1]
 [local to stm32f1xx_hal_rcc_c]::RCC_Delay(unsigned int)
-                         0x800'5e2f    0x26  Code  Lc  stm32f1xx_hal_rcc.o [1]
+                         0x800'600f    0x26  Code  Lc  stm32f1xx_hal_rcc.o [1]
 [local to stm32f1xx_ll_dma_c]::LL_DMA_ConfigTransfer(DMA_TypeDef *, unsigned int, unsigned int)
-                         0x800'2b3d    0x24  Code  Lc  stm32f1xx_ll_dma.o [1]
+                         0x800'2b69    0x24  Code  Lc  stm32f1xx_ll_dma.o [1]
 [local to stm32f1xx_ll_dma_c]::LL_DMA_SetDataLength(DMA_TypeDef *, unsigned int, unsigned int)
-                         0x800'2b61    0x24  Code  Lc  stm32f1xx_ll_dma.o [1]
+                         0x800'2b8d    0x24  Code  Lc  stm32f1xx_ll_dma.o [1]
 [local to stm32f1xx_ll_dma_c]::LL_DMA_SetMemoryAddress(DMA_TypeDef *, unsigned int, unsigned int)
-                         0x800'2b85     0xe  Code  Lc  stm32f1xx_ll_dma.o [1]
+                         0x800'2bb1     0xe  Code  Lc  stm32f1xx_ll_dma.o [1]
 [local to stm32f1xx_ll_dma_c]::LL_DMA_SetPeriphAddress(DMA_TypeDef *, unsigned int, unsigned int)
-                         0x800'2b93     0xe  Code  Lc  stm32f1xx_ll_dma.o [1]
+                         0x800'2bbf     0xe  Code  Lc  stm32f1xx_ll_dma.o [1]
 [local to stm32f1xx_ll_gpio_c]::LL_GPIO_SetPinMode(GPIO_TypeDef *, unsigned int, unsigned int)
-                         0x800'28a9    0x3c  Code  Lc  stm32f1xx_ll_gpio.o [1]
+                         0x800'28d5    0x3c  Code  Lc  stm32f1xx_ll_gpio.o [1]
 [local to stm32f1xx_ll_gpio_c]::LL_GPIO_SetPinOutputType(GPIO_TypeDef *, unsigned int, unsigned int)
-                         0x800'2921    0x3c  Code  Lc  stm32f1xx_ll_gpio.o [1]
+                         0x800'294d    0x3c  Code  Lc  stm32f1xx_ll_gpio.o [1]
 [local to stm32f1xx_ll_gpio_c]::LL_GPIO_SetPinPull(GPIO_TypeDef *, unsigned int, unsigned int)
-                         0x800'295d    0x20  Code  Lc  stm32f1xx_ll_gpio.o [1]
+                         0x800'2989    0x20  Code  Lc  stm32f1xx_ll_gpio.o [1]
 [local to stm32f1xx_ll_gpio_c]::LL_GPIO_SetPinSpeed(GPIO_TypeDef *, unsigned int, unsigned int)
-                         0x800'28e5    0x3c  Code  Lc  stm32f1xx_ll_gpio.o [1]
+                         0x800'2911    0x3c  Code  Lc  stm32f1xx_ll_gpio.o [1]
 [local to stm32f1xx_ll_i2c_c]::LL_I2C_AcknowledgeNextData(I2C_TypeDef *, unsigned int)
-                         0x800'21c9     0xc  Code  Lc  stm32f1xx_ll_i2c.o [1]
+                         0x800'21f5     0xc  Code  Lc  stm32f1xx_ll_i2c.o [1]
 [local to stm32f1xx_ll_i2c_c]::LL_I2C_ConfigSpeed(I2C_TypeDef *, unsigned int, unsigned int, unsigned int)
-                         0x800'2113    0xaa  Code  Lc  stm32f1xx_ll_i2c.o [1]
+                         0x800'213f    0xaa  Code  Lc  stm32f1xx_ll_i2c.o [1]
 [local to stm32f1xx_ll_i2c_c]::LL_I2C_Disable(I2C_TypeDef *)
-                         0x800'20f7     0xa  Code  Lc  stm32f1xx_ll_i2c.o [1]
+                         0x800'2123     0xa  Code  Lc  stm32f1xx_ll_i2c.o [1]
 [local to stm32f1xx_ll_i2c_c]::LL_I2C_Enable(I2C_TypeDef *)
-                         0x800'20ed     0xa  Code  Lc  stm32f1xx_ll_i2c.o [1]
+                         0x800'2119     0xa  Code  Lc  stm32f1xx_ll_i2c.o [1]
 [local to stm32f1xx_ll_i2c_c]::LL_I2C_SetMode(I2C_TypeDef *, unsigned int)
-                         0x800'21bd     0xc  Code  Lc  stm32f1xx_ll_i2c.o [1]
+                         0x800'21e9     0xc  Code  Lc  stm32f1xx_ll_i2c.o [1]
 [local to stm32f1xx_ll_i2c_c]::LL_I2C_SetOwnAddress1(I2C_TypeDef *, unsigned int, unsigned int)
-                         0x800'2101    0x12  Code  Lc  stm32f1xx_ll_i2c.o [1]
+                         0x800'212d    0x12  Code  Lc  stm32f1xx_ll_i2c.o [1]
 [local to stm32f1xx_ll_rcc_c]::LL_RCC_GetAHBPrescaler()
-                         0x800'2a17     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
+                         0x800'2a43     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
 [local to stm32f1xx_ll_rcc_c]::LL_RCC_GetAPB1Prescaler()
-                         0x800'2a21     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
+                         0x800'2a4d     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
 [local to stm32f1xx_ll_rcc_c]::LL_RCC_GetAPB2Prescaler()
-                         0x800'2a2b     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
+                         0x800'2a57     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
 [local to stm32f1xx_ll_rcc_c]::LL_RCC_GetSysClkSource()
-                         0x800'2a0d     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
+                         0x800'2a39     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
 [local to stm32f1xx_ll_rcc_c]::LL_RCC_PLL_GetMainSource()
-                         0x800'2a35     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
+                         0x800'2a61     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
 [local to stm32f1xx_ll_rcc_c]::LL_RCC_PLL_GetMultiplicator()
-                         0x800'2a3f     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
+                         0x800'2a6b     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
 [local to stm32f1xx_ll_rcc_c]::LL_RCC_PLL_GetPrediv()
-                         0x800'2a49     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
-_Error_Handler           0x800'64c5     0x2  Code  Gb  main.o [1]
-_GenldFullNoMb           0x800'36e1   0x274  Code  Lc  xprintffull_nomb.o [2]
-_LdtobFullNoMb           0x800'32dd   0x3d6  Code  Lc  xprintffull_nomb.o [2]
-_LitobFullNoMb           0x800'318d   0x10a  Code  Lc  xprintffull_nomb.o [2]
-_PrintfFullNoMb          0x800'2bf1   0x19e  Code  Gb  xprintffull_nomb.o [2]
-_Prout                   0x800'6c79    0x16  Code  Gb  xprout.o [2]
-_PutcharsFullNoMb        0x800'3955    0x2e  Code  Lc  xprintffull_nomb.o [2]
-_PutfldFullNoMb          0x800'2e19   0x268  Code  Lc  xprintffull_nomb.o [2]
-_PuttxtFullNoMb          0x800'3081   0x10c  Code  Lc  xprintffull_nomb.o [2]
-__aeabi_atexit           0x800'2b31     0xa  Code  Gb  cxxabi.o [3]
-__aeabi_cdcmple          0x800'40ad          Code  Gb  DblCmpLe.o [4]
-__aeabi_cdrcmple         0x800'40dd          Code  Gb  DblCmpGe.o [4]
-__aeabi_d2iz             0x800'4249          Code  Gb  DblToS32.o [4]
-__aeabi_d2uiz            0x800'45d5          Code  Gb  DblToU32.o [4]
-__aeabi_ddiv             0x800'438d          Code  Gb  DblDiv.o [4]
-__aeabi_dmul             0x800'3e99          Code  Gb  DblMul.o [4]
-__aeabi_dsub             0x800'42a9          Code  Gb  DblSub.o [4]
-__aeabi_i2d              0x800'4285          Code  Gb  S32ToDbl.o [4]
-__aeabi_ldiv0            0x800'465d          Code  Gb  I64DivZer.o [5]
-__aeabi_memcpy           0x800'3a39          Code  Gb  ABImemcpy.o [5]
-__aeabi_memcpy4          0x800'3a59          Code  Gb  ABImemcpy.o [5]
-__aeabi_memcpy8          0x800'3a59          Code  Gb  ABImemcpy.o [5]
-__aeabi_ui2d             0x800'45fd          Code  Gb  U32ToDbl.o [4]
-__aeabi_uldivmod         0x800'3c69          Code  Gb  I64DivMod.o [5]
-__call_ctors             0x800'3ae1    0x18  Code  Gb  cppinit.o [2]
-__call_dtors             0x800'3b2f     0xc  Code  Gb  cppinit.o [2]
-__call_dtors0            0x800'3b3b    0x36  Code  Gb  cppinit.o [2]
-__cexit_call_dtors       0x800'699f          Code  Gb  cexit.o [5]
-__cmain                  0x800'6975          Code  Gb  cmain.o [5]
-__cstart_call_dtors      0x800'6d94          Data  Gb  cstart_call_dtors.o [5]
-__cxa_atexit             0x800'3af9    0x36  Code  Gb  cppinit.o [2]
+                         0x800'2a75     0xa  Code  Lc  stm32f1xx_ll_rcc.o [1]
+_Error_Handler           0x800'66a9     0x2  Code  Gb  main.o [1]
+_LitobFullNoMb           0x800'39c1   0x10a  Code  Lc  xprintffull_nomb.o [2]
+_PrintfFullNoMb          0x800'2c1d   0xd80  Code  Gb  xprintffull_nomb.o [2]
+_Prout                   0x800'6e31    0x16  Code  Gb  xprout.o [2]
+_PutcharFullNoMb         0x800'3b31    0x20  Code  Lc  xprintffull_nomb.o [2]
+_PutcharsFullNoMb        0x800'3b51    0x2e  Code  Lc  xprintffull_nomb.o [2]
+__aeabi_atexit           0x800'2b5d     0xa  Code  Gb  cxxabi.o [3]
+__aeabi_cdcmple          0x800'3ebd          Code  Gb  DblCmpLe.o [4]
+__aeabi_cdrcmple         0x800'3eed          Code  Gb  DblCmpGe.o [4]
+__aeabi_d2iz             0x800'4059          Code  Gb  DblToS32.o [4]
+__aeabi_d2uiz            0x800'43e5          Code  Gb  DblToU32.o [4]
+__aeabi_ddiv             0x800'419d          Code  Gb  DblDiv.o [4]
+__aeabi_dmul             0x800'4429          Code  Gb  DblMul.o [4]
+__aeabi_dsub             0x800'40b9          Code  Gb  DblSub.o [4]
+__aeabi_i2d              0x800'4095          Code  Gb  S32ToDbl.o [4]
+__aeabi_ldiv0            0x800'49ad          Code  Gb  I64DivZer.o [5]
+__aeabi_memcpy           0x800'3c1d          Code  Gb  ABImemcpy.o [5]
+__aeabi_memcpy4          0x800'3c3d          Code  Gb  ABImemcpy.o [5]
+__aeabi_memcpy8          0x800'3c3d          Code  Gb  ABImemcpy.o [5]
+__aeabi_ui2d             0x800'440d          Code  Gb  U32ToDbl.o [4]
+__aeabi_uldivmod         0x800'45cd          Code  Gb  I64DivMod.o [5]
+__call_ctors             0x800'3cc5    0x18  Code  Gb  cppinit.o [2]
+__call_dtors             0x800'3d13     0xc  Code  Gb  cppinit.o [2]
+__call_dtors0            0x800'3d1f    0x36  Code  Gb  cppinit.o [2]
+__cexit_call_dtors       0x800'6b57          Code  Gb  cexit.o [5]
+__cmain                  0x800'6b2d          Code  Gb  cmain.o [5]
+__cstart_call_dtors      0x800'6f54          Data  Gb  cstart_call_dtors.o [5]
+__cxa_atexit             0x800'3cdd    0x36  Code  Gb  cppinit.o [2]
 __dso_handle            0x2000'1c80     0x4  Data  Gb  cppinit.o [2]
-__dwrite                 0x800'6915    0x1e  Code  Gb  dwrite.o [6]
-__exit                   0x800'47cd    0x14  Code  Gb  exit.o [6]
-__iar_Fail_s             0x800'3b99    0x1c  Code  Gb  xfail_s.o [2]
-__iar_Memchr             0x800'3c11          Code  Gb  memchr.o [5]
-__iar_Strchr             0x800'3b81          Code  Gb  strchr.o [5]
-__iar_close_ttio         0x800'47e1    0x2e  Code  Gb  iarttio.o [6]
-__iar_copy_init3         0x800'663d    0x2c  Code  Gb  copy_init3.o [5]
+__dwrite                 0x800'6acd    0x1e  Code  Gb  dwrite.o [6]
+__exit                   0x800'49b1    0x14  Code  Gb  exit.o [6]
+__iar_Fail_s             0x800'3d7d    0x1c  Code  Gb  xfail_s.o [2]
+__iar_Memchr             0x800'3df5          Code  Gb  memchr.o [5]
+__iar_Strchr             0x800'3d65          Code  Gb  strchr.o [5]
+__iar_close_ttio         0x800'49c5    0x2c  Code  Gb  iarttio.o [6]
+__iar_copy_init3         0x800'1fbf    0x2e  Code  Gb  copy_init3.o [5]
 __iar_cstart_call_ctors
-                         0x800'6955    0x20  Code  Gb  cmain_call_ctors.o [5]
-__iar_dadd               0x800'42b9          Code  Gb  DblSub.o [4]
-__iar_data_init3         0x800'6669    0x28  Code  Gb  data_init.o [5]
-__iar_debug_exceptions   0x800'20ba     0x1  Data  Gb  unwind_debug.o [6]
-__iar_dsub               0x800'4661          Code  Gb  DblAdd.o [4]
-__iar_dsubStart          0x800'4673          Code  Gb  DblAdd.o [4]
-__iar_frexp              0x800'4049          Code  Gb  frexp.o [4]
-__iar_frexp64            0x800'403d          Code  Gb  frexp.o [4]
-__iar_frexpl             0x800'4049          Code  Gb  frexp.o [4]
-__iar_get_ttio           0x800'4811    0x4c  Code  Gb  iarttio.o [6]
-__iar_ldexp64            0x800'410d          Code  Gb  ldexp.o [4]
-__iar_lookup_ttioh       0x800'488f     0x4  Code  Gb  XShttio.o [2]
-__iar_program_start      0x800'6d5d          Code  Gb  cstartup_M.o [5]
-__iar_scalbln64          0x800'410d          Code  Gb  ldexp.o [4]
-__iar_scalbn64           0x800'410d          Code  Gb  ldexp.o [4]
-__iar_sh_stdout          0x800'6933    0x20  Code  Gb  iarwstd.o [6]
-__iar_sh_write           0x800'66d9    0x22  Code  Gb  iarwrite.o [6]
+                         0x800'6b0d    0x20  Code  Gb  cmain_call_ctors.o [5]
+__iar_dadd               0x800'40c9          Code  Gb  DblSub.o [4]
+__iar_data_init3         0x800'6821    0x28  Code  Gb  data_init.o [5]
+__iar_debug_exceptions   0x800'2256     0x1  Data  Gb  unwind_debug.o [6]
+__iar_dsub               0x800'4841          Code  Gb  DblAdd.o [4]
+__iar_dsubStart          0x800'4853          Code  Gb  DblAdd.o [4]
+__iar_frexp              0x800'3e59          Code  Gb  frexp.o [4]
+__iar_frexp64            0x800'3e4d          Code  Gb  frexp.o [4]
+__iar_frexpl             0x800'3e59          Code  Gb  frexp.o [4]
+__iar_get_ttio           0x800'49f1    0x4c  Code  Gb  iarttio.o [6]
+__iar_ldexp64            0x800'3f1d          Code  Gb  ldexp.o [4]
+__iar_lookup_ttioh       0x800'4a6f     0x4  Code  Gb  XShttio.o [2]
+__iar_program_start      0x800'6f15          Code  Gb  cstartup_M.o [5]
+__iar_scalbln64          0x800'3f1d          Code  Gb  ldexp.o [4]
+__iar_scalbn64           0x800'3f1d          Code  Gb  ldexp.o [4]
+__iar_sh_stdout          0x800'6aeb    0x20  Code  Gb  iarwstd.o [6]
+__iar_sh_write           0x800'6891    0x22  Code  Gb  iarwrite.o [6]
 __iar_tls$$INIT_ARRAY$$Base
-                         0x800'6d94           --   Gb  - Linker created -
+                         0x800'6f54           --   Gb  - Linker created -
 __iar_tls$$INIT_ARRAY$$Limit
-                         0x800'6d94           --   Gb  - Linker created -
-__iar_ttio_guard_lock    0x800'4861    0x1e  Code  Gb  XShttio.o [2]
+                         0x800'6f54           --   Gb  - Linker created -
+__iar_ttio_guard_lock    0x800'4a41    0x1e  Code  Gb  XShttio.o [2]
 __iar_ttio_guard_unlock
-                         0x800'487f    0x10  Code  Gb  XShttio.o [2]
+                         0x800'4a5f    0x10  Code  Gb  XShttio.o [2]
 __iar_ttio_handles      0x2000'0008     0x8  Data  Lc  XShttio.o [2]
 __iar_zero_init3         0x800'1f47    0x3a  Code  Gb  zero_init3.o [5]
-__low_level_init         0x800'6993     0x4  Code  Gb  low_level_init.o [2]
-__sti__routine           0x800'489d    0x28  Code  Lc  I2C_Test.o [1]
+__low_level_init         0x800'6b4b     0x4  Code  Gb  low_level_init.o [2]
+__sti__routine           0x800'4a7d    0x28  Code  Lc  I2C_Test.o [1]
 __vector_table           0x800'0000          Data  Gb  startup_stm32f103xb.o [1]
-__write                  0x800'6905    0x10  Code  Gb  write.o [6]
-_call_main               0x800'6981          Code  Gb  cmain.o [5]
-_exit                    0x800'699d          Code  Gb  cexit.o [5]
-_main                    0x800'698f          Code  Gb  cmain.o [5]
-abort                    0x800'4655     0x6  Code  Gb  abort.o [2]
-exit                     0x800'6997     0x4  Code  Gb  exit.o [2]
-frexp                    0x800'403d          Code  Gb  frexp.o [4]
-frexpl                   0x800'403d          Code  Gb  frexp.o [4]
-ldexp                    0x800'410d          Code  Gb  ldexp.o [4]
-ldexpl                   0x800'410d          Code  Gb  ldexp.o [4]
-main                     0x800'63f9    0x1e  Code  Gb  main.o [1]
-memchr                   0x800'3c11          Code  Gb  memchr.o [5]
-memcmp                   0x800'57cd          Code  Gb  memcmp.o [5]
+__write                  0x800'6abd    0x10  Code  Gb  write.o [6]
+_call_main               0x800'6b39          Code  Gb  cmain.o [5]
+_exit                    0x800'6b55          Code  Gb  cexit.o [5]
+_main                    0x800'6b47          Code  Gb  cmain.o [5]
+abort                    0x800'4839     0x6  Code  Gb  abort.o [2]
+exit                     0x800'6b4f     0x4  Code  Gb  exit.o [2]
+frexp                    0x800'3e4d          Code  Gb  frexp.o [4]
+frexpl                   0x800'3e4d          Code  Gb  frexp.o [4]
+ldexp                    0x800'3f1d          Code  Gb  ldexp.o [4]
+ldexpl                   0x800'3f1d          Code  Gb  ldexp.o [4]
+main                     0x800'65dd    0x1e  Code  Gb  main.o [1]
+memchr                   0x800'3df5          Code  Gb  memchr.o [5]
+memcmp                   0x800'59ad          Code  Gb  memcmp.o [5]
 next_abi_dtor_rec       0x2000'1c7c     0x4  Data  Lc  cppinit.o [2]
-printf                   0x800'2619    0x28  Code  Gb  printf.o [2]
-putchar                  0x800'68e5    0x20  Code  Gb  putchar.o [2]
-scalbln                  0x800'410d          Code  Gb  ldexp.o [4]
-scalblnl                 0x800'410d          Code  Gb  ldexp.o [4]
-scalbn                   0x800'410d          Code  Gb  ldexp.o [4]
-scalbnl                  0x800'410d          Code  Gb  ldexp.o [4]
-scale                    0x800'3297    0x46  Code  Lc  xprintffull_nomb.o [2]
+printf                   0x800'2645    0x28  Code  Gb  printf.o [2]
+putchar                  0x800'6a9d    0x20  Code  Gb  putchar.o [2]
+scalbln                  0x800'3f1d          Code  Gb  ldexp.o [4]
+scalblnl                 0x800'3f1d          Code  Gb  ldexp.o [4]
+scalbn                   0x800'3f1d          Code  Gb  ldexp.o [4]
+scalbnl                  0x800'3f1d          Code  Gb  ldexp.o [4]
+scale                    0x800'3acb    0x46  Code  Lc  xprintffull_nomb.o [2]
 sec_hand                0x2000'1c84     0x4  Data  Lc  xfail_s.o [2]
-strchr                   0x800'3b81          Code  Gb  strchr.o [5]
-strlen                   0x800'3bd9          Code  Gb  strlen.o [5]
+strchr                   0x800'3d65          Code  Gb  strchr.o [5]
+strlen                   0x800'3dbd          Code  Gb  strlen.o [5]
 ttio_guard              0x2000'1c92     0x1  Data  Lc  XShttio.o [2]
 uwTick                  0x2000'1c78     0x4  Data  Gb  stm32f1xx_hal.o [1]
 uwTickFreq              0x2000'0012     0x1  Data  Gb  stm32f1xx_hal.o [1]
@@ -1079,9 +1076,9 @@ uwTickPrio              0x2000'0000     0x4  Data  Gb  stm32f1xx_hal.o [1]
 [5] = rt7M_tl.a
 [6] = shb_l.a
 
-  26 399 bytes of readonly  code memory
-   1 653 bytes of readonly  data memory
-   9 794 bytes of readwrite data memory
+  26'839 bytes of readonly  code memory
+   1'661 bytes of readonly  data memory
+   9'794 bytes of readwrite data memory
 
 Errors: none
 Warnings: none

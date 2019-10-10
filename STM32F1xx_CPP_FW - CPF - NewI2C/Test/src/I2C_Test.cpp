@@ -202,6 +202,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
@@ -227,6 +228,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
@@ -252,6 +254,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
@@ -276,6 +279,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
@@ -300,6 +304,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
@@ -325,6 +330,7 @@ void I2c_Intr_Tests()
       while(count == I2CCallback.get_XferComplete());
       
       Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = RxLen;
       
