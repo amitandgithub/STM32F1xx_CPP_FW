@@ -35,9 +35,9 @@ namespace HAL
   
 #define I2C_RX_METHOD_1 
   
-#define I2C_BUF_BYTE_IN(__I2C_BUF)              (*__I2C_BUF->RxBuf++) = I2C_DATA_REG(m_I2Cx); __I2C_BUF->RxLen--
+#define I2C_BUF_BYTE_IN(__I2C_BUF)              (*__I2C_BUF.RxBuf++) = I2C_DATA_REG(m_I2Cx); __I2C_BUF.RxLen--
 
-#define I2C_BUF_BYTE_OUT(__I2C_BUF)             I2C_DATA_REG(m_I2Cx) = (*__I2C_BUF->TxBuf++); __I2C_BUF->TxLen--
+#define I2C_BUF_BYTE_OUT(__I2C_BUF)             I2C_DATA_REG(m_I2Cx) = (*__I2C_BUF.TxBuf++); __I2C_BUF.TxLen--
 
 #define I2C_SLAVE_BUF_BYTE_IN(__I2C_BUF)        __I2C_BUF.RxBuf->Buf[__I2C_BUF.RxBuf->Idx++] = I2C_DATA_REG
 
@@ -288,17 +288,16 @@ namespace HAL
     
     typedef struct
     {
-      uint16_t                SlaveAddress;
-      uint8_t                 RepeatedStart;
-      volatile I2CStatus_t*   pStatus;
-      uint16_t                TxLen;
-      uint16_t                RxLen; 
-      uint8_t*                TxBuf; 
-      uint8_t*                RxBuf;
-      I2CCallback_t           XferDoneCallback;
+      uint8_t           SlaveAddress;
+      uint8_t           RepeatedStart;
+      uint16_t          TxLen;
+      uint16_t          RxLen; 
+      uint8_t*          TxBuf; 
+      uint8_t*          RxBuf;
+      I2CCallback_t     XferDoneCallback;
     }Transaction_t;
     
-    using I2CTxnQueue_t = Utils::Queue<MasterTxn_t*,10U> ;
+    using I2CTxnQueue_t = Utils::Queue<Transaction_t*,10U> ;
     
     typedef enum 
     {
@@ -341,15 +340,13 @@ namespace HAL
     
     void LoadNextTransaction();
     
-    I2CStatus_t Post(MasterTxn_t* pTransaction, uint32_t Mode = 0);    
+    I2CStatus_t Post(Transaction_t* pTransaction, uint32_t Mode = 0);    
     
     I2CStatus_t     XferPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf=nullptr, uint32_t RxLen=0,uint8_t RepeatedStart=0);
     
-    I2CStatus_t     XferPoll(MasterTxn_t* pTransaction);
+    I2CStatus_t     XferPoll(Transaction_t* pTransaction);
     
     I2CStatus_t     XferIntr(Transaction_t* pTransaction);
-    
-    I2CStatus_t     XferIntr(MasterTxn_t* pTransaction);
     
     I2CStatus_t     XferDMA(Transaction_t* pTransaction);
     
@@ -405,7 +402,7 @@ namespace HAL
     GpioOutput              m_sdaPin;
     Hz_t                    m_hz;
     I2Cx_t                  m_I2Cx;            
-    //Transaction_t           m_Transaction;
+    Transaction_t           m_Transaction;
     MasterTxn_t*            m_MasterTxn;
     I2CCallback_t           m_TxQueueEmptyCallback;
     I2CCallback_t           m_RxQueueFullCallback;

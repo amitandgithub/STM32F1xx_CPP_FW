@@ -11,7 +11,7 @@ uint16_t SlaveAddress = 0x0010;
 uint8_t TxBuf[100];
 uint8_t RxBuf[100];
 uint16_t TxLen,RxLen;
-HAL::I2c::MasterTxn_t Transaction;
+HAL::I2c::Transaction_t Transaction;
 I2CCallback_t I2CCallback;
 //char text[100][30];
 
@@ -343,7 +343,7 @@ void I2c_Intr_Tests()
       I2c_test_id = I2C_INT_TX_QUEUE;			
       break;
     case I2C_INT_TX_QUEUE:
-#if 0
+#if 1
       int Posts=0;
       count = I2CCallback.get_XferComplete();
       TxLen = RxLen = 4;   

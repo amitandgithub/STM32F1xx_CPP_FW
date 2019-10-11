@@ -127,7 +127,8 @@ void I2c_Intr_Tests()
   while(1)
   {
     switch(I2c_test_id)
-    {            
+    {        
+#if 0
     case I2C_INT_TX_1_RX_1:
       TxLen = RxLen = 1;
       I2CDevIntr.XferIntr(SlaveAddress,TxBuf,TxLen+1,nullptr,0,0,&Status);
@@ -186,6 +187,7 @@ void I2c_Intr_Tests()
       Test_Condition( !(std::memcmp( (const void*) &TxBuf[1],(const void*) RxBuf, TxLen )), STR("I2C_INT_TX_40_RX_40 = Pass"), STR("I2C_INT_TX_40_RX_40 = Fail"));
       I2c_test_id = I2C_INT_TX_1_RX_1_TXN;
       break;
+#endif
     case I2C_INT_TX_1_RX_1_TXN:
       count = I2CCallback.get_XferComplete();
       TxLen = RxLen = 1;   
