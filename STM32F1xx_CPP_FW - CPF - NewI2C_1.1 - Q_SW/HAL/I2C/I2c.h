@@ -25,7 +25,7 @@ namespace HAL
   
 #define I2C_POLL  1
 #define I2C_INT   1
-#define I2C_DMA   0
+#define I2C_DMA   1
 #define I2C_MASTER_Q 1 // 550 bytes 
   
   /* This flag enables the Slave receiver in DMA mode instead of Interrupt mode*/
@@ -43,6 +43,14 @@ namespace HAL
 #define I2C_SLAVE_BUF_BYTE_IN(__I2C_BUF)        __I2C_BUF.RxBuf->Buf[__I2C_BUF.RxBuf->Idx++] = I2C_DATA_REG
 
 #define I2C_SLAVE_BUF_BYTE_OUT(__I2C_BUF)        I2C_DATA_REG = __I2C_BUF.TxBuf->Buf[__I2C_BUF.TxBuf->Idx++]
+  
+  
+#if I2C_MASTER_Q
+    #define LOAD_NEXT_TXN() LoadNextTransaction_Q()
+#else
+    #define LOAD_NEXT_TXN() LoadNextTransaction()
+#endif
+  
   
   class I2c : public InterruptSource
   {
@@ -328,6 +336,8 @@ namespace HAL
     void TxnDoneHandler(uint32_t StopFlag);
     
     void LoadNextTransaction();
+    
+     void LoadNextTransaction_Q();
     
     I2CStatus_t Post(Transaction_t* pTransaction, uint32_t Mode = 0);    
     

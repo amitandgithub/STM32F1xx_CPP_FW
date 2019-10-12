@@ -26,7 +26,7 @@ void I2c_Tests()
   
   I2CDevIntr.ScanBus(RxBuf,20);
   SlaveAddress = 0x68<<1;
-  I2c_test_id = I2C_INT_TX_1_RX_1_TXN;//I2C_POLL_TX_1_RX_1;
+  I2c_test_id = I2C_POLL_TX_1_RX_1;//I2C_POLL_TX_1_RX_1;
   TxBuf[0] = 0x00;
   TxBuf[1] = 0x00;
   I2CDevIntr.XferPoll(SlaveAddress,TxBuf,2); 
@@ -233,7 +233,7 @@ case I2C_INT_TX_1_RX_1_TXN:
       while(I2CDevIntr.GetState() != HAL::I2c::I2C_READY);               
       Test_Condition( !(std::memcmp( (const void*) &TxBuf[1],(const void*) RxBuf, TxLen )), STR("I2C_INT_TX_40_RX_40_TXN = Pass"), STR("I2C_INT_TX_40_RX_40_TXN = Fail"));
 #endif
-#if 0
+#if I2C_MASTER_Q
       I2c_test_id = I2C_INT_TX_QUEUE;			
       break;
     case I2C_INT_TX_QUEUE:
@@ -252,14 +252,92 @@ case I2C_INT_TX_1_RX_1_TXN:
       while(I2CDevIntr.Post(&Transaction) != I2c::I2C_TXN_QUEUE_ERROR)
       {
         Posts++;
+      }      
+      while(I2CCallback.get_XferComplete() < (count+Posts))
+      {
+        printf("Q posts = %d \t ISR Count = %d \n",Posts, (count+Posts));
       }
-      printf("Q posts = %d \n",Posts);
-      
-      while(I2CCallback.get_XferComplete() < (count+Posts));
       
       Test_Condition( 1, STR("I2C_INT_TX_QUEUE = Pass"), STR("I2C_INT_TX_QUEUE = Fail"));
-      break;
+      
 #endif
+#if I2C_DMA
+      I2c_test_id = I2C_INT_TX_2_RX_2_TXN_DMA;			
+      break;
+    case I2C_INT_TX_2_RX_2_TXN_DMA:  
+      count = I2CCallback.get_XferComplete();
+      TxLen = RxLen = 2;   
+      Transaction.SlaveAddress = SlaveAddress;
+      Transaction.TxBuf = TxBuf;
+      Transaction.TxLen = TxLen+1;
+      Transaction.RxBuf = nullptr;
+      Transaction.RxLen = 0;
+      Transaction.RepeatedStart = RepeatedStart;
+      Transaction.XferDoneCallback = &I2CCallback;            
+      
+      I2CDevIntr.XferDMA(&Transaction);
+      while(count == I2CCallback.get_XferComplete());
+      
+      Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
+      Transaction.RxBuf = RxBuf;
+      Transaction.RxLen = RxLen;
+      
+      I2CDevIntr.XferDMA(&Transaction);
+      while(I2CDevIntr.GetState() != HAL::I2c::I2C_READY); 
+      Test_Condition( !(std::memcmp( (const void*) &TxBuf[1],(const void*) RxBuf, TxLen )), STR("I2C_INT_TX_2_RX_2_TXN_DMA = Pass"), STR("I2C_INT_TX_2_RX_2_TXN_DMA = Fail"));
+      I2c_test_id = I2C_INT_TX_3_RX_3_TXN_DMA;
+      break;            
+    case I2C_INT_TX_3_RX_3_TXN_DMA:  
+      count = I2CCallback.get_XferComplete();
+      TxLen = RxLen = 3;   
+      Transaction.SlaveAddress = SlaveAddress;
+      Transaction.TxBuf = TxBuf;
+      Transaction.TxLen = TxLen+1;
+      Transaction.RxBuf = nullptr;
+      Transaction.RxLen = 0;
+      Transaction.RepeatedStart = RepeatedStart;
+      Transaction.XferDoneCallback = &I2CCallback;            
+      
+      I2CDevIntr.XferDMA(&Transaction);
+      while(count == I2CCallback.get_XferComplete());
+      
+      Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
+      Transaction.RxBuf = RxBuf;
+      Transaction.RxLen = RxLen;
+      
+      I2CDevIntr.XferDMA(&Transaction);
+      while(I2CDevIntr.GetState() != HAL::I2c::I2C_READY); 
+      Test_Condition( !(std::memcmp( (const void*) &TxBuf[1],(const void*) RxBuf, TxLen )), STR("I2C_INT_TX_3_RX_3_TXN_DMA = Pass"), STR("I2C_INT_TX_3_RX_3_TXN_DMA = Fail"));
+      I2c_test_id = I2C_INT_TX_40_RX_40_TXN_DMA;
+      break;
+      case I2C_INT_TX_40_RX_40_TXN_DMA:
+      // This test case tests the Transaction and the Callback functionality
+      count = I2CCallback.get_XferComplete();
+      TxLen = RxLen = 40;   
+      Transaction.SlaveAddress = SlaveAddress;
+      Transaction.TxBuf = TxBuf;
+      Transaction.TxLen = TxLen+1;
+      Transaction.RxBuf = nullptr;
+      Transaction.RxLen = 0;
+      Transaction.RepeatedStart = RepeatedStart;
+      Transaction.XferDoneCallback = &I2CCallback;            
+      
+      I2CDevIntr.XferDMA(&Transaction);
+      while(count == I2CCallback.get_XferComplete());
+      
+      Transaction.TxLen = 1;
+      Transaction.TxBuf = TxBuf;
+      Transaction.RxBuf = RxBuf;
+      Transaction.RxLen = RxLen;
+      
+      I2CDevIntr.XferDMA(&Transaction);
+      while(I2CDevIntr.GetState() != HAL::I2c::I2C_READY);               
+      Test_Condition( !(std::memcmp( (const void*) &TxBuf[1],(const void*) RxBuf, TxLen )), STR("I2C_INT_TX_40_RX_40_TXN_DMA = Pass"), STR("I2C_INT_TX_40_RX_40_TXN_DMA = Fail"));
+      I2c_test_id = 200;
+      break;
+#endif     
     default:         
       if(RepeatedStart == 0)
       {
@@ -269,8 +347,10 @@ case I2C_INT_TX_1_RX_1_TXN:
       }
       else
       {
+        I2c_test_id = I2C_POLL_TX_1_RX_1;
         return;
       }
+      
       break;
       
     }

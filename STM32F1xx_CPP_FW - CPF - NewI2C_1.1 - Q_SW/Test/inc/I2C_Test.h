@@ -41,6 +41,14 @@ typedef enum
     I2C_INT_TX_40_RX_40_TXN,
     
     /* Tests with Queue*/
+    I2C_INT_TX_1_RX_1_TXN_DMA,
+    I2C_INT_TX_1_RX_2_TXN_DMA,
+    I2C_INT_TX_1_RX_3_TXN_DMA,
+    I2C_INT_TX_2_RX_2_TXN_DMA,
+    I2C_INT_TX_3_RX_3_TXN_DMA,
+    I2C_INT_TX_40_RX_40_TXN_DMA,
+    
+    /* Tests with Queue*/
     I2C_INT_TX_QUEUE,
 	
     I2C_INT_DS1307_RTC_TIME,
