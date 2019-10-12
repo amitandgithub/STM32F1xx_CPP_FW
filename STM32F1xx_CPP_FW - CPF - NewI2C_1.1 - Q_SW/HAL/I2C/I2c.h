@@ -31,7 +31,7 @@ namespace HAL
   /* This flag enables the Slave receiver in DMA mode instead of Interrupt mode*/
 #define I2C_SLAVE_IN_DMA_MODE 1
   
-#define I2C_DEBUG 1 
+#define I2C_DEBUG 1
 #define I2C_LOG_STATES_SIZE 1500
   
 #define I2C_RX_METHOD_1 
@@ -124,19 +124,19 @@ namespace HAL
     
     typedef enum 
     {
-      SB = 0U,
-      ADDR = 1U,
-      BTF = 2U,
-      ADD10 = 3U,
-      STOPF = 4U,
-      RSVD = 5U,
-      RXNE = 6U,
-      TXE = 7U,
-      BERR = 8U,
-      ARLO = 9U,
-      AF = 10U,
-      OVR = 11U,
-      PECERR = 12U
+      SB        = 0U,
+      ADDR      = 1U,
+      BTF       = 2U,
+      ADD10     = 3U,
+      STOPF     = 4U,
+      RSVD      = 5U,
+      RXNE      = 6U,
+      TXE       = 7U,
+      BERR      = 8U,
+      ARLO      = 9U,
+      AF        = 10U,
+      OVR       = 11U,
+      PECERR    = 12U
     }I2C_Interrupts_t;
     
     typedef enum
@@ -392,7 +392,6 @@ namespace HAL
     Hz_t                    m_hz;
     I2Cx_t                  m_I2Cx;            
     Transaction_t           m_Transaction;
-    MasterTxn_t*            m_MasterTxn;
     I2CCallback_t           m_TxQueueEmptyCallback;
     I2CCallback_t           m_RxQueueFullCallback;
     I2CCallback_t           m_SlaveTxDoneCallback;

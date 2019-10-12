@@ -26,6 +26,7 @@ namespace HAL
 #define I2C_POLL  1
 #define I2C_INT   1
 #define I2C_DMA   0
+#define I2C_MASTER_Q 1 // 550 bytes 
   
   /* This flag enables the Slave receiver in DMA mode instead of Interrupt mode*/
 #define I2C_SLAVE_IN_DMA_MODE 1
@@ -35,9 +36,9 @@ namespace HAL
   
 #define I2C_RX_METHOD_1 
   
-#define I2C_BUF_BYTE_IN(__I2C_BUF)              (*__I2C_BUF->RxBuf++) = I2C_DATA_REG(m_I2Cx); __I2C_BUF->RxLen--
+#define I2C_BUF_BYTE_IN(__I2C_BUF)              (*__I2C_BUF.RxBuf++) = I2C_DATA_REG(m_I2Cx); __I2C_BUF.RxLen--
 
-#define I2C_BUF_BYTE_OUT(__I2C_BUF)             I2C_DATA_REG(m_I2Cx) = (*__I2C_BUF->TxBuf++); __I2C_BUF->TxLen--
+#define I2C_BUF_BYTE_OUT(__I2C_BUF)             I2C_DATA_REG(m_I2Cx) = (*__I2C_BUF.TxBuf++); __I2C_BUF.TxLen--
 
 #define I2C_SLAVE_BUF_BYTE_IN(__I2C_BUF)        __I2C_BUF.RxBuf->Buf[__I2C_BUF.RxBuf->Idx++] = I2C_DATA_REG
 
@@ -270,48 +271,35 @@ namespace HAL
     }I2CLogs_t;
     typedef enum
     {
-      RESET,
-      BUSY,
-      READY,
-      MASTER_TX,
-      MASTER_RX,
-      SLAVE_TX,
-      SLAVE_RX,
-      SLAVE_RX_LISTENING,
-      MASTER_RX_REPEATED_START,
-      MASTER_TX_ACK_FAIL,
-      MASTER_TX_DMA,
-      MASTER_RX_DMA,
-      SLAVE_TX_DMA,
-      SLAVE_RX_DMA,
+      I2C_RESET,
+      I2C_READY,
+      I2C_MASTER_TX,
+      I2C_MASTER_RX,
+      I2C_SLAVE_TX,
+      I2C_SLAVE_RX,
+      I2C_SLAVE_RX_LISTENING,
+      I2C_MASTER_RX_REPEATED_START,
+      I2C_MASTER_TX_ACK_FAIL,
+      I2C_MASTER_TX_DMA,
+      I2C_MASTER_RX_DMA,
+      I2C_SLAVE_TX_DMA,
+      I2C_SLAVE_RX_DMA,
     }I2CState_t;      
     
     typedef struct
     {
-      uint16_t                SlaveAddress;
-      uint8_t                 RepeatedStart;
-      volatile I2CStatus_t*   pStatus;
-      uint16_t                TxLen;
-      uint16_t                RxLen; 
-      uint8_t*                TxBuf; 
-      uint8_t*                RxBuf;
-      I2CCallback_t           XferDoneCallback;
+      uint8_t           SlaveAddress;
+      uint8_t           RepeatedStart;
+      uint16_t          TxLen;
+      uint16_t          RxLen; 
+      uint8_t*          TxBuf; 
+      uint8_t*          RxBuf;
+      I2CCallback_t     XferDoneCallback;
     }Transaction_t;
     
-    using I2CTxnQueue_t = Utils::Queue<MasterTxn_t*,10U> ;
-    
-    typedef enum 
-    {
-      I2C_EVENT_INTERRUPT_ENABLE,
-      I2C_EVENT_INTERRUPT_DISABLE,
-      I2C_EVENT_INTERRUPT_BUFFER_ENABLE,
-      I2C_EVENT_INTERRUPT_BUFFER_DISABLE,
-      I2C_ERROR_INTERRUPT_ENABLE,
-      I2C_ERROR_INTERRUPT_DISABLE,
-      I2C_INTERRUPT_ENABLE_ALL,
-      I2C_INTERRUPT_DISABLE_ALL,
-      
-    }I2CInterrupt_t;      
+#if I2C_MASTER_Q
+    using I2CTxnQueue_t = Utils::Queue<Transaction_t*,10U> ;
+#endif     
     
     I2c(Pin_t scl, Pin_t sda, Hz_t Hz = 100000U);
     
@@ -331,17 +319,7 @@ namespace HAL
     
     inline I2CState_t GetState();
     
-    inline uint8_t SlaveRxDataAvailable();
-    
-    bool DetectSlave(uint8_t SlaveAddress);
-    
     void ScanBus(uint8_t* pFoundDevices, uint8_t size);
-    
-    inline void Start();
-    
-    void Interrupt_Tx_Done_Handler(uint32_t StopFlag);
-    
-    void Interrupt_Rx_Done_Handler();
     
     void DMA_Tx_Done_Handler();
     
@@ -351,91 +329,28 @@ namespace HAL
     
     void LoadNextTransaction();
     
-    inline void SendAddress(uint8_t SlaveAddress);
-    
-    inline void WriteDataRegister(uint8_t data);
-    
-    inline uint8_t ReadDataRegister();             
-    
-    I2CStatus_t     TxPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen);        
-    
-    I2CStatus_t     RxPoll(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen);
-    
-    I2CStatus_t MasterTx_Intr(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen,volatile I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
-    
-    I2CStatus_t MasterTx_Intr(Transaction_t* pTransaction);
-    
-    I2CStatus_t MasterRx_Intr(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen,volatile I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr );
-    
-    I2CStatus_t MasterRx_Intr(Transaction_t* pTransaction);
-    
-    I2CStatus_t MasterTxRx_Intr(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf, uint32_t RxLen,
-                                uint8_t RepeatedStart,volatile I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
-    
-    I2CStatus_t MasterTxRx_Intr(Transaction_t* pTransaction);
-    
-    I2CStatus_t Post(MasterTxn_t* pTransaction, uint32_t Mode = 0);
-    
-    I2CStatus_t SlaveTx_Intr(uint8_t* pdata, uint32_t len, I2CCallback_t XferDoneCallback = nullptr );
-    
-    I2CStatus_t SlaveRx_Intr(uint8_t* pdata, uint32_t len, I2CCallback_t XferDoneCallback = nullptr );
-    
-    I2CStatus_t MasterTx_DMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen,volatile I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
-    
-    I2CStatus_t MasterRx_DMA(uint16_t SlaveAddress,uint8_t* RxBuf, uint32_t RxLen,volatile I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);        
-    
-    I2CStatus_t MasterTxRx_DMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf, uint32_t RxLen,
-                               uint8_t RepeatedStart,volatile I2CStatus_t* pStatus, I2CCallback_t XferDoneCallback = nullptr);
-    
-    I2CStatus_t MasterTxRx_DMA(Transaction_t* pTransaction);
-    
+    I2CStatus_t Post(Transaction_t* pTransaction, uint32_t Mode = 0);    
     
     I2CStatus_t     XferPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf=nullptr, uint32_t RxLen=0,uint8_t RepeatedStart=0);
     
-    I2CStatus_t     XferPoll(MasterTxn_t* pTransaction);
-    
-    I2CStatus_t     XferIntr(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf=nullptr, uint32_t RxLen=0,uint8_t RepeatedStart=0,volatile I2CStatus_t* pStatus=nullptr, I2CCallback_t XferDoneCallback = nullptr);
+    I2CStatus_t     XferPoll(Transaction_t* pTransaction);
     
     I2CStatus_t     XferIntr(Transaction_t* pTransaction);
-    
-    I2CStatus_t     XferIntr(MasterTxn_t* pTransaction);
-    
-    I2CStatus_t     XferDMA(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf=nullptr, uint32_t RxLen=0,uint8_t RepeatedStart=0,volatile I2CStatus_t* pStatus=nullptr, I2CCallback_t XferDoneCallback = nullptr);
     
     I2CStatus_t     XferDMA(Transaction_t* pTransaction);
     
     inline uint8_t ReadRxData();
-    
-    inline bool StartConditionGenerated(uint32_t timeout);
-    
-    inline bool Busy(uint32_t timeout);
-    
-    inline bool SlaveAddressSent(uint32_t timeout);
-    
-    inline bool TransmitterEmpty(uint32_t timeout);
-    
-    inline bool TransferDone(uint32_t timeout);
-    
+   
     inline void SoftReset();
-    
-    inline bool ACKFail(uint32_t timeout);
-    
-    inline bool DataAvailableRXNE(uint32_t timeout);   
-    
-    inline bool StopCondition(uint32_t timeout);
-    
-    inline void SetRxFullCallback(I2CCallback_t I2CCallback);
-    
-    void SetCallback(I2CCallbackType_t I2CCallbackType, I2CCallback_t I2CCallback);
-    
-    I2CStatus_t AddressMatch();
     
     virtual void ISR( IRQn_Type event );
     
-    void InteruptControl(I2CInterrupt_t I2CInterrupt);
+    void I2C1_DMA_Tx_Done_Handler();
     
-    void InterruptControl(bool enable, uint16_t InterruptFlag){ enable ? SET_BIT(m_I2Cx->CR2, InterruptFlag) : CLEAR_BIT(m_I2Cx->CR2, InterruptFlag) ;}
+    void I2C1_DMA_Rx_Done_Handler();
     
+    
+        
     void Enable_EVT_Interrupt(){SET_BIT(m_I2Cx->CR2, I2C_CR2_ITEVTEN);}
     
     void Enable_BUF_Interrupt(){SET_BIT(m_I2Cx->CR2, I2C_CR2_ITBUFEN);}
@@ -460,9 +375,8 @@ namespace HAL
     
     inline bool StopFlagCleared(uint32_t timeout);
     
-    void I2C1_DMA_Tx_Done_Handler();
     
-    void I2C1_DMA_Rx_Done_Handler();
+    
 #if I2C_DMA
     class I2C1_DMA_Rx_Callback : public Callback
     {
@@ -506,13 +420,15 @@ namespace HAL
     GpioOutput              m_sdaPin;
     Hz_t                    m_hz;
     I2Cx_t                  m_I2Cx;            
-    //Transaction_t           m_Transaction;
-    MasterTxn_t*            m_MasterTxn;
+    Transaction_t           m_Transaction;
+   // MasterTxn_t*            m_MasterTxn;
     I2CCallback_t           m_TxQueueEmptyCallback;
     I2CCallback_t           m_RxQueueFullCallback;
     I2CCallback_t           m_SlaveTxDoneCallback;
     I2CCallback_t           m_SlaveRxDoneCallback;
+#if I2C_MASTER_Q 
     I2CTxnQueue_t           m_I2CTxnQueue;
+#endif
     
     /* It must be volatile becoz it is shared between ISR and main loop */
     volatile I2CState_t     m_I2CState; 
@@ -539,12 +455,6 @@ namespace HAL
     I2CSlaveTxQueue_t   m_I2CSlaveTxQueue; 
   };   
   
-  
-  inline void I2c::SetRxFullCallback(I2CCallback_t I2CCallback)
-  {
-    m_RxQueueFullCallback = I2CCallback;
-  }
-  
   inline uint8_t I2c::ReadRxData()
   {
     uint8_t Data;
@@ -552,24 +462,21 @@ namespace HAL
     return Data;
   }
   
-  bool I2c::StartConditionGenerated(uint32_t timeout)
+  void I2c::SoftReset()
   {
-    while( (timeout--) && (LL_I2C_IsActiveFlag_SB(m_I2Cx) == 0U) );
-    return (bool)LL_I2C_IsActiveFlag_SB(m_I2Cx);
+    LL_I2C_EnableReset(m_I2Cx);
+    LL_I2C_DisableReset(m_I2Cx);
+    HwInit();
   }
   
-  inline uint8_t I2c::SlaveRxDataAvailable()
+  I2c::I2CState_t I2c::GetState()
   {
-    return m_I2CSlaveRxQueue.Available();
-  }
+    return m_I2CState;
+  }  
   
-  bool I2c::Busy(uint32_t timeout)
-  {
-    while( (timeout--) && (LL_I2C_IsActiveFlag_BUSY(m_I2Cx) == 1U) );
-    return (bool)LL_I2C_IsActiveFlag_BUSY(m_I2Cx);
-  }
   
-  bool I2c::StopFlagCleared(uint32_t timeout)
+  
+   bool I2c::StopFlagCleared(uint32_t timeout)
   {   
 #if 1
     static int StopCountMax;
@@ -589,69 +496,6 @@ namespace HAL
   }
   
   
-  bool I2c::SlaveAddressSent(uint32_t timeout)
-  {
-    while( (timeout--) && (LL_I2C_IsActiveFlag_ADDR(m_I2Cx) == 0U) );
-    return (bool)LL_I2C_IsActiveFlag_ADDR(m_I2Cx);
-  } 
-  bool I2c::TransmitterEmpty(uint32_t timeout)
-  {
-    while( (timeout--) && (LL_I2C_IsActiveFlag_TXE(m_I2Cx) == 0U) );
-    return (bool)LL_I2C_IsActiveFlag_TXE(m_I2Cx);
-  }
-  
-  bool I2c::TransferDone(uint32_t timeout)
-  {
-    while( (timeout--) && (LL_I2C_IsActiveFlag_BTF(m_I2Cx) == 0U) );
-    return (bool)LL_I2C_IsActiveFlag_BTF(m_I2Cx);
-  }
-  void I2c::SoftReset()
-  {
-    LL_I2C_EnableReset(m_I2Cx);
-    LL_I2C_DisableReset(m_I2Cx);
-    HwInit();
-  }
-  bool I2c::ACKFail(uint32_t timeout)
-  {
-    while( (timeout--) && (LL_I2C_IsActiveFlag_AF(m_I2Cx) == 1U) );
-    return (bool)LL_I2C_IsActiveFlag_AF(m_I2Cx);
-  }
-  
-  bool I2c::DataAvailableRXNE(uint32_t timeout)
-  {
-    while( (timeout--) && (LL_I2C_IsActiveFlag_RXNE(m_I2Cx) == 0U) );
-    return (bool)LL_I2C_IsActiveFlag_RXNE(m_I2Cx);
-  }
-  
-  I2c::I2CStatus_t I2c::StartListening()
-  {
-    /* Wait until BUSY flag is reset */
-    if( Busy(I2C_TIMEOUT) == true ) 
-    {          
-      //I2C_DEBUG_LOG(I2C_BUSY_TIMEOUT);
-      return I2C_BUSY_TIMEOUT;                
-    }        
-    /* Disable Pos */
-    m_I2Cx->CR1 &= ~I2C_CR1_POS;
-    
-    /* Enable Address Acknowledge */
-    m_I2Cx->CR1 |= I2C_CR1_ACK;
-    
-    // m_I2CState = SLAVE_RX_LISTENING;
-    m_I2CState = READY;
-    
-    Enable_EVT_BUF_ERR_Interrupt();
-    
-    return I2C_OK;
-  }
-  
-  I2c::I2CState_t I2c::GetState()
-  {
-    return m_I2CState;
-  }
-  
-  
-  
 #if I2C_DEBUG     
 #pragma inline = forced
   void I2c::LogStates(I2CLogs_t log)
@@ -665,7 +509,6 @@ namespace HAL
 #endif
   }
   
-  //#define I2C_LOG_STATES(log) (I2CStates[I2CStates_Idx++  % I2C_LOG_STATES_SIZE] = (log))
 #define I2C_DEBUG_LOG(log) (m_I2CStatus = (log))  // 108 bytes of ROM
 #define I2C_LOG_STATES(log) LogStates(log)
 #define I2C_LOG_EVENTS(log) LogStates(log)

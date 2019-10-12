@@ -42,7 +42,7 @@ int main(void)
     while(1)
     {
         //BMP280_Test();
-        I2c_Poll_Tests();
+        //I2c_Poll_Tests();
         I2c_Intr_Tests();
     }
     

@@ -200,16 +200,14 @@ public:
     uint8_t Tx(uint8_t* TxBuf, uint32_t TxLen,I2CStatus_t* pStatus)
     { 
         uint8_t status;
-        status = m_pI2CDrv->MasterTx_Intr( m_BMP280_Address, TxBuf, TxLen, pStatus);
-        while(m_pI2CDrv->GetState() != HAL::I2c::READY);
+        status = m_pI2CDrv->XferPoll( m_BMP280_Address, TxBuf, TxLen);
         return status;
     }
     
     uint8_t Rx(uint8_t* RxBuf, uint32_t RxLen, I2CStatus_t* pStatus)
     {
         uint8_t status;
-        status = m_pI2CDrv->MasterRx_Intr( m_BMP280_Address, RxBuf, RxLen, pStatus);
-        while(m_pI2CDrv->GetState() != HAL::I2c::READY);
+        status = m_pI2CDrv->XferPoll( m_BMP280_Address,0,0, RxBuf, RxLen);
         return status;
     }
     

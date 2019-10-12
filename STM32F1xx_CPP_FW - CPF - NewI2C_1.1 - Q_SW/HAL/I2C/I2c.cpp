@@ -887,8 +887,7 @@ namespace HAL
           
           if(m_Transaction.TxLen > 0)
           {                    
-            I2C_DATA_REG(m_I2Cx) = (*m_Transaction.TxBuf++);
-            m_Transaction.TxLen--;
+            I2C_BUF_BYTE_OUT(m_Transaction);
             I2C_LOG_STATES(I2C_LOG_ADDR_INTR_MASTER_TX_SIZE_GT_0);
           }
         }
@@ -1382,7 +1381,7 @@ namespace HAL
         }
         else if(m_I2CState == I2C_MASTER_TX_DMA)
         {
-          I2C_LOG_STATES(I2C_LOG_BTF_I2C_MASTER_TX_DMA_STOP);
+          I2C_LOG_STATES(I2C_LOG_BTF_MASTER_TX_DMA_STOP);
           TxnDoneHandler(I2C_CR1_STOP);                     
         }
         else
