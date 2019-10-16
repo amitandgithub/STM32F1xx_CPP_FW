@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <settings>
     <DebugChecksum>
-        <Checksum>1634861565</Checksum>
+        <Checksum>3585672360</Checksum>
     </DebugChecksum>
     <StLinkDriver>
-        <CStepIntDis>_ 0</CStepIntDis>
-        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
         <stlinkResetStyle>0</stlinkResetStyle>
         <stlinkResetStrategy>1</stlinkResetStrategy>
+        <CStepIntDis>_ 0</CStepIntDis>
+        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
         <stlinkserialNo>20491587</stlinkserialNo>
         <stlinkfoundProbes />
     </StLinkDriver>
@@ -28,8 +28,8 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <Disassembly>
-        <InstrCount>0</InstrCount>
         <MixedMode>1</MixedMode>
+        <InstrCount>0</InstrCount>
     </Disassembly>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -128,17 +128,31 @@
         <ShowTimeSum>1</ShowTimeSum>
         <SumSortOrder>0</SumSortOrder>
     </EventLog>
-    <DisassembleMode>
-        <mode>0</mode>
-    </DisassembleMode>
-    <Breakpoints2>
-        <Count>0</Count>
-    </Breakpoints2>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
         <Category>_ 0</Category>
     </LogFile>
+    <DriverProfiling>
+        <Enabled>0</Enabled>
+        <Mode>3</Mode>
+        <Graph>0</Graph>
+        <Symbiont>0</Symbiont>
+        <Exclusions />
+    </DriverProfiling>
+    <CallStackLog>
+        <Enabled>0</Enabled>
+    </CallStackLog>
+    <CallStackStripe>
+        <ShowTiming>1</ShowTiming>
+    </CallStackStripe>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
+    <Breakpoints2>
+        <Bp0>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\HAL\I2C\I2c.cpp}.2933.7" 0 0 1 "" 0 "" 0</Bp0>
+        <Count>1</Count>
+    </Breakpoints2>
     <Aliases>
         <A0>_ "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C_1\Drivers\CMSIS\Include\core_cm3.h" ""</A0>
         <A1>_ "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C_1\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal.c" ""</A1>
@@ -153,19 +167,6 @@
         <Count>10</Count>
         <SuppressDialog>0</SuppressDialog>
     </Aliases>
-    <DriverProfiling>
-        <Enabled>0</Enabled>
-        <Mode>3</Mode>
-        <Graph>0</Graph>
-        <Symbiont>0</Symbiont>
-        <Exclusions />
-    </DriverProfiling>
-    <CallStackLog>
-        <Enabled>0</Enabled>
-    </CallStackLog>
-    <CallStackStripe>
-        <ShowTiming>1</ShowTiming>
-    </CallStackStripe>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>

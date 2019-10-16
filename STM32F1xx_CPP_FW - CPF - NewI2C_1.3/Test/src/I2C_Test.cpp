@@ -83,10 +83,10 @@ void I2c_Tests()
       I2CDevIntr.XferPoll(SlaveAddress,TxBuf,TxLen+1);
       I2CDevIntr.XferPoll(SlaveAddress,TxBuf,1,RxBuf,RxLen,RepeatedStart);            
       Test_Condition( !(std::memcmp( (const void*) &TxBuf[1],(const void*) RxBuf, TxLen )), STR("I2C_INT_POLL_40_RX_40 = Pass"), STR("I2C_INT_POLL_40_RX_40 = Fail"));
+#endif
+#if I2C_MASTER_INTR
       I2c_test_id = I2C_INT_TX_1_RX_1_TXN;
       break;
-#endif
-#if I2C_INT
 case I2C_INT_TX_1_RX_1_TXN:
       count = I2CCallback.get_XferComplete();
       TxLen = RxLen = 1;   
@@ -261,10 +261,10 @@ case I2C_INT_TX_1_RX_1_TXN:
       Test_Condition( 1, STR("I2C_INT_TX_QUEUE = Pass"), STR("I2C_INT_TX_QUEUE = Fail"));
       
 #endif
-#if I2C_DMA
+#if I2C_MASTER_DMA
       I2c_test_id = I2C_INT_TX_2_RX_2_TXN_DMA;			
       break;
-    case I2C_INT_TX_2_RX_2_TXN_DMA:  
+    case I2C_INT_TX_2_RX_2_TXN_DMA: 
       count = I2CCallback.get_XferComplete();
       TxLen = RxLen = 2;   
       Transaction.SlaveAddress = SlaveAddress;

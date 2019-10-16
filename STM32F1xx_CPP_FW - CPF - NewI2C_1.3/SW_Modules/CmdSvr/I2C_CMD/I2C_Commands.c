@@ -6,7 +6,7 @@
 
 #define I2C_BUF_SIZE (sizeof(I2C_Add_Cmd_Response)+5)
 
-static HAL::I2c I2CDev(HAL::Gpio::B6, HAL::Gpio::B7,100000U);
+HAL::I2c I2CDev(HAL::Gpio::B6, HAL::Gpio::B7,100000U);
 
 uint8_t I2c_Cmd_request [I2C_BUF_SIZE];
 uint8_t I2c_Cmd_response[I2C_BUF_SIZE] = {CMD_STATUS_READY,};

@@ -23,12 +23,17 @@
 namespace HAL
 {    
 
+#define I2C_DEBUG 1
+  
+#define I2C_POLL 0
+  
 #define I2C_MASTER_Q 0 // 550 bytes
 
-#define I2C_MASTER_INTR   0
-#define I2C_MASTER_DMA   0
-#define I2C_SLAVE_INTR   1
-#define I2C_SLAVE_DMA   0 
+#define I2C_MASTER_INTR     0
+#define I2C_SLAVE_INTR      1
+  
+#define I2C_MASTER_DMA      0
+#define I2C_SLAVE_DMA       0 
   
   /* This flag enables the Slave receiver in DMA mode instead of Interrupt mode*/
 #define I2C_SLAVE_IN_DMA_MODE 0
@@ -42,7 +47,7 @@ namespace HAL
 #endif
   
   
-#define I2C_DEBUG 0
+
 #define I2C_LOG_STATES_SIZE 1500
   
 #define I2C_RX_METHOD_1 
@@ -362,6 +367,8 @@ namespace HAL
     
     I2CStatus_t SlaveStartListening(i2cBuf_t* TxBuf, i2cBuf_t* RxBuf );
     
+    I2CStatus_t SlaveStartListening_DMA(i2cBuf_t* TxBuf, i2cBuf_t* RxBuf );
+    
     void SlaveStartReceiving(){I2C_ENABLE_ACK(m_I2Cx);}
     
     void SlaveStopReceiving(){I2C_DISABLE_ACK(m_I2Cx);}
@@ -387,7 +394,7 @@ namespace HAL
     void RXNE_MASTER_INTR();
     void AF_MASTER_INTR();
     void STOPF_MASTER_INTR();
-    void LoadNextTransaction_MASTER_INTR();
+    void LoadNextTransaction_MASTER_INTR(); 
     
     void SB_SLAVE_INTR();
     void ADDR_SLAVE_INTR();
@@ -396,6 +403,14 @@ namespace HAL
     void RXNE_SLAVE_INTR();
     void AF_SLAVE_INTR();
     void STOPF_SLAVE_INTR();
+    
+    void SB_MASTER_SLAVE_INTR();
+    void ADDR_MASTER_SLAVE_INTR();
+    void BTF_MASTER_SLAVE_INTR();
+    void TXE_MASTER_SLAVE_INTR();
+    void RXNE_MASTER_SLAVE_INTR();
+    void AF_MASTER_SLAVE_INTR();
+    void STOPF_MASTER_SLAVE_INTR();
     
     
     void SB_MASTER_DMA();
@@ -484,7 +499,7 @@ namespace HAL
 #endif
     
   public:         
-#ifdef I2C_DEBUG
+#if I2C_DEBUG
     I2CLogs_t       I2CStates[I2C_LOG_STATES_SIZE];
     volatile uint32_t        I2CStates_Idx;
     Utils::DebugLog<DBG_LOG_TYPE>* dbg_log_instance;
@@ -514,7 +529,7 @@ namespace HAL
     return m_I2CState;
   }  
   
-#if (I2C_MASTER_INTR == 1) && (I2C_MASTER_DMA == 1) && (I2C_SLAVE_INTR == 1) && (I2C_SLAVE_DMA == 1)
+#if (I2C_MASTER_INTR == 1) && (I2C_SLAVE_INTR == 1) && (I2C_MASTER_DMA == 1) && (I2C_SLAVE_DMA == 1)
   
 #define SB_HANDLER()        SB()
 #define ADDR_HANDLER()      ADDR()
@@ -523,8 +538,8 @@ namespace HAL
 #define RXNE_HANDLER()      RXNE()
 #define AF_HANDLER()        AF()
 #define STOPF_HANDLER()     STOPF()
-  
-#elif (I2C_MASTER_INTR == 1)
+
+#elif (I2C_MASTER_INTR == 1) && (I2C_SLAVE_INTR == 0) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 0)
   
 #define SB_HANDLER()        SB_MASTER_INTR()
 #define ADDR_HANDLER()      ADDR_MASTER_INTR()
@@ -533,8 +548,8 @@ namespace HAL
 #define RXNE_HANDLER()      RXNE_MASTER_INTR()
 #define AF_HANDLER()        AF_MASTER_INTR()
 #define STOPF_HANDLER()     STOPF_MASTER_INTR()
-
-#elif (I2C_SLAVE_INTR == 1)  
+  
+#elif (I2C_MASTER_INTR == 0) && (I2C_SLAVE_INTR == 1) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 0)
   
 #define SB_HANDLER()        SB_SLAVE_INTR()
 #define ADDR_HANDLER()      ADDR_SLAVE_INTR()
@@ -543,8 +558,18 @@ namespace HAL
 #define RXNE_HANDLER()      RXNE_SLAVE_INTR()
 #define AF_HANDLER()        AF_SLAVE_INTR()
 #define STOPF_HANDLER()     STOPF_SLAVE_INTR()
- 
-#elif (I2C_MASTER_DMA == 1)  
+
+#elif ((I2C_MASTER_INTR == 1) && (I2C_SLAVE_INTR == 1)) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 0)
+  
+#define SB_HANDLER()        SB_MASTER_SLAVE_INTR()
+#define ADDR_HANDLER()      ADDR_MASTER_SLAVE_INTR()
+#define BTF_HANDLER()       BTF_MASTER_SLAVE_INTR()
+#define TXE_HANDLER()       TXE_MASTER_SLAVE_INTR()
+#define RXNE_HANDLER()      RXNE_MASTER_SLAVE_INTR()
+#define AF_HANDLER()        AF_MASTER_SLAVE_INTR()
+#define STOPF_HANDLER()     STOPF_MASTER_SLAVE_INTR()
+  
+#elif (I2C_MASTER_INTR == 0) && (I2C_SLAVE_INTR == 0) && (I2C_MASTER_DMA == 1) && (I2C_SLAVE_DMA == 0) 
   
 #define SB_HANDLER()        SB_MASTER_DMA()
 #define ADDR_HANDLER()      ADDR_MASTER_DMA()
@@ -553,6 +578,16 @@ namespace HAL
 #define RXNE_HANDLER()      RXNE_MASTER_DMA()
 #define AF_HANDLER()        AF_MASTER_DMA()
 #define STOPF_HANDLER()     STOPF_MASTER_DMA()
+  
+#elif (I2C_MASTER_INTR == 0) && (I2C_SLAVE_INTR == 0) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 1) 
+  
+#define SB_HANDLER()        SB_SLAVE_DMA()
+#define ADDR_HANDLER()      ADDR_SLAVE_DMA()
+#define BTF_HANDLER()       BTF_SLAVE_DMA()
+#define TXE_HANDLER()       TXE_SLAVE_DMA()
+#define RXNE_HANDLER()      RXNE_SLAVE_DMA()
+#define AF_HANDLER()        AF_SLAVE_DMA()
+#define STOPF_HANDLER()     STOPF_SLAVE_DMA()
   
 #else
   
