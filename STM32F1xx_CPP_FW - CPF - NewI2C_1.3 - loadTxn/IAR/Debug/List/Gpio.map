@@ -1,0 +1,423 @@
+###############################################################################
+#
+# IAR ELF Linker V8.30.1.114/W32 for ARM                  13/Aug/2018  15:08:10
+# Copyright 2007-2018 IAR Systems AB.
+#
+#    Output file  =  
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Exe\Gpio.out
+#    Map file     =  
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\List\Gpio.map
+#    Command line =  
+#        -f C:\Users\achaudha\AppData\Local\Temp\EW9ED4.tmp
+#        (C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\GpioInput.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\GpioOutput.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\Interrupt.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\main.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\Peripheral.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\startup_stm32f103xb.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\stm32f1xx_hal.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\stm32f1xx_hal_cortex.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\stm32f1xx_hal_gpio.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\stm32f1xx_hal_gpio_ex.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\stm32f1xx_hal_pwr.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\stm32f1xx_hal_rcc.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\stm32f1xx_hal_rcc_ex.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\stm32f1xx_it.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\stm32f1xx_ll_exti.o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj\system_stm32f1xx.o
+#        --no_out_extension -o
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Exe\Gpio.out
+#        --redirect _Printf=_PrintfFullNoMb --redirect _Scanf=_ScanfFullNoMb
+#        --map
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\List\Gpio.map
+#        --config
+#        C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\System\stm32f103x8.icf
+#        --semihosting --entry __iar_program_start --vfe --text_out locale)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor                     = *
+__CPP_Exceptions              = Disabled
+__CPP_Language                = C++14
+__Heap_Handler                = Basic
+__SystemLibrary               = DLib
+__dlib_dynamic_initialization = normal
+__dlib_version                = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because some modules are built with
+size limitations (and not runtime checking), and --advanced_heap
+was not specified.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at 0x800'0000 { ro section .intvec };
+"P1":  place in [from 0x800'0000 to 0x800'ffff] { ro };
+define block CSTACK with size = 2K, alignment = 8 { };
+define block HEAP with size = 2K, alignment = 8 { };
+"P2":  place in [from 0x2000'0000 to 0x2000'4fff] {
+          rw, block CSTACK, block HEAP };
+initialize by copy { rw };
+
+  Section                Kind         Address   Size  Object
+  -------                ----         -------   ----  ------
+"A0":                                           0xec
+  .intvec                ro code   0x800'0000   0xec  startup_stm32f103xb.o [1]
+                                 - 0x800'00ec   0xec
+
+"P1":                                          0xfa8
+  .text                  ro code   0x800'00ec  0x61c  GpioInput.o [1]
+  .text                  ro code   0x800'0708    0x8  GpioOutput.o [1]
+  .text                  ro code   0x800'0710  0x21c  stm32f1xx_hal_gpio.o [1]
+  .text                  ro code   0x800'092c   0x80  Interrupt.o [1]
+  .text                  ro code   0x800'09ac    0xc  GpioOutput.o [1]
+  .text                  ro code   0x800'09b8  0x10a  stm32f1xx_hal_cortex.o [1]
+  .text                  ro code   0x800'0ac2   0x3a  zero_init3.o [4]
+  .text                  ro code   0x800'0afc  0x138  GpioOutput.o [1]
+  .text                  ro code   0x800'0c34  0x118  main.o [1]
+  .text                  ro code   0x800'0d4c   0x28  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'0d74    0xe  main.o [1]
+  .text                  ro code   0x800'0d82   0x1e  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'0da0    0xc  main.o [1]
+  .text                  ro code   0x800'0dac    0xe  main.o [1]
+  .rodata                const     0x800'0dba    0x1  unwind_debug.o [5]
+  .text                  ro code   0x800'0dbc   0x28  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'0de4    0xc  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'0df0   0x58  system_stm32f1xx.o [1]
+  .text                  ro code   0x800'0e48   0x2c  copy_init3.o [4]
+  .text                  ro code   0x800'0e74   0x28  data_init.o [4]
+  .iar.init_table        const     0x800'0e9c   0x28  - Linker created -
+  .text                  ro code   0x800'0ec4   0x20  cmain_call_ctors.o [4]
+  .text                  ro code   0x800'0ee4   0x18  cppinit.o [2]
+  .text                  ro code   0x800'0efc   0x1e  cmain.o [4]
+  .text                  ro code   0x800'0f1a    0x4  low_level_init.o [2]
+  .text                  ro code   0x800'0f1e    0x4  exit.o [2]
+  .text                  ro code   0x800'0f24    0xa  cexit.o [4]
+  .text                  ro code   0x800'0f30   0x14  exit.o [5]
+  .rodata                const     0x800'0f44   0x1c  GpioInput.o [1]
+  .rodata                const     0x800'0f60   0x1c  GpioOutput.o [1]
+  .rodata                const     0x800'0f7c   0x1c  GpioOutput.o [1]
+  .text                  ro code   0x800'0f98   0x1c  stm32f1xx_it.o [1]
+  .text                  ro code   0x800'0fb4   0x10  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'0fc4   0x10  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'0fd4    0xc  cstartup_M.o [4]
+  .text                  ro code   0x800'0fe0    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'0fe4    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'0fe8    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'0fec    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'0ff0    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'0ff4    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'0ff8    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'0ffc    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1000    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1004    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1008    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'100c    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1010    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1014    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1018    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'101c    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1020    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1024    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1028    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'102c    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1030    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1034    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1038    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'103c    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1040    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1044    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1048    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'104c    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1050    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1054    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1058    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'105c    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1060    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1064    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1068    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'106c    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1070    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1074    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1078    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'107c    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1080    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1084    0x4  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'1088    0x4  startup_stm32f103xb.o [1]
+  SHT$$PREINIT_ARRAY               0x800'108c    0x0  <Block>
+  SHT$$INIT_ARRAY                  0x800'108c    0x4  <Block>
+    .init_array          const     0x800'108c    0x4  main.o [1]
+  __iar_tls$$INIT_ARRAY            0x800'1090    0x0  <Block>
+  Initializer bytes      const     0x800'1090    0x4  <for P2-1>
+  .rodata                const     0x800'1094    0x0  zero_init3.o [4]
+  .rodata                const     0x800'1094    0x0  copy_init3.o [4]
+                                 - 0x800'1094  0xfa8
+
+Absolute sections:                             0x100
+  .noinit                uninit   0x2000'0100  0x100  Interrupt.o [1]
+                                - 0x2000'0200  0x100
+
+"P2", part 1 of 3:                               0x4
+  P2-1                            0x2000'0200    0x4  <Init block>
+    .data                inited   0x2000'0200    0x4  system_stm32f1xx.o [1]
+                                - 0x2000'0204    0x4
+
+"P2", part 2 of 3:                              0x68
+  .bss                   zero     0x2000'0204   0x40  GpioInput.o [1]
+  .bss                   zero     0x2000'0244   0x18  main.o [1]
+  .bss                   zero     0x2000'025c    0xc  main.o [1]
+  .bss                   zero     0x2000'0268    0x4  stm32f1xx_hal.o [1]
+                                - 0x2000'026c   0x68
+
+"P2", part 3 of 3:                             0x800
+  CSTACK                          0x2000'0270  0x800  <Block>
+    CSTACK               uninit   0x2000'0270  0x800  <Block tail>
+                                - 0x2000'0a70  0x800
+
+Unused ranges:
+
+         From           To    Size
+         ----           --    ----
+   0x800'1094   0x800'ffff  0xef6c
+  0x2000'0000  0x2000'00ff   0x100
+  0x2000'026c  0x2000'026f     0x4
+  0x2000'0a70  0x2000'4fff  0x4590
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address      Size
+          -------      ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0x68:
+          0x2000'0204  0x68
+
+Copy (__iar_copy_init3)
+    1 source range, total size 0x4:
+           0x800'1090   0x4
+    1 destination range, total size 0x4:
+          0x2000'0200   0x4
+
+Extra (__iar_cstart_call_ctors)
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                  ro code  ro data  rw data  rw data
+                                                        (abs)
+    ------                  -------  -------  -------  -------
+command line/config:
+    ----------------------------------------------------------
+    Total:
+
+C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj: [1]
+    GpioInput.o               1 564       28       64
+    GpioOutput.o                332       56
+    Interrupt.o                 128                        256
+    main.o                      320        4       36
+    startup_stm32f103xb.o       424
+    stm32f1xx_hal.o             138                 4
+    stm32f1xx_hal_cortex.o      266
+    stm32f1xx_hal_gpio.o        540
+    stm32f1xx_it.o               28
+    system_stm32f1xx.o           88        4        4
+    ----------------------------------------------------------
+    Total:                    3 828       92      108      256
+
+dl7M_tln.a: [2]
+    cppinit.o                    24
+    exit.o                        4
+    low_level_init.o              4
+    ----------------------------------------------------------
+    Total:                       32
+
+dlpp7M_tl_nc.a: [3]
+    ----------------------------------------------------------
+    Total:
+
+rt7M_tl.a: [4]
+    cexit.o                      10
+    cmain.o                      30
+    cmain_call_ctors.o           32
+    copy_init3.o                 44
+    cstartup_M.o                 12
+    data_init.o                  40
+    zero_init3.o                 58
+    ----------------------------------------------------------
+    Total:                      226
+
+shb_l.a: [5]
+    exit.o                       20
+    unwind_debug.o                         1
+    ----------------------------------------------------------
+    Total:                       20        1
+
+    Gaps                          5
+    Linker created                        40    2 048
+--------------------------------------------------------------
+    Grand Total:              4 111      133    2 156      256
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address   Size  Type      Object
+-----                       -------   ----  ----      ------
+.iar.init_table$$Base    0x800'0e9c          --   Gb  - Linker created -
+.iar.init_table$$Limit   0x800'0ec4          --   Gb  - Linker created -
+?main                    0x800'0efd         Code  Gb  cmain.o [4]
+BusFault_Handler         0x800'0f9f    0x2  Code  Gb  stm32f1xx_it.o [1]
+CSTACK$$Base            0x2000'0270          --   Gb  - Linker created -
+CSTACK$$Limit           0x2000'0a70          --   Gb  - Linker created -
+DebugMon_Handler         0x800'0fa5    0x2  Code  Gb  stm32f1xx_it.o [1]
+HAL_Delay                0x800'0d83   0x1e  Code  Wk  stm32f1xx_hal.o [1]
+HAL_GPIO_Init            0x800'0711  0x1b4  Code  Gb  stm32f1xx_hal_gpio.o [1]
+HAL_GPIO_ReadPin         0x800'08c5   0x12  Code  Gb  stm32f1xx_hal_gpio.o [1]
+HAL_GPIO_WritePin        0x800'08d7   0x14  Code  Gb  stm32f1xx_hal_gpio.o [1]
+HAL_IncTick              0x800'0fb5   0x10  Code  Wk  stm32f1xx_hal.o [1]
+HAL_Init                 0x800'0d4d   0x24  Code  Gb  stm32f1xx_hal.o [1]
+HAL_MspInit              0x800'0c91   0x98  Code  Gb  main.o [1]
+HAL_NVIC_SetPriority     0x800'0a73   0x22  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HAL_NVIC_SetPriorityGrouping
+                         0x800'0a6b    0x8  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HAL_SYSTICK_Config       0x800'0a95    0x8  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HAL_SYSTICK_IRQHandler   0x800'0ab9    0x8  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HardFault_Handler        0x800'0f9b    0x2  Code  Gb  stm32f1xx_it.o [1]
+LED                     0x2000'025c    0xc  Data  Gb  main.o [1]
+MemManage_Handler        0x800'0f9d    0x2  Code  Gb  stm32f1xx_it.o [1]
+NMI_Handler              0x800'0f99    0x2  Code  Gb  stm32f1xx_it.o [1]
+PendSV_Handler           0x800'0fa7    0x2  Code  Gb  stm32f1xx_it.o [1]
+Peripherals::GpioInput::ConfigureInterrupt()
+                         0x800'03c1   0xde  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::EXTI0_IRQHandler()
+                         0x800'062d   0x24  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::EXTI15_10_IRQHandler()
+                         0x800'0551   0xda  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::EXTI1_IRQHandler()
+                         0x800'0651   0x24  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::EXTI2_IRQHandler()
+                         0x800'0675   0x24  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::EXTI3_IRQHandler()
+                         0x800'0699   0x24  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::EXTI4_IRQHandler()
+                         0x800'06bd   0x24  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::EXTI5_9_IRQHandler()
+                         0x800'04a1   0xb0  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::GPIO_ISRs
+                        0x2000'0204   0x40  Data  Gb  GpioInput.o [1]
+Peripherals::GpioInput::GpioInput(GPIO_TypeDef *, unsigned short, void (*)(), Peripherals::GpioInput::Intr_Event_Edge_t, Peripherals::GpioInput::PULL_t)
+                         0x800'0103   0x32  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::HwInit()
+                         0x800'02a1  0x120  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::MapPin2ExtLine()
+                         0x800'0135   0xb6  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::MapPin2PinSource()
+                         0x800'01eb   0xb6  Code  Gb  GpioInput.o [1]
+Peripherals::GpioInput::ReadInput() const
+                         0x800'0da1    0xc  Code  Gb  main.o [1]
+Peripherals::GpioOutput::GpioOutput(GPIO_TypeDef *, unsigned short)
+                         0x800'0afd   0x22  Code  Gb  GpioOutput.o [1]
+Peripherals::GpioOutput::HwInit()
+                         0x800'0b1f   0xf8  Code  Gb  GpioOutput.o [1]
+Peripherals::GpioOutput::Off()
+                         0x800'0dad    0xe  Code  Gb  main.o [1]
+Peripherals::GpioOutput::On()
+                         0x800'0d75    0xe  Code  Gb  main.o [1]
+Peripherals::Interrupt::EnableInterrupt(Peripherals::Interrupt::IRQn)
+                         0x800'092d   0x18  Code  Gb  Interrupt.o [1]
+Peripherals::Interrupt::RegisterInterrupt_Vct_Table(void (*)(), Peripherals::Interrupt::IRQn, unsigned char, unsigned char)
+                         0x800'0945   0x36  Code  Gb  Interrupt.o [1]
+Peripherals::Interrupt::Relocate_Vector_Table()
+                         0x800'097b   0x24  Code  Gb  Interrupt.o [1]
+Peripherals::Interrupt::Vectors_RAM
+                        0x2000'0100  0x100  Data  Gb  Interrupt.o [1]
+Peripherals::Peripheral::Peripheral()
+                         0x800'09ad    0xc  Code  Gb  GpioOutput.o [1]
+Peripherals::Peripheral::Peripheral() [subobject]
+                         0x800'0709    0x8  Code  Gb  GpioOutput.o [1]
+Region$$Table$$Base      0x800'0e9c          --   Gb  - Linker created -
+Region$$Table$$Limit     0x800'0ec4          --   Gb  - Linker created -
+SHT$$INIT_ARRAY$$Base    0x800'108c          --   Gb  - Linker created -
+SHT$$INIT_ARRAY$$Limit   0x800'1090          --   Gb  - Linker created -
+SHT$$PREINIT_ARRAY$$Base
+                         0x800'108c          --   Gb  - Linker created -
+SHT$$PREINIT_ARRAY$$Limit
+                         0x800'108c          --   Gb  - Linker created -
+SVC_Handler              0x800'0fa3    0x2  Code  Gb  stm32f1xx_it.o [1]
+SysTick_Handler          0x800'0fa9    0xc  Code  Gb  stm32f1xx_it.o [1]
+SystemCoreClock         0x2000'0200    0x4  Data  Gb  system_stm32f1xx.o [1]
+SystemInit               0x800'0df1   0x3e  Code  Gb  system_stm32f1xx.o [1]
+TouchButton             0x2000'0244   0x18  Data  Gb  main.o [1]
+UsageFault_Handler       0x800'0fa1    0x2  Code  Gb  stm32f1xx_it.o [1]
+Virtual function table for Peripherals::GpioInput
+                         0x800'0f44   0x1c  Data  Gb  GpioInput.o [1]
+Virtual function table for Peripherals::GpioOutput
+                         0x800'0f7c   0x1c  Data  Gb  GpioOutput.o [1]
+Virtual function table for Peripherals::Peripheral
+                         0x800'0f60   0x1c  Data  Gb  GpioOutput.o [1]
+[local to GpioInput_cpp]::LL_EXTI_IsEnabledIT_0_31(unsigned int)
+                         0x800'00ed   0x16  Code  Lc  GpioInput.o [1]
+[local to stm32f1xx_hal_cortex_c]::NVIC_EncodePriority(unsigned int, unsigned int, unsigned int)
+                         0x800'0a01   0x3c  Code  Lc  stm32f1xx_hal_cortex.o [1]
+[local to stm32f1xx_hal_cortex_c]::NVIC_GetPriorityGrouping()
+                         0x800'09d3    0xa  Code  Lc  stm32f1xx_hal_cortex.o [1]
+[local to stm32f1xx_hal_cortex_c]::NVIC_SetPriority(IRQn_Type, unsigned int)
+                         0x800'09dd   0x24  Code  Lc  stm32f1xx_hal_cortex.o [1]
+[local to stm32f1xx_hal_cortex_c]::NVIC_SetPriorityGrouping(unsigned int)
+                         0x800'09b9   0x1a  Code  Lc  stm32f1xx_hal_cortex.o [1]
+[local to stm32f1xx_hal_cortex_c]::SysTick_Config(unsigned int)
+                         0x800'0a3d   0x2e  Code  Lc  stm32f1xx_hal_cortex.o [1]
+__call_ctors             0x800'0ee5   0x18  Code  Gb  cppinit.o [2]
+__cmain                  0x800'0efd         Code  Gb  cmain.o [4]
+__exit                   0x800'0f31   0x14  Code  Gb  exit.o [5]
+__iar_copy_init3         0x800'0e49   0x2c  Code  Gb  copy_init3.o [4]
+__iar_cstart_call_ctors
+                         0x800'0ec5   0x20  Code  Gb  cmain_call_ctors.o [4]
+__iar_data_init3         0x800'0e75   0x28  Code  Gb  data_init.o [4]
+__iar_debug_exceptions   0x800'0dba    0x1  Data  Gb  unwind_debug.o [5]
+__iar_program_start      0x800'0fd5         Code  Gb  cstartup_M.o [4]
+__iar_tls$$INIT_ARRAY$$Base
+                         0x800'1090          --   Gb  - Linker created -
+__iar_tls$$INIT_ARRAY$$Limit
+                         0x800'1090          --   Gb  - Linker created -
+__iar_zero_init3         0x800'0ac3   0x3a  Code  Gb  zero_init3.o [4]
+__low_level_init         0x800'0f1b    0x4  Code  Gb  low_level_init.o [2]
+__sti__routine           0x800'0c35   0x26  Code  Lc  main.o [1]
+__vector_table           0x800'0000         Data  Gb  startup_stm32f103xb.o [1]
+_call_main               0x800'0f09         Code  Gb  cmain.o [4]
+_exit                    0x800'0f25         Code  Gb  cexit.o [4]
+_main                    0x800'0f17         Code  Gb  cmain.o [4]
+exit                     0x800'0f1f    0x4  Code  Gb  exit.o [2]
+main                     0x800'0c5b   0x36  Code  Gb  main.o [1]
+uwTick                  0x2000'0268    0x4  Data  Gb  stm32f1xx_hal.o [1]
+
+
+[1] = C:\Amit_Chaudhary\STM32\Projects\IAR\IAR_Projects\CPP_Drivers\Gpio\IAR\Debug\Obj
+[2] = dl7M_tln.a
+[3] = dlpp7M_tl_nc.a
+[4] = rt7M_tl.a
+[5] = shb_l.a
+
+  4 111 bytes of readonly  code memory
+    133 bytes of readonly  data memory
+  2 156 bytes of readwrite data memory (+ 256 absolute)
+
+Errors: none
+Warnings: none

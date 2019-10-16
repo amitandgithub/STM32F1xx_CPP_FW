@@ -177,6 +177,12 @@ namespace HAL
       }        
     }
     
+    I2c::I2CStatus_t I2c::CheckAndLoadTxn(Transaction_t* pTransaction)
+    {
+      
+      
+    }
+    
     I2c::I2CStatus_t I2c::SlaveStartListening(i2cBuf_t* TxBuf, i2cBuf_t* RxBuf )
     {
       if( (TxBuf == 0) || (RxBuf == 0) || (RxBuf->Len == 0)  )

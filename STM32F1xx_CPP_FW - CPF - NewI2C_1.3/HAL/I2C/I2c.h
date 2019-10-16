@@ -25,15 +25,15 @@ namespace HAL
 
 #define I2C_DEBUG 1
   
-#define I2C_POLL 0
+#define I2C_POLL 1
   
 #define I2C_MASTER_Q 0 // 550 bytes
 
-#define I2C_MASTER_INTR     0
+#define I2C_MASTER_INTR     1
 #define I2C_SLAVE_INTR      1
   
-#define I2C_MASTER_DMA      0
-#define I2C_SLAVE_DMA       0 
+#define I2C_MASTER_DMA      1
+#define I2C_SLAVE_DMA       1
   
   /* This flag enables the Slave receiver in DMA mode instead of Interrupt mode*/
 #define I2C_SLAVE_IN_DMA_MODE 0
@@ -137,10 +137,7 @@ namespace HAL
       i2cBuf_t*             RxBuf;
       uint8_t               DefaultByte;
       I2CSlaveCallback_t    XferDoneCallback;
-    }SlaveTxn_t;
-
-    
-    
+    }SlaveTxn_t;    
     
     typedef enum 
     {
@@ -338,6 +335,8 @@ namespace HAL
     I2CStatus_t SendSlaveAddress(uint16_t SlaveAddress, uint8_t Repeatedstart);
     
     inline I2CState_t GetState();
+    
+    I2CStatus_t CheckAndLoadTxn(Transaction_t* pTransaction);
     
     void ScanBus(uint8_t* pFoundDevices, uint8_t size);
     
