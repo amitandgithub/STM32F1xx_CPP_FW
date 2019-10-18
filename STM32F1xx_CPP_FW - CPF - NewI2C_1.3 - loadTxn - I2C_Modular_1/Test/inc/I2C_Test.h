@@ -17,6 +17,8 @@ bool Test_Condition(bool condition, char* PassStr, char* FailStr);
 void MemSet(uint8_t* mem, uint8_t data, uint32_t size);
 
 void I2c_Slave_Tests();
+void I2C_Slave_DMA_Test();
+
 #define STR(x) ((char*)(x))
 
 
@@ -75,3 +77,10 @@ public:
     volatile uint32_t XferComplete;
 };
 
+class I2C_Slave_DMA_Callback_t: public HAL::I2c::i2cCallback
+{
+  public:
+  I2C_Slave_DMA_Callback_t(){};
+  virtual ~I2C_Slave_DMA_Callback_t(){};
+  virtual void CallbackFunction(HAL::I2c::I2CStatus_t I2CStatus);
+};

@@ -27,7 +27,7 @@ namespace HAL
     m_sdaPin(sda,GpioOutput::AF_OPEN_DRAIN),
     m_hz(Hz),
     m_I2CState(I2C_RESET)
-#if (I2C_MASTER_DMA == 1) || (I2C_SLAVE_DMA == 1)
+#if (I2C_MASTER_DMA == 1) //|| (I2C_SLAVE_DMA == 1)
       ,m_I2C1_DMA_Rx_Callback(this),
       m_I2C1_DMA_Tx_Callback(this),
       m_I2C2_DMA_Rx_Callback(this),
@@ -118,7 +118,7 @@ namespace HAL
         InterruptManager::GetInstance()->RegisterDeviceInterrupt(I2C1_EV_IRQn,0,this);
         InterruptManager::GetInstance()->RegisterDeviceInterrupt(I2C1_ER_IRQn,0,this);
 #endif
-#if (I2C_MASTER_DMA == 1) || (I2C_SLAVE_DMA == 1)
+#if I2C_MASTER_DMA
         m_DMAx  = DMA::GetInstance(1);       
         m_DMAx->HwInit();
         m_DMAx->RegisterCallback(I2C1_RX_DMA_CHANNEL,&m_I2C1_DMA_Rx_Callback);
@@ -129,7 +129,19 @@ namespace HAL
         m_DMAx->XferConfig(&DMAConfig, I2C1_RX_DMA_CHANNEL);  
         m_DMAx->EnableTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
         m_DMAx->EnableTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
-#endif                 
+#endif
+#if I2C_SLAVE_DMA
+        m_DMAx  = DMA::GetInstance(1);       
+        m_DMAx->HwInit();
+       // m_DMAx->RegisterCallback(I2C1_RX_DMA_CHANNEL,&m_I2C1_DMA_Rx_Callback);
+       // m_DMAx->RegisterCallback(I2C1_TX_DMA_CHANNEL,&m_I2C1_DMA_Tx_Callback);
+        //InterruptManager::GetInstance()->EnableInterrupt(DMA1_Channel6_IRQn);
+        //InterruptManager::GetInstance()->EnableInterrupt(DMA1_Channel7_IRQn);
+        m_DMAx->XferConfig(&DMAConfig, I2C1_TX_DMA_CHANNEL);
+        m_DMAx->XferConfig(&DMAConfig, I2C1_RX_DMA_CHANNEL);  
+        //m_DMAx->EnableTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
+        //m_DMAx->EnableTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
+#endif 
         
       }                
       else if(m_I2Cx == I2C2)
@@ -138,7 +150,7 @@ namespace HAL
         InterruptManager::GetInstance()->RegisterDeviceInterrupt(I2C2_EV_IRQn,0,this);
         InterruptManager::GetInstance()->RegisterDeviceInterrupt(I2C2_ER_IRQn,0,this);
 #endif
-#if (I2C_MASTER_DMA == 1) || (I2C_SLAVE_DMA == 1)
+#if (I2C_MASTER_DMA == 1) //|| (I2C_SLAVE_DMA == 1)
         m_DMAx->RegisterCallback(I2C2_RX_DMA_CHANNEL,&m_I2C2_DMA_Rx_Callback);
         m_DMAx->RegisterCallback(I2C2_TX_DMA_CHANNEL,&m_I2C2_DMA_Tx_Callback);
         m_DMAx->EnableTransferCompleteInterrupt(I2C2_TX_DMA_CHANNEL);
@@ -252,12 +264,14 @@ namespace HAL
       m_SlaveTxn.RxBuf = RxBuf;
       
       /* Load DMA Tx transaction*/
-      m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), 
-                   (uint32_t)m_SlaveTxn.TxBuf->Buf, m_SlaveTxn.TxBuf->Len, LL_DMA_DIRECTION_MEMORY_TO_PERIPH );
+//      m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), 
+//                   (uint32_t)m_SlaveTxn.TxBuf->Buf, m_SlaveTxn.TxBuf->Len, LL_DMA_DIRECTION_MEMORY_TO_PERIPH );
+      ReloadTxDmaChannel(m_SlaveTxn.TxBuf->Buf,m_SlaveTxn.TxBuf->Len);
       
       /* Load DMA Rx transaction*/
-      m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), 
-                   (uint32_t)m_SlaveTxn.RxBuf->Buf, m_SlaveTxn.RxBuf->Len, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );      
+//      m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)), 
+//                   (uint32_t)m_SlaveTxn.RxBuf->Buf, m_SlaveTxn.RxBuf->Len, LL_DMA_DIRECTION_PERIPH_TO_MEMORY );      
+      ReloadRxDmaChannel(m_SlaveTxn.RxBuf->Buf,m_SlaveTxn.RxBuf->Len);
       
       /* Disable Pos */
       I2C_DISABLE_POS(m_I2Cx);      
@@ -934,7 +948,8 @@ namespace HAL
         }
       }
     }
-    
+#endif
+#if (I2C_MASTER_DMA == 1)
        void I2c::I2C1_DMA_Tx_Done_Handler()
     {			      
       /* Transfer Complete Interrupt management ***********************************/

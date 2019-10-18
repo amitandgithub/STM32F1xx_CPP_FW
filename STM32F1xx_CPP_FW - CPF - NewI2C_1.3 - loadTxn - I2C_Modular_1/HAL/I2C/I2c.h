@@ -23,15 +23,15 @@
 namespace HAL
 {    
 
-#define I2C_DEBUG 1
+#define I2C_DEBUG 0
   
-#define I2C_POLL        1  // 1862 bytes - 1'406
+#define I2C_POLL        0  // 1862 bytes - 1'406
   
-#define I2C_MASTER_Q    1 // 246 bytes - 556
+#define I2C_MASTER_Q    0 // 246 bytes - 556
 
-#define I2C_MASTER_INTR     1  // 1862 bytes - 1'706 - 1'698
-#define I2C_SLAVE_INTR      1  // 954 bytes - 812 - 924
-#define I2C_MASTER_DMA      1  // 2'366 bytes - 2'236 - 2'260
+#define I2C_MASTER_INTR     0  // 1862 bytes - 1'706 - 1'698
+#define I2C_SLAVE_INTR      0  // 954 bytes - 812 - 924
+#define I2C_MASTER_DMA      0  // 2'366 bytes - 2'236 - 2'260
 #define I2C_SLAVE_DMA       1  // 1'710 bytes - 1'428 - 1'426
   
 
@@ -348,7 +348,11 @@ namespace HAL
     
     void SlaveStopReceiving(){I2C_DISABLE_ACK(m_I2Cx);}
     
-    void SetSlaveTxDefaultByte(uint8_t default_byte){m_SlaveTxn.DefaultByte = default_byte;}    
+    void SetSlaveTxDefaultByte(uint8_t default_byte){m_SlaveTxn.DefaultByte = default_byte;} 
+    
+    void ReloadRxDmaChannel(uint8_t* Buf, uint32_t len){m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)),(uint32_t)Buf,len, LL_DMA_DIRECTION_PERIPH_TO_MEMORY);}
+    
+    void ReloadTxDmaChannel(uint8_t* Buf, uint32_t len){m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)),(uint32_t)Buf,len, LL_DMA_DIRECTION_MEMORY_TO_PERIPH);}
     
     inline void SoftReset();
     
@@ -405,11 +409,14 @@ namespace HAL
 //    void AF_SLAVE_DMA();
 //    void STOPF_SLAVE_DMA();
     
-    void I2C1_DMA_Tx_Done_Handler();
+   
+    
+#if (I2C_MASTER_DMA == 1) //|| (I2C_SLAVE_DMA == 1)
+    
+     void I2C1_DMA_Tx_Done_Handler();
     
     void I2C1_DMA_Rx_Done_Handler();
     
-#if (I2C_MASTER_DMA == 1) || (I2C_SLAVE_DMA == 1)
     class I2C1_DMA_Rx_Callback : public Callback
     {
     public:
@@ -465,11 +472,13 @@ namespace HAL
     /* It must be volatile becoz it is shared between ISR and main loop */
     volatile I2CStatus_t    m_I2CStatus;
     
-#if (I2C_MASTER_DMA == 1) || (I2C_SLAVE_DMA == 1)
+#if (I2C_MASTER_DMA == 1) //|| (I2C_SLAVE_DMA == 1)
     I2C1_DMA_Rx_Callback m_I2C1_DMA_Rx_Callback;
     I2C1_DMA_Tx_Callback m_I2C1_DMA_Tx_Callback;
     I2C2_DMA_Rx_Callback m_I2C2_DMA_Rx_Callback;
     I2C2_DMA_Tx_Callback m_I2C2_DMA_Tx_Callback;
+#endif
+#if (I2C_MASTER_DMA == 1) || (I2C_SLAVE_DMA == 1)
     HAL::DMA*            m_DMAx;
 #endif
     

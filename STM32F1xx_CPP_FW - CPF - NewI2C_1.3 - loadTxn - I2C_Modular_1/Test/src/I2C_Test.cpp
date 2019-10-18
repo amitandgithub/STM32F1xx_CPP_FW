@@ -385,13 +385,60 @@ void MemSet(uint8_t* mem, uint8_t data, uint32_t size)
   while(size--) *mem++ = data;
 }
 
+#if I2C_SLAVE_DMA
+uint32_t Total_Rx_Bytes = 0;
+uint32_t Total_Tx_Bytes = 0;
+uint16_t I2C_Slave_Tx_Done_Count = 0;        
+uint8_t I2C_Slave_DMA_Array[50];
+I2c::i2cBuf_t I2C_Slave_TxBuf = {&I2C_Slave_DMA_Array[0],50,0};
+I2c::i2cBuf_t I2C_Slave_RxBuf = {&I2C_Slave_DMA_Array[0],50,0};
+
+I2C_Slave_DMA_Callback_t I2C_Slave_DMA_Callback;
+
+void I2C_Slave_DMA_Test()
+{  
+  I2CDevIntr.HwInit();
+  
+  I2CDevIntr.SetSlaveTxDefaultByte(0xff);
+  
+  I2CDevIntr.SetSlaveCallback(&I2C_Slave_DMA_Callback);
+    
+  while(I2CDevIntr.SlaveStartListening_DMA(&I2C_Slave_TxBuf, &I2C_Slave_RxBuf) != HAL::I2c::I2C_OK);
+}
+
+// from I2c ISR - I2C_Slave_RxBuf.Idx =  I2C_Slave_RxBuf.Len - DMA_Counter;
+void I2C_Slave_DMA_Callback_t::CallbackFunction(HAL::I2c::I2CStatus_t I2CStatus)
+ {
+  if(I2CStatus == HAL::I2c::I2C_SLAVE_RX_DONE) 
+  {    
+    Total_Rx_Bytes = Total_Rx_Bytes + I2C_Slave_RxBuf.Idx;
+    I2C_Slave_RxBuf.Buf[0] += 1; 
+    I2CDevIntr.ReloadRxDmaChannel((uint8_t*)&I2C_Slave_RxBuf,50);
+  }
+  else if(I2CStatus == HAL::I2c::I2C_SLAVE_TX_DONE)
+  {           
+      Total_Tx_Bytes = Total_Tx_Bytes + I2C_Slave_TxBuf.Idx;
+      I2CDevIntr.ReloadTxDmaChannel((uint8_t*)&I2C_Slave_RxBuf,50);
+  }
+  else
+  {
+    while(1);
+  }  
+ }
+
+#endif //  I2C_SLAVE_DMA
 
 void I2c_Slave_Tests()
 {
+#if I2C_SLAVE_INTR
   Cmdsvr_Init();
   while(1)
   {
     CmdSvr_Run(); 
   }
+#elif I2C_SLAVE_DMA
+  I2C_Slave_DMA_Test();
+      while(1);
+#endif
   
 }
