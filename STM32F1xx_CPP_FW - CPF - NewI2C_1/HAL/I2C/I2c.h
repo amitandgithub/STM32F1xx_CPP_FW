@@ -34,7 +34,7 @@ namespace HAL
 #define I2C_DEBUG 1 
 #define I2C_LOG_STATES_SIZE 1500
   
-#define I2C_RX_METHOD_1 
+//#define I2C_RX_METHOD_1 
   
 #define I2C_BUF_BYTE_IN(__I2C_BUF)              (*__I2C_BUF.RxBuf++) = I2C_DATA_REG(m_I2Cx); __I2C_BUF.RxLen--
 

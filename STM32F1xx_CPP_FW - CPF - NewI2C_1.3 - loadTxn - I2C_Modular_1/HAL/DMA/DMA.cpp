@@ -131,4 +131,23 @@ namespace HAL
     {
        _DMA1Callbacks[(Channel-1)%7] = nullptr;
     }
+    
+    void DMA::SetDataLen(uint32_t Channel, uint32_t Len)
+    {
+      LL_DMA_DisableChannel(_DMAx, Channel);
+      LL_DMA_SetDataLength(_DMAx,Channel,Len);
+      LL_DMA_EnableChannel(_DMAx, Channel);
+    } 
+        
+    uint32_t DMA::GetDataLen(uint32_t Channel)
+    {
+      uint32_t len;
+      LL_DMA_DisableChannel(_DMAx, Channel);
+      len = LL_DMA_GetDataLength(_DMAx,Channel);
+      LL_DMA_EnableChannel(_DMAx, Channel);
+      return len;
+    } 
+    
+    
+    
 }

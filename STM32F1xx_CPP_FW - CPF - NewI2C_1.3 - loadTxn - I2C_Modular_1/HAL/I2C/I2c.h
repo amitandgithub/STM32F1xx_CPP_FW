@@ -23,21 +23,22 @@
 namespace HAL
 {    
 
-#define I2C_DEBUG 0
+#define I2C_DEBUG 1
   
-#define I2C_POLL        0  // 1862 bytes - 1'406
+#define I2C_POLL        1  // 1862 bytes - 1'406
   
-#define I2C_MASTER_Q    0 // 246 bytes - 556
+#define I2C_MASTER_Q    1 // 246 bytes - 556
 
-#define I2C_MASTER_INTR     0  // 1862 bytes - 1'706 - 1'698
-#define I2C_SLAVE_INTR      0  // 954 bytes - 812 - 924
-#define I2C_MASTER_DMA      0  // 2'366 bytes - 2'236 - 2'260
-#define I2C_SLAVE_DMA       1  // 1'710 bytes - 1'428 - 1'426
+#define I2C_MASTER_INTR     1  // 1862 bytes - 1'706 - 1'698 (1'906 master and slave)
+#define I2C_SLAVE_INTR      1  // 954 bytes - 812 - 924 - 758
+#define I2C_MASTER_DMA      1  // 2'366 bytes - 2'236 - 2'260
+#define I2C_SLAVE_DMA       1  // 1'710 bytes - 1'428 - 1'426 - 904
   
-
-#define I2C_LOG_STATES_SIZE 100
+// Full I2C module - 4'562
   
-#define I2C_RX_METHOD_1  
+#define I2C_LOG_STATES_SIZE 500
+  
+//#define I2C_RX_METHOD_1  
   
   class I2c : public InterruptSource
   {
@@ -336,8 +337,6 @@ namespace HAL
     
     I2CStatus_t     XferDMA(Transaction_t* pTransaction);
     
-    inline uint8_t ReadRxData();
-    
     void SetSlaveCallback(I2CSlaveCallback_t I2CSlaveCallback){m_SlaveTxn.XferDoneCallback = I2CSlaveCallback;}
     
     I2CStatus_t SlaveStartListening(i2cBuf_t* TxBuf, i2cBuf_t* RxBuf );
@@ -348,70 +347,21 @@ namespace HAL
     
     void SlaveStopReceiving(){I2C_DISABLE_ACK(m_I2Cx);}
     
-    void SetSlaveTxDefaultByte(uint8_t default_byte){m_SlaveTxn.DefaultByte = default_byte;} 
-    
-    void ReloadRxDmaChannel(uint8_t* Buf, uint32_t len){m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)),(uint32_t)Buf,len, LL_DMA_DIRECTION_PERIPH_TO_MEMORY);}
-    
-    void ReloadTxDmaChannel(uint8_t* Buf, uint32_t len){m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)),(uint32_t)Buf,len, LL_DMA_DIRECTION_MEMORY_TO_PERIPH);}
+    void SetSlaveTxDefaultByte(uint8_t default_byte){m_SlaveTxn.DefaultByte = default_byte;}
     
     inline void SoftReset();
     
     virtual void ISR(IRQn_Type event);
-    
-//    void SB();
-//    void ADDR();
-//    void BTF();
-//    void TXE();
-//    void RXNE();
-//    void AF();
-//    void STOPF();
-//    
-//    void SB_MASTER_INTR();
-//    void ADDR_MASTER_INTR();
-//    void BTF_MASTER_INTR();
-//    void TXE_MASTER_INTR();
-//    void RXNE_MASTER_INTR();
-//    void AF_MASTER_INTR();
-//    void STOPF_MASTER_INTR();
     void LoadNextTransaction_MASTER_INTR(); 
-//    
-//    void SB_SLAVE_INTR();
-//    void ADDR_SLAVE_INTR();
-//    void BTF_SLAVE_INTR();
-//    void TXE_SLAVE_INTR();
-//    void RXNE_SLAVE_INTR();
-//    void AF_SLAVE_INTR();
-//    void STOPF_SLAVE_INTR();
-//    
-//    void SB_MASTER_SLAVE_INTR();
-//    void ADDR_MASTER_SLAVE_INTR();
-//    void BTF_MASTER_SLAVE_INTR();
-//    void TXE_MASTER_SLAVE_INTR();
-//    void RXNE_MASTER_SLAVE_INTR();
-//    void AF_MASTER_SLAVE_INTR();
-//    void STOPF_MASTER_SLAVE_INTR();
-//    
-//    
-//    void SB_MASTER_DMA();
-//    void ADDR_MASTER_DMA();
-//    void BTF_MASTER_DMA();
-//    void TXE_MASTER_DMA();
-//    void RXNE_MASTER_DMA();
-//    void AF_MASTER_DMA();
-//    void STOPF_MASTER_DMA();
     void LoadNextTransaction_MASTER_DMA();
-//    
-//    void SB_SLAVE_DMA();
-//    void ADDR_SLAVE_DMA();
-//    void BTF_SLAVE_DMA();
-//    void TXE_SLAVE_DMA();
-//    void RXNE_SLAVE_DMA();
-//    void AF_SLAVE_DMA();
-//    void STOPF_SLAVE_DMA();
     
-   
+#if (I2C_MASTER_DMA == 1) || (I2C_SLAVE_DMA == 1)
+    void LoadRxDmaChannel(uint8_t* Buf, uint32_t len){m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)),(uint32_t)Buf,len, LL_DMA_DIRECTION_PERIPH_TO_MEMORY);}
     
-#if (I2C_MASTER_DMA == 1) //|| (I2C_SLAVE_DMA == 1)
+    void LoadTxDmaChannel(uint8_t* Buf, uint32_t len){m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)),(uint32_t)Buf,len, LL_DMA_DIRECTION_MEMORY_TO_PERIPH);}
+#endif
+    
+#if (I2C_MASTER_DMA == 1) 
     
      void I2C1_DMA_Tx_Done_Handler();
     
@@ -491,102 +441,12 @@ namespace HAL
  
   };   
   
-  inline uint8_t I2c::ReadRxData()
-  {
-
-    return 11;
-  }
-  
-  void I2c::SoftReset()
+  inline void I2c::SoftReset()
   {
     LL_I2C_EnableReset(m_I2Cx);
     LL_I2C_DisableReset(m_I2Cx);
     HwInit();
-  }
-  
-//  I2c::I2CState_t I2c::GetState()
-//  {
-//    return m_I2CState;
-//  }  
-  
-//#if (I2C_MASTER_INTR == 1) && (I2C_SLAVE_INTR == 1) && (I2C_MASTER_DMA == 1) && (I2C_SLAVE_DMA == 1)
-//  
-//#define SB_HANDLER()        SB()
-//#define ADDR_HANDLER()      ADDR()
-//#define BTF_HANDLER()       BTF()
-//#define TXE_HANDLER()       TXE()
-//#define RXNE_HANDLER()      RXNE()
-//#define AF_HANDLER()        AF()
-//#define STOPF_HANDLER()     STOPF()
-//#define LOAD_NEXT_TXN()     LoadNextTransaction_MASTER_INTR()
-//
-//#elif (I2C_MASTER_INTR == 1) && (I2C_SLAVE_INTR == 0) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 0)
-//  
-//#define SB_HANDLER()        SB_MASTER_INTR()
-//#define ADDR_HANDLER()      ADDR_MASTER_INTR()
-//#define BTF_HANDLER()       BTF_MASTER_INTR()
-//#define TXE_HANDLER()       TXE_MASTER_INTR()
-//#define RXNE_HANDLER()      RXNE_MASTER_INTR()
-//#define AF_HANDLER()        AF_MASTER_INTR()
-//#define STOPF_HANDLER()     STOPF_MASTER_INTR()
-//#define LOAD_NEXT_TXN()     LoadNextTransaction_MASTER_INTR()
-//  
-//#elif (I2C_MASTER_INTR == 0) && (I2C_SLAVE_INTR == 1) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 0)
-//  
-//#define SB_HANDLER()        SB_SLAVE_INTR()
-//#define ADDR_HANDLER()      ADDR_SLAVE_INTR()
-//#define BTF_HANDLER()       BTF_SLAVE_INTR()
-//#define TXE_HANDLER()       TXE_SLAVE_INTR()
-//#define RXNE_HANDLER()      RXNE_SLAVE_INTR()
-//#define AF_HANDLER()        AF_SLAVE_INTR()
-//#define STOPF_HANDLER()     STOPF_SLAVE_INTR()
-//#define LOAD_NEXT_TXN()
-//  
-//#elif ((I2C_MASTER_INTR == 1) && (I2C_SLAVE_INTR == 1)) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 0)
-//  
-//#define SB_HANDLER()        SB_MASTER_SLAVE_INTR()
-//#define ADDR_HANDLER()      ADDR_MASTER_SLAVE_INTR()
-//#define BTF_HANDLER()       BTF_MASTER_SLAVE_INTR()
-//#define TXE_HANDLER()       TXE_MASTER_SLAVE_INTR()
-//#define RXNE_HANDLER()      RXNE_MASTER_SLAVE_INTR()
-//#define AF_HANDLER()        AF_MASTER_SLAVE_INTR()
-//#define STOPF_HANDLER()     STOPF_MASTER_SLAVE_INTR()
-//#define LOAD_NEXT_TXN()     LoadNextTransaction_MASTER_INTR()
-//  
-//#elif (I2C_MASTER_INTR == 0) && (I2C_SLAVE_INTR == 0) && (I2C_MASTER_DMA == 1) && (I2C_SLAVE_DMA == 0) 
-//  
-//#define SB_HANDLER()        SB_MASTER_DMA()
-//#define ADDR_HANDLER()      ADDR_MASTER_DMA()
-//#define BTF_HANDLER()       BTF_MASTER_DMA()
-//#define TXE_HANDLER()       TXE_MASTER_DMA()
-//#define RXNE_HANDLER()      RXNE_MASTER_DMA()
-//#define AF_HANDLER()        AF_MASTER_DMA()
-//#define STOPF_HANDLER()     STOPF_MASTER_DMA()
-//#define LOAD_NEXT_TXN()     LoadNextTransaction_MASTER_DMA()
-//  
-//#elif (I2C_MASTER_INTR == 0) && (I2C_SLAVE_INTR == 0) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 1) 
-//  
-//#define SB_HANDLER()        SB_SLAVE_DMA()
-//#define ADDR_HANDLER()      ADDR_SLAVE_DMA()
-//#define BTF_HANDLER()       BTF_SLAVE_DMA()
-//#define TXE_HANDLER()       TXE_SLAVE_DMA()
-//#define RXNE_HANDLER()      RXNE_SLAVE_DMA()
-//#define AF_HANDLER()        AF_SLAVE_DMA()
-//#define STOPF_HANDLER()     STOPF_SLAVE_DMA()
-//#define LOAD_NEXT_TXN()         
-//#else
-//  
-//#define SB_HANDLER()            
-//#define ADDR_HANDLER()      
-//#define BTF_HANDLER()           
-//#define TXE_HANDLER()           
-//#define RXNE_HANDLER()      
-//#define AF_HANDLER()            
-//#define STOPF_HANDLER() 
-//#define LOAD_NEXT_TXN()  
-//#endif
-//  
-  
+  }  
   
 #if I2C_DEBUG     
 #pragma inline = forced

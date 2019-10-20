@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - before_I2C_New_Design_30_May\IAR\settings\Main.Debug.general.xcl" --backend -f "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - before_I2C_New_Design_30_May\IAR\settings\Main.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - before_I2C_New_Design_30_May\IAR\settings\Main.Debug.general.xcl" --backend -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - before_I2C_New_Design_30_May\IAR\settings\Main.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - before_I2C_New_Design_30_May\IAR\settings\Main.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - before_I2C_New_Design_30_May\IAR\settings\Main.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - before_I2C_New_Design_30_May\IAR\settings\Main.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - before_I2C_New_Design_30_May\IAR\settings\Main.Debug.driver.xcl" 
 
 @echo off 
 :end

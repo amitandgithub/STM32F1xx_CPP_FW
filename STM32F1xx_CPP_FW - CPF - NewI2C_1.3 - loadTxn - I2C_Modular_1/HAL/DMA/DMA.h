@@ -53,9 +53,9 @@ namespace HAL
         
         void DisableTransferErrorInterrupt(uint32_t Channel){LL_DMA_DisableIT_TE(_DMAx, Channel);}
         
-        void SetDataLen(uint32_t Channel, uint32_t Len){LL_DMA_SetDataLength(_DMAx,Channel,Len);} 
+        void SetDataLen(uint32_t Channel, uint32_t Len);
         
-        uint32_t GetDataLen(uint32_t Channel){ return LL_DMA_GetDataLength(_DMAx,Channel);} 
+        uint32_t GetDataLen(uint32_t Channel);
         
 
         

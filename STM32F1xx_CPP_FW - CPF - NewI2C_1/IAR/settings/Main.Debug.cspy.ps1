@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Users\amit4\Desktop\STM32F1xx_CPP_FW - CPF - NewI2C_1\IAR\settings\Main.Debug.general.xcl" --backend -f "C:\Users\amit4\Desktop\STM32F1xx_CPP_FW - CPF - NewI2C_1\IAR\settings\Main.Debug.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C_1\IAR\settings\Main.Debug.general.xcl" --backend -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C_1\IAR\settings\Main.Debug.driver.xcl" 
 }
 else
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Users\amit4\Desktop\STM32F1xx_CPP_FW - CPF - NewI2C_1\IAR\settings\Main.Debug.general.xcl" --debug_file=$debugfile --backend -f "C:\Users\amit4\Desktop\STM32F1xx_CPP_FW - CPF - NewI2C_1\IAR\settings\Main.Debug.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C_1\IAR\settings\Main.Debug.general.xcl" --debug_file=$debugfile --backend -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C_1\IAR\settings\Main.Debug.driver.xcl" 
 }

@@ -92,6 +92,20 @@
 
 #define WAIT_FOR_BUSY_FLAG_TO_CLEAR(_I2C_,TIMEOUT) WaitOnFlag(&_I2C_->SR2, I2C_SR2_BUSY, I2C_SR2_BUSY, TIMEOUT)
 
+
+
+#define I2C_DMA_ENABLE(_I2C_)               _I2C_->CR2 |= I2C_CR2_DMAEN
+
+#define I2C_DMA_DISABLE(_I2C_)              _I2C_->CR2 &= ~I2C_CR2_DMAEN
+
+#define I2C_DMA_LAST_BIT_ENABLE(_I2C_)      _I2C_->CR2 |= I2C_CR2_LAST
+
+#define I2C_DMA_LAST_BIT_DISABLE(_I2C_)     _I2C_->CR2 &= ~I2C_CR2_LAST
+
+
+
+/* Non Hardware Stuff, general header file stuff */
+
 #define I2C_BUF_BYTE_IN(__I2C_BUF)              (*__I2C_BUF.RxBuf++) = I2C_DATA_REG(m_I2Cx); __I2C_BUF.RxLen--
 
 #define I2C_BUF_BYTE_OUT(__I2C_BUF)             I2C_DATA_REG(m_I2Cx) = (*__I2C_BUF.TxBuf++); __I2C_BUF.TxLen--

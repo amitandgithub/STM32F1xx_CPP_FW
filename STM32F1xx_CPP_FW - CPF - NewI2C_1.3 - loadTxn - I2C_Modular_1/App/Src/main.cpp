@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include"Test.h"
 
-#define NEW_BOARD 0
+#define NEW_BOARD 1
 
 #ifdef __cplusplus
  extern "C" {
@@ -34,7 +34,7 @@ int main(void)
     HAL_Init();
     
     /* Configure the system clock */
-    //SystemClock_Config();
+    SystemClock_Config();
     
     DWT->CTRL |= 1 ; // enable the counter
     //DWT->CYCCNT = 0; // reset the counter
@@ -42,8 +42,8 @@ int main(void)
     while(1)
     {
         //BMP280_Test();
-        //I2c_Tests();
-        I2c_Slave_Tests();
+        I2c_Tests();
+        //I2c_Slave_Tests();
     }
     
 }

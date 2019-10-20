@@ -30,7 +30,10 @@ typedef enum
     I2C_POLL_TX_1_RX_3,
     I2C_POLL_TX_2_RX_2,
     I2C_POLL_TX_3_RX_3,
-    I2C_INT_POLL_40_RX_40,
+    I2C_POLL_40_RX_40,
+    
+    /* AT24C128 Tests with Polling */
+    I2C_POLL_TX_3_RX_3_AT24C128,
 
 	/* Tests with Interrupts*/
     I2C_INT_TX_1_RX_1,
@@ -58,6 +61,7 @@ typedef enum
     
     /* Tests with Queue*/
     I2C_INT_TX_QUEUE,
+    I2C_DMA_TX_QUEUE,
 	
     I2C_INT_DS1307_RTC_TIME,
     I2C_INT_DS1307_RTC_RAM,
