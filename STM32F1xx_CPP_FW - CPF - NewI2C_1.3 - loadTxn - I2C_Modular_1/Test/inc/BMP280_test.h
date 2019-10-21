@@ -27,7 +27,7 @@ void BMP280_Test()
     /* Default settings from datasheet. */
     BMP280_Dev.setSampling();
     
-    while(1)
+   // while(1)
     {
         
         
@@ -37,9 +37,10 @@ void BMP280_Test()
         a = BMP280_Dev.readAltitude(1013.25);
         printf("Temperature = %f\n",t);
         printf("Pressure    = %f\n",p);
+        if(BMP280_Dev.getChipID() == 0x60)
         printf("Humidity    = %f\n",h);
         printf("Altitude    = %f\n\n",a);
-        LL_mDelay(3000);
+        //LL_mDelay(3000);
        
     }
 }

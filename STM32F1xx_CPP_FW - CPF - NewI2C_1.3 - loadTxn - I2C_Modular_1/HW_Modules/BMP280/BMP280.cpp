@@ -114,7 +114,7 @@ uint8_t BMP280::HwInit()
                          {
                              buf[0] = reg;
                              buf[1] = value;
-                             Tx(buf, 2, &I2C_Status);
+                             Tx(buf, 2);
                          }
                          
                          /*!
@@ -126,8 +126,8 @@ uint8_t BMP280::HwInit()
                          uint8_t BMP280::read8(byte reg) 
                          {
                              buf[0] = reg;
-                             Tx(buf, 1, &I2C_Status);
-                             Rx(&buf[1], 1, &I2C_Status);                             
+                             Tx(buf, 1);
+                             Rx(&buf[1], 1);                             
                              return buf[1];
                          }
                          
@@ -138,8 +138,8 @@ uint8_t BMP280::HwInit()
                          {
                              uint16_t value;
                              buf[0] = reg;
-                             Tx(buf, 1, &I2C_Status) ;
-                             Rx(&buf[1], 2, &I2C_Status) ;    
+                             Tx(buf, 1) ;
+                             Rx(&buf[1], 2) ;    
                              value = (uint16_t)((buf[1] << 8) | buf[2]);
                              return value;
                          }
@@ -169,8 +169,8 @@ uint8_t BMP280::HwInit()
                          {
                              uint32_t value;
                              buf[0] = reg;
-                             Tx(buf, 1, &I2C_Status) ;
-                             Rx(&buf[1], 3, &I2C_Status) ;                             
+                             Tx(buf, 1) ;
+                             Rx(&buf[1], 3) ;                             
                              value = buf[1];
                              value <<= 8;
                              value |= buf[2];

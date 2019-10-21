@@ -27,7 +27,7 @@ namespace HAL
   
 #define I2C_POLL        1  // 1862 bytes - 1'406
   
-#define I2C_MASTER_Q    1 // 246 bytes - 556
+#define I2C_MASTER_Q    0 // 246 bytes - 556
 
 #define I2C_MASTER_INTR     1  // 1862 bytes - 1'706 - 1'698 (1'906 master and slave)
 #define I2C_SLAVE_INTR      1  // 954 bytes - 812 - 924 - 758

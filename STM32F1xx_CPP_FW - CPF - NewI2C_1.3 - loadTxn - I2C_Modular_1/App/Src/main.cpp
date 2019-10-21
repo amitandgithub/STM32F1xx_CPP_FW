@@ -31,21 +31,16 @@ uint32_t count;
 int main(void)
 {	   
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-    HAL_Init();
-    
+    HAL_Init();    
     /* Configure the system clock */
-    SystemClock_Config();
-    
-    DWT->CTRL |= 1 ; // enable the counter
-    //DWT->CYCCNT = 0; // reset the counter
-    
+    SystemClock_Config();    
+    DWT->CTRL |= 1 ; // enable the counter    
     while(1)
     {
-        //BMP280_Test();
-        I2c_Tests();
+       // BMP280_Test();
+        I2c_Tests_AT24C128();
         //I2c_Slave_Tests();
-    }
-    
+    }    
 }
 
 //void putc ( void* p, char c)
@@ -74,7 +69,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
-    _Error_Handler(__FILE__, __LINE__);
+    //_Error_Handler(__FILE__, __LINE__);
   }
 
     /**Initializes the CPU, AHB and APB busses clocks 
@@ -88,7 +83,7 @@ void SystemClock_Config(void)
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
-    _Error_Handler(__FILE__, __LINE__);
+    //_Error_Handler(__FILE__, __LINE__);
   }
 
     /**Configure the Systick interrupt time 

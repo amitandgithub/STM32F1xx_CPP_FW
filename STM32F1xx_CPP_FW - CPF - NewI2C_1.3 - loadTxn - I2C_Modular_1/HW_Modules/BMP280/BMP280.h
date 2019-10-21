@@ -111,15 +111,7 @@ class BMP280
 {
 public:
     
-#define BMP280_INTR_MODE 1
-    
-#if BMP280_INTR_MODE
     using I2CDev = HAL::I2c*;
-    using I2CStatus_t =  HAL::I2c::I2CStatus_t;
-#else
-    using I2CDev = HAL::I2CPoll*;
-    using I2CStatus_t =  HAL::I2CPoll::I2CStatus_t;
-#endif
     typedef uint8_t byte;
     /** Oversampling rate for the sensor. */
     enum sensor_sampling {
@@ -197,14 +189,14 @@ public:
     
     ~BMP280(){};
     
-    uint8_t Tx(uint8_t* TxBuf, uint32_t TxLen,I2CStatus_t* pStatus)
+    uint8_t Tx(uint8_t* TxBuf, uint32_t TxLen)
     { 
         uint8_t status;
         status = m_pI2CDrv->XferPoll( m_BMP280_Address, TxBuf, TxLen);
         return status;
     }
     
-    uint8_t Rx(uint8_t* RxBuf, uint32_t RxLen, I2CStatus_t* pStatus)
+    uint8_t Rx(uint8_t* RxBuf, uint32_t RxLen)
     {
         uint8_t status;
         status = m_pI2CDrv->XferPoll( m_BMP280_Address,0,0, RxBuf, RxLen);
@@ -303,7 +295,6 @@ private:
     I2CDev              m_pI2CDrv;
     int8_t              m_BMP280_Address;
     uint8_t             buf[5];
-    I2CStatus_t         I2C_Status;
     uint8_t             ChipID;
 };
 

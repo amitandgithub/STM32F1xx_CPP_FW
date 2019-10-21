@@ -13,6 +13,7 @@ using namespace HAL;
 #define I2C_PRINT printf
 
 void I2c_Tests();
+void I2c_Tests_AT24C128();
 bool Test_Condition(bool condition, char* PassStr, char* FailStr);
 void MemSet(uint8_t* mem, uint8_t data, uint32_t size);
 
@@ -21,6 +22,7 @@ void I2C_Slave_DMA_Test();
 
 #define STR(x) ((char*)(x))
 
+#define AT24C128_READ_WRITE_DELAY 5
 
 typedef enum
 {
