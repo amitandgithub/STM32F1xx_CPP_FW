@@ -37,9 +37,9 @@ int main(void)
     DWT->CTRL |= 1 ; // enable the counter    
     while(1)
     {
-       // BMP280_Test();
+        BMP280_Test();
         I2c_Tests_AT24C128();
-        //I2c_Slave_Tests();
+        I2c_Slave_Tests();
     }    
 }
 
