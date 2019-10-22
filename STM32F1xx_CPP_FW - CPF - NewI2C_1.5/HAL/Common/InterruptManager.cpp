@@ -55,10 +55,10 @@ InterruptManager::Status_t InterruptManager::EnableInterrupt(IRQn_t IRQNumber)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // METHOD NAME: InterruptManager::GetInstance
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InterruptManager* InterruptManager::GetInstance(void)
-{
-    static InterruptManager interruptManInst;
-    return &interruptManInst;
-}    
+//InterruptManager* InterruptManager::GetInstance(void)
+//{
+//    static InterruptManager interruptManInst;
+//    return &interruptManInst;
+//}    
 
 }

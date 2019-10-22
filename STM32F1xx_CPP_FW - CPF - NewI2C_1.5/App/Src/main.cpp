@@ -7,8 +7,6 @@
 #define NEW_BOARD 1
 
 
-
-
 #include "printf.h"
 //#include "System.h"
 
@@ -27,12 +25,14 @@ int main(void)
     /* Configure the system clock */
     SystemClock_Config();    
     DWT->CTRL |= 1 ; // enable the counter  
+    SSD1306_Init();
     while(1)
     {
         //BMP280_Test();
         I2c_Tests_AT24C128();
         //I2c_Slave_Tests();
        // I2c_Full_EEPROM_POLL();
+        ssd1306_test();
     }    
 }
 

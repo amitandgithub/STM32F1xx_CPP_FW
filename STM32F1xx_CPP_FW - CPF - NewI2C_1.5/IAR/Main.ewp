@@ -378,6 +378,7 @@
                     <state>$PROJ_DIR$\..\SW_Modules\CmdSvr</state>
                     <state>$PROJ_DIR$\..\SW_Modules\CmdSvr\I2C_CMD</state>
                     <state>$PROJ_DIR$\..\Bios</state>
+                    <state>$PROJ_DIR$\..\HW_Modules\Oled</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2243,6 +2244,18 @@
         </group>
         <group>
             <name>DS1307_RTC</name>
+        </group>
+        <group>
+            <name>SSD1306</name>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\Oled\fonts.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\Oled\ssd1306.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\Oled\ssd1306_Test.c</name>
+            </file>
         </group>
     </group>
     <group>

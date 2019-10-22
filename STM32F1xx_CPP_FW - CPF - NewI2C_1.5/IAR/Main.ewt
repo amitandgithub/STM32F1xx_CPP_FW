@@ -2484,6 +2484,18 @@
         <group>
             <name>DS1307_RTC</name>
         </group>
+        <group>
+            <name>SSD1306</name>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\Oled\fonts.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\Oled\ssd1306.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\Oled\ssd1306_Test.c</name>
+            </file>
+        </group>
     </group>
     <group>
         <name>STM32F1xx_HAL</name>

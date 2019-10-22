@@ -12,7 +12,7 @@ namespace HAL
 { 
     DMA::DMACallback_t   DMA::_DMA1Callbacks[7] = {nullptr,};
     
-    DMA* DMA::_DMA1Instance;
+    //DMA* DMA::_DMA1Instance;
 #if defined (DMA2)
     DMA* DMA::_DMA2Instance(nullptr)
 #endif

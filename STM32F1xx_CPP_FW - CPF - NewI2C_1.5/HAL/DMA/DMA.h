@@ -29,6 +29,10 @@ namespace HAL
         typedef uint32_t DMAState_t;
         typedef Callback* DMACallback_t;
         
+        DMA(uint32_t dma);    
+        
+        ~DMA();
+        
         DMAStatus_t HwInit(void *pInitStruct = nullptr);
         
         DMAStatus_t HwDeinit();
@@ -69,21 +73,19 @@ namespace HAL
         
         inline DMAState_t GetState();
 
-        static inline DMA* GetInstance(uint32_t dma);
+        //static inline DMA* GetInstance(uint32_t dma);
         
         static DMACallback_t   _DMA1Callbacks[7];
         
 #if defined (DMA2)
         static DMACallback_t   _DMA2Callbacks[7];
 #endif
-        DMA_TypeDef*        _DMAx;   
-    private:        
-        DMA(uint32_t dma);        
-        ~DMA();
-        static DMA*         _DMA1Instance;
-#if defined (DMA2)
-        static DMA*         _DMA2Instance;
-#endif
+        DMA_TypeDef*        _DMAx;        
+
+//        static DMA*         _DMA1Instance;
+//#if defined (DMA2)
+//        static DMA*         _DMA2Instance;
+//#endif
             
     };
     
@@ -103,41 +105,41 @@ namespace HAL
         return 0;
     }
     
-    inline DMA* DMA::GetInstance(uint32_t dma)
-    {
-        if(dma == 1)
-        {            
-            if(_DMA1Instance)
-            {
-                return _DMA1Instance;
-            }
-            else
-            {
-                static DMA DMAObj(1);
-                _DMA1Instance = &DMAObj;
-                return _DMA1Instance; 
-            }
-        }
-        else
-        {
-#if defined (DMA2)
-            if(_DMA2Instance)
-            {
-                return _DMA2Instance;
-            }
-            else
-            {
-                static DMAObj(2);
-                _Instance = &DMAObj;
-                return _DMA2Instance; 
-            } 
-#else
-            while(1); // Fatal Error
-#endif            
-        }
-        
-        
-    }
+//    inline DMA* DMA::GetInstance(uint32_t dma)
+//    {
+//        if(dma == 1)
+//        {            
+//            if(_DMA1Instance)
+//            {
+//                return _DMA1Instance;
+//            }
+//            else
+//            {
+//                static DMA DMAObj(1);
+//                _DMA1Instance = &DMAObj;
+//                return _DMA1Instance; 
+//            }
+//        }
+//        else
+//        {
+//#if defined (DMA2)
+//            if(_DMA2Instance)
+//            {
+//                return _DMA2Instance;
+//            }
+//            else
+//            {
+//                static DMAObj(2);
+//                _Instance = &DMAObj;
+//                return _DMA2Instance; 
+//            } 
+//#else
+//            while(1); // Fatal Error
+//#endif            
+//        }
+//        
+//        
+//    }
     
     
 }

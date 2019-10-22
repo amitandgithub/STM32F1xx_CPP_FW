@@ -9,6 +9,8 @@
 
 #include "GpioInput.h"
 
+extern HAL::InterruptManager InterruptManagerInstance;
+
 namespace HAL
 {
     
@@ -163,7 +165,7 @@ namespace HAL
             //constexpr uint32_t Pin = Pin;//POSITION_VAL(_pin);// MapPin2PinSource();
             
             L_IRQn = MapPin2ExtLine(Pin);
-            InterruptManager::GetInstance()->RegisterDeviceInterrupt(L_IRQn,0,this);
+            InterruptManagerInstance.RegisterDeviceInterrupt(L_IRQn,0,this);
             return GPIO_SUCCESS;
         }
         

@@ -40,7 +40,7 @@ public:
     
     inline void ClearInterrupt(IRQn_t IRQNumber);
     
-    static InterruptManager* GetInstance(void);    
+    //static InterruptManager* GetInstance(void);    
     
     static InterruptSource*    _InterruptSourceArray[TOTAL_INTERRUPT_VECTORS]; // USBWakeUp_IRQn+16
     

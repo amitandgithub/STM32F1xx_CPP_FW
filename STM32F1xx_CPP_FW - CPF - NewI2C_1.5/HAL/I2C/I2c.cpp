@@ -51,7 +51,6 @@ namespace HAL
     {        	
       LL_I2C_InitTypeDef I2C_InitStruct;
 #if I2C_DEBUG
-      //dbg_log_instance = Utils::DebugLog<DBG_LOG_TYPE>::GetInstance();
       DebugLogInstance.Enable(Utils::DebugLog<DBG_LOG_TYPE>::DBG_LOG_MODULE_ID_I2C);
 #endif            
       /* Set I2C_InitStruct fields to default values */
@@ -107,39 +106,39 @@ namespace HAL
       if(m_I2Cx == I2C1)
       {
 #if I2C_MASTER_INTR || I2C_MASTER_DMA || I2C_SLAVE_INTR || I2C_SLAVE_DMA
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(I2C1_EV_IRQn,0,this);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(I2C1_ER_IRQn,0,this);
+        InterruptManagerInstance.RegisterDeviceInterrupt(I2C1_EV_IRQn,0,this);
+        InterruptManagerInstance.RegisterDeviceInterrupt(I2C1_ER_IRQn,0,this);
 #endif
 #if I2C_MASTER_DMA
-        m_DMAx  = DMA::GetInstance(1);       
-        m_DMAx->HwInit();
-        m_DMAx->RegisterCallback(I2C1_RX_DMA_CHANNEL,&m_I2C1_DMA_Rx_Callback);
-        m_DMAx->RegisterCallback(I2C1_TX_DMA_CHANNEL,&m_I2C1_DMA_Tx_Callback);
-        InterruptManager::GetInstance()->EnableInterrupt(DMA1_Channel6_IRQn);
-        InterruptManager::GetInstance()->EnableInterrupt(DMA1_Channel7_IRQn);
-        m_DMAx->XferConfig(&DMAConfig, I2C1_TX_DMA_CHANNEL);
-        m_DMAx->XferConfig(&DMAConfig, I2C1_RX_DMA_CHANNEL);  
-        m_DMAx->EnableTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
-        m_DMAx->EnableTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
+       // m_DMAx  = DMA::GetInstance(1);       
+        DMA1Instance.HwInit();
+        DMA1Instance.RegisterCallback(I2C1_RX_DMA_CHANNEL,&m_I2C1_DMA_Rx_Callback);
+        DMA1Instance.RegisterCallback(I2C1_TX_DMA_CHANNEL,&m_I2C1_DMA_Tx_Callback);
+        InterruptManagerInstance.EnableInterrupt(DMA1_Channel6_IRQn);
+        InterruptManagerInstance.EnableInterrupt(DMA1_Channel7_IRQn);
+        DMA1Instance.XferConfig(&DMAConfig, I2C1_TX_DMA_CHANNEL);
+        DMA1Instance.XferConfig(&DMAConfig, I2C1_RX_DMA_CHANNEL);  
+        DMA1Instance.EnableTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
+        DMA1Instance.EnableTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
 #endif
 #if I2C_SLAVE_DMA
-        m_DMAx  = DMA::GetInstance(1);       
-        m_DMAx->HwInit();
-        m_DMAx->XferConfig(&DMAConfig, I2C1_TX_DMA_CHANNEL);
-        m_DMAx->XferConfig(&DMAConfig, I2C1_RX_DMA_CHANNEL);  
+       // m_DMAx  = DMA::GetInstance(1);       
+        DMA1Instance.HwInit();
+        DMA1Instance.XferConfig(&DMAConfig, I2C1_TX_DMA_CHANNEL);
+        DMA1Instance.XferConfig(&DMAConfig, I2C1_RX_DMA_CHANNEL);  
 #endif        
       }                
       else if(m_I2Cx == I2C2)
       {
 #if (I2C_MASTER_INTR == 1) || (I2C_MASTER_DMA == 1) || (I2C_SLAVE_INTR == 1) || (I2C_SLAVE_DMA == 1)                
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(I2C2_EV_IRQn,0,this);
-        InterruptManager::GetInstance()->RegisterDeviceInterrupt(I2C2_ER_IRQn,0,this);
+        InterruptManagerInstance.RegisterDeviceInterrupt(I2C2_EV_IRQn,0,this);
+        InterruptManagerInstance.RegisterDeviceInterrupt(I2C2_ER_IRQn,0,this);
 #endif
 #if (I2C_MASTER_DMA == 1) 
-        m_DMAx->RegisterCallback(I2C2_RX_DMA_CHANNEL,&m_I2C2_DMA_Rx_Callback);
-        m_DMAx->RegisterCallback(I2C2_TX_DMA_CHANNEL,&m_I2C2_DMA_Tx_Callback);
-        m_DMAx->EnableTransferCompleteInterrupt(I2C2_TX_DMA_CHANNEL);
-        m_DMAx->EnableTransferCompleteInterrupt(I2C2_RX_DMA_CHANNEL);
+        DMA1Instance.RegisterCallback(I2C2_RX_DMA_CHANNEL,&m_I2C2_DMA_Rx_Callback);
+        DMA1Instance.RegisterCallback(I2C2_TX_DMA_CHANNEL,&m_I2C2_DMA_Tx_Callback);
+        DMA1Instance.EnableTransferCompleteInterrupt(I2C2_TX_DMA_CHANNEL);
+        DMA1Instance.EnableTransferCompleteInterrupt(I2C2_RX_DMA_CHANNEL);
 #endif
       }   
       else
@@ -391,7 +390,7 @@ namespace HAL
 #endif
       }                         
     }
-#endif (I2C_MASTER_INTR == 1) || (I2C_MASTER_DMA == 1)
+#endif //(I2C_MASTER_INTR == 1) || (I2C_MASTER_DMA == 1)
     
     
 #if I2C_POLL   
@@ -926,22 +925,22 @@ namespace HAL
     void I2c::I2C1_DMA_Tx_Done_Handler()
     {			      
       /* Transfer Complete Interrupt management ***********************************/
-      if (LL_DMA_IsActiveFlag_TC6(m_DMAx->_DMAx))
+      if (LL_DMA_IsActiveFlag_TC6(DMA1Instance._DMAx))
       {
         /* Disable the half transfer interrupt if the DMA mode is not CIRCULAR */
-        if(LL_DMA_GetMode(m_DMAx->_DMAx,I2C1_TX_DMA_CHANNEL) == LL_DMA_MODE_CIRCULAR)
+        if(LL_DMA_GetMode(DMA1Instance._DMAx,I2C1_TX_DMA_CHANNEL) == LL_DMA_MODE_CIRCULAR)
         {
           /* Disable all the DMA interrupt */
-          m_DMAx->DisableHalfTransferCompleteInterrupt(I2c::I2C1_TX_DMA_CHANNEL);
-          m_DMAx->DisableTransferCompleteInterrupt(I2c::I2C1_TX_DMA_CHANNEL);
-          m_DMAx->DisableTransferErrorInterrupt(I2c::I2C1_TX_DMA_CHANNEL);
+          DMA1Instance.DisableHalfTransferCompleteInterrupt(I2c::I2C1_TX_DMA_CHANNEL);
+          DMA1Instance.DisableTransferCompleteInterrupt(I2c::I2C1_TX_DMA_CHANNEL);
+          DMA1Instance.DisableTransferErrorInterrupt(I2c::I2C1_TX_DMA_CHANNEL);
         }                 
         
         /* Clear the half transfer complete flag */
-        LL_DMA_ClearFlag_TC6(m_DMAx->_DMAx);
+        LL_DMA_ClearFlag_TC6(DMA1Instance._DMAx);
         
         /* Clear the half transfer complete flag */
-        LL_DMA_ClearFlag_HT6(m_DMAx->_DMAx);                 
+        LL_DMA_ClearFlag_HT6(DMA1Instance._DMAx);                 
         
         // This varoable is only used by TxnDoneHandler() to keep track of Tx completion status
         m_Transaction.TxLen = 0;                				
@@ -949,32 +948,32 @@ namespace HAL
         I2C_LOG_STATES(I2c::I2C_LOG_DMA_TX_DONE);
       }     
       /* Half Transfer Complete Interrupt management ******************************/
-      else if (LL_DMA_IsActiveFlag_HT6(m_DMAx->_DMAx))
+      else if (LL_DMA_IsActiveFlag_HT6(DMA1Instance._DMAx))
       {
         I2C_LOG_STATES(I2c::I2C_LOG_DMA_HALF_TX_DONE);
         
         /* Disable the half transfer interrupt if the DMA mode is not CIRCULAR */
-        if(LL_DMA_GetMode(m_DMAx->_DMAx,I2C1_TX_DMA_CHANNEL) == LL_DMA_MODE_CIRCULAR)
+        if(LL_DMA_GetMode(DMA1Instance._DMAx,I2C1_TX_DMA_CHANNEL) == LL_DMA_MODE_CIRCULAR)
         {
           /* Disable the half transfer interrupt */
-          m_DMAx->DisableHalfTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
+          DMA1Instance.DisableHalfTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
         }
         /* Clear the half transfer complete flag */
-        LL_DMA_ClearFlag_HT6(m_DMAx->_DMAx);
+        LL_DMA_ClearFlag_HT6(DMA1Instance._DMAx);
       }      
       /* Transfer Error Interrupt management **************************************/
-      else if ( LL_DMA_IsActiveFlag_TE6(m_DMAx->_DMAx))
+      else if ( LL_DMA_IsActiveFlag_TE6(DMA1Instance._DMAx))
       {
         /* When a DMA transfer error occurs */
         /* A hardware clear of its EN bits is performed */
         /* Disable ALL DMA IT */
         /* Disable all the DMA interrupt */
-        m_DMAx->DisableHalfTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
-        m_DMAx->DisableTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
-        m_DMAx->DisableTransferErrorInterrupt(I2C1_TX_DMA_CHANNEL);
+        DMA1Instance.DisableHalfTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
+        DMA1Instance.DisableTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
+        DMA1Instance.DisableTransferErrorInterrupt(I2C1_TX_DMA_CHANNEL);
         
         /* Clear all flags */
-        //m_DMAx->_DMAx->IFCR = (DMA_ISR_GIF1 << hdma->ChannelIndex);
+        //DMA1Instance._DMAx->IFCR = (DMA_ISR_GIF1 << hdma->ChannelIndex);
         
         I2C_LOG_STATES(I2c::I2C_LOG_DMA_TX_ERROR);                
       }            
@@ -983,25 +982,25 @@ namespace HAL
     void I2c::I2C1_DMA_Rx_Done_Handler()
     {			    
       /* Transfer Complete Interrupt management ***********************************/
-      if (LL_DMA_IsActiveFlag_TC7(m_DMAx->_DMAx))
+      if (LL_DMA_IsActiveFlag_TC7(DMA1Instance._DMAx))
       {
         /* Disable the half transfer interrupt if the DMA mode is not CIRCULAR */
-        if(LL_DMA_GetMode(m_DMAx->_DMAx,I2C1_RX_DMA_CHANNEL) == LL_DMA_MODE_CIRCULAR)
+        if(LL_DMA_GetMode(DMA1Instance._DMAx,I2C1_RX_DMA_CHANNEL) == LL_DMA_MODE_CIRCULAR)
         {
           /* Disable all the DMA interrupt */
-          m_DMAx->DisableHalfTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
-          m_DMAx->DisableTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
-          m_DMAx->DisableTransferErrorInterrupt(I2C1_RX_DMA_CHANNEL);
+          DMA1Instance.DisableHalfTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
+          DMA1Instance.DisableTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
+          DMA1Instance.DisableTransferErrorInterrupt(I2C1_RX_DMA_CHANNEL);
         }          
         
         /* Disable DMA Request */            
         I2C_DMA_DISABLE(m_I2Cx); 
         
         /* Clear the transfer complete flag */
-        LL_DMA_ClearFlag_TC7(m_DMAx->_DMAx);
+        LL_DMA_ClearFlag_TC7(DMA1Instance._DMAx);
         
         /* Clear the half transfer complete flag */
-        LL_DMA_ClearFlag_HT7(m_DMAx->_DMAx);  
+        LL_DMA_ClearFlag_HT7(DMA1Instance._DMAx);  
         
         /* Generate Stop */
         I2C_GENERATE_STOP(m_I2Cx);
@@ -1014,32 +1013,32 @@ namespace HAL
         TxnDoneHandler(0); 
       }           
       /* Half Transfer Complete Interrupt management ******************************/
-      else if (LL_DMA_IsActiveFlag_HT7(m_DMAx->_DMAx))
+      else if (LL_DMA_IsActiveFlag_HT7(DMA1Instance._DMAx))
       {
         I2C_LOG_STATES(I2c::I2C_LOG_DMA_HALF_RX_DONE);
         
         /* Disable the half transfer interrupt if the DMA mode is not CIRCULAR */
-        if(LL_DMA_GetMode(m_DMAx->_DMAx,I2C1_RX_DMA_CHANNEL) == LL_DMA_MODE_CIRCULAR)
+        if(LL_DMA_GetMode(DMA1Instance._DMAx,I2C1_RX_DMA_CHANNEL) == LL_DMA_MODE_CIRCULAR)
         {
           /* Disable the half transfer interrupt */
-          m_DMAx->DisableHalfTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
+          DMA1Instance.DisableHalfTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
         }
         /* Clear the half transfer complete flag */
-        LL_DMA_ClearFlag_HT7(m_DMAx->_DMAx);
+        LL_DMA_ClearFlag_HT7(DMA1Instance._DMAx);
       }            
       /* Transfer Error Interrupt management **************************************/
-      else if ( LL_DMA_IsActiveFlag_TE7(m_DMAx->_DMAx))
+      else if ( LL_DMA_IsActiveFlag_TE7(DMA1Instance._DMAx))
       {
         /* When a DMA transfer error occurs */
         /* A hardware clear of its EN bits is performed */
         /* Disable ALL DMA IT */
         /* Disable all the DMA interrupt */
-        m_DMAx->DisableHalfTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
-        m_DMAx->DisableTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
-        m_DMAx->DisableTransferErrorInterrupt(I2C1_RX_DMA_CHANNEL);                
+        DMA1Instance.DisableHalfTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
+        DMA1Instance.DisableTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
+        DMA1Instance.DisableTransferErrorInterrupt(I2C1_RX_DMA_CHANNEL);                
         
         /* Clear all flags */
-        //m_DMAx->_DMAx->IFCR = (DMA_ISR_GIF1 << hdma->ChannelIndex);
+        //DMA1Instance._DMAx->IFCR = (DMA_ISR_GIF1 << hdma->ChannelIndex);
         
         I2C_LOG_STATES(I2c::I2C_LOG_DMA_RX_ERROR);                
       }            
@@ -2673,7 +2672,7 @@ namespace HAL
         I2C_LOG_EVENTS(I2C_LOG_STOPF);
         I2C_CLEAR_STOPF(m_I2Cx);  
         
-        m_SlaveTxn.RxBuf->Idx = m_SlaveTxn.RxBuf->Len - m_DMAx->GetDataLen(I2C1_RX_DMA_CHANNEL);
+        m_SlaveTxn.RxBuf->Idx = m_SlaveTxn.RxBuf->Len - DMA1Instance.GetDataLen(I2C1_RX_DMA_CHANNEL);
         
         /* Execute the RxDone Callback */
         if(m_SlaveTxn.XferDoneCallback)
@@ -2706,7 +2705,7 @@ namespace HAL
         I2C_LOG_EVENTS(I2C_LOG_AF);
         LL_I2C_ClearFlag_AF(m_I2Cx);  
         
-        m_SlaveTxn.TxBuf->Idx = m_SlaveTxn.TxBuf->Len - m_DMAx->GetDataLen(I2C1_TX_DMA_CHANNEL);
+        m_SlaveTxn.TxBuf->Idx = m_SlaveTxn.TxBuf->Len - DMA1Instance.GetDataLen(I2C1_TX_DMA_CHANNEL);
         
         if(m_SlaveTxn.XferDoneCallback)
           m_SlaveTxn.XferDoneCallback->CallbackFunction(I2C_SLAVE_TX_DONE);	
