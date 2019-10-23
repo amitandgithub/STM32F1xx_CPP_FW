@@ -296,7 +296,18 @@ namespace HAL
       uint8_t*          TxBuf; 
       uint8_t*          RxBuf;
       I2CCallback_t     XferDoneCallback;
-    }Transaction_t;
+    }Transaction_t; // 20 bytes
+    
+//    typedef struct
+//    {
+//      uint8_t           SlaveAddress;
+//      uint8_t*          TxBuf; 
+//      uint16_t          TxLen;
+//      uint8_t*          RxBuf;
+//      uint16_t          RxLen; 
+//      I2CCallback_t     XferDoneCallback;
+//      uint8_t           RepeatedStart;
+//    }Transaction_t; // 28 bytes, It generates more ram data and code
     
 #if I2C_MASTER_Q
     using I2CTxnQueue_t = Utils::Queue<Transaction_t*,10U> ;
@@ -320,7 +331,7 @@ namespace HAL
     
     I2CState_t GetState(){return m_I2CState;}
     
-    I2CStatus_t CheckAndLoadTxn(Transaction_t* pTransaction);
+    I2CStatus_t CheckAndLoadTxn(Transaction_t const * pTransaction);
     
     void ScanBus(uint8_t* pFoundDevices, uint8_t size);
     
@@ -334,15 +345,15 @@ namespace HAL
     
      void LoadNextTransaction_Q();
     
-    I2CStatus_t Post(Transaction_t* pTransaction, uint32_t Mode = 0);    
+    I2CStatus_t Post(Transaction_t const * pTransaction, uint32_t Mode = 0);    
     
     I2CStatus_t     XferPoll(uint16_t SlaveAddress,uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf=nullptr, uint32_t RxLen=0,uint8_t RepeatedStart=0);
     
-    I2CStatus_t     XferPoll(Transaction_t* pTransaction);
+    I2CStatus_t     XferPoll(Transaction_t const * pTransaction);
     
-    I2CStatus_t     XferIntr(Transaction_t* pTransaction);
+    I2CStatus_t     XferIntr(Transaction_t const * pTransaction);
     
-    I2CStatus_t     XferDMA(Transaction_t* pTransaction);
+    I2CStatus_t     XferDMA(Transaction_t const * pTransaction);
     
     void SetSlaveCallback(I2CSlaveCallback_t I2CSlaveCallback){m_SlaveTxn.XferDoneCallback = I2CSlaveCallback;}
     

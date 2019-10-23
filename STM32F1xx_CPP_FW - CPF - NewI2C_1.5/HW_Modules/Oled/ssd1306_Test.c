@@ -22,6 +22,13 @@ while(1)
 
     SSD1306_ScrollLeft(0,7);  // scroll entire screen
     HAL_Delay(2000);  // 2 sec
+  
+    SSD1306_DMA_Display();
+    HAL_Delay(2000);  // 2 sec
+    
+    SSD1306_DMA_Dim(true);
+    HAL_Delay(3000);  // 3 sec
+    SSD1306_DMA_Dim(false);
 }
     SSD1306_Stopscroll();
     SSD1306_Clear();

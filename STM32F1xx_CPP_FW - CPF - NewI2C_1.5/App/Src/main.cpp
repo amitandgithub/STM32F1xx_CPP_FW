@@ -18,8 +18,16 @@ void putc ( void* p, char c);
 //Micros = Millis*1000 + 1000 – SysTick->VAL/72
 //if you are free to use 32 bit timer you can even do it without IRQ, just simply time= TIMx->CNT. 
 uint32_t count;
+
+
+struct s {
+	int i;
+	unsigned u;
+	char end[];
+};
+
 int main(void)
-{	   
+{	
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();    
     /* Configure the system clock */

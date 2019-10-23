@@ -612,6 +612,61 @@ void SSD1306_OFF(void) {
   SSD1306_WRITECOMMAND(0xAE);  
 }
 
+// Dim the display
+// dim = true: display is dimmed
+// dim = false: display is normal
+void SSD1306_DMA_Dim(bool dim)
+{
+  uint8_t contrast;
+  
+  if(dim)
+  {
+    contrast = 0; // Dimmed display
+  } 
+  else 
+  {
+    if(SSD1306_SWITCHCAPVCC == SSD1306_EXTERNALVCC) 
+    {
+      contrast = 0x9F;
+    }
+    else
+    {
+      contrast = 0xCF;
+    }
+  }
+  // the range of contrast to too small to be really useful
+  // it is useful to dim the display
+  SSD1306_WRITECOMMAND(SSD1306_SETCONTRAST);
+  SSD1306_WRITECOMMAND(contrast);
+}
+
+  const HAL::I2c::Transaction_t Transaction =
+  {
+    .SlaveAddress       = SSD1306_I2C_ADDR,
+    .TxBuf              = SSD1306_Buffer,
+    .TxLen              = sizeof(SSD1306_Buffer),
+    .RxBuf              = 0,
+    .RxLen              = 0,
+    .XferDoneCallback   = nullptr,
+    .RepeatedStart      = 0
+  };
+
+void SSD1306_DMA_Display(void) 
+{      
+  SSD1306_WRITECOMMAND(SSD1306_COLUMNADDR);
+  SSD1306_WRITECOMMAND(0);   // Column start address (0 = reset)
+  SSD1306_WRITECOMMAND(SSD1306_LCDWIDTH-1); // Column end address (127 = reset)
+
+  SSD1306_WRITECOMMAND(SSD1306_PAGEADDR);
+  SSD1306_WRITECOMMAND(0); // Page start address (0 = reset)
+  SSD1306_WRITECOMMAND(7); // Page end address
+    
+  //_dmaSpi.send(SSD1306_Buffer, 512);			//use special SPI DMA send buffer. change buffer size to one regarding your OLED.
+  //i2c1.XferPoll(SSD1306_I2C_ADDR,SSD1306_Buffer,512);
+  i2c1.XferDMA( const_cast<HAL::I2c::Transaction_t*>(&Transaction) );
+  //i2c1.XferDMA( &Transaction) );
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  _____ ___   _____ 
 // |_   _|__ \ / ____|
