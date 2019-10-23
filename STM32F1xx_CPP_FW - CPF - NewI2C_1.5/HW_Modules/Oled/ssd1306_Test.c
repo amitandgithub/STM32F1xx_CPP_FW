@@ -6,23 +6,23 @@
 void ssd1306_test()
 {
   
-   /// lets print some string
 
+while(1)
+{
     SSD1306_GotoXY (0,0);
-    SSD1306_Puts ((char*)"HELLO", &Font_11x18, SSD1306_COLOR_WHITE);
-    SSD1306_GotoXY (10, 30);
-    SSD1306_Puts ((char*)"  WORLD :)", &Font_11x18, SSD1306_COLOR_WHITE);
+    SSD1306_Puts ((char*)"Amit Avni", &Font_11x18, SSD1306_COLOR_WHITE);
+    SSD1306_GotoXY (0, 30);
+    SSD1306_Puts ((char*)"Siwani Golu)", &Font_11x18, SSD1306_COLOR_WHITE);
     SSD1306_UpdateScreen(); //display
 
     HAL_Delay (2000);
-
 
     SSD1306_ScrollRight(0,7);  // scroll entire screen
     HAL_Delay(2000);  // 2 sec
 
     SSD1306_ScrollLeft(0,7);  // scroll entire screen
     HAL_Delay(2000);  // 2 sec
-
+}
     SSD1306_Stopscroll();
     SSD1306_Clear();
 
@@ -55,10 +55,9 @@ void ssd1306_test()
     HAL_Delay(2000);
 
     SSD1306_InvertDisplay(0);  // normalize the display
-//
 
     HAL_Delay(2000);
-    
+
       while (1)
   {
 	  //// HORSE ANIMATION START //////

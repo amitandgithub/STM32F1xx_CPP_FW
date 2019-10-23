@@ -160,6 +160,7 @@ uint8_t SSD1306_Init(void) {
   /* Init I2C */
   ssd1306_I2C_Init();
   
+  i2c1.HwInit();
   /* Check if LCD connected to I2C */
 //  if (HAL_I2C_IsDeviceReady(&hi2c1, SSD1306_I2C_ADDR, 1, 20000) != HAL_OK) {
 //    /* Return false */
