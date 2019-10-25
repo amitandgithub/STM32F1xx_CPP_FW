@@ -614,7 +614,7 @@ void SSD1306_OFF(void) {
 
 void SSD1306_DMA_Display(void) 
 {
-  constexpr HAL::I2c::Transaction_t Transaction =
+  HAL::I2c::Transaction_t transaction =
   {
     .SlaveAddress       = SSD1306_I2C_ADDR,
     .TxBuf              = SSD1306_Buffer,
@@ -635,7 +635,7 @@ void SSD1306_DMA_Display(void)
     
   //_dmaSpi.send(SSD1306_Buffer, 512);			//use special SPI DMA send buffer. change buffer size to one regarding your OLED.
   //i2c1.XferPoll(SSD1306_I2C_ADDR,SSD1306_Buffer,512);
-  i2c1.XferDMA(&Transaction);
+  i2c1.XferDMA(&transaction);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

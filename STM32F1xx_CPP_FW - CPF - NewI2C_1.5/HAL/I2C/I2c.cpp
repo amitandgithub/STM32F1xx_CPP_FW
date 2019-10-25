@@ -181,7 +181,7 @@ namespace HAL
       }        
     }
     
-    I2c::I2CStatus_t I2c::CheckAndLoadTxn(Transaction_t const * pTransaction)
+    I2c::I2CStatus_t I2c::CheckAndLoadTxn(Transaction_t* pTransaction)
     {
       if(m_I2CState != I2C_READY)
         return I2C_BUSY;
@@ -194,7 +194,7 @@ namespace HAL
       if((pTransaction->TxLen == 0) || (pTransaction->RxLen == 0))
       {
         /* RepeatedStart is only valid for TX and Rx type transfer */
-       //pTransaction->RepeatedStart = 0;
+        //pTransaction->RepeatedStart = 0;
         m_Transaction.RepeatedStart      = 0;
       }  
       
@@ -210,7 +210,7 @@ namespace HAL
       m_Transaction.TxLen              = pTransaction->TxLen;
       m_Transaction.RxBuf              = pTransaction->RxBuf;
       m_Transaction.RxLen              = pTransaction->RxLen;  
-      //m_Transaction.RepeatedStart      = pTransaction->RepeatedStart;   
+//      m_Transaction.RepeatedStart      = pTransaction->RepeatedStart;   
       m_Transaction.XferDoneCallback   = pTransaction->XferDoneCallback;
       
       /* Disable Pos */
@@ -239,7 +239,7 @@ namespace HAL
 #if I2C_SLAVE_DMA   
     I2c::I2CStatus_t I2c::SlaveStartListening_DMA(i2cBuf_t* TxBuf, i2cBuf_t* RxBuf )
     {
-      if( (TxBuf == 0) || (RxBuf == 0) || (RxBuf->Len == 0) )
+      if( (TxBuf == 0) || (RxBuf == 0) || (RxBuf->Len == 0)  )
       {
         return I2C_INVALID_PARAMS;
       }  
@@ -635,7 +635,7 @@ namespace HAL
       return I2C_OK;    
     }
     
-    I2c::I2CStatus_t I2c::XferPoll(Transaction_t const * pTransaction)
+    I2c::I2CStatus_t I2c::XferPoll(Transaction_t* pTransaction)
     {
       if( pTransaction == nullptr )
       {          
@@ -668,7 +668,7 @@ namespace HAL
     
 #if I2C_MASTER_INTR
     
-    I2c::I2CStatus_t I2c::XferIntr(Transaction_t const * pTransaction)  // 178 bytes
+    I2c::I2CStatus_t I2c::XferIntr(Transaction_t* pTransaction)  // 178 bytes
     {
       
       I2CStatus_t status;
@@ -758,7 +758,7 @@ namespace HAL
     
 #if I2C_MASTER_Q && (I2C_MASTER_DMA || I2C_MASTER_INTR)
     
-    I2c::I2CStatus_t I2c::Post(Transaction_t const * pTransaction, uint32_t Mode)
+    I2c::I2CStatus_t I2c::Post(Transaction_t* pTransaction, uint32_t Mode)
     {      
       if(m_I2CState == I2C_READY)
       {  
@@ -786,7 +786,7 @@ namespace HAL
           I2C_DEBUG_LOG(I2C_INVALID_PARAMS);                
           return I2C_INVALID_PARAMS;                
         }        
-        if( !m_I2CTxnQueue.Write(const_cast<Transaction_t*>(pTransaction) ))
+        if( !m_I2CTxnQueue.Write(pTransaction) )
         {
           I2C_LOG_STATES(I2C_LOG_TXN_QUEUED);
           return I2C_TXN_POSTED;
@@ -803,7 +803,7 @@ namespace HAL
     
 #if (I2C_MASTER_DMA == 1) 
     
-    I2c::I2CStatus_t I2c::XferDMA(Transaction_t const * pTransaction)
+    I2c::I2CStatus_t I2c::XferDMA(Transaction_t* pTransaction)
     {     
       I2CStatus_t status;
       

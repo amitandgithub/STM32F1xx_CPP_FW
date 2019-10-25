@@ -853,7 +853,7 @@ case I2C_INT_TX_1_RX_1_TXN:
       {
         //I2c_test_id = I2C_INT_TX_2_RX_2_TXN_DMA;
         I2c_test_id = I2C_POLL_TX_1_RX_1;
-        //return;
+        return;
       }
       
       break;

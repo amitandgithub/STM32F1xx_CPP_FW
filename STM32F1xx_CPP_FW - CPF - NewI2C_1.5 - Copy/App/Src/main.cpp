@@ -28,20 +28,20 @@ struct s {
 
 int main(void)
 {	
-    SSD1306_DMA_Display();
+    //SSD1306_DMA_Display();
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();    
     /* Configure the system clock */
     SystemClock_Config();    
     DWT->CTRL |= 1 ; // enable the counter  
-    SSD1306_Init();
+    //SSD1306_Init();
     while(1)
     {
         //BMP280_Test();
-        //I2c_Tests_AT24C128();
+        I2c_Tests_AT24C128();
         //I2c_Slave_Tests();
        // I2c_Full_EEPROM_POLL();
-        ssd1306_test();
+       // ssd1306_test();
     }    
 }
 

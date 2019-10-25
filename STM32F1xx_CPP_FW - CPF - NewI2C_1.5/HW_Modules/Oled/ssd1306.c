@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ABS(x)   ((x) > 0 ? (x) : -(x))
 
 /* SSD1306 data buffer */
-static uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
+ uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
 
 /* Private SSD1306 structure */
 typedef struct {
@@ -222,10 +222,50 @@ uint8_t SSD1306_Init(void) {
   return 1;
 }
 
-void SSD1306_UpdateScreen(void) {
+#include"I2C_Test.h"
+extern I2CCallback_t I2CCallback;
+
+  const HAL::I2c::Transaction_t Transaction =
+  {
+    .SlaveAddress       = SSD1306_I2C_ADDR,
+    .TxBuf              = SSD1306_Buffer,
+    .TxLen              = sizeof(SSD1306_Buffer),
+    .RxBuf              = 0,
+    .RxLen              = 0,
+    .XferDoneCallback   = &I2CCallback,
+    .RepeatedStart      = 0
+  };
+volatile uint32_t i2c_dma_count;
+void SSD1306_DMA_Display(void) 
+{ 
+  count = I2CCallback.get_XferComplete();
+  
+  SSD1306_WRITECOMMAND(SSD1306_COLUMNADDR);
+  SSD1306_WRITECOMMAND(0);   // Column start address (0 = reset)
+  SSD1306_WRITECOMMAND(SSD1306_LCDWIDTH-1); // Column end address (127 = reset)
+
+  SSD1306_WRITECOMMAND(SSD1306_PAGEADDR);
+  SSD1306_WRITECOMMAND(0); // Page start address (0 = reset)
+  SSD1306_WRITECOMMAND(7); // Page end address
+    
+  //_dmaSpi.send(SSD1306_Buffer, 512);			//use special SPI DMA send buffer. change buffer size to one regarding your OLED.
+  //i2c1.XferPoll(SSD1306_I2C_ADDR,SSD1306_Buffer,512);
+  i2c1.XferDMA( const_cast<HAL::I2c::Transaction_t*>(&Transaction) );
+  while(count == I2CCallback.get_XferComplete())
+  {
+    i2c_dma_count++;
+  }
+  i2c_dma_count = 0; // 276246 -100khz, 70513 - 400khz
+  //i2c1.XferDMA( &Transaction) );
+}
+
+void SSD1306_UpdateScreen(void)
+{
+#if 1
   uint8_t m;
   
-  for (m = 0; m < 8; m++) {
+  for (m = 0; m < 8; m++)
+  {
     SSD1306_WRITECOMMAND(0xB0 + m);
     SSD1306_WRITECOMMAND(0x00);
     SSD1306_WRITECOMMAND(0x10);
@@ -233,6 +273,9 @@ void SSD1306_UpdateScreen(void) {
     /* Write multi data */
     ssd1306_I2C_WriteMulti(SSD1306_I2C_ADDR, 0x40, &SSD1306_Buffer[SSD1306_WIDTH * m], SSD1306_WIDTH);
   }
+#else
+  SSD1306_DMA_Display();
+#endif
 }
 
 void SSD1306_ToggleInvert(void) {
@@ -634,38 +677,21 @@ void SSD1306_DMA_Dim(bool dim)
       contrast = 0xCF;
     }
   }
+  
   // the range of contrast to too small to be really useful
   // it is useful to dim the display
   SSD1306_WRITECOMMAND(SSD1306_SETCONTRAST);
   SSD1306_WRITECOMMAND(contrast);
 }
 
-  const HAL::I2c::Transaction_t Transaction =
-  {
-    .SlaveAddress       = SSD1306_I2C_ADDR,
-    .TxBuf              = SSD1306_Buffer,
-    .TxLen              = sizeof(SSD1306_Buffer),
-    .RxBuf              = 0,
-    .RxLen              = 0,
-    .XferDoneCallback   = nullptr,
-    .RepeatedStart      = 0
-  };
 
-void SSD1306_DMA_Display(void) 
-{      
-  SSD1306_WRITECOMMAND(SSD1306_COLUMNADDR);
-  SSD1306_WRITECOMMAND(0);   // Column start address (0 = reset)
-  SSD1306_WRITECOMMAND(SSD1306_LCDWIDTH-1); // Column end address (127 = reset)
-
-  SSD1306_WRITECOMMAND(SSD1306_PAGEADDR);
-  SSD1306_WRITECOMMAND(0); // Page start address (0 = reset)
-  SSD1306_WRITECOMMAND(7); // Page end address
-    
-  //_dmaSpi.send(SSD1306_Buffer, 512);			//use special SPI DMA send buffer. change buffer size to one regarding your OLED.
-  //i2c1.XferPoll(SSD1306_I2C_ADDR,SSD1306_Buffer,512);
-  i2c1.XferDMA( const_cast<HAL::I2c::Transaction_t*>(&Transaction) );
-  //i2c1.XferDMA( &Transaction) );
+void SSD1306_SetBrightness(uint8_t level)
+{  
+  SSD1306_WRITECOMMAND(SSD1306_SETCONTRAST);
+  SSD1306_WRITECOMMAND(level);
 }
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  _____ ___   _____ 

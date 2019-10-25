@@ -121,8 +121,7 @@ namespace HAL
         m_DMAx->XferConfig(&DMAConfig, I2C1_RX_DMA_CHANNEL);  
         m_DMAx->EnableTransferCompleteInterrupt(I2C1_TX_DMA_CHANNEL);
         m_DMAx->EnableTransferCompleteInterrupt(I2C1_RX_DMA_CHANNEL);
-#endif
-#if I2C_SLAVE_DMA
+#elif I2C_SLAVE_DMA
         m_DMAx  = DMA::GetInstance(1);       
         m_DMAx->HwInit();
         m_DMAx->XferConfig(&DMAConfig, I2C1_TX_DMA_CHANNEL);

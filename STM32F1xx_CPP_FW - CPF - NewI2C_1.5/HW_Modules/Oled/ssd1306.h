@@ -55,7 +55,7 @@ SDA        |PB7          |Serial data line
 #include "System.h"
 extern HAL::I2c i2c1;
 
-#define SSD1306_128_32
+#define SSD1306_128_64
 
 /* I2C address */
 #ifndef SSD1306_I2C_ADDR
@@ -359,6 +359,7 @@ void SSD1306_DMA_Display(void);
 
 void SSD1306_DMA_Dim(bool dim);
 
+void SSD1306_SetBrightness(uint8_t level);
 
 // clear the display
 

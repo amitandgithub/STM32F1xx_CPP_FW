@@ -28,11 +28,11 @@ extern HAL::DMA DMA1Instance;
 namespace HAL
 {    
 
-#define I2C_DEBUG 0
+#define I2C_DEBUG 1
   
 #define I2C_POLL        1  // 1862 bytes - 1'406
   
-#define I2C_MASTER_Q    1 // 246 bytes - 556
+#define I2C_MASTER_Q    0 // 246 bytes - 556
 
 #define I2C_MASTER_INTR     1  // 1862 bytes - 1'706 - 1'698 - 1'694 - (1'906 master and slave)
 #define I2C_SLAVE_INTR      1  // 954 bytes - 812 - 924 - 758 - 754
@@ -287,27 +287,27 @@ namespace HAL
       I2C_SLAVE_RX_DMA,
     }I2CState_t;      
     
-//    typedef struct
-//    {
-//      uint8_t           SlaveAddress;
-//      uint8_t           RepeatedStart;
-//      uint16_t          TxLen;
-//      uint16_t          RxLen; 
-//      uint8_t*          TxBuf; 
-//      uint8_t*          RxBuf;
-//      I2CCallback_t     XferDoneCallback;
-//    }Transaction_t;
-    
     typedef struct
     {
       uint8_t           SlaveAddress;
-      uint8_t*          TxBuf; 
-      uint16_t          TxLen;
-      uint8_t*          RxBuf;
-      uint16_t          RxLen; 
-      I2CCallback_t     XferDoneCallback;
       uint8_t           RepeatedStart;
+      uint16_t          TxLen;
+      uint16_t          RxLen; 
+      uint8_t*          TxBuf; 
+      uint8_t*          RxBuf;
+      I2CCallback_t     XferDoneCallback;
     }Transaction_t;
+    
+//    typedef struct
+//    {
+//      uint8_t           SlaveAddress;
+//      uint8_t*          TxBuf; 
+//      uint16_t          TxLen;
+//      uint8_t*          RxBuf;
+//      uint16_t          RxLen; 
+//      I2CCallback_t     XferDoneCallback;
+//      uint8_t           RepeatedStart;
+//    }Transaction_t;
     
 #if I2C_MASTER_Q
     using I2CTxnQueue_t = Utils::Queue<Transaction_t*,10U> ;
@@ -374,9 +374,9 @@ namespace HAL
     void LoadNextTransaction_MASTER_DMA();
     
 #if (I2C_MASTER_DMA == 1) || (I2C_SLAVE_DMA == 1)
-    void LoadRxDmaChannel(uint8_t* Buf, uint32_t len){m_DMAx->Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)),(uint32_t)Buf,len, LL_DMA_DIRECTION_PERIPH_TO_MEMORY);}
+    void LoadRxDmaChannel(uint8_t* Buf, uint32_t len){DMA1Instance.Load(I2C1_RX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)),(uint32_t)Buf,len, LL_DMA_DIRECTION_PERIPH_TO_MEMORY);}
     
-    void LoadTxDmaChannel(uint8_t* Buf, uint32_t len){m_DMAx->Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)),(uint32_t)Buf,len, LL_DMA_DIRECTION_MEMORY_TO_PERIPH);}
+    void LoadTxDmaChannel(uint8_t* Buf, uint32_t len){DMA1Instance.Load(I2C1_TX_DMA_CHANNEL, (uint32_t)&(I2C_DATA_REG(m_I2Cx)),(uint32_t)Buf,len, LL_DMA_DIRECTION_MEMORY_TO_PERIPH);}
 #endif
     
 #if (I2C_MASTER_DMA == 1) 
@@ -447,7 +447,7 @@ namespace HAL
     I2C2_DMA_Tx_Callback m_I2C2_DMA_Tx_Callback;
 #endif
 #if (I2C_MASTER_DMA == 1) || (I2C_SLAVE_DMA == 1)
-    HAL::DMA*            m_DMAx;
+    //HAL::DMA*            m_DMAx;
 #endif
     
   public:         
