@@ -6,5 +6,9 @@
 #include "CPP_HAL.h"
 using namespace HAL;
 
+
+extern void DigitalIO_tests();
+
 #include"BMP280_test.h"
 #include"I2C_Test.h"
+#include "ssd1306_Test.h"

@@ -21,7 +21,6 @@ namespace HAL
     public:
         typedef IRQn_Type IRQn_t;
         typedef Callback* Callback_t;
-        //typedef void(*Callback_t)(void) ;
         typedef enum : uint8_t
         {
             INPUT_FLOATING,
@@ -107,7 +106,7 @@ namespace HAL
         
         void RegisterInterrupt(Callback* const pRisingCallback, Callback* const pFallingCallback );
         
-        virtual void ISR(IRQn_t IRQNumber);
+        virtual void ISR();
         
     private:
         

@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ABS(x)   ((x) > 0 ? (x) : -(x))
 
 /* SSD1306 data buffer */
- uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
+ uint8_t SSD1306_Buffer[(SSD1306_WIDTH * SSD1306_HEIGHT / 8) + 8];
 
 /* Private SSD1306 structure */
 typedef struct {
@@ -153,9 +153,20 @@ void SSD1306_DrawBitmap(int16_t x, int16_t y, const unsigned char* bitmap, int16
     }
   }
 }
+void SSD1306_Off(void){ SSD1306_WRITECOMMAND(0xAE);} //display off}
 
+void SSD1306_On(void){  SSD1306_WRITECOMMAND(0xAF);} //--turn on SSD1306 panel}
 
-uint8_t SSD1306_Init(void) {
+uint8_t SSD1306_Init(void) 
+{
+    SSD1306_Buffer[SSD1306_WIDTH * 0] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 1] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 2] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 3] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 4] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 5] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 6] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 7] = 0x40; 
   
   /* Init I2C */
   ssd1306_I2C_Init();
@@ -171,7 +182,7 @@ uint8_t SSD1306_Init(void) {
   volatile uint32_t p = 2500;
   while(p>0)
     p--;
-#if 0 
+#if 1 
   /* Init LCD */
   SSD1306_WRITECOMMAND(0xAE); //display off
   SSD1306_WRITECOMMAND(0x20); //Set Memory Addressing Mode   
@@ -249,6 +260,15 @@ uint8_t SSD1306_Init(void) {
   /* Update screen */
   SSD1306_UpdateScreen();
   
+    SSD1306_Buffer[SSD1306_WIDTH * 0] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 1] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 2] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 3] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 4] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 5] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 6] = 0x40; 
+    SSD1306_Buffer[SSD1306_WIDTH * 7] = 0x40; 
+    
   /* Set default values */
   SSD1306.CurrentX = 0;
   SSD1306.CurrentY = 0;
@@ -279,7 +299,7 @@ void SSD1306_DMA_Display(void)
   count = I2CCallback.get_XferComplete();
   
   SSD1306_WRITECOMMAND(SSD1306_COLUMNADDR);
-  SSD1306_WRITECOMMAND(0);   // Column start address (0 = reset)
+  SSD1306_WRITECOMMAND(0+1);   // Column start address (0 = reset)
   SSD1306_WRITECOMMAND(SSD1306_LCDWIDTH-1); // Column end address (127 = reset)
 
   SSD1306_WRITECOMMAND(SSD1306_PAGEADDR);
@@ -297,7 +317,7 @@ void SSD1306_DMA_Display(void)
 
 void SSD1306_UpdateScreen(void)
 {
-#if 1
+#if 0
   uint8_t m;
   
   for (m = 0; m < 8; m++)
@@ -307,7 +327,14 @@ void SSD1306_UpdateScreen(void)
     SSD1306_WRITECOMMAND(0x10);
     
     /* Write multi data */
-    ssd1306_I2C_WriteMulti(SSD1306_I2C_ADDR, 0x40, &SSD1306_Buffer[SSD1306_WIDTH * m], SSD1306_WIDTH);
+    //ssd1306_I2C_WriteMulti(SSD1306_I2C_ADDR, 0x40, &SSD1306_Buffer[SSD1306_WIDTH * m], SSD1306_WIDTH);
+    //i2c1.XferPoll(SSD1306_I2C_ADDR,&SSD1306_Buffer[SSD1306_WIDTH * m],SSD1306_WIDTH+1);
+    i2c1.XferDMA(&Transaction);
+    while(count == I2CCallback.get_XferComplete())
+    {
+      i2c_dma_count++;
+    }
+    i2c_dma_count = 0;
   }
 #else
   SSD1306_DMA_Display();
@@ -355,7 +382,7 @@ void SSD1306_DrawPixel(uint16_t x, uint16_t y, SSD1306_COLOR_t color) {
 
 void SSD1306_GotoXY(uint16_t x, uint16_t y) {
   /* Set write pointers */
-  SSD1306.CurrentX = x;
+  SSD1306.CurrentX = x+1;
   SSD1306.CurrentY = y;
 }
 
@@ -752,7 +779,7 @@ void ssd1306_I2C_Init() {
 }
 
 void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t* data, uint16_t count) {
-  uint8_t dt[256];
+  uint8_t dt[130];
   dt[0] = reg;
   uint8_t i;
   for(i = 0; i < count; i++)

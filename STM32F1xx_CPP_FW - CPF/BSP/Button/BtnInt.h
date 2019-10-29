@@ -53,7 +53,7 @@ public:
     virtual void CallbackFunction();
     
 private:
-     HAL::GpioInput         _BtnPin;
+     HAL::GpioInput      _BtnPin;
      Callback_t          _L2HCallback;
      Callback_t          _H2LCallback;
 };

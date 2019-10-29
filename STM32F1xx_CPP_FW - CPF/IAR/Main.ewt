@@ -2378,6 +2378,18 @@
         </file>
     </group>
     <group>
+        <name>Bios</name>
+        <file>
+            <name>$PROJ_DIR$\..\Bios\startup_stm32f103xb.s</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Bios\stm32f1xx_it.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Bios\system_stm32f1xx.c</name>
+        </file>
+    </group>
+    <group>
         <name>BSP</name>
         <group>
             <name>Button</name>
@@ -2386,12 +2398,6 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\BSP\Button\BtnPoll.cpp</name>
-            </file>
-        </group>
-        <group>
-            <name>INA219</name>
-            <file>
-                <name>$PROJ_DIR$\..\BSP\INA219\INA219.cpp</name>
             </file>
         </group>
         <group>
@@ -2434,6 +2440,18 @@
             </file>
         </group>
         <group>
+            <name>DigitalIO</name>
+            <file>
+                <name>$PROJ_DIR$\..\HAL\Gpio\DigitalIO\DigitalIn.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\HAL\Gpio\DigitalIO\DigitalInOut.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\HAL\Gpio\DigitalIO\DigitalOut.h</name>
+            </file>
+        </group>
+        <group>
             <name>DMA</name>
             <file>
                 <name>$PROJ_DIR$\..\HAL\DMA\DMA.cpp</name>
@@ -2472,12 +2490,24 @@
         <group>
             <name>DS1307_RTC</name>
         </group>
-    </group>
-    <group>
-        <name>IAR</name>
-        <file>
-            <name>$PROJ_DIR$\..\STM32F1xx_HAL_Driver\CMSIS\Device\ST\STM32F1xx\Source\Templates\iar\startup_stm32f103xb.s</name>
-        </file>
+        <group>
+            <name>INA219</name>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\INA219\INA219.cpp</name>
+            </file>
+        </group>
+        <group>
+            <name>SSD1306</name>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\Oled\fonts.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\Oled\ssd1306.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\Oled\ssd1306_Test.c</name>
+            </file>
+        </group>
     </group>
     <group>
         <name>STM32F1xx_HAL</name>
@@ -2524,6 +2554,15 @@
     <group>
         <name>SW_Modules</name>
         <group>
+            <name>CmdSvr</name>
+            <file>
+                <name>$PROJ_DIR$\..\SW_Modules\CmdSvr\CmdSvr.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\SW_Modules\CmdSvr\I2C_CMD\I2C_Commands.c</name>
+            </file>
+        </group>
+        <group>
             <name>DebugLog</name>
             <file>
                 <name>$PROJ_DIR$\..\SW_Modules\DebugLog\DebugLog.h</name>
@@ -2533,10 +2572,7 @@
     <group>
         <name>System</name>
         <file>
-            <name>$PROJ_DIR$\..\System\stm32f1xx_it.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\System\system_stm32f1xx.c</name>
+            <name>$PROJ_DIR$\..\System\System.cpp</name>
         </file>
     </group>
     <group>
