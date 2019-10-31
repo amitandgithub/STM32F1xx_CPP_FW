@@ -55,7 +55,7 @@ namespace HAL
           
           SetEXTI_Intr();
           
-          InterruptManagerInstance.RegisterDeviceInterrupt(Gpio_get_pin_IRQn<Pin>(),0,this);
+          InterruptManagerInstance.RegisterDeviceInterrupt(Gpio_get_pin_IRQn<Pin>(),2,this);
         }      
       }  
     

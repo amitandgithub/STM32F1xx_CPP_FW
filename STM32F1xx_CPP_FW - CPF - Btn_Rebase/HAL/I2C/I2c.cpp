@@ -1493,7 +1493,7 @@ namespace HAL
         I2C_LOG_EVENTS(I2C_LOG_BERR);
         LL_I2C_ClearFlag_BERR(m_I2Cx);
         /* Workaround: Start cannot be generated after a misplaced Stop */
-        //SoftReset();
+        SoftReset();
         //m_I2CStatus = I2C_BUS_ERROR; 				
 #if I2C_MASTER_Q       
         //Load next transaction from Txn queue if any

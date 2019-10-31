@@ -22,7 +22,10 @@ namespace HAL
   template<Port_t Port, PIN_t Pin, Mode_t Mode = INPUT_PULLUP, IntEdge_t Edge = NO_INTERRUPT, Callback_t Callback = nullptr>
     class DigitalIn : public InterruptSource 
     {
-    public:      
+    public:
+      
+    typedef HAL::Callback* DigitalInCallback_t;
+    
       void HwInit();
       
       void SetInputMode();
@@ -31,7 +34,7 @@ namespace HAL
       
       void SetEXTI_Intr();
       
-      void RegisterCallback();
+      void RegisterCallback(DigitalInCallback_t DigitalInCallback);
         
       bool Read(){ return (bool)(  (((GPIO_TypeDef*)Port)->IDR) & Gpio_get_pin_pos<Pin>() ); }
       
@@ -51,7 +54,7 @@ namespace HAL
         
         if(Callback)
         {
-          RegisterCallback();
+          RegisterCallback(Callback);
         }      
       }  
     
@@ -119,9 +122,9 @@ namespace HAL
       }
     
     template<Port_t Port, PIN_t Pin,Mode_t Mode,IntEdge_t Edge, Callback_t Callback>
-      void DigitalIn<Port,Pin,Mode,Edge,Callback>::RegisterCallback()
+      void DigitalIn<Port,Pin,Mode,Edge,Callback>::RegisterCallback(DigitalInCallback_t DigitalInCallback)
       {
-        m_GpioCallbacks[POSITION_VAL(Gpio_get_pin_pos<Pin>())] = Callback;
+        m_GpioCallbacks[POSITION_VAL(Gpio_get_pin_pos<Pin>())] = DigitalInCallback;
         
         SetEXTI_Intr();
         

@@ -131,12 +131,12 @@ namespace HAL
       else if(m_I2Cx == I2C2)
       {
 #if (I2C_MASTER_INTR == 1) || (I2C_MASTER_DMA == 1) || (I2C_SLAVE_INTR == 1) || (I2C_SLAVE_DMA == 1)                
-        InterruptManagerInstance.RegisterDeviceInterrupt(I2C2_EV_IRQn,0,this);
-        InterruptManagerInstance.RegisterDeviceInterrupt(I2C2_ER_IRQn,0,this);
+        InterruptManagerInstance.RegisterDeviceInterrupt(I2C2_EV_IRQn,1,this);
+        InterruptManagerInstance.RegisterDeviceInterrupt(I2C2_ER_IRQn,1,this);
 #endif
 #if (I2C_MASTER_DMA == 1) 
-        InterruptManagerInstance.RegisterDeviceInterrupt(DMA1_Channel5_IRQn,0,&m_I2C2_DMA_Rx_Callback);
-        InterruptManagerInstance.RegisterDeviceInterrupt(DMA1_Channel4_IRQn,0,&m_I2C2_DMA_Tx_Callback);
+        InterruptManagerInstance.RegisterDeviceInterrupt(DMA1_Channel5_IRQn,1,&m_I2C2_DMA_Rx_Callback);
+        InterruptManagerInstance.RegisterDeviceInterrupt(DMA1_Channel4_IRQn,1,&m_I2C2_DMA_Tx_Callback);
         DMA1Instance.EnableTransferCompleteInterrupt(I2C2_TX_DMA_CHANNEL);
         DMA1Instance.EnableTransferCompleteInterrupt(I2C2_RX_DMA_CHANNEL);
 #endif

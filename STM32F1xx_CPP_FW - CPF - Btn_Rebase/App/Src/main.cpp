@@ -6,10 +6,6 @@
 
 #define NEW_BOARD 0
 
-
-#include "printf.h"
-//#include "System.h"
-
 void SystemClock_Config(void);
 void SystemClock_Config_LL(void);
 //static void LL_Init(void);
@@ -25,21 +21,6 @@ struct s {
 //Micros = Millis*1000 + 1000 – SysTick->VAL/72
 //if you are free to use 32 bit timer you can even do it without IRQ, just simply time= TIMx->CNT.  
 
-//volatile uint32_t IntrCount; 
-//
-//class ButtonCallback : public Callback
-//{
-//  void CallbackFunction()
-//  {
-//    IntrCount++; 
-//  }
-//};
-//
-//ButtonCallback ButtonCallbackObj;
-//
-//DigitalOut<C13> Led;
-//
-//DigitalIn<A11,INPUT_PULLUP,INTERRUPT_ON_FALLING,reinterpret_cast <Callback *>(&ButtonCallbackObj)> Btn;
 
 int main(void)
 {	
