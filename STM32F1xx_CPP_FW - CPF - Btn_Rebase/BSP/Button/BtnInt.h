@@ -43,7 +43,7 @@ namespace BSP
       virtual void CallbackFunction();
       
     private:
-      HAL::DigitalIn<Port, Pin ,Mode ,Edge >     m_BtnPin;
+      HAL::DigitalIn<Port, Pin, Mode ,Edge>     m_BtnPin;
       
     };    
     
@@ -52,8 +52,7 @@ namespace BSP
       {
         m_BtnPin.HwInit();
         m_BtnPin.RegisterCallback(this);
-      }
-    
+      }    
     
     template<Port_t Port, PIN_t Pin,Mode_t Mode,IntEdge_t Edge, Callback_t OnRise, Callback_t OnFall>
       void BtnInt<Port,Pin,Mode,Edge,OnRise,OnFall>::CallbackFunction()
