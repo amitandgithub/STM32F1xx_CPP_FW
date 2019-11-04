@@ -291,8 +291,7 @@ void SSD1306_DMA_Display(void)
   
   while(count == I2CCallback.get_XferComplete());
 
-  i2c_dma_delay = HAL_GetTick() - i2c_dma_delay ;
-  //i2c_dma_count = 0; // 276246 -100khz, 70513 - 400khz
+  i2c_dma_delay = HAL_GetTick() - i2c_dma_delay ; // 14ms @400K, 49ms @ 100K
 }
 
 void SSD1306_UpdateScreen(void)

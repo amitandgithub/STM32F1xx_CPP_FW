@@ -362,7 +362,6 @@
                     <state>$PROJ_DIR$\..\Drivers\STM32F1xx_HAL_Driver\Inc</state>
                     <state>$PROJ_DIR$\..\System</state>
                     <state>$PROJ_DIR$\..\HAL\Common</state>
-                    <state>$PROJ_DIR$\..\HAL\Gpio</state>
                     <state>$PROJ_DIR$\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include</state>
                     <state>$PROJ_DIR$\..\Drivers\CMSIS\Include</state>
                     <state>$PROJ_DIR$\..\BSP\Led</state>
@@ -2164,12 +2163,6 @@
         </group>
         <group>
             <name>Keypad</name>
-            <file>
-                <name>$PROJ_DIR$\..\BSP\Keypad\KeypadIntr.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\BSP\Keypad\KeypadPoll.h</name>
-            </file>
         </group>
         <group>
             <name>Led</name>
@@ -2214,21 +2207,6 @@
             <name>DMA</name>
             <file>
                 <name>$PROJ_DIR$\..\HAL\DMA\DMA.cpp</name>
-            </file>
-        </group>
-        <group>
-            <name>Gpio</name>
-            <file>
-                <name>$PROJ_DIR$\..\HAL\Gpio\Gpio.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\HAL\Gpio\GpioInput.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\HAL\Gpio\GpioOutput.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\HAL\Gpio\GpioOutputFast.h</name>
             </file>
         </group>
         <group>

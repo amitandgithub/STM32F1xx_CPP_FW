@@ -26,7 +26,7 @@ void ssd1306_test()
   while(1)
   {    
     PowerMonitor();
-       
+       HAL_Delay (6);
     //SSD1306_UpdateScreen();    
     //RunAnimation();
    //Pixels(num = !num);

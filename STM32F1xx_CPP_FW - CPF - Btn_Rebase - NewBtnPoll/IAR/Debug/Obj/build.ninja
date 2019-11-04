@@ -2,9 +2,9 @@
 
 
 #Abbreviations
-cc = C$:\Program$ Files$ (x86)\IAR$ Systems\STM32$ ARM\common\bin\SourceIndexer.exe
-ll = C$:\Program$ Files$ (x86)\IAR$ Systems\STM32$ ARM\common\bin\PbdLink.exe
-bd = C$:\Program$ Files$ (x86)\IAR$ Systems\STM32$ ARM\common\bin\makeBrowseData.exe
+cc = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.4\common\bin\SourceIndexer.exe
+ll = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.4\common\bin\PbdLink.exe
+bd = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.4\common\bin\makeBrowseData.exe
 
 
 
@@ -27,9 +27,6 @@ build CPP_HAL.pbi : index CPP_HAL.xcl
 build InterruptHandlers.pbi : index InterruptHandlers.xcl
 build InterruptManager.pbi : index InterruptManager.xcl
 build DMA.pbi : index DMA.xcl
-build Gpio.pbi : index Gpio.xcl
-build GpioInput.pbi : index GpioInput.xcl
-build GpioOutput.pbi : index GpioOutput.xcl
 build I2c.pbi : index I2c.xcl
 build BMP280.pbi : index BMP280.xcl
 build INA219.pbi : index INA219.xcl
@@ -56,11 +53,11 @@ build I2C_Test.pbi : index I2C_Test.xcl
 build printf.pbi : index printf.xcl
 build Utils.pbi : index Utils.xcl
 build Main_part0.pbi : link main.pbi stm32f1xx_it.pbi system_stm32f1xx.pbi CPP_HAL.pbi InterruptHandlers.pbi InterruptManager.pbi
-build Main_part1.pbi : link DMA.pbi Gpio.pbi GpioInput.pbi GpioOutput.pbi I2c.pbi BMP280.pbi
-build Main_part2.pbi : link INA219.pbi fonts.pbi ssd1306.pbi ssd1306_Test.pbi stm32f1xx_hal.pbi stm32f1xx_hal_cortex.pbi
-build Main_part3.pbi : link stm32f1xx_hal_pwr.pbi stm32f1xx_hal_rcc.pbi stm32f1xx_hal_rcc_ex.pbi stm32f1xx_ll_dma.pbi stm32f1xx_ll_exti.pbi stm32f1xx_ll_gpio.pbi
-build Main_part4.pbi : link stm32f1xx_ll_i2c.pbi stm32f1xx_ll_pwr.pbi stm32f1xx_ll_rcc.pbi stm32f1xx_ll_utils.pbi CmdSvr.pbi I2C_Commands.pbi
-build Main_part5.pbi : link System.pbi DigitalIO_Test.pbi I2C_Test.pbi printf.pbi Utils.pbi
+build Main_part1.pbi : link DMA.pbi I2c.pbi BMP280.pbi INA219.pbi fonts.pbi ssd1306.pbi
+build Main_part2.pbi : link ssd1306_Test.pbi stm32f1xx_hal.pbi stm32f1xx_hal_cortex.pbi stm32f1xx_hal_pwr.pbi stm32f1xx_hal_rcc.pbi stm32f1xx_hal_rcc_ex.pbi
+build Main_part3.pbi : link stm32f1xx_ll_dma.pbi stm32f1xx_ll_exti.pbi stm32f1xx_ll_gpio.pbi stm32f1xx_ll_i2c.pbi stm32f1xx_ll_pwr.pbi stm32f1xx_ll_rcc.pbi
+build Main_part4.pbi : link stm32f1xx_ll_utils.pbi CmdSvr.pbi I2C_Commands.pbi System.pbi DigitalIO_Test.pbi I2C_Test.pbi
+build Main_part5.pbi : link printf.pbi Utils.pbi
 build Main.pbd : link Main_part0.pbi Main_part1.pbi Main_part2.pbi Main_part3.pbi Main_part4.pbi Main_part5.pbi
 build Main.pbw : browsedata Main.pbd
 
