@@ -79,8 +79,7 @@ namespace HAL
     ErrorStatus status = ERROR;
     uint32_t counter_time = 0U;
     
-    if(aRtcTime == nullptr) return RTC_ERROR;
-    
+    if(aRtcTime == nullptr) return RTC_ERROR;    
     
     /* Read the time counter*/
     counter_time = RTC_ReadTimeCounter();
