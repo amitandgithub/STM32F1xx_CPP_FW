@@ -24,13 +24,12 @@ struct s {
 //if you are free to use 32 bit timer you can even do it without IRQ, just simply time= TIMx->CNT.  
 
 extern BSP::Led<C13> LedC13;
+
 int main(void)
 {	
    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
-  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
-  
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  //HAL_Init();    
+     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
+     
   /* Configure the system clock */
   SystemClock_Config_RTC_LSE();    
   DWT->CTRL |= 1 ; // enable the counter  

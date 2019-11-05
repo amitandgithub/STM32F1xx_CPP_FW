@@ -850,11 +850,11 @@ namespace HAL
       
       I2C_ENABLE_INT_EVT_ERR(m_I2Cx);
       
-      /* Enable Acknowledge, Generate Start */
-      I2C_ENABLE_ACK_AND_START(m_I2Cx);
-      
-      /* Enable DMA Request */
+       /* Enable DMA Request */
       I2C_DMA_ENABLE(m_I2Cx);
+      
+      /* Enable Acknowledge, Generate Start */
+      I2C_ENABLE_ACK_AND_START(m_I2Cx);     
       
       return I2C_OK;         
     }

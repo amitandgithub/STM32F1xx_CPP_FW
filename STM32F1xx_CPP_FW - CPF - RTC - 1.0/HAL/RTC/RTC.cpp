@@ -19,6 +19,8 @@ namespace HAL
     
     LL_RTC_InitTypeDef RTC_InitStruct = {0};
     LL_RTC_TimeTypeDef RTC_TimeStruct = {0};
+  
+    
     
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOC);
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOD);
@@ -30,12 +32,9 @@ namespace HAL
     LL_RCC_EnableRTC();
     
     /* RTC interrupt Init */
-    NVIC_SetPriority(RTC_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
-    NVIC_EnableIRQ(RTC_IRQn);
+  
+    InterruptManagerInstance.RegisterDeviceInterrupt(RTC_IRQn,2,this);
     
-    /* USER CODE BEGIN RTC_Init 1 */
-    
-    /* USER CODE END RTC_Init 1 */
     /** Initialize RTC and set the Time and Date 
     */
     RTC_InitStruct.AsynchPrescaler = 0x00007FFFU;
@@ -44,10 +43,10 @@ namespace HAL
     LL_RTC_SetAsynchPrescaler(RTC, 0x00007FFFU);
     /** Initialize RTC and set the Time and Date 
     */
-    RTC_TimeStruct.Hours = 0;
-    RTC_TimeStruct.Minutes = 0;
-    RTC_TimeStruct.Seconds = 0;
-    LL_RTC_TIME_Init(RTC, LL_RTC_FORMAT_BIN, &RTC_TimeStruct);
+//    RTC_TimeStruct.Hours = 0;
+//    RTC_TimeStruct.Minutes = 0;
+//    RTC_TimeStruct.Seconds = 0;
+//    LL_RTC_TIME_Init(RTC, LL_RTC_FORMAT_BIN, &RTC_TimeStruct);
     //    
     return status==ERROR ? RTC_ERROR : RTC_OK;
   } 
@@ -113,17 +112,18 @@ namespace HAL
     
     /* Read the time counter*/
     counter_time = RTC_ReadTimeCounter();
-    
-    /* Fill the structure fields with the read parameters */
+
     Hours    = counter_time / 3600U;
     Minutes  = (uint8_t)((counter_time % 3600U) / 60U);
     Seconds  = (uint8_t)((counter_time % 3600U) % 60U);
     
-    intToStr(Hours, &timeStr[0],2);
-    timeStr[2] = ':';
-    intToStr(Minutes, &timeStr[3],2);
-    timeStr[5] = ':';
-    intToStr(Seconds, &timeStr[6],2);
+    if(Hours>=24) Hours = (Hours % 24U); 
+    
+    intToStr(Hours, &timeStr[0],2,':');
+    //timeStr[2] = ':';
+    intToStr(Minutes, &timeStr[3],2,':');
+   // timeStr[5] = ':';
+    intToStr(Seconds, &timeStr[6],2,'\0');
     
     return status==ERROR ? RTC_ERROR : RTC_OK;
   }
@@ -156,51 +156,11 @@ namespace HAL
     return timecounter;
   }
   
-  
   Rtc::RTCStatus_t Rtc::SetAlarm(RtcTime_t* AlarmTime, RTCCallback_t RTCCallback)
   {
-    uint32_t counter_alarm = 0U, counter_time;
+    if(AlarmTime == nullptr) return RTC_ERROR;  
     
-    if(AlarmTime == nullptr) return RTC_ERROR;    
-    
-    /* Enter Initialization mode */
-    if (LL_RTC_EnterInitMode(RTC) != ERROR)
-    {
-      counter_time = RTC_ReadTimeCounter();
-      
-      counter_alarm = (uint32_t)(((uint32_t)AlarmTime->Hours * 3600U) + \
-        ((uint32_t)AlarmTime->Minutes * 60U) + \
-          ((uint32_t)AlarmTime->Seconds));  
-      
-      /* Check that requested alarm should expire in the same day (otherwise add 1 day) */
-      if (counter_alarm < counter_time)
-      {
-        /* Add 1 day to alarm counter*/
-        counter_alarm += (uint32_t)(24U * 3600U);
-      }
-      
-      LL_RTC_ALARM_Set(RTC, counter_alarm);
-      
-      /* Exit Initialization mode */
-      LL_RTC_ExitInitMode(RTC);
-      
-      /* Clear flag alarm A */
-      // __HAL_RTC_ALARM_CLEAR_FLAG(hrtc, RTC_FLAG_ALRAF);
-      LL_RTC_ClearFlag_ALR(RTC);
-      
-      /* Configure the Alarm interrupt */
-      //__HAL_RTC_ALARM_ENABLE_IT(hrtc,RTC_IT_ALRA);
-      LL_RTC_EnableIT_ALR(RTC);
-      
-      /* RTC Alarm Interrupt Configuration: EXTI configuration */
-      //__HAL_RTC_ALARM_EXTI_ENABLE_IT();
-      SET_BIT(EXTI->IMR, RTC_EXTI_LINE_ALARM_EVENT);
-      
-      //__HAL_RTC_ALARM_EXTI_ENABLE_RISING_EDGE();
-      SET_BIT(EXTI->RTSR, RTC_EXTI_LINE_ALARM_EVENT);
-      
-    }   
-    return RTC_OK;
+    return SetAlarm(AlarmTime->Hours, AlarmTime->Minutes, AlarmTime->Seconds, RTCCallback);    
   }
   
   Rtc::RTCStatus_t Rtc::SetAlarm(uint8_t Hours, uint8_t Minutes, uint8_t Seconds, RTCCallback_t RTCCallback)
@@ -221,9 +181,11 @@ namespace HAL
       {
         /* Add 1 day to alarm counter*/
         counter_alarm += (uint32_t)(24U * 3600U);
-      }
+      }  
       
       LL_RTC_ALARM_Set(RTC, counter_alarm);
+      
+      RegisterCallback(RTC_ALARM,RTCCallback);
       
       /* Exit Initialization mode */
       LL_RTC_ExitInitMode(RTC);     
@@ -231,7 +193,7 @@ namespace HAL
     }   
     return RTC_OK;
   }
-  
+    
   void Rtc::RegisterCallback(CallbackSource_t CallbackSource, RTCCallback_t RTCCallback )
   {
     if( CallbackSource == RTC_ALARM )

@@ -7,6 +7,7 @@
 
 extern void reverse(char *str, int len);
 extern int intToStr(int x, char str[], int d);
+int intToStr(int x, char str[], int d, char filler);
 extern int ftoa(float n, char *res, int afterpoint);
 extern float power(float x, int y);
 extern int power(int x, unsigned int y);

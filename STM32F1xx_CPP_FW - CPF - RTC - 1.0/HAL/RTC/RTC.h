@@ -65,6 +65,10 @@ namespace HAL
     
     RTCStatus_t SetAlarm(uint8_t Hours, uint8_t Minutes, uint8_t Seconds, RTCCallback_t RTCCallback);
     
+    RTCStatus_t ResetAlarm(RtcTime_t* AlarmTime); 
+    
+    RTCStatus_t ResetAlarm(uint8_t Hours, uint8_t Minutes, uint8_t Seconds);
+    
     void RegisterCallback(CallbackSource_t CallbackSource, RTCCallback_t RTCCallback );
     
     void UnRegisterCallback(CallbackSource_t CallbackSource );

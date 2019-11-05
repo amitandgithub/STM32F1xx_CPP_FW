@@ -50,7 +50,7 @@ void ssd1306_test()
   }  
   
 }
-
+#define FONT Font_11x18//Font_7x10
 extern volatile uint32_t i2c_dma_delay;
 extern __IO uint32_t uwTick;
 void Display_I_and_V(uint8_t font)
@@ -62,15 +62,15 @@ void Display_I_and_V(uint8_t font)
   
   rtc.GetTime((char*)&TimeString[0]);
   SSD1306_GotoXY (0,0);
-  SSD1306_Puts ((char*)TimeString, &Font_11x18, SSD1306_COLOR_WHITE);
+  SSD1306_Puts ((char*)TimeString, &FONT, SSD1306_COLOR_WHITE);
   
   ftoa(Power.Voltage, (char*)&I2C_Voltage[2], 2);
   SSD1306_GotoXY (0,font*1);
-  SSD1306_Puts ( (char*)I2C_Voltage, &Font_11x18, SSD1306_COLOR_WHITE);//Font_11x18     
+  SSD1306_Puts ( (char*)I2C_Voltage, &FONT, SSD1306_COLOR_WHITE);//Font_11x18     
   
   ftoa(Power.Current, (char*)&I2C_Current[2], 3);  
   SSD1306_GotoXY (0,font*2);
-  SSD1306_Puts ((char*)I2C_Current, &Font_11x18, SSD1306_COLOR_WHITE);
+  SSD1306_Puts ((char*)I2C_Current, &FONT, SSD1306_COLOR_WHITE);
   
   //ftoa(MLX90615_Get_Temperature(), (char*)&I2C_mAH[2], 2);  
   //ftoa(mAh, (char*)&I2C_mAH[2], 2); 
@@ -235,8 +235,8 @@ void RunArrow()
 
 
 uint32_t sample_count,Sec_count,Disp_count;
-uint32_t PowerInterval = 500, previousPowerMillis = 0;
-uint32_t DisplayInterval = 5, previousDisplayMillis = 0; 
+uint32_t PowerInterval = 1000, previousPowerMillis = 0;
+uint32_t DisplayInterval = 50, previousDisplayMillis = 0; 
 extern uint32_t SystickTimerTicks;
 void PowerMonitor()
 {
