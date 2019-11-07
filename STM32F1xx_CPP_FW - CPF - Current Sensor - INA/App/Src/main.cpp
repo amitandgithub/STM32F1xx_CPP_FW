@@ -25,21 +25,6 @@ struct s {
 
 extern BSP::Led<C13> LedC13;
 
-  template <uint32_t millisec>
-    bool MillisElapsed()
-    {
-      extern uint32_t SystickTimerTicks;
-      static uint32_t previous_millis = SystickTimerTicks;
-      
-      if(SystickTimerTicks >= previous_millis + millisec)
-      {
-        previous_millis = SystickTimerTicks;
-        return true;
-      }
-      return false;      
-    }
-  
-#define RUN_EVERY_MILLIS(MILLIS,FX) if(MillisElapsed<MILLIS>()) FX
 
   void fxx(int x, char y){;}
 int main(void)
@@ -50,7 +35,7 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config_RTC_LSE();    
   DWT->CTRL |= 1 ; // enable the counter  
-  //LedC13.HwInit();
+  LedC13.HwInit();
   Rtc_test();
   while(1)
   {
@@ -59,12 +44,13 @@ int main(void)
     //I2c_Slave_Tests();
     //I2c_Full_EEPROM_POLL();
     //DigitalIO_tests();
-    //LedC13.Toggle();
+    LedC13.Toggle();
     //if(MillisElapsed<100>()) ssd1306_test();
-    RUN_EVERY_MILLIS(100,fxx(1,2));
-    RUN_EVERY_MILLIS(100,ssd1306_test());
+    //RUN_EVERY_MILLIS(100,fxx(1,2));
+   // RUN_EVERY_MILLIS(100,ssd1306_test());
     //Rtc_test();
     //LL_mDelay(100);
+    ssd1306_test();
   }    
 }
 
@@ -373,9 +359,9 @@ void _Error_Handler(const char *file, int line)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-  while(1)
-  {
-  }
+//  while(1)
+//  {
+//  }
   /* USER CODE END Error_Handler_Debug */
 }
 

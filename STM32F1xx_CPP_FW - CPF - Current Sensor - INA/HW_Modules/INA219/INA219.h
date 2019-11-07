@@ -8,6 +8,7 @@
 #ifndef INA219_h
 #define INA219_h
 
+#include "CPP_HAL.h" 
 #include"I2c.h"
 
 /* External Dependencies*/
@@ -50,7 +51,7 @@ namespace BSP
     float GetCurrent_mA();
     float GetPower_mW(void);
     uint32_t GetMillis(){return SystickTimerTicks;}
-    
+    void CaptureSamples(Power_t* pPower);
   private:    
     int8_t              m_INA219_Address;
     uint32_t            ina219_calValue;

@@ -13,8 +13,8 @@
 #include "stm32f1xx.h"
 #include "stm32f1xx_ll_gpio.h"
 #include "Callback.h"
-//#include "DebugLog.h"
-//#include "printf.h"
+#include "DebugLog.h"
+#include "printf.h"
 
 typedef enum
 {
@@ -26,7 +26,22 @@ typedef enum
 #define DBG_LOG_TYPE uint32_t,5,7,20,100
 #define DBG_LOG_CREATE_ID(__MODULE_ID,__X) Utils::DebugLog<DBG_LOG_TYPE>::Create(Utils::DebugLog<DBG_LOG_TYPE>::__MODULE_ID,__X)
 
-
+  template <uint32_t millisec>
+    bool MillisElapsed()
+    {
+      extern uint32_t SystickTimerTicks;
+      static uint32_t previous_millis = SystickTimerTicks;
+      
+      if(SystickTimerTicks >= previous_millis + millisec)
+      {
+        previous_millis = SystickTimerTicks;
+        return true;
+      }
+      return false;      
+    }
+  
+#define RUN_EVERY_MILLIS(MILLIS,FX) if(MillisElapsed<MILLIS>()) FX
+  
   
 namespace HAL
 {

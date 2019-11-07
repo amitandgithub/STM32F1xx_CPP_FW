@@ -28,7 +28,7 @@ extern BSP::Led<C13> LedC13;
 int main(void)
 {	
    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
-     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
+   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
      
   /* Configure the system clock */
   SystemClock_Config_RTC_LSE();    

@@ -30,13 +30,13 @@ void ssd1306_test()
 //  rtc.SetAlarm(0,1,0);
   SSD1306_Init();
   INA219_Dev.HwInit();
-  INA219_Dev.SetCalibration_32V_2A();
   //Mlx90615_Init();
   InitDone = true;
   }
 
   while(1)
   {    
+    INA219_Dev.Run(&Power);
     Display_I_and_V(22);
     //PowerMonitor();
     //RunCatAnimation();

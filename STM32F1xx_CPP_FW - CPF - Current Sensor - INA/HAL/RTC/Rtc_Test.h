@@ -36,7 +36,7 @@ void Rtc_test()
   if(InitDone == false)
   {
     rtc.HwInit();
-    rtc.SetTime(21,15,0);
+    rtc.SetTime(0,0,0);
    // rtc.SetAlarm(0,1,0,&RTCSecCallbackObj);
     rtc.RegisterCallback(Rtc::RTC_SEC,&RTCSecCallbackObj);
     InitDone = true;

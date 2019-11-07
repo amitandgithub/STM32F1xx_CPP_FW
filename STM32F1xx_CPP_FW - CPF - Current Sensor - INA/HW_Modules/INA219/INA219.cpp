@@ -23,13 +23,13 @@ INA219::~INA219()
 void INA219::HwInit()
 {
     I2C_INSTANCE.HwInit();
-    SetCalibration_32V_2A();
+    SetCalibration_16V_400mA();
 }
 
 void INA219::Run(Power_t* pPower)
 {
-  static float CurrentSamples;
-  static uint32_t previousMillis_128,SampleCount;
+  //static float CurrentSamples;
+  //static uint32_t previousMillis_128,SampleCount;
   
 	pPower->Voltage = GetBusVoltage_V();
 	pPower->Current = GetCurrent_mA();
@@ -38,22 +38,39 @@ void INA219::Run(Power_t* pPower)
        // if(pPower->Voltage < 0.89f ) pPower->Voltage=0; // Negative voltage till 0.40v is not what we are interested in.
 	 if(pPower->Current < 0.3 ) pPower->Current = 0;         // Discard the junk values
         
-        if(GetMillis() > previousMillis_128)
-        {
-          previousMillis_128 = GetMillis();
-          CurrentSamples += GetCurrent_mA();
-          SampleCount++;
-          
-          if(SampleCount >= 8)
-          {           
-            pPower->mAH   += CurrentSamples/28800.0; // 8*3600 = 28800
-            SampleCount = 0;
-            CurrentSamples = 0;
-          }
-        }            
+//        if(GetMillis() > previousMillis_128)
+//        {
+//          previousMillis_128 = GetMillis();
+//          CurrentSamples += GetCurrent_mA();
+//          SampleCount++;
+//          
+//          if(SampleCount >= 8)
+//          {           
+//            pPower->mAH   += CurrentSamples/28800.0; // 8*3600 = 28800
+//            SampleCount = 0;
+//            CurrentSamples = 0;
+//          }
+//        }            
+        
+        RUN_EVERY_MILLIS(128,CaptureSamples(pPower));
 }
 
-
+void INA219::CaptureSamples(Power_t* pPower)
+{   
+  static float CurrentSamples;
+  static uint32_t SampleCount;
+  CurrentSamples += GetCurrent_mA();
+  SampleCount++;
+  
+  if(SampleCount >= 8)
+  {           
+    pPower->mAH   += CurrentSamples/28800.0; // 8*3600 = 28800
+    SampleCount = 0;
+    CurrentSamples = 0;
+  }
+  
+  
+}
 
 /**************************************************************************/
 /*!
@@ -308,7 +325,7 @@ void INA219::SetCalibration_16V_400mA(void) {
   uint16_t config = INA219_CONFIG_BVOLTAGERANGE_16V |
                     INA219_CONFIG_GAIN_1_40MV |
                     INA219_CONFIG_BADCRES_12BIT |
-                    INA219_CONFIG_SADCRES_12BIT_1S_532US |
+                    INA219_CONFIG_SADCRES_12BIT_128S_69MS |
                     INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
 	ina219_calValue = 8192;
 

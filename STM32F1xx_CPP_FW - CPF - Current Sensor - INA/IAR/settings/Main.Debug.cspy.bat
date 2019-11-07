@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\STM32 ARM\common\bin\cspybat" -f "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Current Sensor - INA\IAR\settings\Main.Debug.general.xcl" --backend -f "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Current Sensor - INA\IAR\settings\Main.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Current Sensor - INA\IAR\settings\Main.Debug.general.xcl" --backend -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Current Sensor - INA\IAR\settings\Main.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\STM32 ARM\common\bin\cspybat" -f "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Current Sensor - INA\IAR\settings\Main.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Current Sensor - INA\IAR\settings\Main.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Current Sensor - INA\IAR\settings\Main.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Current Sensor - INA\IAR\settings\Main.Debug.driver.xcl" 
 
 @echo off 
 :end
