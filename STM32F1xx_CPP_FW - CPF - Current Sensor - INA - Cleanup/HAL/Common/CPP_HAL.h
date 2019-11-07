@@ -4,7 +4,6 @@
 /* Includes ------------------------------------------------------------------*/
 
 #include "stm32f1xx.h"
-//#include "HAL_Objects.h"
 #include "Callback.h"
 #include "printf.h"
 

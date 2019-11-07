@@ -266,8 +266,7 @@ extern "C" void USBWakeUp_IRQHandler()
 
 extern "C" void SysTick_Handler()
 {
-    EXECUTE_ISR(SysTick_IRQn);
-    //CLEAR_IRQ(SysTick_IRQn);
+    if(InterruptManager::m_SysTick_Handler) InterruptManager::m_SysTick_Handler->ISR();
 }
 
 } // HAL

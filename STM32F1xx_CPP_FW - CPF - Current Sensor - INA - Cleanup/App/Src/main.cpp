@@ -25,8 +25,6 @@ struct s {
 
 extern BSP::Led<C13> LedC13;
 
-
-  void fxx(int x, char y){;}
 int main(void)
 {	
    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
@@ -340,7 +338,7 @@ public:
   virtual void ISR(){SystickTimerTicks++;}
 };
 
-
+extern HAL::InterruptManager InterruptManagerInstance;
 void SetSystickTimerInterrupt()
 {
   static SysTimerCallback SysTimerObj;

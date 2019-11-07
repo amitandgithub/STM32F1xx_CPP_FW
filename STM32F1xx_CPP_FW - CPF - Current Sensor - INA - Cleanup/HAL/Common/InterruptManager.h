@@ -42,6 +42,7 @@ public:
     inline void ClearInterrupt(IRQn_t IRQNumber);   
     
     static InterruptSource*    m_InterruptSourceArray[TOTAL_INTERRUPT_VECTORS]; // USBWakeUp_IRQn+16
+    static InterruptSource*    m_SysTick_Handler;
     
 private: 
 
