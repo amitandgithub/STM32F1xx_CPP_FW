@@ -116,7 +116,7 @@ namespace HAL
       {
 #if SPI_MASTER_INTR || SPI_MASTER_DMA || SPI_SLAVE_INTR || SPI_SLAVE_DMA       
         InterruptManagerInstance.RegisterDeviceInterrupt(SPI1_IRQn,0,this);
-//        EnableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+        //        EnableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
 #endif
 #if I2C_MASTER_DMA   
         dma1.HwInit();
@@ -139,7 +139,7 @@ namespace HAL
       {
 #if SPI_MASTER_INTR || SPI_MASTER_DMA || SPI_SLAVE_INTR || SPI_SLAVE_DMA
         InterruptManagerInstance.RegisterDeviceInterrupt(SPI2_IRQn,0,this);
-//        EnableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+        //        EnableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
 #endif
 #if (I2C_MASTER_DMA == 1) 
         InterruptManagerInstance.RegisterDeviceInterrupt(DMA1_Channel5_IRQn,0,&m_I2C2_DMA_Rx_Callback);
@@ -178,7 +178,7 @@ namespace HAL
       {        
         m_SPIx->DR = *TxBuf++;
         TxLen--;
-         
+        
         if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT))
         {
           return SPI_TXE_TIMEOUT;
@@ -189,7 +189,7 @@ namespace HAL
           return SPI_RXNE_TIMEOUT;          
         }
         
-       
+        
       }
       
       if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
@@ -202,7 +202,8 @@ namespace HAL
       return SPI_OK;
     }
     
-     Spi::SpiStatus_t Spi::TxOnlyPoll(uint8_t* TxBuf, uint32_t TxLen, uint8_t Options)
+    
+    Spi::SpiStatus_t Spi::TxOnlyPoll(uint8_t* TxBuf, uint32_t TxLen, uint8_t Options)
     {      
       if(TxBuf == nullptr)
         return SPI_INVALID_PARAMS;
@@ -210,8 +211,8 @@ namespace HAL
       
       while(TxLen != 0)
       {        
-         m_SPIx->DR = *TxBuf++;
-         
+        m_SPIx->DR = *TxBuf++;
+        
         if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT))
         {
           return SPI_TXE_TIMEOUT;
@@ -219,7 +220,7 @@ namespace HAL
         
         TxLen--;
       }
-
+      
       if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
       {
         return SPI_BUSY_TIMEOUT;
@@ -237,12 +238,12 @@ namespace HAL
       
       while(Len != 0)
       {
+        m_SPIx->DR = *TxBuf++;
+        
         if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT))
         {
           return SPI_TXE_TIMEOUT;
         }
-        
-        m_SPIx->DR = *TxBuf++;
         
         if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT))
         {
@@ -287,7 +288,7 @@ namespace HAL
         
         RxLen--;
       }
-     
+      
       if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
       {
         return SPI_BUSY_TIMEOUT;
@@ -298,9 +299,24 @@ namespace HAL
       return SPI_OK;
     }
 #endif // SPI_POLL
-
+    
 #if SPI_MASTER_INTR
     
+#if 0
+
+  if (hspi->Init.Direction == SPI_DIRECTION_2LINES)
+  {
+    /* Enable TXE interrupt */
+    __HAL_SPI_ENABLE_IT(hspi, (SPI_IT_TXE));
+  }
+  else
+  {
+    /* Enable TXE and ERR interrupt */
+    __HAL_SPI_ENABLE_IT(hspi, (SPI_IT_TXE | SPI_IT_ERR));
+  }
+
+#endif
+  
     Spi::SpiStatus_t Spi::TxIntr(uint8_t* TxBuf, uint32_t TxLen, SPICallback_t XferDoneCallback)
     {      
       if(TxBuf == nullptr)
@@ -321,10 +337,11 @@ namespace HAL
         
         m_SPIState = SPI_MASTER_TX;  
         
+        // This clears the TXE flag
         m_SPIx->DR = *m_Transaction.TxBuf++;
         m_Transaction.TxLen--;
         
-        EnableInterrupt(SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+        EnableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
         return SPI_OK;        
       }
       
@@ -340,6 +357,10 @@ namespace HAL
       switch(SPI_GET_EVENT(m_SPIx))
       {
       case EVENT_RXNE :
+        
+        break;
+        
+      case EVENT_TXE :  
         if(m_Transaction.TxLen > 0)
         {
           m_SPIx->DR = *m_Transaction.TxBuf++;
@@ -351,13 +372,13 @@ namespace HAL
           {
             m_SPIState = SPI_ERROR_BUSY_TIMEOUT;
           }
-          m_SPIState = SPI_READY;
+          m_SPIState = SPI_READY;         
           
-          //DisableInterrupt(SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
-        }        
-        break;
-        
-      case EVENT_TXE :  
+          DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+          
+          if( m_Transaction.XferDoneCallback) 
+            m_Transaction.XferDoneCallback->CallbackFunction();
+        } 
         break;
         
       case EVENT_CHSIDE :
@@ -369,6 +390,7 @@ namespace HAL
       case EVENT_MODF :
         break;
       case EVENT_OVR :
+        LL_SPI_ClearFlag_OVR(m_SPIx);
         break;
       case EVENT_BSY :
         break;

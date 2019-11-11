@@ -44,3 +44,36 @@ Rtc rtc;
 Spi spi1(SPI1_A4_A5_A6_A7);
 
 Nokia5110LCD<&spi1,B1,B0,B10,A0> LCD; // CS - B1, DC - B0, Rst - B10, Bkl - A0, 
+
+namespace HAL
+{
+  
+  
+  bool WaitOnFlag(volatile uint32_t* reg, uint32_t bitmask, uint32_t status, uint32_t timeout) // 35(0x25)bytes // stm32 0x28
+  {
+    while( ((*reg & bitmask) == status) && timeout-- );    
+    return (bool)((*reg & bitmask) == status);
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}
+

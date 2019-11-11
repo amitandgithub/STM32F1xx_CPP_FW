@@ -47,6 +47,7 @@ extern uint32_t SystickTimerTicks;
 namespace HAL
 {
 
+bool WaitOnFlag(volatile uint32_t* reg, uint32_t bitmask, uint32_t status, uint32_t timeout);
 
 inline uint32_t  GetTick() {return SystickTimerTicks;}  
   
