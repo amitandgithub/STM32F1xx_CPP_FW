@@ -12,7 +12,7 @@
 #include "DigitalIn.h"
 #include "DigitalOut.h"
 //#include "DisplayBuffer.h"
-#define  SPI_TX pSpiDriverLCD->TxIntr
+#define  SPI_TX pSpiDriverLCD->TxOnlyPoll
 namespace BSP 
 {
 
@@ -117,7 +117,7 @@ void Nokia5110LCD<Nokia5110LCD_TEMPLATE_T>::DisplayInit()
 	  //Reset the LCD to a known state
       m_CSPin.High();   
 	  m_RstPin.Low();
-      LL_mDelay(500);
+      LL_mDelay(10);
 	  m_RstPin.High();
 
 	  Write(COMMAND, 0x21); //Tell LCD that extended commands follow
@@ -149,7 +149,7 @@ void Nokia5110LCD<Nokia5110LCD_TEMPLATE_T>::Write(DC_t DC, unsigned char data)
     
      m_CSPin.Low();
      SPI_TX(&data,1);
-     while(pSpiDriverLCD->GetState() != HAL::Spi::SPI_READY);
+     //while(pSpiDriverLCD->GetState() != HAL::Spi::SPI_READY);
      m_CSPin.High();    
 }
 

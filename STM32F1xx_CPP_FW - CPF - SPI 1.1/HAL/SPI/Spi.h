@@ -156,6 +156,8 @@ namespace HAL
     
     void Disable(){LL_SPI_Disable(m_SPIx);}
     
+    void SetTransmissionMode(uint32_t TransmitMode){LL_SPI_SetTransferDirection(m_SPIx, TransmitMode);}
+    
     bool WaitOnFlag(volatile uint32_t* reg, uint32_t bitmask, uint32_t status, uint32_t timeout);
     
     SPIState_t GetState(){return m_SPIState;}

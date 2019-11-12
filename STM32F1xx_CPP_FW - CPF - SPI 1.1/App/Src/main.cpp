@@ -50,13 +50,14 @@ int main(void)
     //LL_mDelay(100);
     //ssd1306_test();
     Nokia_Lcd_Test();
+    
   }    
 }
 
-//void putc ( void* p, char c)
-//{
-//
-//}
+void putc ( void* p, char c)
+{
+    ITM_SendChar(c);
+}
 
 /**
 * @brief System Clock Configuration

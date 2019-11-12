@@ -46,7 +46,7 @@ namespace HAL
       DebugLogInstance.Enable(Utils::DebugLog<DBG_LOG_TYPE>::DBG_LOG_MODULE_ID_I2C);
 #endif            
       /* Set SPI_InitStruct fields to default values */
-      SPI_InitStruct.TransferDirection = LL_SPI_FULL_DUPLEX;//LL_SPI_HALF_DUPLEX_TX;//LL_SPI_FULL_DUPLEX;
+      SPI_InitStruct.TransferDirection = LL_SPI_HALF_DUPLEX_TX;//LL_SPI_HALF_DUPLEX_TX;//LL_SPI_FULL_DUPLEX;
       SPI_InitStruct.Mode              = LL_SPI_MODE_MASTER;
       SPI_InitStruct.DataWidth         = LL_SPI_DATAWIDTH_8BIT;
       SPI_InitStruct.ClockPolarity     = LL_SPI_POLARITY_LOW;
@@ -174,30 +174,17 @@ namespace HAL
       if(TxBuf == nullptr)
         return SPI_INVALID_PARAMS;
       
+      SetTransmissionMode(LL_SPI_FULL_DUPLEX);
+      
       while(TxLen != 0)
       {        
         m_SPIx->DR = *TxBuf++;
         TxLen--;
         
-        if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT))
-        {
-          return SPI_TXE_TIMEOUT;
-        }
-        
-        if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT))
-        {
-          return SPI_RXNE_TIMEOUT;          
-        }
-        
-        
+        if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_RXNE_TIMEOUT;    
       }
       
-      if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
-      {
-        return SPI_BUSY_TIMEOUT;
-      }
-      
-      LL_SPI_ClearFlag_OVR(m_SPIx);
+      if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT)) return SPI_BUSY_TIMEOUT;
       
       return SPI_OK;
     }
@@ -206,27 +193,19 @@ namespace HAL
     Spi::SpiStatus_t Spi::TxOnlyPoll(uint8_t* TxBuf, uint32_t TxLen, uint8_t Options)
     {      
       if(TxBuf == nullptr)
-        return SPI_INVALID_PARAMS;
+        return SPI_INVALID_PARAMS;    
       
-      
+      SetTransmissionMode(LL_SPI_HALF_DUPLEX_TX);
+        
       while(TxLen != 0)
       {        
         m_SPIx->DR = *TxBuf++;
-        
-        if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT))
-        {
-          return SPI_TXE_TIMEOUT;
-        }      
-        
         TxLen--;
+        
+        if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;   
       }
       
-      if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
-      {
-        return SPI_BUSY_TIMEOUT;
-      }
-      
-      LL_SPI_ClearFlag_OVR(m_SPIx);
+      if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT)) return SPI_BUSY_TIMEOUT;
       
       return SPI_OK;
     }
