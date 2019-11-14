@@ -24,15 +24,8 @@
 
 extern HAL::DMA dma1;
 extern Utils::DebugLog<DBG_LOG_TYPE> DebugLogInstance;
-extern HAL::InterruptManager InterruptManagerInstance;
+extern HAL::InterruptManager InterruptManagerInstance;   
 
-#define SPI_WAIT_FOR_TXE_FLAG_TO_SET(_SPI_,TIMEOUT) WaitOnFlag(&_SPI_->SR, SPI_SR_TXE, 0, TIMEOUT)
-
-#define SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(_SPI_,TIMEOUT) WaitOnFlag(&_SPI_->SR, SPI_SR_BSY, SPI_SR_BSY, TIMEOUT)
-
-#define SPI_WAIT_FOR_RXNE_FLAG_TO_SET(_SPI_,TIMEOUT) WaitOnFlag(&_SPI_->SR, SPI_SR_RXNE, 0, TIMEOUT)
- 
-#define SPI_GET_EVENT(_SPI_)    POSITION_VAL(_SPI_->SR)
 
 namespace HAL
 {    
@@ -188,6 +181,14 @@ namespace HAL
     
     SpiStatus_t     TxIntr(uint8_t* TxBuf, uint32_t TxLen, SPICallback_t XferDoneCallback = nullptr);
     
+    void            HalfDuplex8_Handler(SPI_Interrupts_t event);
+    
+    void            FullDuplex8_Handler(SPI_Interrupts_t event);
+    
+    void            HalfDuplex16_Handler(SPI_Interrupts_t event);
+    
+    void            FullDuplex16_Handler(SPI_Interrupts_t event);
+    
     SpiStatus_t     XferPoll(Transaction_t const *pTransaction);
     
     SpiStatus_t     XferIntr(Transaction_t const *pTransaction);
@@ -312,6 +313,24 @@ namespace HAL
 #define SPI_LOG_EVENTS(log)
   
 #endif    
+  
+  
+  
+  
+#define SPI_WAIT_FOR_TXE_FLAG_TO_SET(_SPI_,TIMEOUT) WaitOnFlag(&_SPI_->SR, SPI_SR_TXE, 0, TIMEOUT)
+
+#define SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(_SPI_,TIMEOUT) WaitOnFlag(&_SPI_->SR, SPI_SR_BSY, SPI_SR_BSY, TIMEOUT)
+
+#define SPI_WAIT_FOR_RXNE_FLAG_TO_SET(_SPI_,TIMEOUT) WaitOnFlag(&_SPI_->SR, SPI_SR_RXNE, 0, TIMEOUT)
+ 
+#define SPI_GET_EVENT(_SPI_)    POSITION_VAL(_SPI_->SR)
+
+#define SPI_TXE(_SPI_) _SPI_->SR & SPI_SR_TXE
+  
+#define SPI_RXNE(_SPI_) _SPI_->SR & SPI_SR_RXNE
+  
+  
+  
   
 }
 #endif //SPI_h

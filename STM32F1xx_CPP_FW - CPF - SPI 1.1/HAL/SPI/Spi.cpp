@@ -224,23 +224,15 @@ namespace HAL
           return SPI_TXE_TIMEOUT;
         }
         
-        if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT))
-        {
-          return SPI_RXNE_TIMEOUT;          
-        }
+        if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_RXNE_TIMEOUT; 
         
         *RxBuf++ = m_SPIx->DR;
         
         Len--;
       }
       
-      if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
-      {
-        return SPI_BUSY_TIMEOUT;
-      }
-      
-      LL_SPI_ClearFlag_OVR(m_SPIx);
-      
+      if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT)) return SPI_BUSY_TIMEOUT;
+            
       return SPI_OK;
     }
     
@@ -258,22 +250,14 @@ namespace HAL
         
         m_SPIx->DR = 0xFF;
         
-        if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT))
-        {
-          return SPI_RXNE_TIMEOUT;          
-        }
+        if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_RXNE_TIMEOUT; 
         
         *RxBuf++ = m_SPIx->DR;
         
         RxLen--;
       }
       
-      if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
-      {
-        return SPI_BUSY_TIMEOUT;
-      }
-      
-      LL_SPI_ClearFlag_OVR(m_SPIx);
+      if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT)) return SPI_BUSY_TIMEOUT;
       
       return SPI_OK;
     }
@@ -309,10 +293,7 @@ namespace HAL
       
       if(TxLen > 0)
       {        
-        if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT))
-        {
-          return SPI_TXE_TIMEOUT;
-        }
+        if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;
         
         m_SPIState = SPI_MASTER_TX;  
         
@@ -320,7 +301,7 @@ namespace HAL
         m_SPIx->DR = *m_Transaction.TxBuf++;
         m_Transaction.TxLen--;
         
-        EnableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+        EnableInterrupt(SPI_CR2_TXEIE | SPI_CR2_ERRIE );
         return SPI_OK;        
       }
       
@@ -331,15 +312,17 @@ namespace HAL
     
     
     void Spi::ISR()
-    {
+    {             
+     
       
-      switch(SPI_GET_EVENT(m_SPIx))
+      
+      
+    }
+      
+    void Spi::HalfDuplex8_Handler(SPI_Interrupts_t event)
+    {
+      if( SPI_TXE(m_SPIx) )
       {
-      case EVENT_RXNE :
-        
-        break;
-        
-      case EVENT_TXE :  
         if(m_Transaction.TxLen > 0)
         {
           m_SPIx->DR = *m_Transaction.TxBuf++;
@@ -351,38 +334,164 @@ namespace HAL
           {
             m_SPIState = SPI_ERROR_BUSY_TIMEOUT;
           }
-          m_SPIState = SPI_READY;         
-          
+          else
+          {                      
+            m_SPIState = SPI_READY;           
+            
+            if( m_Transaction.XferDoneCallback) 
+              m_Transaction.XferDoneCallback->CallbackFunction();
+          }
           DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
-          
-          if( m_Transaction.XferDoneCallback) 
-            m_Transaction.XferDoneCallback->CallbackFunction();
-        } 
-        break;
-        
-      case EVENT_CHSIDE :
-        break;
-      case EVENT_UDR :
-        break;
-      case EVENT_CRCERR :
-        break;
-      case EVENT_MODF :
-        break;
-      case EVENT_OVR :
-        LL_SPI_ClearFlag_OVR(m_SPIx);
-        break;
-      case EVENT_BSY :
-        break;
-      default: while(1);
-      
-      
+        }        
       }
+      
+     if( SPI_RXNE(m_SPIx) )
+      {
+        if(m_Transaction.RxLen > 0)
+        {
+          *m_Transaction.TxBuf++ = m_SPIx->DR;
+          m_Transaction.RxLen--;        
+        }
+        else
+        {
+          if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
+          {
+            m_SPIState = SPI_ERROR_BUSY_TIMEOUT;
+          }
+          else
+          {                      
+            m_SPIState = SPI_READY;           
+            
+            if( m_Transaction.XferDoneCallback) 
+              m_Transaction.XferDoneCallback->CallbackFunction();
+          }
+          DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+        }        
+      }
+      
+    }
+    
+    void Spi::FullDuplex8_Handler(SPI_Interrupts_t event)
+    {      
+     if( SPI_RXNE(m_SPIx) )
+      {
+        if(m_Transaction.TxLen > 0)
+        {
+          m_SPIx->DR = *m_Transaction.TxBuf++;
+          m_Transaction.TxLen--;        
+        }
+        else
+        {
+          if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
+          {
+            m_SPIState = SPI_ERROR_BUSY_TIMEOUT;
+          }
+          else
+          {                      
+            m_SPIState = SPI_READY;           
+            
+            if( m_Transaction.XferDoneCallback) 
+              m_Transaction.XferDoneCallback->CallbackFunction();
+          }
+          DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+        }        
+      }
+      
+    }
+    
+    void Spi::HalfDuplex16_Handler(SPI_Interrupts_t event)
+    {
+      
+      
+    }
+    
+    void Spi::FullDuplex16_Handler(SPI_Interrupts_t event)
+    {
+      
+      
     }
     
     
-    
-    
-    
-    
-    
 }
+
+
+
+
+
+
+
+
+
+
+//#if 0
+//
+//    void Spi::ISR()
+//    {
+//      
+//      switch(SPI_GET_EVENT(m_SPIx))
+//      {
+//      case EVENT_RXNE :
+////        if(m_Transaction.RxLen > 0)
+////        {
+////          *m_Transaction.TxBuf++ = m_SPIx->DR = 
+////          m_Transaction.RxLen--;        
+////        }
+////        else
+////        {
+////          if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
+////          {
+////            m_SPIState = SPI_ERROR_BUSY_TIMEOUT;
+////          }
+////          else
+////          {                      
+////            m_SPIState = SPI_READY;           
+////            
+////            if( m_Transaction.XferDoneCallback) 
+////              m_Transaction.XferDoneCallback->CallbackFunction();
+////          }
+////          DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+////        } 
+//        //break;
+//        
+//      case EVENT_TXE :  
+//        if(m_Transaction.TxLen > 0)
+//        {
+//          m_SPIx->DR = *m_Transaction.TxBuf++;
+//          m_Transaction.TxLen--;        
+//        }
+//        else
+//        {
+//          if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
+//          {
+//            m_SPIState = SPI_ERROR_BUSY_TIMEOUT;
+//          }
+//          else
+//          {                      
+//            m_SPIState = SPI_READY;           
+//            
+//            if( m_Transaction.XferDoneCallback) 
+//              m_Transaction.XferDoneCallback->CallbackFunction();
+//          }
+//          DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+//        } 
+//        break;
+//        
+//      case EVENT_CHSIDE :
+//        break;
+//      case EVENT_UDR :
+//        break;
+//      case EVENT_CRCERR :
+//        break;
+//      case EVENT_MODF :
+//        break;
+//      case EVENT_OVR :
+//        LL_SPI_ClearFlag_OVR(m_SPIx);
+//        break;
+//      case EVENT_BSY :
+//        break;
+//      default: while(1);      
+//      }
+//    } 
+//
+//
+//#endif
