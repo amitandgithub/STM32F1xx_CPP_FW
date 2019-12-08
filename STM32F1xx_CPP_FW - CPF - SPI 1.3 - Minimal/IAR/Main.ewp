@@ -286,7 +286,7 @@
                 <option>
                     <name>CCAllowList</name>
                     <version>1</version>
-                    <state>00000000</state>
+                    <state>11111110</state>
                 </option>
                 <option>
                     <name>CCDebugInfo</name>
@@ -394,7 +394,7 @@
                 </option>
                 <option>
                     <name>CCOptLevel</name>
-                    <state>0</state>
+                    <state>3</state>
                 </option>
                 <option>
                     <name>CCOptStrategy</name>
@@ -403,7 +403,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>0</state>
+                    <state>3</state>
                 </option>
                 <option>
                     <name>CompilerMisraRules98</name>
@@ -2261,12 +2261,6 @@
             </file>
         </group>
         <group>
-            <name>W25Q32</name>
-            <file>
-                <name>$PROJ_DIR$\..\HW_Modules\w25qxx\w25qxx.c</name>
-            </file>
-        </group>
-        <group>
             <name>SSD1306</name>
             <file>
                 <name>$PROJ_DIR$\..\HW_Modules\Oled\fonts.c</name>
@@ -2277,6 +2271,15 @@
             <file>
                 <name>$PROJ_DIR$\..\HW_Modules\Oled\ssd1306_Test.c</name>
             </file>
+        </group>
+        <group>
+            <name>W25Q32</name>
+            <file>
+                <name>$PROJ_DIR$\..\HW_Modules\w25qxx\w25qxx.c</name>
+            </file>
+        </group>
+        <group>
+            <name>W25Qxx</name>
         </group>
     </group>
     <group>

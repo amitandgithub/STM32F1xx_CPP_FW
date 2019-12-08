@@ -160,11 +160,11 @@ namespace HAL
       return SPI_OK;            
     }
     
-    bool Spi::WaitOnFlag(volatile uint32_t* reg, uint32_t bitmask, uint32_t status, uint32_t timeout) // 35(0x25)bytes // stm32 0x28
-    {
-      while( ((*reg & bitmask) == status) && timeout-- );    
-      return (bool)((*reg & bitmask) == status);
-    }
+//    bool Spi::WaitOnFlag(volatile uint32_t* reg, uint32_t bitmask, uint32_t status, uint32_t timeout) // 35(0x25)bytes // stm32 0x28
+//    {
+//      while( ((*reg & bitmask) == status) && timeout-- );    
+//      return (bool)((*reg & bitmask) == status);
+//    }
     
     
 #if SPI_POLL    
@@ -292,13 +292,13 @@ namespace HAL
       m_Transaction.RxLen = RxLen;
       m_Transaction.XferDoneCallback = XferDoneCallback;
       
-       if(RxLen > 0)
+      if(RxLen > 0)
       {       
         m_SPIState = SPI_MASTER_RX;
-       
+        
         m_SPIx->DR = 0xff;
         if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;
-
+        
         EnableInterrupt(SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
         
         return SPI_OK;        
@@ -364,7 +364,7 @@ namespace HAL
         {
           if((m_Transaction.TxLen > 0) || (m_Transaction.RxLen > 0))
           {
-          
+            
             if(m_Transaction.RxLen > 0)
             {
               SPI_BYTE_OUT_8_BIT(m_Transaction);         
@@ -391,7 +391,7 @@ namespace HAL
             DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
           }        
         }
-      }     
+      }// if( SPI_RXNE(m_SPIx) )     
       else
       {
         
