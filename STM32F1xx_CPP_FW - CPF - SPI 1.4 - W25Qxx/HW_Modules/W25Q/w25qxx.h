@@ -75,35 +75,35 @@ namespace BSP
       
       ~w25qxx(){};
       
-      uint8_t W25qxx_Spi(uint8_t	Data);
+      uint8_t SpiTxRxByte(uint8_t Data);
       
-      uint32_t W25qxx_ReadID(void);
+      uint32_t ReadID(void);
       
-      void W25qxx_ReadUniqID(void);
+      void ReadUniqID(void);
       
-      void W25qxx_WriteEnable(void);
+      void WriteEnable(void);
       
-      void W25qxx_WriteDisable(void);
+      void WriteDisable(void);
       
-      uint8_t W25qxx_ReadStatusRegister(uint8_t	SelectStatusRegister_1_2_3);
+      uint8_t ReadStatusRegister(uint8_t	SelectStatusRegister_1_2_3);
       
-      void W25qxx_WriteStatusRegister(uint8_t	SelectStatusRegister_1_2_3,uint8_t Data);
+      void WriteStatusRegister(uint8_t	SelectStatusRegister_1_2_3,uint8_t Data);
       
-      void W25qxx_WaitForWriteEnd(void);
+      void WaitForWriteEnd(void);
       
       void EraseChip(void);
       
       void EraseSector(uint32_t SectorAddr);
       
-      void 	WritePage(uint8_t *pBuffer, uint32_t Page_Address, uint32_t OffsetInByte = 0, uint32_t NumByteToWrite_up_to_PageSize = 256, Callback_t Callback = nullptr );
+      void WritePage(uint8_t *pBuffer, uint32_t Page_Address, uint32_t OffsetInByte = 0, uint32_t NumByteToWrite_up_to_PageSize = 256, Callback_t Callback = nullptr );
       
-      void 	ReadPage(uint8_t *pBuffer, uint32_t Page_Address, uint32_t OffsetInByte = 0, uint32_t NumByteToRead_up_to_PageSize = 256, Callback_t Callback = nullptr );      
+      void ReadPage(uint8_t *pBuffer, uint32_t Page_Address, uint32_t OffsetInByte = 0, uint32_t NumByteToRead_up_to_PageSize = 256, Callback_t Callback = nullptr );      
       
       bool HwInit();
       
-      Status_t PageWrite(uint16_t Address, uint8_t* Buf, Callback_t Callback );
+      void PageWrite(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback);
       
-      Status_t PageRead(uint16_t Address, uint8_t* Buf, Callback_t Callback );
+      void PageRead(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback);
       
     private:
       w25qxx_t  m_DevInfo;
@@ -113,128 +113,133 @@ namespace BSP
   
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
-    uint8_t w25qxx<w25qxx_TEMPLATE_T>::W25qxx_Spi(uint8_t	Data)
-
+    uint8_t w25qxx<w25qxx_TEMPLATE_T>::SpiTxRxByte(uint8_t Data)
     {
       uint8_t	data,ret;
       data = Data;
-      //HAL_SPI_TransmitReceive(&_W25QXX_SPI,&Data,&ret,1,100);
+      //HAL_SPI_TransmitReceive(&_SpiTxRxByte,&Data,&ret,1,100);
       pSpiDriver->TxRxPoll(&data,&ret,1);
       return ret;	
     }
+  
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
-    uint32_t w25qxx<w25qxx_TEMPLATE_T>::W25qxx_ReadID(void)
+    uint32_t w25qxx<w25qxx_TEMPLATE_T>::ReadID(void)
     {
       uint32_t Temp = 0, Temp0 = 0, Temp1 = 0, Temp2 = 0;
       m_CSPin.Low();
       
-      W25qxx_Spi(0x9F);
-      Temp0 = W25qxx_Spi(W25QXX_DUMMY_BYTE);
-      Temp1 = W25qxx_Spi(W25QXX_DUMMY_BYTE);
-      Temp2 = W25qxx_Spi(W25QXX_DUMMY_BYTE);
+      SpiTxRxByte(0x9F);
+      Temp0 = SpiTxRxByte(W25QXX_DUMMY_BYTE);
+      Temp1 = SpiTxRxByte(W25QXX_DUMMY_BYTE);
+      Temp2 = SpiTxRxByte(W25QXX_DUMMY_BYTE);
       m_CSPin.High();
       Temp = (Temp0 << 16) | (Temp1 << 8) | Temp2;
       return Temp;
     }
+  
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
-    void w25qxx<w25qxx_TEMPLATE_T>::W25qxx_ReadUniqID(void)
+    void w25qxx<w25qxx_TEMPLATE_T>::ReadUniqID(void)
     {
       m_CSPin.Low();
-      W25qxx_Spi(0x4B);
+      SpiTxRxByte(0x4B);
       for(uint8_t	i=0;i<4;i++)
-        W25qxx_Spi(W25QXX_DUMMY_BYTE);
+        SpiTxRxByte(W25QXX_DUMMY_BYTE);
       for(uint8_t	i=0;i<8;i++)
-        m_DevInfo.UniqID[i] = W25qxx_Spi(W25QXX_DUMMY_BYTE);
+        m_DevInfo.UniqID[i] = SpiTxRxByte(W25QXX_DUMMY_BYTE);
       m_CSPin.High();
     }
+  
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
-    void w25qxx<w25qxx_TEMPLATE_T>::W25qxx_WriteEnable(void)
+    void w25qxx<w25qxx_TEMPLATE_T>::WriteEnable(void)
     {
       m_CSPin.Low();
-      W25qxx_Spi(0x06);
+      SpiTxRxByte(0x06);
       m_CSPin.High();
       W25qxx_Delay(1);
     }
+  
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
-    void w25qxx<w25qxx_TEMPLATE_T>::W25qxx_WriteDisable(void)
+    void w25qxx<w25qxx_TEMPLATE_T>::WriteDisable(void)
     {
       m_CSPin.Low();
-      W25qxx_Spi(0x04);
+      SpiTxRxByte(0x04);
       m_CSPin.High();
       W25qxx_Delay(1);
     }
+  
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
-    uint8_t w25qxx<w25qxx_TEMPLATE_T>::W25qxx_ReadStatusRegister(uint8_t	SelectStatusRegister_1_2_3)
+    uint8_t w25qxx<w25qxx_TEMPLATE_T>::ReadStatusRegister(uint8_t	SelectStatusRegister_1_2_3)
     {
       uint8_t	status=0;
       m_CSPin.Low();
       if(SelectStatusRegister_1_2_3==1)
       {
-        W25qxx_Spi(0x05);
-        status=W25qxx_Spi(W25QXX_DUMMY_BYTE);	
+        SpiTxRxByte(0x05);
+        status=SpiTxRxByte(W25QXX_DUMMY_BYTE);	
         m_DevInfo.StatusRegister1 = status;
       }
       else if(SelectStatusRegister_1_2_3==2)
       {
-        W25qxx_Spi(0x35);
-        status=W25qxx_Spi(W25QXX_DUMMY_BYTE);	
+        SpiTxRxByte(0x35);
+        status=SpiTxRxByte(W25QXX_DUMMY_BYTE);	
         m_DevInfo.StatusRegister2 = status;
       }
       else
       {
-        W25qxx_Spi(0x15);
-        status=W25qxx_Spi(W25QXX_DUMMY_BYTE);	
+        SpiTxRxByte(0x15);
+        status=SpiTxRxByte(W25QXX_DUMMY_BYTE);	
         m_DevInfo.StatusRegister3 = status;
       }	
       m_CSPin.High();
       return status;
     }
+  
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
-    void w25qxx<w25qxx_TEMPLATE_T>::W25qxx_WriteStatusRegister(uint8_t	SelectStatusRegister_1_2_3,uint8_t Data)
+    void w25qxx<w25qxx_TEMPLATE_T>::WriteStatusRegister(uint8_t	SelectStatusRegister_1_2_3,uint8_t Data)
     {
       m_CSPin.Low();
       if(SelectStatusRegister_1_2_3==1)
       {
-        W25qxx_Spi(0x01);
+        SpiTxRxByte(0x01);
         m_DevInfo.StatusRegister1 = Data;
       }
       else if(SelectStatusRegister_1_2_3==2)
       {
-        W25qxx_Spi(0x31);
+        SpiTxRxByte(0x31);
         m_DevInfo.StatusRegister2 = Data;
       }
       else
       {
-        W25qxx_Spi(0x11);
+        SpiTxRxByte(0x11);
         m_DevInfo.StatusRegister3 = Data;
       }
-      W25qxx_Spi(Data);
+      SpiTxRxByte(Data);
       m_CSPin.High();
     }
+  
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
-    void w25qxx<w25qxx_TEMPLATE_T>::W25qxx_WaitForWriteEnd(void)
+    void w25qxx<w25qxx_TEMPLATE_T>::WaitForWriteEnd(void)
     {
       W25qxx_Delay(1);
       m_CSPin.Low();
-      W25qxx_Spi(0x05);
+      SpiTxRxByte(0x05);
       do
       {
-        m_DevInfo.StatusRegister1 = W25qxx_Spi(W25QXX_DUMMY_BYTE);
+        m_DevInfo.StatusRegister1 = SpiTxRxByte(W25QXX_DUMMY_BYTE);
         W25qxx_Delay(1);
       }
       while ((m_DevInfo.StatusRegister1 & 0x01) == 0x01);
       m_CSPin.High();
-    }
+    }  
   
-  
-  
+  //###################################################################################################################  
   template<w25qxx_TEMPLATE_PARAMS>
     bool w25qxx<w25qxx_TEMPLATE_T>::HwInit()
     {
@@ -249,7 +254,7 @@ namespace BSP
 #if (_W25QXX_DEBUG==1)
       printf("w25qxx Init Begin...\r\n");
 #endif
-      id=W25qxx_ReadID();
+      id=ReadID();
       
 #if (_W25QXX_DEBUG==1)
       printf("w25qxx ID:0x%X\r\n",id);
@@ -341,10 +346,10 @@ namespace BSP
       m_DevInfo.PageCount=(m_DevInfo.SectorCount*m_DevInfo.SectorSize)/m_DevInfo.PageSize;
       m_DevInfo.BlockSize=m_DevInfo.SectorSize*16;
       m_DevInfo.CapacityInKiloByte=(m_DevInfo.SectorCount*m_DevInfo.SectorSize)/1024;
-      W25qxx_ReadUniqID();
-      W25qxx_ReadStatusRegister(1);
-      W25qxx_ReadStatusRegister(2);
-      W25qxx_ReadStatusRegister(3);
+      ReadUniqID();
+      ReadStatusRegister(1);
+      ReadStatusRegister(2);
+      ReadStatusRegister(3);
 #if (_W25QXX_DEBUG==1)
       printf("w25qxx Page Size: %d Bytes\r\n",m_DevInfo.PageSize);
       printf("w25qxx Page Count: %d\r\n",m_DevInfo.PageCount);
@@ -357,8 +362,7 @@ namespace BSP
 #endif
       m_DevInfo.Lock=0;	
       return true;
-    }
-  
+    }  
   
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
@@ -371,18 +375,17 @@ namespace BSP
       uint32_t	StartTime=HAL::GetTick();	
       printf("w25qxx EraseChip Begin...\r\n");
 #endif
-      W25qxx_WriteEnable();
+      WriteEnable();
       m_CSPin.Low();
-      W25qxx_Spi(0xC7);
+      SpiTxRxByte(0xC7);
       m_CSPin.High();
-      W25qxx_WaitForWriteEnd();
+      WaitForWriteEnd();
 #if (_W25QXX_DEBUG==1)
       printf("w25qxx EraseBlock done after %d ms!\r\n",HAL::GetTick()-StartTime);
 #endif
       W25qxx_Delay(10);
       m_DevInfo.Lock=0;	
     }
-  
   
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
@@ -395,18 +398,18 @@ namespace BSP
       uint32_t	StartTime=HAL::GetTick();	
       printf("w25qxx EraseSector %d Begin...\r\n",SectorAddr);
 #endif
-      W25qxx_WaitForWriteEnd();
+      WaitForWriteEnd();
       SectorAddr = SectorAddr * m_DevInfo.SectorSize;
-      W25qxx_WriteEnable();
+      WriteEnable();
       m_CSPin.Low();
-      W25qxx_Spi(0x20);
+      SpiTxRxByte(0x20);
       if(m_DevInfo.ID>=W25Q256)
-        W25qxx_Spi((SectorAddr & 0xFF000000) >> 24);
-      W25qxx_Spi((SectorAddr & 0xFF0000) >> 16);
-      W25qxx_Spi((SectorAddr & 0xFF00) >> 8);
-      W25qxx_Spi(SectorAddr & 0xFF);
+        SpiTxRxByte((SectorAddr & 0xFF000000) >> 24);
+      SpiTxRxByte((SectorAddr & 0xFF0000) >> 16);
+      SpiTxRxByte((SectorAddr & 0xFF00) >> 8);
+      SpiTxRxByte(SectorAddr & 0xFF);
       m_CSPin.High();
-      W25qxx_WaitForWriteEnd();
+      WaitForWriteEnd();
 #if (_W25QXX_DEBUG==1)
       printf("w25qxx EraseSector done after %d ms\r\n",HAL::GetTick()-StartTime);
 #endif
@@ -430,16 +433,16 @@ namespace BSP
       W25qxx_Delay(100);
       uint32_t	StartTime=HAL::GetTick();
 #endif	
-      W25qxx_WaitForWriteEnd();
-      W25qxx_WriteEnable();
+      WaitForWriteEnd();
+      WriteEnable();
       m_CSPin.Low();
-      W25qxx_Spi(0x02);
+      SpiTxRxByte(0x02);
       Page_Address = (Page_Address*m_DevInfo.PageSize)+OffsetInByte;	
       if(m_DevInfo.ID>=W25Q256)
-        W25qxx_Spi((Page_Address & 0xFF000000) >> 24);
-      W25qxx_Spi((Page_Address & 0xFF0000) >> 16);
-      W25qxx_Spi((Page_Address & 0xFF00) >> 8);
-      W25qxx_Spi(Page_Address&0xFF);
+        SpiTxRxByte((Page_Address & 0xFF000000) >> 24);
+      SpiTxRxByte((Page_Address & 0xFF0000) >> 16);
+      SpiTxRxByte((Page_Address & 0xFF00) >> 8);
+      SpiTxRxByte(Page_Address&0xFF);
       
       if(Callback)
       {
@@ -452,7 +455,7 @@ namespace BSP
       }
       
       m_CSPin.High();
-      W25qxx_WaitForWriteEnd();
+      WaitForWriteEnd();
 #if (_W25QXX_DEBUG==1)
       StartTime = HAL::GetTick()-StartTime; 
       for(uint32_t i=0;i<NumByteToWrite_up_to_PageSize ; i++)
@@ -471,7 +474,34 @@ namespace BSP
       W25qxx_Delay(1);
       m_DevInfo.Lock=0;
     }
-  
+
+ //###################################################################################################################
+  template<w25qxx_TEMPLATE_PARAMS>
+    void w25qxx<w25qxx_TEMPLATE_T>::PageWrite(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback )
+    {
+      WaitForWriteEnd();
+      WriteEnable();
+      m_CSPin.Low();
+      SpiTxRxByte(0x02);
+      
+      if(m_DevInfo.ID>=W25Q256) SpiTxRxByte((Page_Address & 0xFF000000) >> 24);
+      SpiTxRxByte((Page_Address & 0xFF0000) >> 16);
+      SpiTxRxByte((Page_Address & 0xFF00) >> 8);
+      SpiTxRxByte(Page_Address&0xFF);
+      
+      if(Callback)
+      {
+        pSpiDriver->TxIntr(pBuffer, 256,Callback);
+      }
+      else
+      {
+        pSpiDriver->TxPoll(pBuffer,256,100);
+      }
+      
+      m_CSPin.High();
+      WaitForWriteEnd();
+      //W25qxx_Delay(1);
+    }  
   
   //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
@@ -491,13 +521,13 @@ namespace BSP
 #endif	
       Page_Address = Page_Address*m_DevInfo.PageSize+OffsetInByte;
       m_CSPin.Low();
-      W25qxx_Spi(0x0B);
+      SpiTxRxByte(0x0B);
       if(m_DevInfo.ID>=W25Q256)
-        W25qxx_Spi((Page_Address & 0xFF000000) >> 24);
-      W25qxx_Spi((Page_Address & 0xFF0000) >> 16);
-      W25qxx_Spi((Page_Address& 0xFF00) >> 8);
-      W25qxx_Spi(Page_Address & 0xFF);
-      W25qxx_Spi(0);
+        SpiTxRxByte((Page_Address & 0xFF000000) >> 24);
+      SpiTxRxByte((Page_Address & 0xFF0000) >> 16);
+      SpiTxRxByte((Page_Address& 0xFF00) >> 8);
+      SpiTxRxByte(Page_Address & 0xFF);
+      SpiTxRxByte(0);
       
       if(Callback)
       {
@@ -526,11 +556,35 @@ namespace BSP
 #endif	
       W25qxx_Delay(1);
       m_DevInfo.Lock=0;
-    }
-  
-  
-}
+    }  
 
+  //###################################################################################################################
+  template<w25qxx_TEMPLATE_PARAMS>    
+    void w25qxx<w25qxx_TEMPLATE_T>::PageRead(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback )
+    {
+      m_CSPin.Low();
+      SpiTxRxByte(0x0B);
+      if(m_DevInfo.ID>=W25Q256)
+        SpiTxRxByte((Page_Address & 0xFF000000) >> 24);
+      SpiTxRxByte((Page_Address & 0xFF0000) >> 16);
+      SpiTxRxByte((Page_Address& 0xFF00) >> 8);
+      SpiTxRxByte(Page_Address & 0xFF);
+      SpiTxRxByte(0);
+      
+      if(Callback)
+      {
+        pSpiDriver->RxIntr(pBuffer, 256,Callback);
+        //while(pSpiDriver->GetState() != HAL::Spi::SPI_READY);
+      }
+      else
+      {
+        pSpiDriver->RxPoll(pBuffer,256,100);
+      }
+      m_CSPin.High();
+
+      //W25qxx_Delay(1);
+    } 
+}
 
 
 

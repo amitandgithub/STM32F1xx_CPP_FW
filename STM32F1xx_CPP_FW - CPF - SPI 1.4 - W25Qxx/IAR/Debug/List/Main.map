@@ -1,92 +1,91 @@
 ###############################################################################
 #
-# IAR ELF Linker V8.40.2.214/W32 for ARM                  08/Dec/2019  21:11:40
+# IAR ELF Linker V8.40.2.214/W32 for ARM                  10/Dec/2019  11:05:36
 # Copyright 2007-2019 IAR Systems AB.
 #
 #    Output file  =
-#        C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Exe\Main.out
+#        C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Exe\Main.out
 #    Map file     =
-#        C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\List\Main.map
+#        C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\List\Main.map
 #    Command line =
-#        -f C:\Users\amit4\AppData\Local\Temp\EWD443.tmp
-#        ("C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\BMP280.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\CmdSvr.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\CPP_HAL.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\DigitalIO_Test.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\DMA.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\fonts.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\I2c.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\I2C_Commands.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\I2C_Test.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\INA219.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\InterruptHandlers.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\InterruptManager.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\main.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\Mlx90615.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\printf.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\RTC.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\Spi.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\ssd1306.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\ssd1306_Test.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\startup_stm32f103xb.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_it.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_dma.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_exti.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_gpio.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_i2c.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_pwr.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_rcc.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_rtc.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_spi.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_usart.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_utils.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\System.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\system_stm32f1xx.o"
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Obj\Utils.o" --no_out_extension -o
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\Exe\Main.out" --redirect
-#        _Printf=_PrintfFullNoMb --redirect _Scanf=_ScanfFullNoMb --map
-#        "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF -
-#        SPI 1.4 - W25Qxx\IAR\Debug\List\Main.map" --config "C:\Program Files
-#        (x86)\IAR Systems\Embedded Workbench
-#        8.4\arm\config\linker\ST\stm32f103x8.icf" --semihosting --entry
-#        __iar_program_start --vfe --text_out locale)
+#        -f C:\Users\AMITCH~1\AppData\Local\Temp\EW46ED.tmp
+#        ("C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4
+#        - W25Qxx\IAR\Debug\Obj\BMP280.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\CmdSvr.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\CPP_HAL.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\DigitalIO_Test.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\DMA.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\fonts.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\I2c.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\I2C_Commands.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\I2C_Test.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\INA219.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\InterruptHandlers.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\InterruptManager.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\main.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\Mlx90615.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\printf.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\RTC.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\Spi.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\ssd1306.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\ssd1306_Test.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\startup_stm32f103xb.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_it.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_dma.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_exti.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_gpio.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_i2c.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_pwr.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_rcc.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_rtc.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_spi.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_usart.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\stm32f1xx_ll_utils.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\System.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\system_stm32f1xx.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Obj\Utils.o" --no_out_extension -o
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\Exe\Main.out" --redirect _Printf=_PrintfFullNoMb
+#        --redirect _Scanf=_ScanfFullNoMb --map
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 -
+#        W25Qxx\IAR\Debug\List\Main.map" --config "C:\Program Files (x86)\IAR
+#        Systems\STM32 ARM\arm\config\linker\ST\stm32f103x8.icf" --semihosting
+#        --entry __iar_program_start --vfe --text_out locale)
 #
 ###############################################################################
 
@@ -107,10 +106,9 @@ __dlib_version                = 6
 *** HEAP SELECTION
 ***
 
-The basic heap was selected because no calls to memory allocation
-functions were found in the application outside of system library
-functions, and there are calls to deallocation functions in the
-application.
+The basic heap was selected because some modules are built with
+size limitations (and not runtime checking), and --advanced_heap
+was not specified.
 
 
 *******************************************************************************
@@ -289,7 +287,7 @@ command line/config:
     -------------------------------------------------
     Total:
 
-C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 - W25Qxx\IAR\Debug\Obj: [1]
+C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 - W25Qxx\IAR\Debug\Obj: [1]
     CPP_HAL.o                   126       12    2'657
     DMA.o                       148
     DigitalIO_Test.o                                1
@@ -379,17 +377,17 @@ BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::EraseSector(unsigned int)
                          0x800'27a1   0x88  Code  Gb  main.o [1]
 BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::HwInit()
                          0x800'2605  0x160  Code  Gb  main.o [1]
+BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::ReadID()
+                         0x800'2be1   0x44  Code  Gb  main.o [1]
 BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::ReadPage(unsigned char *, unsigned int, unsigned int, unsigned int, HAL::Callback *)
                          0x800'28f5   0xbc  Code  Gb  main.o [1]
-BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::W25qxx_ReadID()
-                         0x800'2be1   0x44  Code  Gb  main.o [1]
-BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::W25qxx_ReadUniqID()
+BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::ReadUniqID()
                          0x800'2c25   0xc4  Code  Gb  main.o [1]
-BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::W25qxx_Spi(unsigned char)
+BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::SpiTxRxByte(unsigned char)
                          0x800'2ce9   0x24  Code  Gb  main.o [1]
-BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::W25qxx_WaitForWriteEnd()
+BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::WaitForWriteEnd()
                          0x800'2d41   0x60  Code  Gb  main.o [1]
-BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::W25qxx_WriteEnable()
+BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::WriteEnable()
                          0x800'2da1   0x28  Code  Gb  main.o [1]
 BSP::w25qxx<(&spi1), (Port_t)1073809408, (PIN_t)4112>::WritePage(unsigned char *, unsigned int, unsigned int, unsigned int, HAL::Callback *)
                          0x800'2829   0xcc  Code  Gb  main.o [1]
@@ -681,7 +679,7 @@ w25qxx_Test()::InitDone
                         0x2000'0bce    0x1  Data  Lc  main.o [1]
 
 
-[1] = C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 - W25Qxx\IAR\Debug\Obj
+[1] = C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 - W25Qxx\IAR\Debug\Obj
 [2] = dl7M_tln.a
 [3] = dlpp7M_tl_nc.a
 [4] = m7M_tl.a
