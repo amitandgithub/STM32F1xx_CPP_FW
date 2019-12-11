@@ -69,11 +69,13 @@ namespace BSP
       
       typedef enum : uint8_t
     {
-      W25QXX_SUCESS,
+      W25QXX_SUCCESS,
       W25QXX_ERROR,
       W25QXX_BUSY,
     } Status_t;
       
+    using Transaction_t = HAL::Spi::Transaction_t;
+    
       typedef HAL::Callback* Callback_t;
       
       //typedef uint8_t Status_t;
@@ -114,6 +116,8 @@ namespace BSP
       Status_t PageWrite(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback = nullptr);
       
       Status_t PageRead(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback = nullptr);
+      
+      //Status_t PageRead(Transaction_t* pTransaction, Callback_t Callback = nullptr);
       
       class w25qxxCallback : public Callback
       {
@@ -505,15 +509,25 @@ namespace BSP
     w25qxx<w25qxx_TEMPLATE_T>::
     Status_t w25qxx<w25qxx_TEMPLATE_T>::PageWrite(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback )
     {
-      m_CSPin.Low();
-      SpiTxRxByte(0x05);
-      if(SpiTxRxByte(W25QXX_DUMMY_BYTE) & 0x01) return;
-      m_CSPin.High();
-      Page_Address = Page_Address*m_DevInfo.PageSize+0;
-      //WaitForWriteEnd();
-      WriteEnable();
+      if(pBuffer == nullptr) return W25QXX_ERROR;
+      
       m_CSPin.Low();
       
+      SpiTxRxByte(0x05);
+      if(SpiTxRxByte(W25QXX_DUMMY_BYTE) & 0x01) return W25QXX_BUSY;
+      
+      m_CSPin.High();
+      
+      Page_Address = Page_Address*m_DevInfo.PageSize+0;
+      //WaitForWriteEnd();
+      //WriteEnable();
+      
+      /* Send Write Enable*/
+      m_CSPin.Low();
+      SpiTxRxByte(0x06);
+      m_CSPin.High();
+      
+      m_CSPin.Low();     
 #if 0
       SpiTxRxByte(0x02);
       
@@ -522,10 +536,12 @@ namespace BSP
       SpiTxRxByte((Page_Address & 0xFF00) >> 8);
       SpiTxRxByte(Page_Address&0xFF);
 #else
+//      pBuffer[0] = 0x02;
+//      pBuffer[1] = (Page_Address & 0xFF0000) >> 16;
+//      pBuffer[2] = (Page_Address & 0xFF00) >> 8;
+//      pBuffer[3] = (Page_Address & 0xFF);
+      *((uint32_t*)&pBuffer[0]) = Page_Address;
       pBuffer[0] = 0x02;
-      pBuffer[1] = (Page_Address & 0xFF0000) >> 16;
-      pBuffer[2] = (Page_Address & 0xFF00) >> 8;
-      pBuffer[3] = (Page_Address & 0xFF);
       
       pSpiDriver->TxPoll(pBuffer, 4, 100);
 #endif
@@ -541,7 +557,7 @@ namespace BSP
         m_CSPin.High();
       }
       
-      
+      return W25QXX_SUCCESS;
       //WaitForWriteEnd();
       //W25qxx_Delay(1);
     }  
@@ -606,22 +622,31 @@ namespace BSP
     w25qxx<w25qxx_TEMPLATE_T>::
     Status_t w25qxx<w25qxx_TEMPLATE_T>::PageRead(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback )
     {
+      if(pBuffer == nullptr) return W25QXX_ERROR;
+      
+      m_CSPin.Low();      
+      SpiTxRxByte(0x05);
+      if(SpiTxRxByte(W25QXX_DUMMY_BYTE) & 0x01) return W25QXX_BUSY;      
+      m_CSPin.High();
+      
       Page_Address = Page_Address*m_DevInfo.PageSize+0;
       m_CSPin.Low();
 #if 0
       SpiTxRxByte(0x0B);
-      if(m_DevInfo.ID>=W25Q256)
+      if(m_DevInfo.ID >= W25Q256)
         SpiTxRxByte((Page_Address & 0xFF000000) >> 24);
       SpiTxRxByte((Page_Address & 0xFF0000) >> 16);
       SpiTxRxByte((Page_Address& 0xFF00) >> 8);
       SpiTxRxByte(Page_Address & 0xFF);
       SpiTxRxByte(0);
 #else
-      pBuffer[0] = 0x0B;
-      pBuffer[1] = (Page_Address & 0xFF0000) >> 16;
-      pBuffer[2] = (Page_Address & 0xFF00) >> 8;
-      pBuffer[3] = (Page_Address & 0xFF);
-      pBuffer[4] = 0x00;
+//      pBuffer[0] = 0x0B;
+//      pBuffer[1] = (Page_Address & 0xFF0000) >> 16;
+//      pBuffer[2] = (Page_Address & 0xFF00) >> 8;
+//      pBuffer[3] = (Page_Address & 0xFF);
+       *((uint32_t*)&pBuffer[0]) = Page_Address;
+       pBuffer[0] = 0x0B;
+       pBuffer[4] = 0x00;
       
       pSpiDriver->TxPoll(pBuffer, 5, 100);
 #endif
@@ -635,6 +660,7 @@ namespace BSP
         pSpiDriver->RxPoll(pBuffer,256,100);
         m_CSPin.High();
       }
+      return W25QXX_SUCCESS;
     } 
   
 }
