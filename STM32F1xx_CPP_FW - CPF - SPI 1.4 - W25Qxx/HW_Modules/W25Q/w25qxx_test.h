@@ -10,6 +10,18 @@
 #define w25qxx_test_h
 
 extern HAL::Spi spi1;
+bool XferDone = false;
+
+class w25qxxCallback: public Callback
+{
+  public:
+  virtual void CallbackFunction()
+  {
+    XferDone = true;
+  }
+};
+
+w25qxxCallback w25qxxCb;
 
 enum 
 {
@@ -46,19 +58,30 @@ void w25qxx_Test()
       A3Pin.Toggle();
       w25qxxDev.EraseSector(0);
       A3Pin.Toggle();
-      w25qxxDev.WritePage(TxBuf,0x400,0,256);   
+      XferDone = false;
+      w25qxxDev.PageWrite (0x500,TxBuf);
+      
       A3Pin.Toggle();
-      w25qxxDev.ReadPage (RxBuf,0x400,0,256);
+      XferDone = false;
+      w25qxxDev.PageRead (0x500,RxBuf);
       A3Pin.Toggle();
-      test_id = 255;
+      test_id = w25qxx_INTR;
       break; 
     case w25qxx_INTR:
       A3Pin.Toggle();
       w25qxxDev.EraseSector(0);
       A3Pin.Toggle();
-      w25qxxDev.WritePage(TxBuf,0x400,0,256);   
+      
+      XferDone = false;
+      w25qxxDev.PageWrite (0x500,TxBuf,&w25qxxCb);
+      while(!XferDone);  
+      
       A3Pin.Toggle();
-      w25qxxDev.ReadPage (RxBuf,0x400,0,256);
+      
+      XferDone = false;
+      w25qxxDev.PageRead (0x500,RxBuf,&w25qxxCb);
+      while(!XferDone);
+      
       A3Pin.Toggle();
       test_id = 255;
       break;

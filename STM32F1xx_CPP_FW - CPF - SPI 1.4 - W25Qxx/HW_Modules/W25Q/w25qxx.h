@@ -67,11 +67,21 @@ namespace BSP
         uint8_t     Lock;      
       }w25qxx_t;
       
+      typedef enum : uint8_t
+    {
+      W25QXX_SUCESS,
+      W25QXX_ERROR,
+      W25QXX_BUSY,
+    } Status_t;
+      
       typedef HAL::Callback* Callback_t;
       
-      typedef uint8_t Status_t;
+      //typedef uint8_t Status_t;
       
-      w25qxx(){};
+      w25qxx() : w25qxxCb(this),m_CurrentCallback(nullptr)
+      {
+      
+      }
       
       ~w25qxx(){};
       
@@ -101,14 +111,29 @@ namespace BSP
       
       bool HwInit();
       
-      void PageWrite(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback);
+      Status_t PageWrite(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback = nullptr);
       
-      void PageRead(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback);
+      Status_t PageRead(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback = nullptr);
+      
+      class w25qxxCallback : public Callback
+      {
+      public:
+        w25qxxCallback(w25qxx* This):_this(This){};
+        virtual void CallbackFunction()
+        {
+          _this->m_CSPin.High();
+          if(_this->m_CurrentCallback)
+            _this->m_CurrentCallback->CallbackFunction();
+        }
+      private:
+        w25qxx* _this;
+      };
       
     private:
       w25qxx_t  m_DevInfo;
       HAL::DigitalOut<CSPort,CSPin> m_CSPin;
-      
+      HAL::Callback* m_CurrentCallback;
+      w25qxxCallback w25qxxCb;
     };
   
   //###################################################################################################################
@@ -447,7 +472,7 @@ namespace BSP
       if(Callback)
       {
         pSpiDriver->TxIntr(pBuffer, NumByteToWrite_up_to_PageSize,Callback);
-        //while(pSpiDriver->GetState() != HAL::Spi::SPI_READY);
+        while(pSpiDriver->GetState() != HAL::Spi::SPI_READY);
       }
       else
       {
@@ -477,29 +502,47 @@ namespace BSP
 
  //###################################################################################################################
   template<w25qxx_TEMPLATE_PARAMS>
-    void w25qxx<w25qxx_TEMPLATE_T>::PageWrite(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback )
+    w25qxx<w25qxx_TEMPLATE_T>::
+    Status_t w25qxx<w25qxx_TEMPLATE_T>::PageWrite(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback )
     {
-      WaitForWriteEnd();
+      m_CSPin.Low();
+      SpiTxRxByte(0x05);
+      if(SpiTxRxByte(W25QXX_DUMMY_BYTE) & 0x01) return;
+      m_CSPin.High();
+      Page_Address = Page_Address*m_DevInfo.PageSize+0;
+      //WaitForWriteEnd();
       WriteEnable();
       m_CSPin.Low();
+      
+#if 0
       SpiTxRxByte(0x02);
       
       if(m_DevInfo.ID>=W25Q256) SpiTxRxByte((Page_Address & 0xFF000000) >> 24);
       SpiTxRxByte((Page_Address & 0xFF0000) >> 16);
       SpiTxRxByte((Page_Address & 0xFF00) >> 8);
       SpiTxRxByte(Page_Address&0xFF);
+#else
+      pBuffer[0] = 0x02;
+      pBuffer[1] = (Page_Address & 0xFF0000) >> 16;
+      pBuffer[2] = (Page_Address & 0xFF00) >> 8;
+      pBuffer[3] = (Page_Address & 0xFF);
+      
+      pSpiDriver->TxPoll(pBuffer, 4, 100);
+#endif
       
       if(Callback)
       {
-        pSpiDriver->TxIntr(pBuffer, 256,Callback);
+        m_CurrentCallback = Callback;
+        pSpiDriver->TxIntr(pBuffer, 256,&w25qxxCb);
       }
       else
       {
         pSpiDriver->TxPoll(pBuffer,256,100);
+        m_CSPin.High();
       }
       
-      m_CSPin.High();
-      WaitForWriteEnd();
+      
+      //WaitForWriteEnd();
       //W25qxx_Delay(1);
     }  
   
@@ -532,7 +575,7 @@ namespace BSP
       if(Callback)
       {
         pSpiDriver->RxIntr(pBuffer, NumByteToRead_up_to_PageSize,Callback);
-        //while(pSpiDriver->GetState() != HAL::Spi::SPI_READY);
+        while(pSpiDriver->GetState() != HAL::Spi::SPI_READY);
       }
       else
       {
@@ -559,10 +602,13 @@ namespace BSP
     }  
 
   //###################################################################################################################
-  template<w25qxx_TEMPLATE_PARAMS>    
-    void w25qxx<w25qxx_TEMPLATE_T>::PageRead(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback )
+  template<w25qxx_TEMPLATE_PARAMS> 
+    w25qxx<w25qxx_TEMPLATE_T>::
+    Status_t w25qxx<w25qxx_TEMPLATE_T>::PageRead(uint32_t Page_Address, uint8_t* pBuffer, Callback_t Callback )
     {
+      Page_Address = Page_Address*m_DevInfo.PageSize+0;
       m_CSPin.Low();
+#if 0
       SpiTxRxByte(0x0B);
       if(m_DevInfo.ID>=W25Q256)
         SpiTxRxByte((Page_Address & 0xFF000000) >> 24);
@@ -570,20 +616,27 @@ namespace BSP
       SpiTxRxByte((Page_Address& 0xFF00) >> 8);
       SpiTxRxByte(Page_Address & 0xFF);
       SpiTxRxByte(0);
+#else
+      pBuffer[0] = 0x0B;
+      pBuffer[1] = (Page_Address & 0xFF0000) >> 16;
+      pBuffer[2] = (Page_Address & 0xFF00) >> 8;
+      pBuffer[3] = (Page_Address & 0xFF);
+      pBuffer[4] = 0x00;
       
+      pSpiDriver->TxPoll(pBuffer, 5, 100);
+#endif
       if(Callback)
       {
-        pSpiDriver->RxIntr(pBuffer, 256,Callback);
-        //while(pSpiDriver->GetState() != HAL::Spi::SPI_READY);
+        m_CurrentCallback = Callback;        
+        pSpiDriver->RxIntr(pBuffer, 256,&w25qxxCb);
       }
       else
       {
         pSpiDriver->RxPoll(pBuffer,256,100);
+        m_CSPin.High();
       }
-      m_CSPin.High();
-
-      //W25qxx_Delay(1);
     } 
+  
 }
 
 
