@@ -35,14 +35,14 @@ void w25qxx_Test()
   BSP::w25qxx<&spi1,A4> w25qxxDev;
   
   static bool InitDone;
-  uint8_t test_id = 0,TxBuf[256],RxBuf[256];
+  uint8_t test_id = 0,TxBuf[261],RxBuf[261];
   HAL::DigitalOut<A3> A3Pin;
   if(InitDone == false)
   {
     w25qxxDev.HwInit();
     //    W25qxx_Init();
     A3Pin.HwInit();
-    for(uint16_t i = 0; i<sizeof(TxBuf); i++) TxBuf[i] = i;
+    for(uint16_t i = 0; i<sizeof(TxBuf); i++) TxBuf[i+5] = i;
     for(uint16_t i = 0; i<=sizeof(RxBuf); i++) RxBuf[i] = 0;
     
     InitDone = true;
@@ -59,10 +59,10 @@ void w25qxx_Test()
       w25qxxDev.EraseSector(0);
       A3Pin.Toggle();
       XferDone = false;
-      while( w25qxxDev.PageWrite (0x500,TxBuf) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);      
+      while( w25qxxDev.PageWrite (0x400,TxBuf) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);      
       A3Pin.Toggle();
       XferDone = false;
-      while( w25qxxDev.PageRead (0x500,RxBuf) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);
+      while( w25qxxDev.PageRead (0x400,RxBuf) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);
       A3Pin.Toggle();
       test_id = w25qxx_INTR;
       break; 
@@ -73,14 +73,14 @@ void w25qxx_Test()
       
       XferDone = false;
       //w25qxxDev.PageWrite (0x500,TxBuf,&w25qxxCb);
-      while( w25qxxDev.PageWrite (0x500,TxBuf,&w25qxxCb) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY); 
+      while( w25qxxDev.PageWrite (0x400,TxBuf,&w25qxxCb) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY); 
       while(!XferDone);  
       
       A3Pin.Toggle();
       
       XferDone = false;
       //w25qxxDev.PageRead (0x500,RxBuf,&w25qxxCb);
-      while( w25qxxDev.PageRead (0x500,RxBuf,&w25qxxCb) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);
+      while( w25qxxDev.PageRead (0x400,RxBuf,&w25qxxCb) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);
       while(!XferDone);
       
       A3Pin.Toggle();
@@ -98,7 +98,7 @@ void w25qxx_Test()
       break; 
     default: break;      
     }
-    memset(RxBuf,0,256);
+    memset(RxBuf,0,sizeof(RxBuf));
     LL_mDelay(3000);    
     
   }

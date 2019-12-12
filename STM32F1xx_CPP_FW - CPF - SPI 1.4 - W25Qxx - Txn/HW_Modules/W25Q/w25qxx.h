@@ -559,7 +559,7 @@ namespace BSP
       }
       else
       {
-        pSpiDriver->TxPoll(pBuffer,256,100);
+        pSpiDriver->TxPoll(pBuffer,260,100);
         m_CSPin.High();
       }
       
