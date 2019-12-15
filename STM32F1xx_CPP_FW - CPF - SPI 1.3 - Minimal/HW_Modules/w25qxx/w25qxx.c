@@ -31,7 +31,7 @@ extern HAL::Spi spi1;
 #define  SPI_TX_INTR spi1.TxIntr
 #define  SPI_RX_INTR spi1.RxIntr
 
-#define W25_POLL 0
+#define W25_POLL 1
 #define W25_INTR 1
 
 //###################################################################################################################

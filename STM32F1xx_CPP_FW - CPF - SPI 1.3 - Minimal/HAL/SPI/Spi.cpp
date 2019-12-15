@@ -173,7 +173,7 @@ namespace HAL
     {      
       if(TxBuf == nullptr)  return SPI_INVALID_PARAMS;           
       
-      SetTransmissionMode(LL_SPI_HALF_DUPLEX_TX);
+      //SetTransmissionMode(LL_SPI_HALF_DUPLEX_TX);
       
       while(TxLen != 0)
       {        

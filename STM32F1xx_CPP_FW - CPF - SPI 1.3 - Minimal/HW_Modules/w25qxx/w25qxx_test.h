@@ -35,9 +35,9 @@ void w25qxx_Test()
       A3Pin.Toggle();
       W25qxx_EraseSector(0);
       A3Pin.Toggle();
-      W25qxx_WritePage(TxBuf,0x400,0,256);   
+      W25qxx_WritePage(TxBuf,0x200,0,256);   
       A3Pin.Toggle();
-      W25qxx_ReadPage (RxBuf,0x400,0,256);
+      W25qxx_ReadPage (RxBuf,0x200,0,256);
       A3Pin.Toggle();
       test_id = 255;
       break; 

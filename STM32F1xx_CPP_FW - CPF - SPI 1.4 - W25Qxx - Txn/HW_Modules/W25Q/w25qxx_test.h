@@ -59,10 +59,10 @@ void w25qxx_Test()
       w25qxxDev.EraseSector(0);
       A3Pin.Toggle();
       XferDone = false;
-      while( w25qxxDev.PageWrite (0x400,TxBuf) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);      
+      while( w25qxxDev.PageWrite (0x300,TxBuf) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);      
       A3Pin.Toggle();
       XferDone = false;
-      while( w25qxxDev.PageRead (0x400,RxBuf) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);
+      while( w25qxxDev.PageRead (0x300,RxBuf) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);
       A3Pin.Toggle();
       test_id = w25qxx_INTR;
       break; 
@@ -72,14 +72,12 @@ void w25qxx_Test()
       A3Pin.Toggle();
       
       XferDone = false;
-      //w25qxxDev.PageWrite (0x500,TxBuf,&w25qxxCb);
       while( w25qxxDev.PageWrite (0x400,TxBuf,&w25qxxCb) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY); 
       while(!XferDone);  
       
       A3Pin.Toggle();
       
       XferDone = false;
-      //w25qxxDev.PageRead (0x500,RxBuf,&w25qxxCb);
       while( w25qxxDev.PageRead (0x400,RxBuf,&w25qxxCb) == BSP::w25qxx<&spi1,A4>::W25QXX_BUSY);
       while(!XferDone);
       

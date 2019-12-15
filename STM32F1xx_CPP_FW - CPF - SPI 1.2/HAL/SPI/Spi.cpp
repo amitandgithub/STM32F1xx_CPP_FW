@@ -52,7 +52,7 @@ namespace HAL
       SPI_InitStruct.ClockPolarity     = LL_SPI_POLARITY_LOW;
       SPI_InitStruct.ClockPhase        = LL_SPI_PHASE_1EDGE;
       SPI_InitStruct.NSS               = LL_SPI_NSS_SOFT;//LL_SPI_NSS_HARD_OUTPUT;
-      SPI_InitStruct.BaudRate          = LL_SPI_BAUDRATEPRESCALER_DIV128;
+      SPI_InitStruct.BaudRate          = LL_SPI_BAUDRATEPRESCALER_DIV4;
       SPI_InitStruct.BitOrder          = LL_SPI_MSB_FIRST;
       SPI_InitStruct.CRCCalculation    = LL_SPI_CRCCALCULATION_DISABLE;
       SPI_InitStruct.CRCPoly           = 10U;         
@@ -173,7 +173,7 @@ namespace HAL
     {      
       if(TxBuf == nullptr)  return SPI_INVALID_PARAMS;           
       
-      SetTransmissionMode(LL_SPI_HALF_DUPLEX_TX);
+      //SetTransmissionMode(LL_SPI_HALF_DUPLEX_TX);
         
       while(TxLen != 0)
       {        
@@ -214,7 +214,7 @@ namespace HAL
     {      
       if((TxBuf == nullptr) || (RxBuf == nullptr)) return SPI_INVALID_PARAMS;        
       
-      SetTransmissionMode(LL_SPI_FULL_DUPLEX);
+      //SetTransmissionMode(LL_SPI_FULL_DUPLEX);
       
       while(Len != 0)
       {        

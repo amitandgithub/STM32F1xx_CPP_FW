@@ -811,7 +811,7 @@ void 	W25qxx_ReadPage(uint8_t *pBuffer,uint32_t Page_Address,uint32_t OffsetInBy
   W25qxx_Spi((Page_Address& 0xFF00) >> 8);
   W25qxx_Spi(Page_Address & 0xFF);
   W25qxx_Spi(0);
-  SPI_RX(pBuffer,NumByteToRead_up_to_PageSize,100);	
+  SPI_RX(pBuffer,NumByteToRead_up_to_PageSize+1,100);	
   m_CSPin.High();
 #if (_W25QXX_DEBUG==1)
   StartTime = HAL::GetTick()-StartTime; 

@@ -19,7 +19,7 @@ void w25qxx_Test()
   {
     W25qxx_Init();
     A3Pin.HwInit();
-    for(uint16_t i = 0; i<sizeof(TxBuf); i++) TxBuf[i] = i;
+    for(uint16_t i = 0; i<sizeof(TxBuf); i++) TxBuf[i] = 0xDE;
     for(uint16_t i = 0; i<=sizeof(RxBuf); i++) RxBuf[i] = 0;
     
     InitDone = true;
@@ -35,9 +35,9 @@ void w25qxx_Test()
       A3Pin.Toggle();
       W25qxx_EraseSector(0);
       A3Pin.Toggle();
-      W25qxx_WritePage(TxBuf,0,0,256);   
+      W25qxx_WritePage(TxBuf,4,0,256);   
       A3Pin.Toggle();
-      W25qxx_ReadPage (RxBuf,0,0,256);
+      W25qxx_ReadPage (RxBuf,4,0,256);
       A3Pin.Toggle();
       break;    
       

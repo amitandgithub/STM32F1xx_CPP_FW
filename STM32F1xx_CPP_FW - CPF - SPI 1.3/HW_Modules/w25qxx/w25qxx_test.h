@@ -13,14 +13,14 @@ void w25qxx_Test()
 {
   
   static bool InitDone;
-  uint8_t test_id = 0,TxBuf[256],RxBuf[256];
+  uint8_t test_id = 0,TxBuf[260],RxBuf[260];
   HAL::DigitalOut<A3> A3Pin;
   if(InitDone == false)
   {
     W25qxx_Init();
     A3Pin.HwInit();
-    for(uint16_t i = 0; i<sizeof(TxBuf); i++) TxBuf[i] = i;
-    for(uint16_t i = 0; i<=sizeof(RxBuf); i++) RxBuf[i] = 0;
+    for(uint16_t i = 0; i<sizeof(TxBuf); i++) TxBuf[i] = 0xBA;
+    for(uint16_t i = 0; i<sizeof(RxBuf); i++) RxBuf[i] = 0;
     
     InitDone = true;
   }
@@ -37,7 +37,7 @@ void w25qxx_Test()
       A3Pin.Toggle();
       W25qxx_WritePage(TxBuf,0,0,256);   
       A3Pin.Toggle();
-      W25qxx_ReadPage (RxBuf,0,0,256);
+      W25qxx_ReadPage (RxBuf,0,0,256+1);
       A3Pin.Toggle();
       break;    
       
