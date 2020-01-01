@@ -42,7 +42,7 @@ int main(void)
     while(1)
     {
        //BtnPoll_Test();
-       // BtnInt_Test();
+        BtnInt_Test();
        //Led_Test();
         //Rotary_Encoder_Test();
         //Rotary_EncoderIntr_Test();
@@ -51,7 +51,7 @@ int main(void)
         //I2CPoll_Test();
         //INA219_Test();
           //I2c_Test();
-         BMP280_Test();
+         //BMP280_Test();
     }
     
 }

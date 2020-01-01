@@ -23,6 +23,7 @@ namespace HAL
         m_Transaction.TxLen = 0;
         m_Transaction.RxLen = 0;
         m_Transaction.Spi_Baudrate = SPI_BAUDRATE_DIV2;
+        m_Baudrate = SPI_BAUDRATE_DIV2;
         
         if(SpiPort  == SPI1_A5_A6_A7)
         {
@@ -157,12 +158,11 @@ namespace HAL
       
       Enable();
       
-      //m_SpiStatus = SPI_OK;
+      m_SpiStatus = SPI_OK;
       m_SPIState = SPI_READY;
       
       return SPI_OK;            
-    }
-    
+    }    
     
 #if SPI_POLL    
     
@@ -250,8 +250,12 @@ namespace HAL
 #if SPI_MASTER_INTR
     
     Spi::SpiStatus_t Spi::TxIntr(uint8_t* TxBuf, uint32_t TxLen, SPICallback_t XferDoneCallback,Port_t CSPort, uint16_t CSPinmask)
-    {      
-      if(TxBuf == nullptr) return SPI_INVALID_PARAMS;
+    { 
+      if(m_SPIState != SPI_READY) return SPI_BUSY;
+       
+      if( (TxBuf == nullptr) || (TxLen == 0 )) return SPI_INVALID_PARAMS;
+      
+      SetBaudrate();
       
       m_Transaction.TxBuf = TxBuf;
       m_Transaction.TxLen = TxLen;
@@ -261,26 +265,26 @@ namespace HAL
       m_Transaction.CSPinmask = CSPinmask;
       m_Transaction.XferDoneCallback = XferDoneCallback;
       
-      if(TxLen > 0)
-      {        
-        if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;
-        
-        m_SPIState = SPI_MASTER_TX;  
-        
-        SPI_CS_LOW();
-        
-        SPI_BYTE_OUT_8_BIT(m_Transaction); 
-        
-        EnableInterrupt(SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
-        
-        return SPI_OK;        
-      }      
-      return SPI_INVALID_PARAMS;
+      if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;
+      
+      m_SPIState = SPI_MASTER_TX;  
+      
+      SPI_CS_LOW();
+      
+      SPI_BYTE_OUT_8_BIT(m_Transaction); 
+      
+      EnableInterrupt(SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+      
+      return SPI_OK;        
     }
     
     Spi::SpiStatus_t Spi::RxIntr(uint8_t* RxBuf, uint32_t RxLen,SPICallback_t XferDoneCallback,Port_t CSPort, uint16_t CSPinmask)
     {      
-      if(RxBuf == nullptr) return SPI_INVALID_PARAMS;
+      if(m_SPIState != SPI_READY) return SPI_BUSY;
+       
+      if( (RxBuf == nullptr) || (RxLen == 0 )) return SPI_INVALID_PARAMS;
+      
+      SetBaudrate();
       
       m_Transaction.TxBuf = nullptr;
       m_Transaction.TxLen = 0;
@@ -290,57 +294,65 @@ namespace HAL
       m_Transaction.CSPinmask = CSPinmask;
       m_Transaction.XferDoneCallback = XferDoneCallback;
       
+      SPI_CS_LOW();
+      
       LL_SPI_ClearFlag_OVR(m_SPIx);
       
-      if(RxLen > 0)
-      {       
-        m_SPIState = SPI_MASTER_RX;
-        
-        SPI_CS_LOW();
-        
-        m_SPIx->DR = 0xff;
-        
-        if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;
-        
-        EnableInterrupt(SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
-        
-        return SPI_OK;        
-      }      
-      return SPI_INVALID_PARAMS;
+      m_SPIState = SPI_MASTER_RX;     
+      
+      m_SPIx->DR = 0xff;
+      
+      if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;
+      
+      EnableInterrupt(SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+      
+      return SPI_OK;        
     }
     
+    Spi::SpiStatus_t Spi::TxRxIntr(Transaction_t const * pTransaction)
+    {      
+      m_SpiStatus = CheckAndLoadTxn(pTransaction);
+      
+      if(m_SpiStatus != SPI_OK) return m_SpiStatus;
+      
+      LL_SPI_ClearFlag_OVR(m_SPIx);   
+      
+      if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;     
+      
+      m_SPIState = SPI_MASTER_TXRX;  
+      
+      SPI_BYTE_OUT_8_BIT(m_Transaction); 
+      
+      EnableInterrupt(SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+      
+      return m_SpiStatus; 
+    } 
+    
     Spi::SpiStatus_t Spi::XferIntr(Transaction_t const *pTransaction)
-    {
-      if(pTransaction == nullptr) return SPI_INVALID_PARAMS;
+    {      
+      m_SpiStatus = CheckAndLoadTxn(pTransaction);
       
-      memcpy(&m_Transaction,pTransaction,sizeof(Transaction_t)); // 13'031
+      if(m_SpiStatus != SPI_OK) return m_SpiStatus;
       
-      if((m_Transaction.TxLen) || (m_Transaction.RxLen))
-      {        
+      if(m_Transaction.TxLen)
+      {
+        if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;
         
-        if(m_Transaction.TxLen)
-        {
-          if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;
-          
-          SPI_CS_LOW();
-          
-          m_SPIState = SPI_MASTER_TX;            
-          // This clears the TXE flag      
-          SPI_BYTE_OUT_8_BIT(m_Transaction);           
-        }
-        else
-        {
-          m_SPIState = SPI_MASTER_RX;
-          
-          m_SPIx->DR = 0xff;
-          if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;                
-        }
+        m_SPIState = SPI_MASTER_TX;            
+        // This clears the TXE flag      
+        SPI_BYTE_OUT_8_BIT(m_Transaction);           
+      }
+      else
+      {
+        m_SPIState = SPI_MASTER_RX;
         
-        EnableInterrupt(SPI_CR2_RXNEIE | SPI_CR2_ERRIE );  
-        return SPI_OK;
+        m_SPIx->DR = 0xff;
+        if(SPI_WAIT_FOR_RXNE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;                
       }
       
-      return SPI_INVALID_PARAMS; 
+      EnableInterrupt(SPI_CR2_RXNEIE | SPI_CR2_ERRIE );  
+      
+      return m_SpiStatus; 
     }    
     
     void Spi::ISR()
@@ -355,54 +367,8 @@ namespace HAL
             SPI_BYTE_OUT_8_BIT(m_Transaction);       
           }
           else
-          {           
-            if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
-            {              
-              if( m_Transaction.XferDoneCallback) 
-                m_Transaction.XferDoneCallback->CallbackFunction(SPI_BUSY_TIMEOUT); // should pass endstatus into callback here
-            }
-            else
-            {              
-              // if something to receive, start Rx mode here, else end the transaction
-              if(m_Transaction.RxLen > 0)
-              {
-                m_SPIState = SPI_MASTER_RX;
-                LL_SPI_ClearFlag_OVR(m_SPIx);
-                m_SPIx->DR = 0xff; // clock out to receive data
-                return;
-              }
-              else               
-              {
-                SPI_CS_HIGH();               
-                
-                if( m_Transaction.XferDoneCallback) 
-                  m_Transaction.XferDoneCallback->CallbackFunction(SPI_OK); // should pass endstatus into callback here
-                // Check if there is some transaction in Queue
-                //TxnDoneHandler_INTR(); 
-                Transaction_t const* _pCurrentTxn;
-                if(m_SPITxnQueue.AvailableEnteries())
-                {
-                  m_SPITxnQueue.Read(&_pCurrentTxn);
-                  memcpy(&m_Transaction,_pCurrentTxn,sizeof(Transaction_t));   
-                  
-                  SPI_CS_LOW();
-                  
-                  if(m_Transaction.TxLen)
-                  {                  
-                    m_SPIState = SPI_MASTER_TX;                  
-                    SPI_BYTE_OUT_8_BIT(m_Transaction);           
-                  }
-                  else
-                  {
-                    m_SPIState = SPI_MASTER_RX;                
-                    m_SPIx->DR = 0xff;                
-                  }
-                  return;
-                }     
-              }              
-            }
-            m_SPIState = SPI_READY; 
-            DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );            
+          {               
+            TxnDoneHandler_INTR();            
           }
         }
         else  if(m_SPIState == SPI_MASTER_RX)
@@ -414,44 +380,7 @@ namespace HAL
           }
           else
           {
-            SPI_CS_HIGH();
-            
-            if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
-            {
-              if( m_Transaction.XferDoneCallback) 
-                m_Transaction.XferDoneCallback->CallbackFunction(SPI_BUSY_TIMEOUT);
-            }
-            else
-            {              
-              if( m_Transaction.XferDoneCallback) 
-                m_Transaction.XferDoneCallback->CallbackFunction(SPI_OK);
-#if SPI_MASTER_Q   
-              // Check if any transaction pending in Txn Queue, if yes then load the next transaction
-              //TxnDoneHandler_INTR();
-              Transaction_t const* _pCurrentTxn;
-              if(m_SPITxnQueue.AvailableEnteries())
-              {
-                m_SPITxnQueue.Read(&_pCurrentTxn);
-                memcpy(&m_Transaction,_pCurrentTxn,sizeof(Transaction_t));   
-                
-                SPI_CS_LOW();
-                
-                if(m_Transaction.TxLen)
-                {                  
-                  m_SPIState = SPI_MASTER_TX;                  
-                  SPI_BYTE_OUT_8_BIT(m_Transaction);           
-                }
-                else
-                {
-                  m_SPIState = SPI_MASTER_RX;                
-                  m_SPIx->DR = 0xff;                
-                }
-                return;
-              }           
-#endif             
-            }
-            m_SPIState = SPI_READY; 
-            DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
+            TxnDoneHandler_INTR(); 
           }         
         }
         else  if(m_SPIState == SPI_MASTER_TXRX)
@@ -464,46 +393,8 @@ namespace HAL
           }
           else
           {
-            SPI_CS_HIGH();
-            
-            if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
-            {
-              if( m_Transaction.XferDoneCallback) 
-                m_Transaction.XferDoneCallback->CallbackFunction(SPI_BUSY_TIMEOUT);
-            }
-            else
-            {                      
-              if( m_Transaction.XferDoneCallback) 
-                m_Transaction.XferDoneCallback->CallbackFunction(SPI_OK);
-              
-#if SPI_MASTER_Q   
-              // Check if any transaction pending in Txn Queue, if yes then load the next transaction
-              //TxnDoneHandler_INTR();
-              Transaction_t const* _pCurrentTxn;
-              if(m_SPITxnQueue.AvailableEnteries())
-              {
-                m_SPITxnQueue.Read(&_pCurrentTxn);
-                memcpy(&m_Transaction,_pCurrentTxn,sizeof(Transaction_t));   
-                
-                SPI_CS_LOW();
-                
-                if(m_Transaction.TxLen)
-                {                  
-                  m_SPIState = SPI_MASTER_TX;                  
-                  SPI_BYTE_OUT_8_BIT(m_Transaction);           
-                }
-                else
-                {
-                  m_SPIState = SPI_MASTER_RX;                
-                  m_SPIx->DR = 0xff;                
-                }
-                return;
-              }           
-#endif             
-            }
-            m_SPIState = SPI_READY; 
-            DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE );
-          }        
+            TxnDoneHandler_INTR();
+          }
         }
       }// if( SPI_RXNE(m_SPIx) )     
       else
@@ -560,44 +451,79 @@ namespace HAL
         }           
       }
     }
-#endif //SPI_MASTER_Q
     
     void Spi::TxnDoneHandler_INTR()
-    {            
-      Transaction_t const* _pCurrentTxn;
+    { 
+      Transaction_t const* _pCurrentTxn;       
+      
+      if(m_Transaction.RxLen > 0)
+      {
+        m_SPIState = SPI_MASTER_RX;
+        LL_SPI_ClearFlag_OVR(m_SPIx);
+        m_SPIx->DR = 0xff; // clock out to receive data
+        return;
+      }
+      
+      SPI_CS_HIGH();
+      
+      if(SPI_WAIT_FOR_BUSY_FLAG_TO_CLEAR(m_SPIx,SPI_TIMEOUT))
+      {
+        m_SpiStatus = SPI_BUSY_TIMEOUT;
+      }
+      else
+      {
+        m_SpiStatus = SPI_OK;
+      }
+      
+      if( m_Transaction.XferDoneCallback) 
+        m_Transaction.XferDoneCallback->CallbackFunction(m_SpiStatus);
+      
       if(m_SPITxnQueue.AvailableEnteries())
       {
         m_SPITxnQueue.Read(&_pCurrentTxn);
         memcpy(&m_Transaction,_pCurrentTxn,sizeof(Transaction_t));   
         
+        SetBaudrate();
+        
         SPI_CS_LOW();
         
         if(m_Transaction.TxLen)
-        {                  
-          m_SPIState = SPI_MASTER_TX;                  
+        {
+          if(m_Transaction.TxLen == m_Transaction.RxLen)
+          {
+            m_SPIState = SPI_MASTER_TXRX; 
+          }
+          else
+          {
+            m_SPIState = SPI_MASTER_TX; 
+          }
           SPI_BYTE_OUT_8_BIT(m_Transaction);           
         }
         else
         {
           m_SPIState = SPI_MASTER_RX;                
           m_SPIx->DR = 0xff;                
-        }      
-      }                       
+        }
+      }
+      else
+      {
+        m_SPIState = SPI_READY; 
+        DisableInterrupt(SPI_CR2_TXEIE | SPI_CR2_RXNEIE | SPI_CR2_ERRIE ); 
+      }
     }
-    
-    
+#endif //SPI_MASTER_Q   
     
     Spi::SpiStatus_t Spi::CheckAndLoadTxn(Transaction_t const *pTransaction)
     {
-      if(m_SPIState != SPI_READY)
-        return SPI_BUSY;
+      if(m_SPIState != SPI_READY) return SPI_BUSY;
       
-      if((pTransaction == 0) || ( (!pTransaction->TxBuf) && (!pTransaction->RxBuf) ))
-      {
-        return SPI_INVALID_PARAMS;
-      }      
+      if((pTransaction == 0) || ( (!pTransaction->TxBuf) && (!pTransaction->RxBuf) ))  return SPI_INVALID_PARAMS;   
       
       memcpy(&m_Transaction,pTransaction,sizeof(Transaction_t));
+      
+      SetBaudrate();
+       
+      SPI_CS_LOW();
       
       return SPI_OK;      
     }    
@@ -607,6 +533,8 @@ namespace HAL
     
     Spi::SpiStatus_t Spi::TxDMA(uint8_t* TxBuf, uint32_t TxLen, SPICallback_t XferDoneCallback,Port_t CSPort, uint16_t CSPinmask)
     {      
+      if(m_SPIState != SPI_READY) return SPI_BUSY;
+      
       if( (TxBuf == nullptr) || (TxLen == 0) ) return SPI_INVALID_PARAMS;
       
       m_Transaction.TxBuf = TxBuf;
@@ -614,30 +542,26 @@ namespace HAL
       m_Transaction.RxLen = 0;
       m_Transaction.CSPort = CSPort;
       m_Transaction.CSPinmask = CSPinmask;
-      m_Transaction.XferDoneCallback = XferDoneCallback;
+      m_Transaction.XferDoneCallback = XferDoneCallback;   
       
-      if(TxLen > 0)
-      {        
-        SPI_CS_LOW();
-        
-        if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;
-        
-        m_SPIState = SPI_MASTER_TX_DMA;          
-        
-        LoadTxDmaChannel(m_Transaction.TxBuf,m_Transaction.TxLen); 
-        LL_SPI_EnableDMAReq_TX(m_SPIx);
-        
-        return SPI_OK;        
-      }
+      SPI_CS_LOW();
       
-      return SPI_INVALID_PARAMS;
+      if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;
+      
+      m_SPIState = SPI_MASTER_TX_DMA;          
+      
+      LoadTxDmaChannel(m_Transaction.TxBuf,m_Transaction.TxLen); 
+      LL_SPI_EnableDMAReq_TX(m_SPIx);
+      
+      return SPI_OK;        
     }
     
     Spi::SpiStatus_t Spi::RxDMA(uint8_t* RxBuf, uint32_t RxLen,SPICallback_t XferDoneCallback,Port_t CSPort, uint16_t CSPinmask)
     {      
+      if(m_SPIState != SPI_READY) return SPI_BUSY;
+      
       if( (RxBuf == nullptr) || (RxLen == 0) ) return SPI_INVALID_PARAMS;
       
-      //m_Transaction.TxBuf = nullptr;
       m_Transaction.TxLen = 0;
       m_Transaction.RxBuf = RxBuf;
       m_Transaction.RxLen = RxLen;
@@ -647,32 +571,31 @@ namespace HAL
       
       LL_SPI_ClearFlag_OVR(m_SPIx);
       
-      if(RxLen > 0)
-      {       
-        m_SPIState = SPI_MASTER_RX_DMA;        
-        
-        if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;        
-        
-        SPI_CS_LOW();
-        
-        /* Load DMA Rx transaction*/    
-        LoadRxDmaChannel(m_Transaction.RxBuf,m_Transaction.RxLen); 
-        LL_SPI_EnableDMAReq_RX(m_SPIx);
-        
-        LoadTxDmaChannel(m_Transaction.RxBuf,m_Transaction.RxLen);   
-        
-        LL_SPI_EnableDMAReq_TX(m_SPIx);
-        
-        return SPI_OK;        
-      }      
-      return SPI_INVALID_PARAMS;
+      m_SPIState = SPI_MASTER_RX_DMA;        
+      
+      if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;        
+      
+      SPI_CS_LOW();
+      
+      /* Load DMA Rx transaction*/    
+      LoadRxDmaChannel(m_Transaction.RxBuf,m_Transaction.RxLen); 
+      LL_SPI_EnableDMAReq_RX(m_SPIx);
+      
+      LoadTxDmaChannel(m_Transaction.RxBuf,m_Transaction.RxLen);   
+      
+      LL_SPI_EnableDMAReq_TX(m_SPIx);
+      
+      return SPI_OK;        
     }
     
     Spi::SpiStatus_t Spi::TxRxDMA(Transaction_t const * pTransaction)
-    {     
-      if( (pTransaction == nullptr) || (pTransaction->TxLen != pTransaction->RxLen) )  return SPI_INVALID_PARAMS;        
+    {      
       
-      memcpy(&m_Transaction,pTransaction,sizeof(Transaction_t));
+      m_SpiStatus = CheckAndLoadTxn(pTransaction);
+      
+      if(m_SpiStatus != SPI_OK) return m_SpiStatus;
+      
+      if(pTransaction->TxLen != pTransaction->TxLen ) return SPI_INVALID_PARAMS; 
       
       LL_SPI_ClearFlag_OVR(m_SPIx);
       
@@ -686,26 +609,24 @@ namespace HAL
       /* Load DMA Rx transaction*/    
       LoadRxDmaChannel(m_Transaction.RxBuf,m_Transaction.RxLen); 
       
-      SPI_CS_LOW();
-      
       LL_SPI_EnableDMAReq_TX(m_SPIx);
       LL_SPI_EnableDMAReq_RX(m_SPIx);
       
-      return SPI_OK;        
+      return m_SpiStatus;        
     } 
     
     Spi::SpiStatus_t Spi::XferDMA(Transaction_t const * pTransaction)
-    {     
-      if(pTransaction == nullptr) return SPI_INVALID_PARAMS;
+    {      
+      m_SpiStatus = CheckAndLoadTxn(pTransaction);
       
-      memcpy(&m_Transaction,pTransaction,sizeof(Transaction_t));
+      if(m_SpiStatus != SPI_OK) return m_SpiStatus;
       
       if(pTransaction->TxLen > 0)
       {       
         LoadTxDmaChannel(m_Transaction.TxBuf,m_Transaction.TxLen);            
         m_SPIState = SPI_MASTER_TX_DMA;
       }
-      else if(pTransaction->RxLen > 0)
+      else
       {  
         LL_SPI_ClearFlag_OVR(m_SPIx);
         
@@ -717,19 +638,13 @@ namespace HAL
         LL_SPI_EnableDMAReq_RX(m_SPIx);
         
         m_SPIState = SPI_MASTER_RX_DMA;
-      }
-      else
-      {
-        return SPI_INVALID_PARAMS;
-      }      
+      }    
       
       if(SPI_WAIT_FOR_TXE_FLAG_TO_SET(m_SPIx,SPI_TIMEOUT)) return SPI_TXE_TIMEOUT;        
       
-      SPI_CS_LOW();
-      
       LL_SPI_EnableDMAReq_TX(m_SPIx);
       
-      return SPI_OK;        
+      return m_SpiStatus;        
     } 
     
     void Spi::TxnDoneHandler_DMA()
@@ -770,11 +685,14 @@ namespace HAL
         // Check if any transaction pending in Txn Queue, if yes then load the next transaction
         Transaction_t const* _pCurrentTxn;
         if(m_SPITxnQueue.AvailableEnteries())
-        {
+        {         
           SPI_CS_LOW();
           
           m_SPITxnQueue.Read(&_pCurrentTxn);
           memcpy(&m_Transaction,_pCurrentTxn,sizeof(Transaction_t));
+          
+          SetBaudrate();
+          
           if(m_Transaction.TxLen)
           {
             LoadTxDmaChannel(m_Transaction.TxBuf,m_Transaction.TxLen);            

@@ -179,8 +179,6 @@ namespace HAL
     
     void SetTransmissionMode(uint32_t TransmitMode){LL_SPI_SetTransferDirection(m_SPIx, TransmitMode);}
     
-    //bool WaitOnFlag(volatile uint32_t* reg, uint32_t bitmask, uint32_t status, uint32_t timeout);
-    
     SPIState_t GetState(){return m_SPIState;}
     
     void EnableInterrupt(uint32_t InterruptFlags){SET_BIT(m_SPIx->CR2, InterruptFlags);}
@@ -211,15 +209,7 @@ namespace HAL
     
     SpiStatus_t     TxRxIntr(uint8_t* TxBuf, uint32_t TxLen, uint8_t* RxBuf, uint32_t RxLen, SPICallback_t XferDoneCallback = nullptr);
     
-    void            SetXferMode(SPI_Xfer_Mode_t SPI_Xfer_Mode);
-    
-    void            HalfDuplex8_Handler(SPI_Interrupts_t event);
-    
-    void            FullDuplex8_Handler(SPI_Interrupts_t event);
-    
-    void            HalfDuplex16_Handler(SPI_Interrupts_t event);
-    
-    void            FullDuplex16_Handler(SPI_Interrupts_t event);
+    SpiStatus_t     TxRxIntr(Transaction_t const * pTransaction);
     
     SpiStatus_t     XferPoll(Transaction_t const *pTransaction);
     
@@ -239,7 +229,9 @@ namespace HAL
     
     SpiStatus_t CheckAndLoadTxn(Transaction_t const *pTransaction);
     
-    void SetBaudrate(Spi_Baudrate_t Spi_Baudrate) { if(m_Transaction.Spi_Baudrate != Spi_Baudrate) LL_SPI_SetBaudRatePrescaler(m_SPIx,(uint32_t)Spi_Baudrate); }
+    void SetBaudrate(Spi_Baudrate_t Spi_Baudrate) { if(m_Baudrate != Spi_Baudrate) { m_Baudrate = Spi_Baudrate; LL_SPI_SetBaudRatePrescaler(m_SPIx,(uint32_t)Spi_Baudrate);} }
+    
+    void SetBaudrate() { if(m_Baudrate != m_Transaction.Spi_Baudrate) { m_Baudrate = m_Transaction.Spi_Baudrate; LL_SPI_SetBaudRatePrescaler(m_SPIx,(uint32_t)m_Transaction.Spi_Baudrate);} }
     
 #if SPI_MASTER_Q
     using SPITxnQueue_t = Utils::queue<Transaction_t const *,uint32_t,10U> ;
@@ -287,7 +279,8 @@ namespace HAL
     
   private:
     Hz_t                    m_hz;
-    SPIx_t                  m_SPIx;            
+    SPIx_t                  m_SPIx; 
+    Spi_Baudrate_t          m_Baudrate;
     Transaction_t           m_Transaction;
     SlaveTxn_t              m_SlaveTxn;
 #if SPI_MASTER_Q 

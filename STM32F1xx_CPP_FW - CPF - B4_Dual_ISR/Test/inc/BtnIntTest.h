@@ -30,7 +30,7 @@ void BtnInt_Test()
     uint32_t size;
     size = sizeof(BtnInt);/*40 bytes*/ size++;
     
-    BtnInt BtnInt_A8(Gpio::A8, BSP::BtnInt::BTN_PULL_DOWN, &Rising,&Falling );
+    BtnInt BtnInt_A8(Gpio::B9, BSP::BtnInt::BTN_PULL_DOWN, &Rising,&Falling );
     BtnInt_A8.HwInit();      
     
     while(1)

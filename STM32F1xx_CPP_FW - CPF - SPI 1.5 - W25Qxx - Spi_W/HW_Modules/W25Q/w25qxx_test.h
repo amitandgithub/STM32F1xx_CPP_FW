@@ -76,23 +76,19 @@ enum
   w25qxx_OLD,
 };
 
-
-
 uint32_t BusyCount = 0;
 uint8_t *pBuffer;
 uint16_t len;
 void w25qxx_Test()
-{
-  
+{  
   static bool InitDone;
-  uint8_t test_id = 0;
+  uint8_t test_id;
   uint32_t Page = 9,TxLen;
   uint32_t Page_Address = 0;
   uint32_t posts=0;
   Spi::Transaction_t Transaction;
   
   HAL::DigitalOut<A3> A3Pin;
-
   if(InitDone == false)
   {
     w25qxxDev.HwInit();
@@ -104,7 +100,7 @@ void w25qxx_Test()
     HoldPin.HwInit();
     HoldPin.High();
 #else
-    SPI.SetBaudrate(Spi::SPI_BAUDRATE_DIV4);
+   // SPI.SetBaudrate(Spi::SPI_BAUDRATE_DIV4);
 #endif    
     InitDone = true;
   } 
@@ -202,10 +198,10 @@ void w25qxx_Test()
       Transaction.TxLen = 5;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = len;
-      Transaction.XferDoneCallback = &w25qxxCb;     
+      Transaction.XferDoneCallback = &w25qxxCb; 
       SPI.XferIntr(&Transaction);
       while(!XferDone);  
-      XferDone = false;       
+      XferDone = false;
       Test_Condition( !(std::memcmp( (const void*) &TxBuf[5],(const void*) RxBuf, TxLen )), STR("w25qxx_INTR_TXN = Pass"), STR("w25qxx_INTR_TXN = Fail"));
       test_id = w25qxx_INTR_TXN_Q;      
       break;
@@ -221,12 +217,15 @@ void w25qxx_Test()
       Transaction.TxLen = 5;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = len;
-      Transaction.XferDoneCallback = &w25qxxDMACb;     
+      Transaction.Spi_Baudrate = Spi::SPI_BAUDRATE_DIV4;
+      Transaction.XferDoneCallback = &w25qxxDMACb;    
       while(SPI.Post(&Transaction,0) != Spi::SPI_TXN_QUEUE_ERROR) posts++;  // 0.45 ms for reading one page in INTR
-      while(DMAXferDone < posts);  
+      while(DMAXferDone < posts);
+      Transaction.Spi_Baudrate = Spi::SPI_BAUDRATE_DIV2;
       test_id = w25qxx_DMA_TX;
       break;
   case w25qxx_DMA_TX:  
+      SPI.SetBaudrate(Spi::SPI_BAUDRATE_DIV2);
       w25qxxDev.EraseSector(0);
       w25qxxDev.m_CSPin.Low();
       w25qxxDev.SpiTxRxByte(0x06);
@@ -286,6 +285,7 @@ void w25qxx_Test()
       Transaction.TxLen = 5;
       Transaction.RxBuf = RxBuf;
       Transaction.RxLen = len;
+      //Transaction.Spi_Baudrate = Spi::SPI_BAUDRATE_DIV8;
       Transaction.XferDoneCallback = &w25qxxDMACb;     
       while(SPI.Post(&Transaction,1) != Spi::SPI_TXN_QUEUE_ERROR) posts++;  // 0.13 ms for reading one page in DMA
       while(DMAXferDone < posts);  
