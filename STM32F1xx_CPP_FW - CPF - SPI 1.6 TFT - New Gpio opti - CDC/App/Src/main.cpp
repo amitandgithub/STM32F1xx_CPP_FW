@@ -39,8 +39,10 @@ struct s {
 
 int main(void)
 {	
-  
-  HAL_Init();  
+  LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
+  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
+   
+  //HAL_Init();  
   /* Configure the system clock */
   SystemClock_Config();
 
@@ -66,9 +68,9 @@ int main(void)
     //Rtc_test();
     //LL_mDelay(100);
     //ssd1306_test();
-    Nokia_Lcd_Test();
+    //Nokia_Lcd_Test();
     //w25qxx_Test();
-    //st7735_Test();
+    st7735_Test();
   }    
 }
 
@@ -99,7 +101,13 @@ void SystemClock_Config(void)
   }
   LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
   LL_RCC_EnableRTC();
+  
+#if NEW_BOARD
   LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSE_DIV_2, LL_RCC_PLL_MUL_9);
+#else
+   LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSE_DIV_1, LL_RCC_PLL_MUL_9);
+#endif
+   
   LL_RCC_PLL_Enable();
 
    /* Wait till PLL is ready */
@@ -110,6 +118,12 @@ void SystemClock_Config(void)
   LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
   LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_2);
   LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_2);
+  
+//  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_2);
+//  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
+//  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
+  
+  
   LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
 
    /* Wait till System clock is ready */
@@ -119,7 +133,9 @@ void SystemClock_Config(void)
   }
   LL_SetSystemCoreClock(72000000);
   SetSystickTimerInterrupt();
+#if USB_DEVICE
   LL_RCC_SetUSBClockSource(LL_RCC_USB_CLKSOURCE_PLL_DIV_1_5);
+#endif
 }
 
 

@@ -10,7 +10,7 @@
 #include <string.h>
 
 
-#define USB_DEVICE 1
+#define USB_DEVICE 0
 
 typedef enum
 {
