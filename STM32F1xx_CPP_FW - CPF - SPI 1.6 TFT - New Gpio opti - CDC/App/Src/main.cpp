@@ -68,9 +68,9 @@ int main(void)
     //Rtc_test();
     //LL_mDelay(100);
     //ssd1306_test();
-    //Nokia_Lcd_Test();
+    Nokia_Lcd_Test();
     //w25qxx_Test();
-    st7735_Test();
+   // st7735_Test();
   }    
 }
 
@@ -117,12 +117,7 @@ void SystemClock_Config(void)
   }
   LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
   LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_2);
-  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_2);
-  
-//  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_2);
-//  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
-//  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
-  
+  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_2);  
   
   LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
 
