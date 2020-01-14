@@ -42,9 +42,11 @@
 
 /* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi1;
-uint8_t TxBuf[] = "Amit Chaudhary";
-uint8_t RxBuf[] = "Shiwani Sangwan";
+uint8_t TxBuf[20] = "Amit Chaudhary";
+uint8_t RxBuf[20] = "Shiwani Sangwan";
 uint64_t Good,Error,index;
+#define SLAVE_RX_LEN 16
+#define SLAVE_TX_LEN 15
 
 /* USER CODE BEGIN PV */
 
@@ -100,19 +102,20 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    //     HAL_SPI_Transmit(&hspi1,&buf[0],4,9000);
+
     //HAL_Delay(2);
     HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,(GPIO_PinState)0);
-    HAL_SPI_Transmit(&hspi1,TxBuf,sizeof(TxBuf),9000);      
+    HAL_SPI_Transmit(&hspi1,TxBuf,SLAVE_TX_LEN,9000);      
     HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,(GPIO_PinState)1);
     
     //HAL_Delay(2);
     
     HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,(GPIO_PinState)0);
-    HAL_SPI_Receive(&hspi1,RxBuf,sizeof(RxBuf),9000);
+    HAL_SPI_Receive(&hspi1,RxBuf,SLAVE_RX_LEN,9000);
     HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,(GPIO_PinState)1);
     
-    if( memcmp( (const void*) &RxBuf[1],"Shiwani Sangwan", sizeof("Shiwani Sangwan") ) )
+    //HAL_Delay(3000);
+    if( memcmp( (const void*) &RxBuf[0],"Shiwani Sangwan", SLAVE_RX_LEN-1 ) )
     {
        Error++;
        HAL_GPIO_WritePin(GPIOC,GPIO_PIN_13,(GPIO_PinState)0);
@@ -193,7 +196,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;//SPI_NSS_HARD_OUTPUT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32; // 32
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8; // 32
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
