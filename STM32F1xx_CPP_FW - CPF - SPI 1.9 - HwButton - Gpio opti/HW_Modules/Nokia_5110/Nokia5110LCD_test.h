@@ -18,10 +18,11 @@ static BSP::INA219::Power_t Power;
 static char TimeString[]     = "T =            ";
 static uint8_t I2C_Voltage[] = "V =            ";
 static uint8_t I2C_Current[] = "I =            ";
-static uint8_t I2C_mAH[]     = "C =  1234.00mAh"; 
+static uint8_t I2C_mAH[]     = "C =            "; 
 
 void Nokia_Lcd_Test()
 {
+  uint16_t previousVal;
   static bool InitDone;  
   if(InitDone == false)
   {
@@ -35,6 +36,7 @@ void Nokia_Lcd_Test()
   {    
     rtc.GetTime(&TimeString[4]); 
     INA219_Dev.Run(&Power);
+    
     ftoa(Power.Voltage, (char*)&I2C_Voltage[4], 4);
     ftoa(Power.Current, (char*)&I2C_Current[4], 4); 
     ftoa(Power.mAH, (char*)&I2C_mAH[4], 2); 
@@ -43,6 +45,21 @@ void Nokia_Lcd_Test()
     LCDx.DisplayStr(1,0,(char const*)I2C_Voltage);
     LCDx.DisplayStr(2,0,(char const*)I2C_Current);
     LCDx.DisplayStr(3,0,(char const*)I2C_mAH);
+    
+    if(previousVal != *((uint16_t*)&TimeString[10])  )
+    {      
+      previousVal = *((uint16_t*)&TimeString[10]);
+      HAL::DBG_PRINT((uint8_t*)" ",1);
+      HAL::DBG_PRINT((uint8_t*)TimeString,sizeof(TimeString));
+      HAL::DBG_PRINT((uint8_t*)"\t",1);
+      HAL::DBG_PRINT((uint8_t*)I2C_Voltage,sizeof(I2C_Voltage));
+      HAL::DBG_PRINT((uint8_t*)"\t",1);
+      HAL::DBG_PRINT((uint8_t*)I2C_Current,sizeof(I2C_Current));
+      HAL::DBG_PRINT((uint8_t*)"\t",1);
+      HAL::DBG_PRINT((uint8_t*)I2C_mAH,sizeof(I2C_mAH));
+      HAL::DBG_PRINT((uint8_t*)"\n\r",2);
+    }
+    
     //LL_mDelay(100);    
   }
   

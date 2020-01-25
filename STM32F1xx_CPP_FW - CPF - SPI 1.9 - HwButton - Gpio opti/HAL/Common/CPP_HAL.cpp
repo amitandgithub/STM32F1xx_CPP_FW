@@ -78,7 +78,7 @@ namespace HAL
   void DBG_PRINT(uint8_t* Buf, uint16_t Len)
   {
 #if USB_DEVICE
-    CDC_Transmit_FS(Buf,Len);
+    while( CDC_Transmit_FS(Buf,Len) != USBD_OK);
 #endif   
   }
   

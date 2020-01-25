@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <settings>
     <DebugChecksum>
-        <Checksum>3365306616</Checksum>
+        <Checksum>1218416671</Checksum>
     </DebugChecksum>
     <StLinkDriver>
         <stlinkserialNo>22201487</stlinkserialNo>
         <stlinkfoundProbes />
-        <stlinkResetStyle>0</stlinkResetStyle>
+        <stlinkResetStyle>1</stlinkResetStyle>
         <stlinkResetStrategy>1</stlinkResetStrategy>
         <CStepIntDis>_ 0</CStepIntDis>
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
@@ -171,7 +171,8 @@
     </DisassembleMode>
     <Breakpoints2>
         <Bp0>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\STM32F1xx_CPP_FW - CPF - SPI 1.5 - W25Qxx - Spi_1_2_DMA_Q_Working_CS\HAL\SPI\Spi.cpp}.283.7" 0 0 1 "" 0 "" 0</Bp0>
-        <Count>1</Count>
+        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\HAL\I2C\I2c.cpp}.2746.7" 0 0 1 "" 0 "" 0</Bp1>
+        <Count>2</Count>
     </Breakpoints2>
     <Aliases>
         <A0>_ "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - SPI 1.4 - W25Qxx - Txn\BSP\Button\BtnInt.h" ""</A0>
