@@ -47,7 +47,7 @@ void Nokia_Lcd_Test()
     LCDx.DisplayStr(2,0,(char const*)I2C_Current);
     LCDx.DisplayStr(3,0,(char const*)I2C_mAH);
     
-    if(previousVal != *((uint16_t*)&TimeString[10])  )
+    if(0)//previousVal != *((uint16_t*)&TimeString[10])  )
     {      
       previousVal = *((uint16_t*)&TimeString[10]);
      // HAL::DBG_PRINT((uint8_t*)" ",1);

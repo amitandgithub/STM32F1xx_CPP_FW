@@ -50,7 +50,7 @@ namespace BSP
 //    {
 //    }
     
-    RUN_EVERY_MILLIS(2,CaptureSamples(pPower));
+    RUN_EVERY_MILLIS(128,CaptureSamples(pPower));
   }
   
   void INA219::CaptureSamples(Power_t* pPower)
@@ -239,7 +239,7 @@ namespace BSP
     uint16_t config = INA219_CONFIG_BVOLTAGERANGE_32V |
       INA219_CONFIG_GAIN_8_320MV |
         INA219_CONFIG_BADCRES_12BIT |
-          INA219_CONFIG_SADCRES_12BIT_1S_532US |
+          INA219_CONFIG_SADCRES_12BIT_128S_69MS |
             INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
     
     ina219_calValue = 10240;
@@ -321,7 +321,7 @@ namespace BSP
     uint16_t config = INA219_CONFIG_BVOLTAGERANGE_16V |
       INA219_CONFIG_GAIN_1_40MV |
         INA219_CONFIG_BADCRES_12BIT |
-          INA219_CONFIG_SADCRES_12BIT_2S_1060US |
+          INA219_CONFIG_SADCRES_12BIT_128S_69MS |
             INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
     ina219_calValue = 8192;
     

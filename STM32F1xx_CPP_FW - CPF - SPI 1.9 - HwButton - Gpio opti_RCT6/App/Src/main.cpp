@@ -5,6 +5,7 @@
 #include"Test.h"
 #include "CPP_HAL.h"
 
+
 #if USB_DEVICE
 
 #include "main.h"
@@ -37,7 +38,8 @@ struct s {
 
 #define NEW_BOARD 1
 
-
+extern void Run_Power_Monitor();
+extern void Init_Power_Monitor();
 int main(void)
 {	
   HAL_Init();  
@@ -52,6 +54,7 @@ int main(void)
   
   DWT->CTRL |= 1 ; // enable the counter  
   Rtc_test();
+  Init_Power_Monitor();
   while(1)
   {
     //BMP280_Test();
@@ -66,10 +69,11 @@ int main(void)
     //Rtc_test();
     //LL_mDelay(100);
     //ssd1306_test();
-    Nokia_Lcd_Test();
+   // Nokia_Lcd_Test();
     //w25qxx_Test();
     //st7735_Test();
    // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
+    Run_Power_Monitor();
   }    
 }
 

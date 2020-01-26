@@ -15,30 +15,30 @@
 #include"stdint.h"
 #include<cstring>
 
-namespace Peripherals
+namespace BSP
 {
-    
+  
 #define SPACE_BEFORE   
-    
-class DisplayBuffer
-{
-public:
+  
+  class DisplayBuffer
+  {
+  public:
     typedef enum : uint8_t
     {
-        SPEED_SUPER_SLOW = 0,
-        SPEED_SLOW,
-        SPEED_NORMAL,
-        SPEED_FAST,
-        SPEED_FASTER,
-        SPEED_FASTEST        
+      SPEED_SUPER_SLOW = 0,
+      SPEED_SLOW,
+      SPEED_NORMAL,
+      SPEED_FAST,
+      SPEED_FASTER,
+      SPEED_FASTEST        
     }Speed_t;
     
     typedef enum : uint8_t
     {
-        UP = 0,
-        DOWN,
-        LEFT,
-        RIGHT       
+      UP = 0,
+      DOWN,
+      LEFT,
+      RIGHT       
     }Dir_t;
     
     static const        uint8_t SIZE_OF_1_CHAR      = 6;
@@ -49,23 +49,23 @@ public:
     
     typedef struct 
     { 
-        char Chars[NO_OF_CHAR_IN_LINE][SIZE_OF_1_CHAR];        
+      char Chars[NO_OF_CHAR_IN_LINE][SIZE_OF_1_CHAR];        
     }LineText_t;
     
     typedef struct 
     { 
-        LineText_t Line[NO_OF_LINES_IN_SCREEN];        
+      LineText_t Line[NO_OF_LINES_IN_SCREEN];        
     }DisplayBufferText_t;
     
     typedef union
     {
-        char Array[BUFFER_SIZE];
-        DisplayBufferText_t Struct;
-        
+      char Array[BUFFER_SIZE];
+      DisplayBufferText_t Struct;
+      
     }DisplayBufferMem_t;
-        
+    
     static const uint8_t NORMAL  = 0x0C;
-	static const uint8_t INVERSE = 0x0D;
+    static const uint8_t INVERSE = 0x0D;
     
     DisplayBuffer   (){Clear();}
     DisplayBuffer   (char* pText){DrawBuffer(pText);}
@@ -83,12 +83,12 @@ public:
     void        Clear           ()              { memset(&DisplayBufferMem.Array[0],0,BUFFER_SIZE);};
     uint32_t    GetSize         ()              { return BUFFER_SIZE; }
     
-
-private:
+    
+  private:
     DisplayBufferMem_t DisplayBufferMem;    
-};
-
-
+  };
+  
+  
 }
 
 #endif //DisplayBuffer_h

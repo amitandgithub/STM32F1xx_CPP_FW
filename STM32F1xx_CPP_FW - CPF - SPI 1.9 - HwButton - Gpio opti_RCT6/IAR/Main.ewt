@@ -2376,6 +2376,9 @@
         <file>
             <name>$PROJ_DIR$\..\App\Src\main.cpp</name>
         </file>
+        <file>
+            <name>$PROJ_DIR$\..\App\Src\Power_Monitor.cpp</name>
+        </file>
     </group>
     <group>
         <name>Bios</name>
@@ -2668,6 +2671,21 @@
             <name>DebugLog</name>
             <file>
                 <name>$PROJ_DIR$\..\SW_Modules\DebugLog\DebugLog.h</name>
+            </file>
+        </group>
+        <group>
+            <name>UI</name>
+            <file>
+                <name>$PROJ_DIR$\..\SW_Modules\UI\ControlScreen.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\SW_Modules\UI\DisplayBuffer.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\SW_Modules\UI\Screen.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\SW_Modules\UI\UI.cpp</name>
             </file>
         </group>
     </group>

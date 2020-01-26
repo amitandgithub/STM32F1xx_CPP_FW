@@ -9,13 +9,15 @@
 #ifndef APP_INC_UI_HPP_
 #define APP_INC_UI_HPP_
 
-#include"Nokia5110LCD.h"
+//#include "CPP_HAL.h" 
+#include "NokiaLCD.h"
 #include <cstring>
 #include "Screen.h"
 
-namespace Peripherals
+namespace BSP
 {
 
+extern NokiaLCD NokiaLCDObj;
 
 class UI
 {
@@ -23,7 +25,7 @@ public:
     constexpr static unsigned char NO_OF_SCREENS_IN_UI = 10U;
     typedef uint8_t ScreenHandle_t;
 
-	UI(Nokia5110LCD* pNokiaLCD);
+	UI(NokiaLCD* pNokiaLCD);
     
 	~UI(){};
     
@@ -55,7 +57,7 @@ private:
         static unsigned char PreviousActiveScreen;
         static unsigned char TotalRegisteredScreens;
         static ScreenHandle_t TotalAddeedScreens;
-        Nokia5110LCD* LCD;
+        NokiaLCD* LCD;
 };
 
 

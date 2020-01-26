@@ -31,7 +31,7 @@ namespace BSP
     m_DC(DCPort,DCPin),
     m_Reset(RstPort,RstPin),
     m_Backlight(BklPort,BklPin),                
-    m_Brightness(0x13)                    
+    m_Brightness(0x11)                    
 #ifdef WITH_DISPLAY_BUFFER
       ,m_DisplayBuffer()
 #endif                    
@@ -43,7 +43,7 @@ namespace BSP
     bool NokiaLCD::HwInit()
     {
       m_pSpi->HwInit();
-      m_pSpi->SetBaudrate(HAL::Spi::SPI_BAUDRATE_DIV8); // 72/4 = 9Mhz < 10 Mhz max
+      m_pSpi->SetBaudrate(HAL::Spi::SPI_BAUDRATE_DIV4); // 72/4 = 9Mhz < 10 Mhz max
       m_CS.HwInit();
       m_DC.HwInit();
       m_Reset.HwInit();
@@ -62,13 +62,13 @@ namespace BSP
       
       m_Reset.Low();
       
-      LL_mDelay(500);
+      LL_mDelay(10); // 500ms
       
       m_Reset.High();
       
       Write(COMMAND, 0x21); //Tell LCD that extended commands follow
       Write(COMMAND, 0xBF); //Set LCD Vop (Contrast): Try 0xB1(good @ 3.3V) or 0xBF if your display is too dark, Amit: 0xBF works fine with 3.3v
-      Write(COMMAND, 0x04); //Set Temp coefficent
+      Write(COMMAND, 0x06); //Set Temp coefficent - 4
       Write(COMMAND, m_Brightness); //LCD bias mode 1:48: Try 0x13 or 0x14 ,Amit: 0x13 works fine with 3.3v, for blue display 0x15 works fine
       
       Write(COMMAND, 0x20); //We must send 0x20 before modifying the display control mode
@@ -193,6 +193,7 @@ namespace BSP
     
     void NokiaLCD::DisplayBitmap(char* pBuffer)
     {   
+      DisplayBuf(pBuffer);
       //m_pCurrentBuffer = pBuffer;
     }
     

@@ -12,6 +12,7 @@
 #include"I2c.h"
 #include"INA219.h"
 #include"Spi.h"
+#include"NokiaLCD.h"
 
 
 extern uint32_t SystickTimerTicks;
@@ -23,6 +24,7 @@ extern HAL::I2c i2c1;
 extern HAL::Spi spi1;
 extern HAL::Spi spi2;
 extern BSP::INA219 INA219_Dev;
+extern BSP::NokiaLCD NokiaLCDObj; 
 
 
 
