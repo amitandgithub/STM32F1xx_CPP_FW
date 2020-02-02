@@ -80,24 +80,25 @@ void Init_Power_Monitor()
   Menu.AddHandler( 4, BackLight_ScreenTouchHandler,   nullptr);
   
   
-#if SD_CARD    
+#if SD_CARD   
+  // Mmm dd yyyy
   mem_cpy(&FileName[0], "Power", 5);
   FileName[5] = '_';
-  FileName[6] = __DATE__[0];
-  FileName[7] = __DATE__[1];
-  FileName[8] = __DATE__[2];
+  FileName[6] = __DATE__[0]; // month[0]
+  FileName[7] = __DATE__[1]; // month[1]
+  FileName[8] = __DATE__[2]; // month[2]
   FileName[9] = '_';
-  FileName[10] = __DATE__[4];
-  FileName[11] = __DATE__[5];
+  FileName[10] = __DATE__[4]; // Day[0]
+  FileName[11] = __DATE__[5]; // Day[1]
   FileName[12] = '_';
-  FileName[13] = __TIME__[0];
-  FileName[14] = __TIME__[1];
+  FileName[13] = __TIME__[0]; // Hour[0]
+  FileName[14] = __TIME__[1]; // Hour[1]
   FileName[15] = '_';
-  FileName[16] = __TIME__[3];
-  FileName[17] = __TIME__[4];
+  FileName[16] = __TIME__[3]; // Min[0]
+  FileName[17] = __TIME__[4]; // Min[1]
   FileName[18] = '_';
-  FileName[19] = __TIME__[6];
-  FileName[20] = __TIME__[7];  
+  FileName[19] = __TIME__[6]; // Sec[0]
+  FileName[20] = __TIME__[7]; // Sec[1]
   FileName[21] = '.';
   FileName[22] = 't';
   FileName[23] = 'x';
