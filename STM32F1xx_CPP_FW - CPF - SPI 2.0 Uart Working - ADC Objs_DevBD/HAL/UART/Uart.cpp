@@ -12,7 +12,7 @@
 namespace HAL
 {
   
-  Uart::Uart(UartPort_t uartport,uint32_t Baudrate) : m_Baudrate(Baudrate)
+  Uart::Uart(UartPort_t uartport,uint32_t Baudrate) : m_Baudrate(Baudrate),m_UartPort(uartport)
 #if UART_INTR || UART_DMA 
   ,m_Transaction{0,nullptr,nullptr}
 #endif
@@ -21,36 +21,7 @@ namespace HAL
   m_UART_DMA_Rx_Callback(this)
 #endif
   {
-    if(uartport == UART1_A9_A10)
-    {
-      m_UARTx = USART1;
-    }
-    else if(uartport == UART2_A2_A3)
-    {
-      m_UARTx = USART2;
-    }
-#if defined(USART3)
-    else if(uartport == UART3_B10_B11)
-    {
-      m_UARTx = USART3;
-    }
-#endif
-#if defined(USART4)
-    else if(uartport == UART4_C10_C11)
-    {
-      m_UARTx = USART4;
-    }
-#endif
-#if defined(USART5)
-    else if(uartport == UART1_A9_A10)
-    {
-      m_UARTx = USART5;
-    }
-#endif
-    else 
-    {
-      while(1);
-    }
+    
   }
   
   void Uart::PinsHwInit(Port_t TxPort, PIN_t TxPin,Port_t RxPort, PIN_t RxPin)
@@ -62,15 +33,15 @@ namespace HAL
     Rx.HwInit(INPUT_PULLDOWN);
   }
   
-  Uart::UartStatus_t Uart::HwInit(uint32_t Baudrate)
+  Uart::UartStatus_t Uart::HwInit(uint32_t Baudrate, uint32_t Stop, uint32_t Parity)
   {   
     LL_USART_InitTypeDef USART_InitStruct;
     m_Baudrate = Baudrate;
     /* Set USART_InitStruct fields to default values */
     USART_InitStruct.BaudRate            = m_Baudrate;
     USART_InitStruct.DataWidth           = LL_USART_DATAWIDTH_8B;
-    USART_InitStruct.StopBits            = LL_USART_STOPBITS_1;
-    USART_InitStruct.Parity              = LL_USART_PARITY_NONE ;
+    USART_InitStruct.StopBits            = Stop;
+    USART_InitStruct.Parity              = Parity ;
     USART_InitStruct.TransferDirection   = LL_USART_DIRECTION_TX_RX;
     USART_InitStruct.HardwareFlowControl = LL_USART_HWCONTROL_NONE;
 #if defined(USART_CR1_OVER8)
@@ -92,10 +63,70 @@ namespace HAL
     DMAConfig.Priority                = LL_DMA_PRIORITY_LOW;
 #endif 
     
+    if(m_UartPort == UART1_A9_A10)
+    {
+      m_UARTx = USART1;
+    }
+    else if(m_UartPort == UART1_B6_B7)
+    {
+      m_UARTx = USART1;
+      AFIO->MAPR |= AFIO_MAPR_USART1_REMAP;
+    }
+    else if(m_UartPort == UART2_A2_A3)
+    {
+      m_UARTx = USART2;
+    }
+    else if(m_UartPort == UART2_D5_D6)
+    {
+      m_UARTx = USART2;
+      AFIO->MAPR |= AFIO_MAPR_USART2_REMAP;
+    }
+#if defined(USART3)
+    else if(m_UartPort == UART3_B10_B11)
+    {
+      m_UARTx = USART3;
+    }
+    else if(m_UartPort == UART3_C10_C11)
+    {
+      m_UARTx = USART3;
+      AFIO->MAPR |= AFIO_MAPR_USART3_REMAP; 
+    }
+    else if(m_UartPort == UART3_D8_D9)
+    {
+      m_UARTx = USART3;
+      AFIO->MAPR |= AFIO_MAPR_USART3_REMAP_FULLREMAP; 
+    }
+#endif
+#if defined(USART4)
+    else if(m_UartPort == UART4_C10_C11)
+    {
+      m_UARTx = USART4;
+    }
+#endif
+#if defined(USART5)
+    else if(m_UartPort == UART1_A9_A10)
+    {
+      m_UARTx = USART5;
+    }
+#endif
+    else 
+    {
+      while(1);
+    }
+    
     if(m_UARTx == USART1)
     {
       LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_USART1);
-      PinsHwInit(A9,A10);
+      
+      if(m_UartPort == UART1_B6_B7)
+      {
+        PinsHwInit(B6,B7);
+      }
+      else                   
+      {
+        PinsHwInit(A9,A10);
+      }
+        
       
 #if UART_INTR 
       InterruptManagerInstance.RegisterDeviceInterrupt(USART1_IRQn,0,this);
@@ -112,7 +143,17 @@ namespace HAL
     else if(m_UARTx == USART2)
     {
       LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART2);
-      PinsHwInit(A2,A3);
+      
+      
+      if(m_UartPort == UART2_D5_D6)
+      {
+        PinsHwInit(D5,D6);
+      }
+      else                   
+      {
+        PinsHwInit(A2,A3);
+      }
+      
 #if UART_INTR 
       InterruptManagerInstance.RegisterDeviceInterrupt(USART2_IRQn,0,this);
 #endif
@@ -129,8 +170,21 @@ namespace HAL
 #if defined(USART3)
     else if(m_UARTx == USART3)
     {
-      LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART3);
-      PinsHwInit(B10,B11);
+      LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART3);      
+      
+      if(m_UartPort == UART3_C10_C11)
+      {
+        PinsHwInit(C10,C11);
+      }
+      else if(m_UartPort == UART3_D8_D9)
+      {
+        PinsHwInit(D8,D9);
+      }
+      else                   
+      {
+        PinsHwInit(B10,B11);
+      }
+      
 #if UART_INTR 
       InterruptManagerInstance.RegisterDeviceInterrupt(USART3_IRQn,0,this);
 #endif
@@ -508,15 +562,15 @@ namespace HAL
     dma1.Load(m_Curent_DMA_Tx_Channel, (uint32_t)&(m_UARTx->DR),(uint32_t)Buf,len, LL_DMA_DIRECTION_MEMORY_TO_PERIPH, LL_DMA_PDATAALIGN_BYTE);
   }
   
-  void Uart::UART_DMA_Tx_Callback::ISR( )
-  {      
-    _this->UART_DMA_Tx_Done_Handler(); 
-  }
-  
-  void Uart::UART_DMA_Rx_Callback::ISR( )
-  {      
-    _this->UART_DMA_Rx_Done_Handler(); 
-  }
+//  void Uart::UART_DMA_Tx_Callback::ISR( )
+//  {      
+//    _this->UART_DMA_Tx_Done_Handler(); 
+//  }
+//  
+//  void Uart::UART_DMA_Rx_Callback::ISR( )
+//  {      
+//    _this->UART_DMA_Rx_Done_Handler(); 
+//  }
 #endif // UART_DMA 
   
   

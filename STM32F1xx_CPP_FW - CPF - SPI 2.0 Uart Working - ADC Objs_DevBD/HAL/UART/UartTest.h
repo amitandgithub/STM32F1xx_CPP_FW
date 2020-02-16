@@ -24,14 +24,12 @@ public:
 UartCallback_t UartCallback;
 
 void Uart_Test()
-{
-  
+{  
   static uint16_t Error = 0;
-  uint8_t count=0;
   static bool InitDone;  
   if(InitDone == false)
   {
-    uart1.HwInit(9600);
+    uart1.HwInit();
     InitDone = true;
   }
   
@@ -57,7 +55,7 @@ void Uart_Test()
 #endif
 
 #if UART_DMA
-
+  // DMA Test
   uart_Rx_Done = 0;
   uart1.RxDMA(Uart_RxBuf, sizeof("Amit Chaudhary")-1,&UartCallback);
   while(uart_Rx_Done == 0);    

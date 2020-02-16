@@ -106,7 +106,7 @@ namespace HAL
     
     ~Uart(){};
 
-    UartStatus_t HwInit(uint32_t Baudrate);
+    UartStatus_t HwInit(uint32_t Baudrate = 9600, uint32_t Stop = LL_USART_STOPBITS_1, uint32_t Parity = LL_USART_PARITY_NONE);
     
     UartStatus_t HwDeinit();
     
@@ -155,7 +155,7 @@ namespace HAL
     {
     public:
       UART_DMA_Rx_Callback(Uart* This):_this(This){};
-      virtual void ISR() ;
+      virtual void ISR(){_this->UART_DMA_Tx_Done_Handler();}
     private:
       Uart* _this;
     }; 
@@ -164,7 +164,7 @@ namespace HAL
     {
     public:
       UART_DMA_Tx_Callback(Uart* This):_this(This){};
-      virtual void ISR() ;
+      virtual void ISR(){_this->UART_DMA_Tx_Done_Handler();}
     private:
       Uart* _this;
     }; 
@@ -174,7 +174,8 @@ namespace HAL
     void UART_DMA_Rx_Done_Handler();
 #endif
     
-  private:   
+  private:  
+    UartPort_t                  m_UartPort;
     UARTx_t                     m_UARTx;    
     uint32_t                    m_Baudrate;
     volatile UartState_t        m_UARTState;         /* It must be volatile becoz it is shared between ISR and main loop */   

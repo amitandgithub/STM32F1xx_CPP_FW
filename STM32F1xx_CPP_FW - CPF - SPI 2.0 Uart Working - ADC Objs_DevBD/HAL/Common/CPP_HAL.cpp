@@ -88,7 +88,14 @@ namespace HAL
     while( CDC_Transmit_FS(Buf,Len) != USBD_OK);
 #endif   
   }
-  
+
+  void DBG_PRINT_NL()
+  {
+    uint8_t arr[3] = "\r\n";
+#if USB_DEVICE
+    while( CDC_Transmit_FS(arr,2) != USBD_OK);
+#endif   
+  }  
   
   
   
