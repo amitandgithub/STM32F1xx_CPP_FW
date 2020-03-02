@@ -43,7 +43,7 @@ void Timer_Test()
   tim_buf[12] = '\r';
   TglPin.HwInit();
 
-  //GPT_Test();
+  GPT_Test();
   PulseIn_Test();
   //IR_Test();
 }
@@ -71,10 +71,9 @@ void PulseIn_Test()
 {  
   static HAL::PulseIn<(uint32_t)TIM2,TIM2_CH1_PIN_A0,8000000UL,nullptr> PulseInn;
   PulseInn.HwInit();  
-  //IR_RC5_Init();
   while(1)
   {
-    //IR_RC5_Decode(&RC5_FRAME);    
+  
   }
 }
   

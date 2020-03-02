@@ -196,11 +196,10 @@ namespace HAL
         }
         
         {
-          GpioInput       TimerPin(port,pin);
+          GpioInput TimerPin(port,pin);
           TimerPin.HwInit(INPUT_FLOATING);  // Input , No Pull
         }
-      }
-    
+      }    
     
     template<uint32_t Timerx, TimerChanel_t Chanel, uint32_t Tick, Callback* CB>
       void PulseIn<Timerx,Chanel, Tick, CB>::ISR()
@@ -213,12 +212,12 @@ namespace HAL
         if(LL_TIM_IsActiveFlag_CC1(m_TIMx))
         {
           LL_TIM_ClearFlag_CC1(m_TIMx);
-          ICValue1 = m_Ticks; //LL_TIM_OC_GetCompareCH1(m_TIMx);         
+          ICValue1 = m_Ticks;  
         }    
         if(LL_TIM_IsActiveFlag_CC2(m_TIMx))
         {
           LL_TIM_ClearFlag_CC2(m_TIMx);
-          ICValue2 = m_Ticks; //LL_TIM_OC_GetCompareCH2(m_TIMx);  
+          ICValue2 = m_Ticks;
           
           Width = (ICValue2 - ICValue1)<<3;
         }

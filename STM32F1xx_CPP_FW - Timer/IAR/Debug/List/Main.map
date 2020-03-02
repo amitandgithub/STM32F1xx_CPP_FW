@@ -1,0 +1,1118 @@
+###############################################################################
+#
+# IAR ELF Linker V8.40.2.214/W32 for ARM                  18/Feb/2020  10:25:47
+# Copyright 2007-2019 IAR Systems AB.
+#
+#    Output file  =
+#        C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Exe\Main.out
+#    Map file     =
+#        C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\List\Main.map
+#    Command line =
+#        -f C:\Users\AMITCH~1\AppData\Local\Temp\EW2417.tmp
+#        ("C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\ADC.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\BMP280.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\BtnInt.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\BtnPoll.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\CmdSvr.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\ControlScreen.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\CPP_HAL.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\DigitalIO_Test.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\diskio.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\DisplayBuffer.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\DMA.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\fat_sd_spi.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\ff.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\fonts.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\GpioInput.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\GpioOutput.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\HwButton.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\I2c.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\I2C_Commands.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\I2C_Test.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\INA219.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\InterruptHandlers.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\InterruptManager.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\ir_decode.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\Irda.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\main.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\Mlx90615.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\NokiaLCD.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\Power_Monitor.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\printf.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\rc5_decode.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\RTC.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\Screen.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\Spi.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\ssd1306.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\ssd1306_Test.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\ST7735.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\ST7735_1.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\st7735fonts.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\startup_stm32f103xb.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_hal.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_hal_cortex.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_hal_dma.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_hal_gpio.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_hal_pcd.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_hal_pcd_ex.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_hal_rcc.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_hal_rcc_ex.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_hal_tim.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_hal_tim_ex.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_it.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_adc.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_dma.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_exti.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_gpio.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_i2c.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_pwr.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_rcc.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_rtc.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_spi.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_tim.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_usart.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_usb.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\stm32f1xx_ll_utils.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\System.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\system_stm32f1xx.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\Uart.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\UI.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\usb_device.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\usbd_cdc.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\usbd_cdc_if.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\usbd_conf.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\usbd_core.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\usbd_ctlreq.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\usbd_desc.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\usbd_ioreq.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\Utils.o"
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Obj\w25qxx.o" --no_out_extension -o
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\Exe\Main.out" --redirect _Printf=_PrintfFullNoMb
+#        --redirect _Scanf=_ScanfFullNoMb --map
+#        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW -
+#        Timer\IAR\Debug\List\Main.map" --config "C:\Program Files (x86)\IAR
+#        Systems\STM32 ARM\arm\config\linker\ST\stm32f103x8.icf" --semihosting
+#        --entry __iar_program_start --vfe --text_out locale)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor                     = *
+__CPP_Exceptions              = Disabled
+__CPP_Language                = C++14
+__Heap_Handler                = Basic
+__SystemLibrary               = DLib
+__dlib_dynamic_initialization = normal
+__dlib_version                = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because some modules are built with
+size limitations (and not runtime checking), and --advanced_heap
+was not specified.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at address 0x800'0000 { ro section .intvec };
+"P1":  place in [from 0x800'0000 to 0x800'ffff] { ro };
+define block CSTACK with size = 2K, alignment = 8 { };
+define block HEAP with size = 2K, alignment = 8 { };
+"P2":  place in [from 0x2000'0000 to 0x2000'4fff] {
+          rw, block CSTACK, block HEAP };
+initialize by copy { rw };
+
+  Section                Kind         Address    Size  Object
+  -------                ----         -------    ----  ------
+"A0":                                            0xec
+  .intvec                ro code   0x800'0000    0xec  startup_stm32f103xb.o [1]
+                                 - 0x800'00ec    0xec
+
+"P1":                                          0x47e3
+  .text                  ro code   0x800'00ec   0x6c2  stm32f1xx_ll_usb.o [1]
+  .text                  ro code   0x800'07ae   0x6bc  stm32f1xx_hal_pcd.o [1]
+  .text                  ro code   0x800'0e6a    0x3a  zero_init3.o [5]
+  .text                  ro code   0x800'0ea4   0x240  usbd_conf.o [1]
+  .text                  ro code   0x800'10e4    0x86  ABImemcpy.o [5]
+  .rodata                const     0x800'116a     0x1  unwind_debug.o [6]
+  .text                  ro code   0x800'116c    0xc8  stm32f1xx_hal_cortex.o [1]
+  .text                  ro code   0x800'1234   0x286  usbd_core.o [1]
+  .text                  ro code   0x800'14ba    0x32  stm32f1xx_hal_pcd_ex.o [1]
+  .text                  ro code   0x800'14ec   0x50a  usbd_ctlreq.o [1]
+  .text                  ro code   0x800'19f6    0x60  usbd_ioreq.o [1]
+  .text                  ro code   0x800'1a58   0x424  InterruptHandlers.o [1]
+  .text                  ro code   0x800'1e7c    0x10  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'1e8c   0x3cc  Spi.o [1]
+  .text                  ro code   0x800'2258   0x14c  CPP_HAL.o [1]
+  .text                  ro code   0x800'23a4    0x2e  Spi.o [1]
+  .text                  ro code   0x800'23d2    0x1a  Spi.o [1]
+  .text                  ro code   0x800'23ec    0xf8  DMA.o [1]
+  .text                  ro code   0x800'24e4   0x190  GpioOutput.o [1]
+  .text                  ro code   0x800'2674    0x4a  I2c.o [1]
+  .text                  ro code   0x800'26be     0xa  cxxabi.o [3]
+  .text                  ro code   0x800'26c8     0x6  INA219.o [1]
+  .text                  ro code   0x800'26d0    0x52  NokiaLCD.o [1]
+  .text                  ro code   0x800'2724    0x54  ST7735.o [1]
+  .text                  ro code   0x800'2778   0x318  Uart.o [1]
+  .text                  ro code   0x800'2a90     0x8  ADC.o [1]
+  .text                  ro code   0x800'2a98    0xa0  cppinit.o [2]
+  .text                  ro code   0x800'2b38   0x320  main.o [1]
+  .text                  ro code   0x800'2e58    0x14  w25qxx.o [1]
+  .text                  ro code   0x800'2e6c    0x14  Irda.o [1]
+  .text                  ro code   0x800'2e80   0x20c  RTC.o [1]
+  .text                  ro code   0x800'308c    0xd4  main.o [1]
+  .text                  ro code   0x800'3160    0x26  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'3188    0x48  usb_device.o [1]
+  .text                  ro code   0x800'31d0     0xc  stm32f1xx_ll_utils.o [1]
+  .text                  ro code   0x800'31dc    0x78  usbd_cdc_if.o [1]
+  .text                  ro code   0x800'3254    0x60  InterruptManager.o [1]
+  .text                  ro code   0x800'32b4   0x158  stm32f1xx_ll_rtc.o [1]
+  .text                  ro code   0x800'340c    0x5e  Utils.o [1]
+  .text                  ro code   0x800'346c    0x38  main.o [1]
+  .text                  ro code   0x800'34a4    0x34  main.o [1]
+  .text                  ro code   0x800'34d8    0x20  main.o [1]
+  .text                  ro code   0x800'34f8   0x158  stm32f1xx_ll_tim.o [1]
+  .text                  ro code   0x800'3650    0x40  stm32f1xx_hal.o [1]
+  .text                  ro code   0x800'3690   0x2cc  usbd_cdc.o [1]
+  .text                  ro code   0x800'395c    0x66  ABImemset.o [5]
+  .text                  ro code   0x800'39c4   0x234  GpioInput.o [1]
+  .rodata                const     0x800'3bf8   0x240  DisplayBuffer.o [1]
+  .text                  ro code   0x800'3e38   0x160  DisplayBuffer.o [1]
+  .text                  ro code   0x800'3f98    0xf0  usbd_desc.o [1]
+  .rodata                const     0x800'4088    0xb0  Power_Monitor.o [1]
+  .text                  ro code   0x800'4138    0xa4  ControlScreen.o [1]
+  .text                  ro code   0x800'41dc    0x3c  Screen.o [1]
+  .text                  ro code   0x800'4218    0xa4  Power_Monitor.o [1]
+  .text                  ro code   0x800'42bc    0x1e  HwButton.o [1]
+  .text                  ro code   0x800'42dc    0x20  UI.o [1]
+  .text                  ro code   0x800'42fc    0x78  lz77_init_single.o [5]
+  .text                  ro code   0x800'4374    0x50  system_stm32f1xx.o [1]
+  .text                  ro code   0x800'43c4    0x44  main.o [1]
+  .rodata                const     0x800'4408    0x40  GpioInput.o [1]
+  .rodata                const     0x800'4448    0x40  GpioOutput.o [1]
+  .text                  ro code   0x800'4488    0x38  ST7735_1.o [1]
+  .text                  ro code   0x800'44c0    0x2c  iarttio.o [6]
+  .text                  ro code   0x800'44ec     0xc  XShttio.o [2]
+  .text                  ro code   0x800'44f8    0x28  data_init.o [5]
+  .iar.init_table        const     0x800'4520    0x24  - Linker created -
+  .text                  ro code   0x800'4544    0x20  main.o [1]
+  .text                  ro code   0x800'4564    0x20  cmain_call_ctors.o [5]
+  .text                  ro code   0x800'4584    0x1e  cmain.o [5]
+  .text                  ro code   0x800'45a2     0x4  low_level_init.o [2]
+  .text                  ro code   0x800'45a6     0x4  exit.o [2]
+  .text                  ro code   0x800'45ac     0xe  cexit.o [5]
+  .text                  ro code   0x800'45bc    0x14  exit.o [6]
+  .text                  ro code   0x800'45d0    0x18  fat_sd_spi.o [1]
+  .rodata                const     0x800'45e8    0x14  ControlScreen.o [1]
+  .rodata                const     0x800'45fc    0x14  GpioInput.o [1]
+  .rodata                const     0x800'4610    0x14  I2c.o [1]
+  .rodata                const     0x800'4624    0x14  Irda.o [1]
+  .rodata                const     0x800'4638    0x14  main.o [1]
+  .rodata                const     0x800'464c    0x14  main.o [1]
+  .rodata                const     0x800'4660    0x14  main.o [1]
+  .rodata                const     0x800'4674    0x14  Power_Monitor.o [1]
+  .rodata                const     0x800'4688    0x14  Power_Monitor.o [1]
+  .rodata                const     0x800'469c    0x14  Power_Monitor.o [1]
+  .rodata                const     0x800'46b0    0x14  RTC.o [1]
+  .rodata                const     0x800'46c4    0x14  Screen.o [1]
+  .rodata                const     0x800'46d8    0x14  Spi.o [1]
+  .rodata                const     0x800'46ec    0x14  Spi.o [1]
+  .rodata                const     0x800'4700    0x14  Spi.o [1]
+  .rodata                const     0x800'4714    0x14  Uart.o [1]
+  .rodata                const     0x800'4728    0x14  Uart.o [1]
+  .rodata                const     0x800'473c    0x14  Uart.o [1]
+  SHT$$PREINIT_ARRAY               0x800'4750     0x0  <Block>
+  SHT$$INIT_ARRAY                  0x800'4750    0x14  <Block>
+    .init_array          const     0x800'4750     0x4  CPP_HAL.o [1]
+    .init_array          const     0x800'4754     0x4  fat_sd_spi.o [1]
+    .init_array          const     0x800'4758     0x4  main.o [1]
+    .init_array          const     0x800'475c     0x4  Power_Monitor.o [1]
+    .init_array          const     0x800'4760     0x4  ST7735_1.o [1]
+  __iar_tls$$INIT_ARRAY            0x800'4764     0x0  <Block>
+  .text                  ro code   0x800'4764    0x10  main.o [1]
+  .text                  ro code   0x800'4774    0x10  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'4784    0x10  stm32f1xx_it.o [1]
+  .text                  ro code   0x800'4794     0xc  Power_Monitor.o [1]
+  .text                  ro code   0x800'47a0     0xc  Power_Monitor.o [1]
+  .text                  ro code   0x800'47ac     0xc  Power_Monitor.o [1]
+  .text                  ro code   0x800'47b8     0xc  cstartup_M.o [5]
+  .text                  ro code   0x800'47c4     0x6  Uart.o [1]
+  .text                  ro code   0x800'47ca     0x6  Uart.o [1]
+  .text                  ro code   0x800'47d0     0x0  cstart_call_dtors.o [5]
+  .rodata                const     0x800'47d0     0x0  zero_init3.o [5]
+  .rodata                const     0x800'47d0     0x0  lz77_init_single.o [5]
+  Initializer bytes      const     0x800'47d0    0xff  <for P2-1>
+                                 - 0x800'48cf  0x47e3
+
+"P2", part 1 of 3:                              0x698
+  P2-1                            0x2000'0000   0x698  <Init block>
+    .data                inited   0x2000'0000    0x10  CPP_HAL.o [1]
+    .data                inited   0x2000'0010    0x18  main.o [1]
+    .data                inited   0x2000'0028   0x4e8  Power_Monitor.o [1]
+    .data                inited   0x2000'0510     0xc  stm32f1xx_hal.o [1]
+    .data                inited   0x2000'051c     0x4  system_stm32f1xx.o [1]
+    .data                inited   0x2000'0520     0xc  usbd_cdc.o [1]
+    .data                inited   0x2000'052c    0x38  usbd_cdc.o [1]
+    .data                inited   0x2000'0564    0x44  usbd_cdc.o [1]
+    .data                inited   0x2000'05a8    0x44  usbd_cdc.o [1]
+    .data                inited   0x2000'05ec    0x44  usbd_cdc.o [1]
+    .data                inited   0x2000'0630    0x10  usbd_cdc_if.o [1]
+    .data                inited   0x2000'0640    0x1c  usbd_desc.o [1]
+    .data                inited   0x2000'065c    0x14  usbd_desc.o [1]
+    .data                inited   0x2000'0670     0x4  usbd_desc.o [1]
+    .data                inited   0x2000'0674    0x1c  usbd_desc.o [1]
+    .data                inited   0x2000'0690     0x8  XShttio.o [2]
+                                - 0x2000'0698   0x698
+
+"P2", part 2 of 3:                             0x1648
+  .bss                   zero     0x2000'0698   0x7d0  usbd_cdc_if.o [1]
+  .bss                   zero     0x2000'0e68   0x2c4  usb_device.o [1]
+  .bss                   zero     0x2000'112c   0x26c  usbd_conf.o [1]
+  .bss                   zero     0x2000'1398   0x220  usbd_conf.o [1]
+  .bss                   zero     0x2000'15b8   0x20c  CPP_HAL.o [1]
+  .bss                   zero     0x2000'17c4   0x200  usbd_desc.o [1]
+  .bss                   zero     0x2000'19c4   0x100  InterruptManager.o [1]
+  .bss                   zero     0x2000'1ac4    0xfc  main.o [1]
+  .bss                   zero     0x2000'1bc0    0x40  CPP_HAL.o [1]
+  .bss                   zero     0x2000'1c00    0x34  main.o [1]
+  .bss                   zero     0x2000'1c34    0x2c  UI.o [1]
+  .bss                   zero     0x2000'1c60    0x28  Power_Monitor.o [1]
+  .bss                   zero     0x2000'1c88    0x1c  ST7735_1.o [1]
+  .bss                   zero     0x2000'1ca4    0x18  main.o [1]
+  .bss                   zero     0x2000'1cbc     0x8  fat_sd_spi.o [1]
+  .bss                   zero     0x2000'1cc4     0x8  main.o [1]
+  .bss                   zero     0x2000'1ccc     0x4  CPP_HAL.o [1]
+  .bss                   zero     0x2000'1cd0     0x4  InterruptManager.o [1]
+  .bss                   zero     0x2000'1cd4     0x4  cppinit.o [2]
+  .bss                   zero     0x2000'1cd8     0x4  cppinit.o [2]
+  .bss                   zero     0x2000'1cdc     0x1  CPP_HAL.o [1]
+  .bss                   zero     0x2000'1cdd     0x1  usbd_ctlreq.o [1]
+                                - 0x2000'1cde  0x1646
+
+"P2", part 3 of 3:                              0x9b0
+  .iar.dynexit                    0x2000'1ce0   0x1b0  <Block>
+    .iar.dynexit         uninit   0x2000'1ce0     0xc  cppinit.o [2]
+    .iar.dynexit         uninit   0x2000'1cec   0x1a4  <Block tail>
+  CSTACK                          0x2000'1e90   0x800  <Block>
+    CSTACK               uninit   0x2000'1e90   0x800  <Block tail>
+                                - 0x2000'2690   0x9b0
+
+Unused ranges:
+
+         From           To    Size
+         ----           --    ----
+   0x800'48cf   0x800'ffff  0xb731
+  0x2000'2690  0x2000'4fff  0x2970
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address      Size
+          -------      ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0x1646:
+          0x2000'0698  0x1646
+
+Copy/lz77 (__iar_lz77_init_single3)
+    1 source range, total size 0xff (15% of destination):
+           0x800'47d0    0xff
+    1 destination range, total size 0x698:
+          0x2000'0000   0x698
+
+Extra (__iar_cstart_call_ctors)
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                  ro code  ro data  rw data
+    ------                  -------  -------  -------
+command line/config:
+    -------------------------------------------------
+    Total:
+
+C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - Timer\IAR\Debug\Obj: [1]
+    ADC.o                         8
+    CPP_HAL.o                   332        6      609
+    ControlScreen.o             164       20
+    DMA.o                       248
+    DisplayBuffer.o             352      576
+    GpioInput.o                 564       84
+    GpioOutput.o                400       64
+    HwButton.o                   30
+    I2c.o                        74       20
+    INA219.o                      6
+    InterruptHandlers.o       1'060
+    InterruptManager.o           96               260
+    Irda.o                       20       20
+    NokiaLCD.o                   82
+    Power_Monitor.o             200      429    1'296
+    RTC.o                       524       20
+    ST7735.o                     84
+    ST7735_1.o                   56        4       28
+    Screen.o                     60       20
+    Spi.o                     1'044       60
+    UI.o                         32                44
+    Uart.o                      804       60
+    Utils.o                      94
+    fat_sd_spi.o                 24        4        8
+    main.o                    1'268       68      360
+    startup_stm32f103xb.o       252
+    stm32f1xx_hal.o             118        2       12
+    stm32f1xx_hal_cortex.o      200
+    stm32f1xx_hal_pcd.o       1'724
+    stm32f1xx_hal_pcd_ex.o       50
+    stm32f1xx_it.o               16
+    stm32f1xx_ll_rtc.o          344
+    stm32f1xx_ll_tim.o          344
+    stm32f1xx_ll_usb.o        1'730
+    stm32f1xx_ll_utils.o         12
+    system_stm32f1xx.o           80        1        4
+    usb_device.o                 72               708
+    usbd_cdc.o                  716       41      272
+    usbd_cdc_if.o               120        2    2'016
+    usbd_conf.o                 576             1'164
+    usbd_core.o                 646
+    usbd_ctlreq.o             1'290                 1
+    usbd_desc.o                 240       12      592
+    usbd_ioreq.o                 96
+    w25qxx.o                     20
+    -------------------------------------------------
+    Total:                   16'272    1'513    7'374
+
+dl7M_tln.a: [2]
+    XShttio.o                    12        2        8
+    cppinit.o                   160                20
+    exit.o                        4
+    low_level_init.o              4
+    -------------------------------------------------
+    Total:                      180        2       28
+
+dlpp7M_tl_nc.a: [3]
+    cxxabi.o                     10
+    -------------------------------------------------
+    Total:                       10
+
+m7M_tl.a: [4]
+    -------------------------------------------------
+    Total:
+
+rt7M_tl.a: [5]
+    ABImemcpy.o                 134
+    ABImemset.o                 102
+    cexit.o                      14
+    cmain.o                      30
+    cmain_call_ctors.o           32
+    cstart_call_dtors.o
+    cstartup_M.o                 12
+    data_init.o                  40
+    lz77_init_single.o          120
+    zero_init3.o                 58
+    -------------------------------------------------
+    Total:                      542
+
+shb_l.a: [6]
+    exit.o                       20
+    iarttio.o                    44
+    unwind_debug.o                         1
+    -------------------------------------------------
+    Total:                       64        1
+
+    Gaps                         19
+    Linker created                        36    2'468
+-----------------------------------------------------
+    Grand Total:             17'087    1'552    9'870
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address   Size  Type      Object
+-----                       -------   ----  ----      ------
+.iar.dynexit$$Base      0x2000'1ce0          --   Gb  - Linker created -
+.iar.dynexit$$Limit     0x2000'1e90          --   Gb  - Linker created -
+.iar.init_table$$Base    0x800'4520          --   Gb  - Linker created -
+.iar.init_table$$Limit   0x800'4544          --   Gb  - Linker created -
+?main                    0x800'4585         Code  Gb  cmain.o [5]
+ACS_IN                  0x2000'1b54    0x8  Data  Gb  main.o [1]
+ADC1_2_IRQHandler        0x800'1c03   0x18  Code  Gb  InterruptHandlers.o [1]
+Adc_Test()::InitDone    0x2000'1ad8    0x1  Data  Lc  main.o [1]
+B9_HwBtnInt             0x2000'0088   0x34  Data  Gb  Power_Monitor.o [1]
+BSP::ControlScreen::ControlScreen(char *)
+                         0x800'4139    0x8  Code  Gb  ControlScreen.o [1]
+BSP::ControlScreen::~ControlScreen()
+                         0x800'4195   0x30  Code  Gb  ControlScreen.o [1]
+BSP::DisplayBuffer::DrawBuffer(char const *, unsigned char)
+                         0x800'3ef5   0x38  Code  Gb  DisplayBuffer.o [1]
+BSP::DisplayBuffer::DrawChar(unsigned char, unsigned char, char, unsigned char)
+                         0x800'3e39   0xb6  Code  Gb  DisplayBuffer.o [1]
+BSP::DisplayBuffer::DrawStr(unsigned char, unsigned char, char const *, unsigned char, unsigned char)
+                         0x800'3f61   0x38  Code  Gb  DisplayBuffer.o [1]
+BSP::DisplayBuffer::InvertRow(unsigned char)
+                         0x800'3f2d   0x34  Code  Gb  DisplayBuffer.o [1]
+BSP::HwButton::HwButton(Port_t, unsigned short)
+                         0x800'42bd    0x2  Code  Gb  HwButton.o [1]
+BSP::INA219::INA219(unsigned char)
+                         0x800'26c9    0x4  Code  Gb  INA219.o [1]
+BSP::INA219::~INA219()   0x800'26cd    0x2  Code  Gb  INA219.o [1]
+BSP::NokiaLCD::NokiaLCD(HAL::Spi *, Port_t, unsigned short, Port_t, unsigned short, Port_t, unsigned short, Port_t, unsigned short)
+                         0x800'26d1   0x52  Code  Gb  NokiaLCD.o [1]
+BSP::ST7735::ST7735(BSP::ST7735::ST77xx_t, HAL::Spi *, Port_t, unsigned short, Port_t, unsigned short, Port_t, unsigned short, Port_t, unsigned short)
+                         0x800'2725   0x54  Code  Gb  ST7735.o [1]
+BSP::Screen::Screen(char *)
+                         0x800'41e3    0x2  Code  Gb  Screen.o [1]
+BSP::Screen::Screen(char *) [subobject]
+                         0x800'41dd    0x4  Code  Gb  Screen.o [1]
+BSP::Screen::~Screen()   0x800'4209    0x2  Code  Gb  Screen.o [1]
+BSP::Screen::~Screen() [subobject]
+                         0x800'41e1    0x2  Code  Gb  Screen.o [1]
+BSP::UI::ActiveScreen   0x2000'1c34    0x1  Data  Gb  UI.o [1]
+BSP::UI::GoToNextScreen()
+                         0x800'42e1   0x16  Code  Gb  UI.o [1]
+BSP::UI::PreviousActiveScreen
+                        0x2000'1c35    0x1  Data  Gb  UI.o [1]
+BSP::UI::TotalAddeedScreens
+                        0x2000'1c36    0x1  Data  Gb  UI.o [1]
+BSP::UI::UI(BSP::NokiaLCD *)
+                         0x800'42dd    0x4  Code  Gb  UI.o [1]
+BSP::UI::m_Screens      0x2000'1c38   0x28  Data  Gb  UI.o [1]
+BSP::w25qxx::w25qxx(HAL::Spi *, Port_t, unsigned short)
+                         0x800'2e59    0x2  Code  Gb  w25qxx.o [1]
+BusFault_Handler         0x800'478b    0x2  Code  Gb  stm32f1xx_it.o [1]
+CAN1_RX1_IRQHandler      0x800'1c39   0x18  Code  Gb  InterruptHandlers.o [1]
+CAN1_SCE_IRQHandler      0x800'1c51   0x18  Code  Gb  InterruptHandlers.o [1]
+CDC_ReceiveCallback      0x800'2d99    0x2  Code  Gb  main.o [1]
+CDC_Transmit_FS          0x800'3225   0x26  Code  Gb  usbd_cdc_if.o [1]
+CHANNEL_OFFSET_TAB       0x800'24dc    0x8  Data  Lc  DMA.o [1]
+CHANNEL_OFFSET_TAB       0x800'2250    0x8  Data  Lc  Spi.o [1]
+CHANNEL_OFFSET_TAB       0x800'2a88    0x8  Data  Lc  Uart.o [1]
+CSTACK$$Base            0x2000'1e90          --   Gb  - Linker created -
+CSTACK$$Limit           0x2000'2690          --   Gb  - Linker created -
+ChipTemperature         0x2000'17bc    0x8  Data  Gb  CPP_HAL.o [1]
+ClickCallback::CallbackFunction()
+                         0x800'4795    0xc  Code  Gb  Power_Monitor.o [1]
+ClickCb                 0x2000'00bc    0x4  Data  Gb  Power_Monitor.o [1]
+DMA1_Channel1_IRQHandler
+                         0x800'1b4b   0x1c  Code  Gb  InterruptHandlers.o [1]
+DMA1_Channel2_IRQHandler
+                         0x800'1b67   0x1c  Code  Gb  InterruptHandlers.o [1]
+DMA1_Channel3_IRQHandler
+                         0x800'1b83   0x1c  Code  Gb  InterruptHandlers.o [1]
+DMA1_Channel4_IRQHandler
+                         0x800'1b9f   0x1c  Code  Gb  InterruptHandlers.o [1]
+DMA1_Channel5_IRQHandler
+                         0x800'1bbb   0x18  Code  Gb  InterruptHandlers.o [1]
+DMA1_Channel6_IRQHandler
+                         0x800'1bd3   0x18  Code  Gb  InterruptHandlers.o [1]
+DMA1_Channel7_IRQHandler
+                         0x800'1beb   0x18  Code  Gb  InterruptHandlers.o [1]
+DbgBuf                  0x2000'1b5c   0x64  Data  Gb  main.o [1]
+DebugMon_Handler         0x800'4791    0x2  Code  Gb  stm32f1xx_it.o [1]
+DtorRecArray            0x2000'1ce0    0xc  Data  Lc  cppinit.o [2]
+EXTI0_IRQHandler         0x800'1add   0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI15_10_IRQHandler     0x800'1e01   0x12  Code  Gb  InterruptHandlers.o [1]
+EXTI1_IRQHandler         0x800'1af3   0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI2_IRQHandler         0x800'1b09   0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI3_IRQHandler         0x800'1b1f   0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI4_IRQHandler         0x800'1b35   0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI9_5_IRQHandler       0x800'1c69   0x18  Code  Gb  InterruptHandlers.o [1]
+FLASH_IRQHandler         0x800'1ab1   0x16  Code  Gb  InterruptHandlers.o [1]
+FS_Desc                 0x2000'0640   0x1c  Data  Gb  usbd_desc.o [1]
+FileName                0x2000'0028   0x1c  Data  Gb  Power_Monitor.o [1]
+GPT_Test()::gpt         0x2000'1af8    0x8  Data  Lc  main.o [1]
+GPT_Test()::static guard for gpt
+                        0x2000'1ad9    0x1  Data  Lc  main.o [1]
+HAL::ADC::ADC(ADC_TypeDef *, unsigned int)
+                         0x800'2a91    0x2  Code  Gb  ADC.o [1]
+HAL::DMA::ClearFlag(unsigned int, unsigned int)
+                         0x800'24b9    0xc  Code  Gb  DMA.o [1]
+HAL::DMA::DMA(unsigned int)
+                         0x800'242b    0xa  Code  Gb  DMA.o [1]
+HAL::DMA::GetFlag(unsigned int, unsigned int)
+                         0x800'24c5   0x16  Code  Gb  DMA.o [1]
+HAL::DMA::Load(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)
+                         0x800'2439   0x78  Code  Gb  DMA.o [1]
+HAL::DMA::~DMA()         0x800'2435    0x2  Code  Gb  DMA.o [1]
+HAL::GpioInput::GpioInput(Port_t, unsigned short)
+                         0x800'39f5    0x2  Code  Gb  GpioInput.o [1]
+HAL::GpioInput::HwInit(Mode_t, IntEdge_t, HAL::Callback *)
+                         0x800'3a0d   0xc0  Code  Gb  GpioInput.o [1]
+HAL::GpioInput::ISR()    0x800'3b8f   0x2a  Code  Gb  GpioInput.o [1]
+HAL::GpioInput::SetEXTI_Intr(IntEdge_t)
+                         0x800'3acd   0x48  Code  Gb  GpioInput.o [1]
+HAL::GpioInput::SetInputMode(Mode_t)
+                         0x800'3b15   0x7a  Code  Gb  GpioInput.o [1]
+HAL::GpioOutput::GpioOutput(Port_t, unsigned short)
+                         0x800'252d    0x2  Code  Gb  GpioOutput.o [1]
+HAL::GpioOutput::HwInit(Mode_t, unsigned int)
+                         0x800'253d  0x11c  Code  Gb  GpioOutput.o [1]
+HAL::I2c::I2c(I2cPort_t, unsigned int)
+                         0x800'2675   0x3a  Code  Gb  I2c.o [1]
+HAL::I2c::ISR()          0x800'26bd    0x2  Code  Gb  I2c.o [1]
+HAL::InterruptManager::RegisterDeviceInterrupt(IRQn_Type, unsigned int, HAL::InterruptSource *)
+                         0x800'3255   0x4a  Code  Gb  InterruptManager.o [1]
+HAL::InterruptManager::m_InterruptSourceArray
+                        0x2000'19c4  0x100  Data  Gb  InterruptManager.o [1]
+HAL::InterruptManager::m_SysTick_Handler
+                        0x2000'1cd0    0x4  Data  Gb  InterruptManager.o [1]
+HAL::Irda::Irda(UartPort_t, unsigned int)
+                         0x800'2e6d    0x2  Code  Gb  Irda.o [1]
+HAL::PulseIn<(unsigned int)1073742848, (TimerChanel_t)47, (unsigned int)8000000, (HAL::Callback *)0>::HwInit(LL_TIM_InitTypeDef *)
+                         0x800'308d   0xd4  Code  Gb  main.o [1]
+HAL::PulseIn<(unsigned int)1073742848, (TimerChanel_t)47, (unsigned int)8000000, (HAL::Callback *)0>::ISR()
+                         0x800'43c5   0x44  Code  Gb  main.o [1]
+HAL::Rtc::GetTime(char *)
+                         0x800'2f3f   0x68  Code  Gb  RTC.o [1]
+HAL::Rtc::HwInit(void *)
+                         0x800'2e81   0x82  Code  Gb  RTC.o [1]
+HAL::Rtc::ISR()          0x800'301f   0x54  Code  Gb  RTC.o [1]
+HAL::Rtc::RTC_ReadTimeCounter()
+                         0x800'2fa7   0x22  Code  Gb  RTC.o [1]
+HAL::Rtc::RegisterCallback(HAL::Rtc::CallbackSource_t, HAL::Callback *)
+                         0x800'2fc9   0x56  Code  Gb  RTC.o [1]
+HAL::Rtc::SetTime(unsigned char, unsigned char, unsigned char)
+                         0x800'2f03   0x36  Code  Gb  RTC.o [1]
+HAL::Spi::ISR()          0x800'1f01   0x38  Code  Gb  Spi.o [1]
+HAL::Spi::LoadRxDmaChannel(unsigned char *, unsigned int)
+                         0x800'20f7   0x20  Code  Gb  Spi.o [1]
+HAL::Spi::LoadTxDmaChannel(unsigned char *, unsigned int)
+                         0x800'2117   0x1e  Code  Gb  Spi.o [1]
+HAL::Spi::SPI_DMA_MasterTx_Done_Handler()
+                         0x800'204b   0xac  Code  Gb  Spi.o [1]
+HAL::Spi::SPI_DMA_Rx_Callback::ISR()
+                         0x800'2239    0x4  Code  Gb  Spi.o [1]
+HAL::Spi::SPI_DMA_SlaveRx_Done_Handler()
+                         0x800'2145   0x66  Code  Gb  Spi.o [1]
+HAL::Spi::SPI_DMA_SlaveTx_Done_Handler()
+                         0x800'21ad   0x7a  Code  Gb  Spi.o [1]
+HAL::Spi::SPI_DMA_Tx_Callback::ISR()
+                         0x800'223d   0x12  Code  Gb  Spi.o [1]
+HAL::Spi::SetBaudrate()
+                         0x800'23d3   0x1a  Code  Gb  Spi.o [1]
+HAL::Spi::Spi(SpiPort_t, unsigned int)
+                         0x800'1e8d   0x60  Code  Gb  Spi.o [1]
+HAL::Spi::TxnDoneHandler_DMA()
+                         0x800'1f45  0x106  Code  Gb  Spi.o [1]
+HAL::TglPin1            0x2000'1adc    0x8  Data  Gb  main.o [1]
+HAL::Timer::TimerStatus_t HAL::Timer::HwInit<(unsigned int)1073742848, (unsigned int)8000000>(LL_TIM_InitTypeDef *)
+                         0x800'346d   0x38  Code  Gb  main.o [1]
+HAL::Timer::TimerStatus_t HAL::Timer::HwInit<(unsigned int)8000000, (unsigned int)1073742848>(LL_TIM_InitTypeDef *)
+                         0x800'34a5   0x34  Code  Gb  main.o [1]
+HAL::Uart::ISR()         0x800'27a9  0x118  Code  Gb  Uart.o [1]
+HAL::Uart::UART_DMA_Rx_Callback::ISR()
+                         0x800'47c5    0x6  Code  Gb  Uart.o [1]
+HAL::Uart::UART_DMA_Rx_Done_Handler()
+                         0x800'2991   0xce  Code  Gb  Uart.o [1]
+HAL::Uart::UART_DMA_Tx_Callback::ISR()
+                         0x800'47cb    0x6  Code  Gb  Uart.o [1]
+HAL::Uart::UART_DMA_Tx_Done_Handler()
+                         0x800'28c1   0xd0  Code  Gb  Uart.o [1]
+HAL::Uart::Uart(UartPort_t, unsigned int)
+                         0x800'277b   0x2e  Code  Gb  Uart.o [1]
+HAL::Uart::Uart(UartPort_t, unsigned int) [subobject]
+                         0x800'2779    0x2  Code  Gb  Uart.o [1]
+HAL::WaitOnFlag(unsigned int volatile *, unsigned int, unsigned int, unsigned int)
+                         0x800'2355   0x22  Code  Gb  CPP_HAL.o [1]
+HAL_IncTick              0x800'1e7d   0x10  Code  Wk  stm32f1xx_hal.o [1]
+HAL_Init                 0x800'3161   0x20  Code  Gb  stm32f1xx_hal.o [1]
+HAL_NVIC_EnableIRQ       0x800'11e1    0xa  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HAL_NVIC_SetPriority     0x800'1187   0x5a  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HAL_NVIC_SetPriorityGrouping
+                         0x800'116d   0x1a  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HAL_PCDEx_PMAConfig      0x800'14bb   0x32  Code  Gb  stm32f1xx_hal_pcd_ex.o [1]
+HAL_PCDEx_SetConnectionState
+                         0x800'10e3    0x2  Code  Gb  usbd_conf.o [1]
+HAL_PCD_DataInStageCallback
+                         0x800'0ef5    0xe  Code  Gb  usbd_conf.o [1]
+HAL_PCD_DataOutStageCallback
+                         0x800'0ee5   0x10  Code  Gb  usbd_conf.o [1]
+HAL_PCD_EP_Close         0x800'0d19   0x42  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_EP_ClrStall      0x800'0e17   0x54  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_EP_GetRxCount    0x800'0d79    0xe  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_EP_Open          0x800'0cc5   0x54  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_EP_Receive       0x800'0d5b   0x1e  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_EP_SetStall      0x800'0db1   0x5e  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_EP_Transmit      0x800'0d87   0x1c  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_IRQHandler       0x800'089d  0x3fe  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_Init             0x800'07af   0xc2  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_MspInit          0x800'0ea5   0x34  Code  Gb  usbd_conf.o [1]
+HAL_PCD_ResetCallback    0x800'0f0b   0x1a  Code  Gb  usbd_conf.o [1]
+HAL_PCD_ResumeCallback   0x800'0f41    0x8  Code  Gb  usbd_conf.o [1]
+HAL_PCD_SOFCallback      0x800'0f03    0x8  Code  Gb  usbd_conf.o [1]
+HAL_PCD_SetAddress       0x800'0ca3   0x22  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_SetupStageCallback
+                         0x800'0ed9    0xc  Code  Gb  usbd_conf.o [1]
+HAL_PCD_Start            0x800'0871   0x2c  Code  Gb  stm32f1xx_hal_pcd.o [1]
+HAL_PCD_SuspendCallback
+                         0x800'0f25   0x1c  Code  Gb  usbd_conf.o [1]
+HAL_SYSTICK_Config       0x800'11f5   0x22  Code  Gb  stm32f1xx_hal_cortex.o [1]
+HardFault_Handler        0x800'4787    0x2  Code  Gb  stm32f1xx_it.o [1]
+HomeScreen              0x2000'00cc  0x208  Data  Gb  Power_Monitor.o [1]
+I2C1_ER_IRQHandler       0x800'1d41   0x12  Code  Gb  InterruptHandlers.o [1]
+I2C1_EV_IRQHandler       0x800'1d29   0x18  Code  Gb  InterruptHandlers.o [1]
+I2C2_ER_IRQHandler       0x800'1d71   0x12  Code  Gb  InterruptHandlers.o [1]
+I2C2_EV_IRQHandler       0x800'1d59   0x12  Code  Gb  InterruptHandlers.o [1]
+INA219_Dev              0x2000'15f8   0x18  Data  Gb  CPP_HAL.o [1]
+InterruptManagerInstance
+                        0x2000'1cdc    0x1  Data  Gb  CPP_HAL.o [1]
+Irda_Uart2              0x2000'1b08   0x34  Data  Gb  main.o [1]
+LED_C13                 0x2000'15b8    0x8  Data  Gb  CPP_HAL.o [1]
+LL_RTC_EnterInitMode     0x800'3323   0x4a  Code  Gb  stm32f1xx_ll_rtc.o [1]
+LL_RTC_ExitInitMode      0x800'336d   0x4a  Code  Gb  stm32f1xx_ll_rtc.o [1]
+LL_RTC_Init              0x800'32b5   0x6e  Code  Gb  stm32f1xx_ll_rtc.o [1]
+LL_RTC_WaitForSynchro    0x800'33b7   0x4c  Code  Gb  stm32f1xx_ll_rtc.o [1]
+LL_SetSystemCoreClock    0x800'31d1    0x6  Code  Gb  stm32f1xx_ll_utils.o [1]
+LL_TIM_IC_Init           0x800'3569   0xe2  Code  Gb  stm32f1xx_ll_tim.o [1]
+LL_TIM_Init              0x800'34f9   0x5e  Code  Gb  stm32f1xx_ll_tim.o [1]
+LongLongPressCallback::CallbackFunction()
+                         0x800'47ad    0xc  Code  Gb  Power_Monitor.o [1]
+LongLongPressCb         0x2000'00c4    0x4  Data  Gb  Power_Monitor.o [1]
+LongPressCallback::CallbackFunction()
+                         0x800'47a1    0xc  Code  Gb  Power_Monitor.o [1]
+LongPressCb             0x2000'00c0    0x4  Data  Gb  Power_Monitor.o [1]
+MX_USB_DEVICE_Init       0x800'3189   0x48  Code  Gb  usb_device.o [1]
+MemManage_Handler        0x800'4789    0x2  Code  Gb  stm32f1xx_it.o [1]
+Menu                    0x2000'02d4  0x23c  Data  Gb  Power_Monitor.o [1]
+MillisElapsed<1000U>()::previous_millis
+                        0x2000'0070    0x4  Data  Lc  Power_Monitor.o [1]
+MillisElapsed<1000U>()::static guard for previous_millis
+                        0x2000'0044    0x1  Data  Lc  Power_Monitor.o [1]
+MyUI                    0x2000'00c8    0x4  Data  Gb  Power_Monitor.o [1]
+NMI_Handler              0x800'4785    0x2  Code  Gb  stm32f1xx_it.o [1]
+NokiaLCDObj             0x2000'16f8   0x28  Data  Gb  CPP_HAL.o [1]
+NokiaLCDObj1            0x2000'1c60   0x28  Data  Lc  Power_Monitor.o [1]
+PVD_IRQHandler           0x800'1a6f   0x16  Code  Gb  InterruptHandlers.o [1]
+Parse_Command(unsigned char *, unsigned int)
+                         0x800'2d9d   0x3c  Code  Gb  main.o [1]
+PendSV_Handler           0x800'4793    0x2  Code  Gb  stm32f1xx_it.o [1]
+Power                   0x2000'0064    0xc  Data  Gb  Power_Monitor.o [1]
+PowerStr                0x2000'0048   0x1c  Data  Gb  Power_Monitor.o [1]
+PulseIn_Test()           0x800'2c25   0x1a  Code  Gb  main.o [1]
+PulseIn_Test()::PulseInn
+                        0x2000'1ca8   0x14  Data  Lc  main.o [1]
+PulseIn_Test()::static guard for PulseInn
+                        0x2000'1ca4    0x1  Data  Lc  main.o [1]
+RCC_IRQHandler           0x800'1ac7   0x16  Code  Gb  InterruptHandlers.o [1]
+RTCSecCallback::CallbackFunction()
+                         0x800'4545   0x20  Code  Gb  main.o [1]
+RTCSecCallback::RtcSecCount
+                        0x2000'0014    0x4  Data  Gb  main.o [1]
+RTCSecCallbackObj       0x2000'0024    0x4  Data  Gb  main.o [1]
+RTC_Alarm_IRQHandler     0x800'1e1b   0x12  Code  Gb  InterruptHandlers.o [1]
+RTC_IRQHandler           0x800'1a9b   0x16  Code  Gb  InterruptHandlers.o [1]
+Region$$Table$$Base      0x800'4520          --   Gb  - Linker created -
+Region$$Table$$Limit     0x800'4544          --   Gb  - Linker created -
+Rtc_test()               0x800'2bb9   0x40  Code  Gb  main.o [1]
+Rtc_test()::InitDone    0x2000'0010    0x1  Data  Lc  main.o [1]
+SD_CS                   0x2000'1cbc    0x8  Data  Gb  fat_sd_spi.o [1]
+SHT$$INIT_ARRAY$$Base    0x800'4750          --   Gb  - Linker created -
+SHT$$INIT_ARRAY$$Limit   0x800'4764          --   Gb  - Linker created -
+SHT$$PREINIT_ARRAY$$Base
+                         0x800'4750          --   Gb  - Linker created -
+SHT$$PREINIT_ARRAY$$Limit
+                         0x800'4750          --   Gb  - Linker created -
+SPI1_IRQHandler          0x800'1d89   0x12  Code  Gb  InterruptHandlers.o [1]
+SPI2_IRQHandler          0x800'1da1   0x12  Code  Gb  InterruptHandlers.o [1]
+SVC_Handler              0x800'478f    0x2  Code  Gb  stm32f1xx_it.o [1]
+SetSystickTimerInterrupt()
+                         0x800'2dd9   0x26  Code  Gb  main.o [1]
+SetSystickTimerInterrupt()::SysTimerObj
+                        0x2000'1cc8    0x4  Data  Lc  main.o [1]
+SetSystickTimerInterrupt()::static guard for SysTimerObj
+                        0x2000'1cc4    0x1  Data  Lc  main.o [1]
+SysTick_Handler          0x800'1e4f   0x18  Code  Gb  InterruptHandlers.o [1]
+SysTimerCallback::ISR()
+                         0x800'4765   0x10  Code  Gb  main.o [1]
+SystemClock_Config()     0x800'2caf   0xe6  Code  Gb  main.o [1]
+SystemCoreClock         0x2000'051c    0x4  Data  Gb  system_stm32f1xx.o [1]
+SystemInit               0x800'4375   0x40  Code  Gb  system_stm32f1xx.o [1]
+SystickTimerTicks       0x2000'1ccc    0x4  Data  Gb  CPP_HAL.o [1]
+TAMPER_IRQHandler        0x800'1a85   0x16  Code  Gb  InterruptHandlers.o [1]
+TFT_1_8                 0x2000'1720   0x30  Data  Gb  CPP_HAL.o [1]
+TFT_Small               0x2000'1750   0x30  Data  Gb  CPP_HAL.o [1]
+TIM1_BRK_IRQHandler      0x800'1c81   0x18  Code  Gb  InterruptHandlers.o [1]
+TIM1_CC_IRQHandler       0x800'1cc9   0x18  Code  Gb  InterruptHandlers.o [1]
+TIM1_TRG_COM_IRQHandler
+                         0x800'1cb1   0x18  Code  Gb  InterruptHandlers.o [1]
+TIM1_UP_IRQHandler       0x800'1c99   0x18  Code  Gb  InterruptHandlers.o [1]
+TIM2_IRQHandler          0x800'1ce1   0x18  Code  Gb  InterruptHandlers.o [1]
+TIM3_IRQHandler          0x800'1cf9   0x18  Code  Gb  InterruptHandlers.o [1]
+TIM4_IRQHandler          0x800'1d11   0x18  Code  Gb  InterruptHandlers.o [1]
+TglPin                  0x2000'1ae4    0x8  Data  Gb  main.o [1]
+Tim4_Count              0x2000'1b04    0x4  Data  Gb  main.o [1]
+TimeStr                 0x2000'0078   0x10  Data  Gb  Power_Monitor.o [1]
+USART1_IRQHandler        0x800'1db9   0x12  Code  Gb  InterruptHandlers.o [1]
+USART2_IRQHandler        0x800'1dd1   0x12  Code  Gb  InterruptHandlers.o [1]
+USART3_IRQHandler        0x800'1de9   0x12  Code  Gb  InterruptHandlers.o [1]
+USBD_CDC                0x2000'052c   0x38  Data  Gb  usbd_cdc.o [1]
+USBD_CDC_CfgFSDesc      0x2000'05a8   0x44  Data  Gb  usbd_cdc.o [1]
+USBD_CDC_CfgHSDesc      0x2000'0564   0x44  Data  Gb  usbd_cdc.o [1]
+USBD_CDC_DeviceQualifierDesc
+                        0x2000'0520    0xc  Data  Lc  usbd_cdc.o [1]
+USBD_CDC_GetDeviceQualifierDescriptor(unsigned short *)
+                         0x800'38c3    0x8  Code  Gb  usbd_cdc.o [1]
+USBD_CDC_OtherSpeedCfgDesc
+                        0x2000'05ec   0x44  Data  Gb  usbd_cdc.o [1]
+USBD_CDC_ReceivePacket   0x800'3937   0x26  Code  Gb  usbd_cdc.o [1]
+USBD_CDC_RegisterInterface
+                         0x800'38dd    0xe  Code  Gb  usbd_cdc.o [1]
+USBD_CDC_SetRxBuffer     0x800'38fb    0xc  Code  Gb  usbd_cdc.o [1]
+USBD_CDC_SetTxBuffer     0x800'38eb   0x10  Code  Gb  usbd_cdc.o [1]
+USBD_CDC_TransmitPacket
+                         0x800'3907   0x30  Code  Gb  usbd_cdc.o [1]
+USBD_ClrClassConfig      0x800'128b    0xa  Code  Gb  usbd_core.o [1]
+USBD_CtlContinueRx       0x800'1a2b    0x4  Code  Gb  usbd_ioreq.o [1]
+USBD_CtlContinueSendData
+                         0x800'1a07    0x4  Code  Gb  usbd_ioreq.o [1]
+USBD_CtlError            0x800'1999   0x16  Code  Gb  usbd_ctlreq.o [1]
+USBD_CtlPrepareRx        0x800'1a17   0x14  Code  Gb  usbd_ioreq.o [1]
+USBD_CtlReceiveStatus    0x800'1a49    0xe  Code  Gb  usbd_ioreq.o [1]
+USBD_CtlSendData         0x800'19f7   0x10  Code  Gb  usbd_ioreq.o [1]
+USBD_CtlSendStatus       0x800'1a3b    0xe  Code  Gb  usbd_ioreq.o [1]
+USBD_FS_ConfigStrDescriptor(USBD_SpeedTypeDef, unsigned short *)
+                         0x800'3ff5    0xc  Code  Gb  usbd_desc.o [1]
+USBD_FS_DeviceDesc      0x2000'065c   0x14  Data  Gb  usbd_desc.o [1]
+USBD_FS_DeviceDescriptor(USBD_SpeedTypeDef, unsigned short *)
+                         0x800'3f99    0x8  Code  Gb  usbd_desc.o [1]
+USBD_FS_InterfaceStrDescriptor(USBD_SpeedTypeDef, unsigned short *)
+                         0x800'4001    0xc  Code  Gb  usbd_desc.o [1]
+USBD_FS_LangIDStrDescriptor(USBD_SpeedTypeDef, unsigned short *)
+                         0x800'3fa1    0x8  Code  Gb  usbd_desc.o [1]
+USBD_FS_ManufacturerStrDescriptor(USBD_SpeedTypeDef, unsigned short *)
+                         0x800'3fb5    0xa  Code  Gb  usbd_desc.o [1]
+USBD_FS_ProductStrDescriptor(USBD_SpeedTypeDef, unsigned short *)
+                         0x800'3fa9    0xc  Code  Gb  usbd_desc.o [1]
+USBD_FS_SerialStrDescriptor(USBD_SpeedTypeDef, unsigned short *)
+                         0x800'3fc9   0x2c  Code  Gb  usbd_desc.o [1]
+USBD_GetString           0x800'19af   0x48  Code  Gb  usbd_ctlreq.o [1]
+USBD_Init                0x800'1235   0x26  Code  Gb  usbd_core.o [1]
+USBD_Interface_fops_FS  0x2000'0630   0x10  Data  Gb  usbd_cdc_if.o [1]
+USBD_LL_ClearStallEP     0x800'1033   0x1c  Code  Gb  usbd_conf.o [1]
+USBD_LL_CloseEP          0x800'0ffb   0x1c  Code  Gb  usbd_conf.o [1]
+USBD_LL_DataInStage      0x800'1367   0xbc  Code  Gb  usbd_core.o [1]
+USBD_LL_DataOutStage     0x800'12eb   0x7c  Code  Gb  usbd_core.o [1]
+USBD_LL_GetRxDataSize    0x800'10bf    0x8  Code  Gb  usbd_conf.o [1]
+USBD_LL_Init             0x800'0f49   0x74  Code  Gb  usbd_conf.o [1]
+USBD_LL_IsStallEP        0x800'104f   0x1c  Code  Gb  usbd_conf.o [1]
+USBD_LL_OpenEP           0x800'0fd9   0x22  Code  Gb  usbd_conf.o [1]
+USBD_LL_PrepareReceive   0x800'10a3   0x1c  Code  Gb  usbd_conf.o [1]
+USBD_LL_Reset            0x800'1423   0x52  Code  Gb  usbd_core.o [1]
+USBD_LL_Resume           0x800'148b   0x12  Code  Gb  usbd_core.o [1]
+USBD_LL_SOF              0x800'149d   0x18  Code  Gb  usbd_core.o [1]
+USBD_LL_SetSpeed         0x800'1475    0x6  Code  Gb  usbd_core.o [1]
+USBD_LL_SetUSBAddress    0x800'106b   0x1c  Code  Gb  usbd_conf.o [1]
+USBD_LL_SetupStage       0x800'1295   0x56  Code  Gb  usbd_core.o [1]
+USBD_LL_StallEP          0x800'1017   0x1c  Code  Gb  usbd_conf.o [1]
+USBD_LL_Start            0x800'0fbd   0x1c  Code  Gb  usbd_conf.o [1]
+USBD_LL_Suspend          0x800'147b   0x10  Code  Gb  usbd_core.o [1]
+USBD_LL_Transmit         0x800'1087   0x1c  Code  Gb  usbd_conf.o [1]
+USBD_LangIDDesc         0x2000'0670    0x4  Data  Gb  usbd_desc.o [1]
+USBD_ParseSetupRequest   0x800'1971   0x28  Code  Gb  usbd_ctlreq.o [1]
+USBD_RegisterClass       0x800'125b   0x10  Code  Gb  usbd_core.o [1]
+USBD_SetClassConfig      0x800'1275   0x16  Code  Gb  usbd_core.o [1]
+USBD_SetConfig(USBD_HandleTypeDef *, usb_setup_req *)::cfgidx
+                        0x2000'1cdd    0x1  Data  Lc  usbd_ctlreq.o [1]
+USBD_Start               0x800'126b    0xa  Code  Gb  usbd_core.o [1]
+USBD_StdDevReq           0x800'14ed  0x2ca  Code  Gb  usbd_ctlreq.o [1]
+USBD_StdEPReq            0x800'1813  0x15e  Code  Gb  usbd_ctlreq.o [1]
+USBD_StdItfReq           0x800'17bd   0x56  Code  Gb  usbd_ctlreq.o [1]
+USBD_StrDesc            0x2000'17c4  0x200  Data  Gb  usbd_desc.o [1]
+USBD_StringSerial       0x2000'0674   0x1c  Data  Gb  usbd_desc.o [1]
+USBD_static_free         0x800'10e1    0x2  Code  Gb  usbd_conf.o [1]
+USBD_static_malloc       0x800'10c7    0x4  Code  Gb  usbd_conf.o [1]
+USBD_static_malloc::mem
+                        0x2000'1398  0x220  Data  Lc  usbd_conf.o [1]
+USBWakeUp_IRQHandler     0x800'1e35   0x12  Code  Gb  InterruptHandlers.o [1]
+USB_ActivateEndpoint     0x800'0129  0x262  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_CoreInit             0x800'00ed    0x4  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_DeactivateEndpoint   0x800'038b  0x156  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_DevConnect           0x800'073b    0x4  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_DevDisconnect        0x800'073f    0x4  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_DevInit              0x800'0109   0x1a  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_DisableGlobalInt     0x800'00fb    0xa  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_EP0_OutStart         0x800'0749    0x4  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_EPClearStall         0x800'06ad   0x7c  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_EPSetStall           0x800'067d   0x30  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_EPStartXfer          0x800'04e1  0x19c  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_EnableGlobalInt      0x800'00f1    0xa  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_HP_CAN1_TX_IRQHandler
+                         0x800'1c1b   0x18  Code  Gb  InterruptHandlers.o [1]
+USB_LP_CAN1_RX0_IRQHandler
+                         0x800'1c33    0x6  Code  Gb  InterruptHandlers.o [1]
+USB_ReadInterrupts       0x800'0743    0x6  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_ReadPMA              0x800'0783   0x2c  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_SetCurrentMode       0x800'0105    0x4  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_SetDevAddress        0x800'072f    0xc  Code  Gb  stm32f1xx_ll_usb.o [1]
+USB_WritePMA             0x800'075f   0x24  Code  Gb  stm32f1xx_ll_usb.o [1]
+UsageFault_Handler       0x800'478d    0x2  Code  Gb  stm32f1xx_it.o [1]
+UserRxBufferFS          0x2000'0698  0x3e8  Data  Gb  usbd_cdc_if.o [1]
+UserTxBufferFS          0x2000'0a80  0x3e8  Data  Gb  usbd_cdc_if.o [1]
+Utils::queue<HAL::Spi::Transaction_t const *, unsigned int, (unsigned int)10>::Read(HAL::Spi::Transaction_t const **)
+                         0x800'23a5   0x2e  Code  Gb  Spi.o [1]
+Virtual function table for BSP::ControlScreen
+                         0x800'45e8   0x14  Data  Gb  ControlScreen.o [1]
+Virtual function table for BSP::Screen
+                         0x800'46c4   0x14  Data  Gb  Screen.o [1]
+Virtual function table for ClickCallback
+                         0x800'4674   0x14  Data  Gb  Power_Monitor.o [1]
+Virtual function table for HAL::GpioInput
+                         0x800'45fc   0x14  Data  Gb  GpioInput.o [1]
+Virtual function table for HAL::I2c
+                         0x800'4610   0x14  Data  Gb  I2c.o [1]
+Virtual function table for HAL::Irda
+                         0x800'4624   0x14  Data  Gb  Irda.o [1]
+Virtual function table for HAL::PulseIn<(unsigned int)1073742848, (TimerChanel_t)47, (unsigned int)8000000, (HAL::Callback *)0>
+                         0x800'464c   0x14  Data  Gb  main.o [1]
+Virtual function table for HAL::Rtc
+                         0x800'46b0   0x14  Data  Gb  RTC.o [1]
+Virtual function table for HAL::Spi
+                         0x800'4700   0x14  Data  Gb  Spi.o [1]
+Virtual function table for HAL::Spi::SPI_DMA_Rx_Callback
+                         0x800'46ec   0x14  Data  Gb  Spi.o [1]
+Virtual function table for HAL::Spi::SPI_DMA_Tx_Callback
+                         0x800'46d8   0x14  Data  Gb  Spi.o [1]
+Virtual function table for HAL::Uart
+                         0x800'473c   0x14  Data  Gb  Uart.o [1]
+Virtual function table for HAL::Uart::UART_DMA_Rx_Callback
+                         0x800'4728   0x14  Data  Gb  Uart.o [1]
+Virtual function table for HAL::Uart::UART_DMA_Tx_Callback
+                         0x800'4714   0x14  Data  Gb  Uart.o [1]
+Virtual function table for LongLongPressCallback
+                         0x800'469c   0x14  Data  Gb  Power_Monitor.o [1]
+Virtual function table for LongPressCallback
+                         0x800'4688   0x14  Data  Gb  Power_Monitor.o [1]
+Virtual function table for RTCSecCallback
+                         0x800'4638   0x14  Data  Gb  main.o [1]
+Virtual function table for SysTimerCallback
+                         0x800'4660   0x14  Data  Gb  main.o [1]
+VolA0                   0x2000'1aec    0x2  Data  Gb  main.o [1]
+VolA1                   0x2000'1aee    0x2  Data  Gb  main.o [1]
+VolA2                   0x2000'1af0    0x2  Data  Gb  main.o [1]
+VolACS                  0x2000'1af4    0x2  Data  Gb  main.o [1]
+Vref                    0x2000'1af2    0x2  Data  Gb  main.o [1]
+WWDG_IRQHandler          0x800'1a59   0x16  Code  Gb  InterruptHandlers.o [1]
+[local to DMA_cpp]::LL_DMA_DisableChannel(DMA_TypeDef *, unsigned int)
+                         0x800'2401   0x14  Code  Lc  DMA.o [1]
+[local to DMA_cpp]::LL_DMA_EnableChannel(DMA_TypeDef *, unsigned int)
+                         0x800'23ed   0x14  Code  Lc  DMA.o [1]
+[local to DMA_cpp]::LL_DMA_SetDataLength(DMA_TypeDef *, unsigned int, unsigned int)
+                         0x800'2415   0x16  Code  Lc  DMA.o [1]
+[local to DisplayBuffer_cpp]::BSP::ASCII1
+                         0x800'3bf8  0x240  Data  Lc  DisplayBuffer.o [1]
+[local to GpioInput_cpp]::LL_GPIO_SetPinMode(GPIO_TypeDef *, unsigned int, unsigned int)
+                         0x800'39c5   0x2c  Code  Lc  GpioInput.o [1]
+[local to GpioOutput_cpp]::LL_GPIO_SetPinMode(GPIO_TypeDef *, unsigned int, unsigned int)
+                         0x800'24e5   0x18  Code  Lc  GpioOutput.o [1]
+[local to GpioOutput_cpp]::LL_GPIO_SetPinOutputType(GPIO_TypeDef *, unsigned int, unsigned int)
+                         0x800'24fd   0x16  Code  Lc  GpioOutput.o [1]
+[local to usbd_cdc_c]::USBD_CDC_DataIn(_USBD_HandleTypeDef *, unsigned char)
+                         0x800'3813   0x48  Code  Lc  usbd_cdc.o [1]
+[local to usbd_cdc_c]::USBD_CDC_DataOut(_USBD_HandleTypeDef *, unsigned char)
+                         0x800'385b   0x2a  Code  Lc  usbd_cdc.o [1]
+[local to usbd_cdc_c]::USBD_CDC_DeInit(_USBD_HandleTypeDef *, unsigned char)
+                         0x800'3727   0x44  Code  Lc  usbd_cdc.o [1]
+[local to usbd_cdc_c]::USBD_CDC_EP0_RxReady(_USBD_HandleTypeDef *)
+                         0x800'3885   0x26  Code  Lc  usbd_cdc.o [1]
+[local to usbd_cdc_c]::USBD_CDC_GetFSCfgDesc(unsigned short *)
+                         0x800'38ab    0x8  Code  Lc  usbd_cdc.o [1]
+[local to usbd_cdc_c]::USBD_CDC_GetHSCfgDesc(unsigned short *)
+                         0x800'38b3    0x8  Code  Lc  usbd_cdc.o [1]
+[local to usbd_cdc_c]::USBD_CDC_GetOtherSpeedCfgDesc(unsigned short *)
+                         0x800'38bb    0x8  Code  Lc  usbd_cdc.o [1]
+[local to usbd_cdc_c]::USBD_CDC_Init(_USBD_HandleTypeDef *, unsigned char)
+                         0x800'3691   0x96  Code  Lc  usbd_cdc.o [1]
+[local to usbd_cdc_c]::USBD_CDC_Setup(_USBD_HandleTypeDef *, usb_setup_req *)
+                         0x800'376b   0xa8  Code  Lc  usbd_cdc.o [1]
+[local to usbd_cdc_if_c]::CDC_Control_FS(unsigned char, unsigned char *, unsigned short)
+                         0x800'31ff    0x4  Code  Lc  usbd_cdc_if.o [1]
+[local to usbd_cdc_if_c]::CDC_DeInit_FS()
+                         0x800'31fb    0x4  Code  Lc  usbd_cdc_if.o [1]
+[local to usbd_cdc_if_c]::CDC_Init_FS()
+                         0x800'31dd   0x1e  Code  Lc  usbd_cdc_if.o [1]
+[local to usbd_cdc_if_c]::CDC_Receive_FS(unsigned char *, unsigned int *)
+                         0x800'3203   0x22  Code  Lc  usbd_cdc_if.o [1]
+[local to usbd_desc_c]::IntToUnicode(unsigned int, unsigned char *, unsigned char)
+                         0x800'4021   0x20  Code  Lc  usbd_desc.o [1]
+__aeabi_atexit           0x800'26bf    0xa  Code  Gb  cxxabi.o [3]
+__aeabi_memcpy4          0x800'10e5         Code  Gb  ABImemcpy.o [5]
+__aeabi_memcpy8          0x800'10e5         Code  Gb  ABImemcpy.o [5]
+__aeabi_memset           0x800'395d         Code  Gb  ABImemset.o [5]
+__call_ctors             0x800'2a99   0x18  Code  Gb  cppinit.o [2]
+__call_dtors             0x800'2ae7    0xc  Code  Gb  cppinit.o [2]
+__call_dtors0            0x800'2af3   0x36  Code  Gb  cppinit.o [2]
+__cexit_call_dtors       0x800'45af         Code  Gb  cexit.o [5]
+__cmain                  0x800'4585         Code  Gb  cmain.o [5]
+__cstart_call_dtors      0x800'47d0         Data  Gb  cstart_call_dtors.o [5]
+__cxa_atexit             0x800'2ab1   0x36  Code  Gb  cppinit.o [2]
+__dso_handle            0x2000'1cd8    0x4  Data  Gb  cppinit.o [2]
+__exit                   0x800'45bd   0x14  Code  Gb  exit.o [6]
+__iar_Memset             0x800'395d         Code  Gb  ABImemset.o [5]
+__iar_Memset_word        0x800'3965         Code  Gb  ABImemset.o [5]
+__iar_close_ttio         0x800'44c1   0x2c  Code  Gb  iarttio.o [6]
+__iar_cstart_call_ctors
+                         0x800'4565   0x20  Code  Gb  cmain_call_ctors.o [5]
+__iar_data_init3         0x800'44f9   0x28  Code  Gb  data_init.o [5]
+__iar_debug_exceptions   0x800'116a    0x1  Data  Gb  unwind_debug.o [6]
+__iar_lookup_ttioh       0x800'44ed    0x4  Code  Gb  XShttio.o [2]
+__iar_lz77_init_single3
+                         0x800'42fd   0x78  Code  Gb  lz77_init_single.o [5]
+__iar_program_start      0x800'47b9         Code  Gb  cstartup_M.o [5]
+__iar_tls$$INIT_ARRAY$$Base
+                         0x800'4764          --   Gb  - Linker created -
+__iar_tls$$INIT_ARRAY$$Limit
+                         0x800'4764          --   Gb  - Linker created -
+__iar_ttio_handles      0x2000'0690    0x8  Data  Lc  XShttio.o [2]
+__iar_zero_init3         0x800'0e6b   0x3a  Code  Gb  zero_init3.o [5]
+__low_level_init         0x800'45a3    0x4  Code  Gb  low_level_init.o [2]
+__sti__routine           0x800'2259   0xfc  Code  Lc  CPP_HAL.o [1]
+__sti__routine           0x800'45d1    0xe  Code  Lc  fat_sd_spi.o [1]
+__sti__routine           0x800'2b39   0x80  Code  Lc  main.o [1]
+__sti__routine           0x800'4219   0x80  Code  Lc  Power_Monitor.o [1]
+__sti__routine           0x800'4489   0x30  Code  Lc  ST7735_1.o [1]
+__vector_table           0x800'0000         Data  Gb  startup_stm32f103xb.o [1]
+_call_main               0x800'4591         Code  Gb  cmain.o [5]
+_exit                    0x800'45ad         Code  Gb  cexit.o [5]
+_main                    0x800'459f         Code  Gb  cmain.o [5]
+adc0                    0x2000'17b4    0x8  Data  Gb  CPP_HAL.o [1]
+adc1                    0x2000'1b3c    0x8  Data  Gb  main.o [1]
+adc2                    0x2000'1b44    0x8  Data  Gb  main.o [1]
+adcVref                 0x2000'1b4c    0x8  Data  Gb  main.o [1]
+colorB                  0x2000'1c88    0x1  Data  Gb  ST7735_1.o [1]
+dma1                    0x2000'15f4    0x4  Data  Gb  CPP_HAL.o [1]
+exit                     0x800'45a7    0x4  Code  Gb  exit.o [2]
+gEvent                  0x2000'0045    0x1  Data  Gb  Power_Monitor.o [1]
+g_GpioCallbacks         0x2000'1bc0   0x40  Data  Gb  CPP_HAL.o [1]
+hUsbDeviceFS            0x2000'0e68  0x2c4  Data  Gb  usb_device.o [1]
+hpcd_USB_FS             0x2000'112c  0x26c  Data  Gb  usbd_conf.o [1]
+i2c1                    0x2000'15c0   0x34  Data  Gb  CPP_HAL.o [1]
+intToStr(int, char *, int, char)
+                         0x800'340d   0x5e  Code  Gb  Utils.o [1]
+mWH                     0x2000'0074    0x4  Data  Gb  Power_Monitor.o [1]
+m_CSPin                 0x2000'1c9c    0x8  Data  Gb  ST7735_1.o [1]
+m_DCPin                 0x2000'1c94    0x8  Data  Gb  ST7735_1.o [1]
+m_RstPin                0x2000'1c8c    0x8  Data  Gb  ST7735_1.o [1]
+madctl                  0x2000'1c89    0x1  Data  Gb  ST7735_1.o [1]
+main                     0x800'2c3f   0x70  Code  Gb  main.o [1]
+myTime                  0x2000'0018    0xc  Data  Gb  main.o [1]
+next_abi_dtor_rec       0x2000'1cd4    0x4  Data  Lc  cppinit.o [2]
+rtc                     0x2000'0000   0x10  Data  Gb  CPP_HAL.o [1]
+spi1                    0x2000'1610   0x74  Data  Gb  CPP_HAL.o [1]
+spi2                    0x2000'1684   0x74  Data  Gb  CPP_HAL.o [1]
+temperature             0x2000'1b00    0x4  Data  Gb  main.o [1]
+tim_buf                 0x2000'1ac4   0x14  Data  Gb  main.o [1]
+uart1                   0x2000'1780   0x34  Data  Gb  CPP_HAL.o [1]
+uwTick                  0x2000'0514    0x4  Data  Gb  stm32f1xx_hal.o [1]
+uwTickFreq              0x2000'0510    0x1  Data  Gb  stm32f1xx_hal.o [1]
+uwTickPrio              0x2000'0518    0x4  Data  Gb  stm32f1xx_hal.o [1]
+void HAL::Timer::PinsHwInit<(TimerChanel_t)47>()
+                         0x800'34d9   0x20  Code  Gb  main.o [1]
+w25qxxDev               0x2000'1c00   0x34  Data  Gb  main.o [1]
+
+
+[1] = C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - Timer\IAR\Debug\Obj
+[2] = dl7M_tln.a
+[3] = dlpp7M_tl_nc.a
+[4] = m7M_tl.a
+[5] = rt7M_tl.a
+[6] = shb_l.a
+
+  17'087 bytes of readonly  code memory
+   1'552 bytes of readonly  data memory
+   9'870 bytes of readwrite data memory
+
+Errors: none
+Warnings: none
