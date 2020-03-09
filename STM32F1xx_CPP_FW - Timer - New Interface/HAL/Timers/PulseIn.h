@@ -43,7 +43,7 @@ namespace HAL
       //        BaseT Stop:1;        
       //      };   
       
-      static const uint16_t MAX_COUNT = 19000;
+      static const uint16_t MAX_COUNT = 18000;
         
       template < typename BaseT >
         struct PulseData
@@ -77,11 +77,14 @@ namespace HAL
       
       uint32_t GetTimerCounter() const {return LL_TIM_GetCounter( (TIM_TypeDef*)Timerx );}
       
+      uint16_t GetSamplesIndex()const{ return m_SampleBuf_Idx; }
+      
       virtual void ISR();
-    private:
-      uint32_t          m_Ticks;
+      
       uint16_t          m_PulseDataBuf[Samples];
       uint16_t          m_SampleBuf_Idx;
+    private:
+      uint32_t          m_Ticks;      
       SampleQueue_t     m_SampleQueue;
       uint32_t          ICValue1;
       uint32_t          ICValue2;
@@ -144,27 +147,26 @@ namespace HAL
       {      
         if(LL_TIM_IsActiveFlag_CC1((TIM_TypeDef*)Timerx))
         {          
-          ICValue1 = LL_TIM_OC_GetCompareCH1((TIM_TypeDef*)Timerx); 
+          //ICValue1 = LL_TIM_OC_GetCompareCH1((TIM_TypeDef*)Timerx); 
           
           // m_PulseDataBuf[m_SampleBuf_Idx++] = LL_TIM_GetCounter( (TIM_TypeDef*)Timerx);  //ICValue1;//(ICValue1 > ICValue2) ? ICValue1 - ICValue2 : MAX_COUNT - ICValue2 + ICValue1; 
           //m_PulseDataBuf[m_SampleBuf_Idx++] = LL_TIM_OC_GetCompareCH1((TIM_TypeDef*)Timerx); //(ICValue1 > ICValue2) ? ICValue1 - ICValue2 : MAX_COUNT - ICValue2 + ICValue1;
-          m_PulseDataBuf[m_SampleBuf_Idx++] = (ICValue1 > ICValue2) ? ICValue1 - ICValue2 : MAX_COUNT - ICValue2 + ICValue1; 
+          //m_PulseDataBuf[m_SampleBuf_Idx++] = (ICValue1 > ICValue2) ? ICValue1 - ICValue2 : MAX_COUNT - ICValue2 + ICValue1; 
+          m_PulseDataBuf[m_SampleBuf_Idx++] = LL_TIM_OC_GetCompareCH1((TIM_TypeDef*)Timerx);
           LL_TIM_ClearFlag_CC1((TIM_TypeDef*)Timerx);
         }    
         else if(LL_TIM_IsActiveFlag_CC2((TIM_TypeDef*)Timerx))
         {          
-          ICValue2 = LL_TIM_OC_GetCompareCH2((TIM_TypeDef*)Timerx);  
+          //ICValue2 = LL_TIM_OC_GetCompareCH2((TIM_TypeDef*)Timerx);  
           
           //m_PulseDataBuf[m_SampleBuf_Idx++] = LL_TIM_GetCounter( (TIM_TypeDef*)Timerx);  //ICValue2; //(ICValue2 > ICValue1) ? ICValue2 - ICValue1 : MAX_COUNT - ICValue1 + ICValue2;
           //m_PulseDataBuf[m_SampleBuf_Idx++] = LL_TIM_OC_GetCompareCH2((TIM_TypeDef*)Timerx); //(ICValue2 > ICValue1) ? ICValue2 - ICValue1 : MAX_COUNT - ICValue1 + ICValue2;
-          m_PulseDataBuf[m_SampleBuf_Idx++] = (ICValue2 > ICValue1) ? ICValue2 - ICValue1 : MAX_COUNT - ICValue1 + ICValue2;          
+          //m_PulseDataBuf[m_SampleBuf_Idx++] = (ICValue2 > ICValue1) ? ICValue2 - ICValue1 : MAX_COUNT - ICValue1 + ICValue2;          
+          m_PulseDataBuf[m_SampleBuf_Idx++] = LL_TIM_OC_GetCompareCH2((TIM_TypeDef*)Timerx);
           LL_TIM_ClearFlag_CC2((TIM_TypeDef*)Timerx);
         }
         
-        if(m_SampleBuf_Idx >= Samples )
-        {
-          m_SampleBuf_Idx = 0;
-        }
+        if(m_SampleBuf_Idx >= Samples ) m_SampleBuf_Idx = 0;
         
 //        if(LL_TIM_IsActiveFlag_UPDATE( (TIM_TypeDef*)Timerx) )         
 //        {

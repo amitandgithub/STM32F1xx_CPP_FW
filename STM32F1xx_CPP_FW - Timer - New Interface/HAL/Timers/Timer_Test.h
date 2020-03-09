@@ -44,11 +44,11 @@ void Timer_Test()
   TglPin.HwInit();
 
   //GPT_Test();
-  //PulseIn_Test();
+  PulseIn_Test();
   //IR_Test();
   //IR_Russia_Test();
   //PulseOut_Test();
-   IROut_Test();
+  // IROut_Test();
 }
 
 
@@ -74,12 +74,20 @@ void GPT_Test()
   
 void PulseIn_Test()
 {  
-  static HAL::PulseIn<(uint32_t)TIM2,TIM2_CH1_PIN_A0, Timer::FALLING_EDGE,Timer::RISING_EDGE,72,nullptr> PulseInn; 
-  PulseInn.HwInit(__LL_TIM_CALC_PSC(72000000, 1000000),65000,true);  //__LL_TIM_CALC_PSC(72000000, 1000000)
+  static HAL::PulseIn<(uint32_t)TIM3,TIM3_CH1_PIN_A6, Timer::FALLING_EDGE,Timer::RISING_EDGE,72,nullptr> PulseInn; 
+  PulseInn.HwInit(__LL_TIM_CALC_PSC(72000000, 1000000),18000,true);
   while(1)
   {
-    intToStr(PulseInn.GetTimerCounter(),tim_buf,10);
-    HAL::DBG_PRINT((uint8_t*)tim_buf,13);
+    if(PulseInn.m_SampleBuf_Idx >= 68)
+    {
+      for( uint32_t i = 0; i<68; i++ )
+      {
+        PulseInn.m_PulseDataBuf[i] = (PulseInn.m_PulseDataBuf[i+1] >= PulseInn.m_PulseDataBuf[i]) ? (PulseInn.m_PulseDataBuf[i+1] - PulseInn.m_PulseDataBuf[i]) : (18000 - PulseInn.m_PulseDataBuf[i] + PulseInn.m_PulseDataBuf[i+1]);         
+      }
+      PulseInn.m_SampleBuf_Idx = 0;
+    }
+    //intToStr(PulseInn.GetTimerCounter(),tim_buf,10);
+   // HAL::DBG_PRINT((uint8_t*)tim_buf,13);
   }
 }
   
@@ -140,10 +148,11 @@ extern void sendSAMSUNG(unsigned long data,  int nbits);
 void IROut_Test()
 {   
   uint32_t var = 0xFFFF0000; 
+  sendSAMSUNG(0xAAAAAAAA,32);
   while(1)
   {
-   sendSAMSUNG(var++,32);
-   LL_mDelay(100); 
+   sendSAMSUNG(0xA5A5A5A5,32);
+   LL_mDelay(1000); 
   }
 }
 

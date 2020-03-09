@@ -38,7 +38,7 @@ struct s {
 //  uint8_t day = STR_TO_BCD(__DATE__[4],__DATE__[5]);
 //  uint8_t yr  = STR_TO_BCD(__DATE__[9],__DATE__[8]);
 
-#define NEW_BOARD 1
+#define NEW_BOARD 0
 
 int main(void)
 {
@@ -106,10 +106,10 @@ void SystemClock_Config(void)
   LL_RCC_LSE_Enable();
 
    /* Wait till LSE is ready */
-  while(LL_RCC_LSE_IsReady() != 1)
-  {
-    
-  }
+//  while(LL_RCC_LSE_IsReady() != 1)
+//  {
+//    
+//  }
   LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
   LL_RCC_EnableRTC();
   
