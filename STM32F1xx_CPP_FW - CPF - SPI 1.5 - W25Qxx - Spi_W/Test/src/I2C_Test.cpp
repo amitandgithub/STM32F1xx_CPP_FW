@@ -474,7 +474,7 @@ void I2C_Slave_DMA_Callback_t::CallbackFunction(HAL::I2c::I2CStatus_t I2CStatus)
 
 void I2c_Slave_Tests()
 {
-#if I2C_SLAVE_INTR
+#if 0//I2C_SLAVE_INTR
   Cmdsvr_Init();
   while(1)
   {

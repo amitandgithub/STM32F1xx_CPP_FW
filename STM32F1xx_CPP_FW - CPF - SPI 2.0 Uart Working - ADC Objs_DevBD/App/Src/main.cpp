@@ -59,7 +59,7 @@ int main(void)
   {
     //BMP280_Test();
     //I2c_Tests_AT24C128();
-    //I2c_Slave_Tests();
+    I2c_Slave_Tests();
     //I2c_Full_EEPROM_POLL();
     //DigitalIO_tests();
     //LED_IN.Read() ? LED_C13.High() : LED_C13.Low() ;
@@ -69,13 +69,13 @@ int main(void)
     //Rtc_test();
     //LL_mDelay(100);
     //ssd1306_test();
-   // Nokia_Lcd_Test();
+    //Nokia_Lcd_Test();
    // w25qxx_Test();
     //st7735_Test();
    // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
-    //Power_Monitor_Test();
+   // Power_Monitor_Test();
     //Uart_Test();
-    Adc_Test();
+    //Adc_Test();
   }    
 }
 

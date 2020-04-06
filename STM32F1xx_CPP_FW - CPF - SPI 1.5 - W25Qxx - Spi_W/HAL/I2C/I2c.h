@@ -31,13 +31,13 @@ namespace HAL
 
 #define I2C_DEBUG 1
   
-#define I2C_POLL        1  // 1862 bytes - 1'406
+#define I2C_POLL        0  // 1862 bytes - 1'406
   
-#define I2C_MASTER_Q    1 // 246 bytes - 556
+#define I2C_MASTER_Q    0 // 246 bytes - 556
 
-#define I2C_MASTER_INTR     1  // 1862 bytes - 1'706 - 1'698 - 1'694 - (1'906 master and slave)
-#define I2C_SLAVE_INTR      1  // 954 bytes - 812 - 924 - 758 - 754
-#define I2C_MASTER_DMA      1  // 2'366 bytes - 2'236 - 2'260 - 2'200
+#define I2C_MASTER_INTR     0  // 1862 bytes - 1'706 - 1'698 - 1'694 - (1'906 master and slave)
+#define I2C_SLAVE_INTR      0  // 954 bytes - 812 - 924 - 758 - 754
+#define I2C_MASTER_DMA      0  // 2'366 bytes - 2'236 - 2'260 - 2'200
 #define I2C_SLAVE_DMA       1  // 1'710 bytes - 1'428 - 1'426 - 904 - 844
   
 // Full I2C module - 4'562 - 4'468

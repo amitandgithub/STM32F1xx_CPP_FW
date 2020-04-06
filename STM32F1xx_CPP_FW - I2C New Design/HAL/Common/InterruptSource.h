@@ -1,0 +1,56 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// @file InterruptSource.hpp
+///
+/// Interface for all of the interrupt sources in the Channel Platform Firmware. Every class that has interrupts will 
+/// inherit from this class, and override the interrupt service routine.
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef INTERRUPT_SOURCE_HPP 
+#define INTERRUPT_SOURCE_HPP
+
+namespace HAL
+{
+
+class InterruptSource
+{ 
+    public:
+        
+        //**************************************************************************************************************
+        // Public methods
+        //**************************************************************************************************************
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// FUNCTION NAME: InterruptSource::InterruptSource
+        ///
+        /// Default Constructor
+        ///
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        InterruptSource(){};
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// FUNCTION NAME: InterruptSource::InterruptSource
+        ///
+        /// Virtual Destructor
+        ///
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        virtual ~InterruptSource(){};
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// FUNCTION NAME: InterruptSource::ISR
+        ///
+        /// Pure virtual interrupt service routine
+        ///
+        /// @par Full Description
+        /// Pure virtual interrupt service routine. This routine should be overriden by the derived interrupt source
+        /// subclasses.
+        ///
+        /// @param event The event number that triggered the ISR call
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        virtual void ISR() = 0;
+
+};
+
+}
+
+#endif // INTERRUPT_SOURCE_HPP 

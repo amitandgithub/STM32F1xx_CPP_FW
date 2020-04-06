@@ -21,7 +21,7 @@ using namespace BSP;
 //namespace App
 //{
     
-#define SD_CARD 1
+#define SD_CARD 0
     
 #define POWER_SAMPLE_FREQ 250
     

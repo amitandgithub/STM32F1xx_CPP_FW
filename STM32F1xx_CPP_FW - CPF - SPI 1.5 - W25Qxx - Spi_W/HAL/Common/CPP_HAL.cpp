@@ -33,7 +33,7 @@ InterruptManager InterruptManagerInstance;
 
 DebugLog<DBG_LOG_TYPE> DebugLogInstance;
 
-//I2c i2c1(I2C1_B6_B7,400000U);
+I2c i2c1(I2C1_B6_B7,400000U);
 
 DMA dma1(1);
 

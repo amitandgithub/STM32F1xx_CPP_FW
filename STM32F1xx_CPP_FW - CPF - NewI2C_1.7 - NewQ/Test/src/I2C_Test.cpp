@@ -482,7 +482,10 @@ void I2c_Slave_Tests()
   }
 #elif I2C_SLAVE_DMA
   I2C_Slave_DMA_Test();
-      while(1);
+  while(1)
+  {
+    CmdSvr_Run(); 
+  }
 #endif
 }  
       

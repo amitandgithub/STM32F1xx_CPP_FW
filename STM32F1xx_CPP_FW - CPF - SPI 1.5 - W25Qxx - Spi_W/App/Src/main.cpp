@@ -36,7 +36,7 @@ int main(void)
   {
     //BMP280_Test();
     //I2c_Tests_AT24C128();
-    //I2c_Slave_Tests();
+    I2c_Slave_Tests();
     //I2c_Full_EEPROM_POLL();
     //DigitalIO_tests();
     //LedC13.Toggle();
@@ -46,7 +46,7 @@ int main(void)
     //Rtc_test();
     //LL_mDelay(100);
     //ssd1306_test();
-    Nokia_Lcd_Test();
+   // Nokia_Lcd_Test();
     //w25qxx_Test();
     
   }    

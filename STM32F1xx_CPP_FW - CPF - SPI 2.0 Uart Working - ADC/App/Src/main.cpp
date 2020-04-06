@@ -73,9 +73,9 @@ int main(void)
    // w25qxx_Test();
     //st7735_Test();
    // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
-    //Power_Monitor_Test();
+    Power_Monitor_Test();
     //Uart_Test();
-    Adc_Test();
+    //Adc_Test();
   }    
 }
 

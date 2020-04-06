@@ -1578,7 +1578,7 @@ namespace HAL
     
 #elif (I2C_MASTER_INTR == 1) && (I2C_SLAVE_INTR == 0) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 0)
     
-    void I2c::ISR( IRQn_Type event )
+    void I2c::ISR( )
     {  
       switch(I2C_GET_EVENT(m_I2Cx))
       {
@@ -1906,7 +1906,7 @@ namespace HAL
     
 #elif (I2C_MASTER_INTR == 0) && (I2C_SLAVE_INTR == 1) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 0) 
     
-    void I2c::ISR( IRQn_Type event )
+    void I2c::ISR( )
     {  
       switch(I2C_GET_EVENT(m_I2Cx))
       {
@@ -2048,7 +2048,7 @@ namespace HAL
     
 #elif (I2C_MASTER_INTR == 1) && (I2C_SLAVE_INTR == 1) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 0) 
     
-    void I2c::ISR( IRQn_Type event )
+    void I2c::ISR( )
     {  
       switch(I2C_GET_EVENT(m_I2Cx))
       {
@@ -2484,7 +2484,7 @@ namespace HAL
     
 #elif (I2C_MASTER_INTR == 0) && (I2C_SLAVE_INTR == 0) && (I2C_MASTER_DMA == 1) && (I2C_SLAVE_DMA == 0) 
     
-    void I2c::ISR( IRQn_Type event )
+    void I2c::ISR( )
     {  
       switch(I2C_GET_EVENT(m_I2Cx))
       {
@@ -2662,7 +2662,7 @@ namespace HAL
     
 #elif (I2C_MASTER_INTR == 0) && (I2C_SLAVE_INTR == 0) && (I2C_MASTER_DMA == 0) && (I2C_SLAVE_DMA == 1) 
     
-    void I2c::ISR( IRQn_Type event )
+    void I2c::ISR( )
     {  
       switch(I2C_GET_EVENT(m_I2Cx))
       {

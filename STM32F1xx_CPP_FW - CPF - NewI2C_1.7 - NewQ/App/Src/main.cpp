@@ -38,9 +38,9 @@ int main(void)
     {
         //BMP280_Test();
         //I2c_Tests_AT24C128();
-        //I2c_Slave_Tests();
+        I2c_Slave_Tests();
        // I2c_Full_EEPROM_POLL();
-        ssd1306_test();
+       // ssd1306_test();
     }    
 }
 

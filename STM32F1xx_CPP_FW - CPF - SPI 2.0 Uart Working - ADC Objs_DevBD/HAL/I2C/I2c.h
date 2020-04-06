@@ -38,7 +38,7 @@ namespace HAL
 #define I2C_MASTER_INTR     0  // 1862 bytes - 1'706 - 1'698 - 1'694 - (1'906 master and slave)
 #define I2C_SLAVE_INTR      0  // 954 bytes - 812 - 924 - 758 - 754
 #define I2C_MASTER_DMA      0  // 2'366 bytes - 2'236 - 2'260 - 2'200
-#define I2C_SLAVE_DMA       0  // 1'710 bytes - 1'428 - 1'426 - 904 - 844
+#define I2C_SLAVE_DMA       1  // 1'710 bytes - 1'428 - 1'426 - 904 - 844
   
 // Full I2C module - 4'562 - 4'468
   
@@ -438,11 +438,13 @@ namespace HAL
     /* It must be volatile becoz it is shared between ISR and main loop */
     volatile I2CStatus_t    m_I2CStatus;
     
-#if (I2C_MASTER_DMA == 1) //|| (I2C_SLAVE_DMA == 1)
+#if (I2C_MASTER_DMA == 1)
     I2C1_DMA_Rx_Callback m_I2C1_DMA_Rx_Callback;
     I2C1_DMA_Tx_Callback m_I2C1_DMA_Tx_Callback;
     I2C2_DMA_Rx_Callback m_I2C2_DMA_Rx_Callback;
     I2C2_DMA_Tx_Callback m_I2C2_DMA_Tx_Callback;
+#endif
+#if (I2C_MASTER_DMA == 1) || (I2C_SLAVE_DMA == 1)
     uint8_t m_Curent_DMA_Tx_Channel;
     uint8_t m_Curent_DMA_Rx_Channel;
 #endif
