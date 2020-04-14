@@ -66,7 +66,13 @@ namespace HAL
       LL_ADC_StartCalibration(m_ADCx);
       while(LL_ADC_IsCalibrationOnGoing(m_ADCx));
     }
+    
      LL_ADC_SetChannelSamplingTime(m_ADCx, m_Chanel, SamplingTime); 
+    
+    if(m_Chanel == LL_ADC_CHANNEL_16)
+    {
+      LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(m_ADCx), LL_ADC_PATH_INTERNAL_TEMPSENSOR);
+    } 
   }
    
   void ADC::HwDeinit()
@@ -86,11 +92,7 @@ namespace HAL
   {
     uint16_t result;
     
-      Enable(); // Wake up ADC from deep sleep
-      if(m_Chanel == LL_ADC_CHANNEL_16)
-      {
-         LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(m_ADCx), LL_ADC_PATH_INTERNAL_TEMPSENSOR);
-      } 
+      Enable(); // Wake up ADC from deep sleep 
       
       LL_ADC_REG_SetSequencerRanks(m_ADCx, LL_ADC_REG_RANK_1, m_Chanel);          
     
@@ -106,8 +108,6 @@ namespace HAL
       {
         result = LL_ADC_REG_ReadConversionData12(m_ADCx);
       }
-      
-      //Disable();
       
       return result;
   }

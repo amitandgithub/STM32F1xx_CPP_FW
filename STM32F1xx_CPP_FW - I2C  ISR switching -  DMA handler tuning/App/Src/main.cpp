@@ -54,7 +54,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
 #else
-  uart1.HwInit(9600);
+  uart1.HwInit(9600*2);
   init_printf(NULL,putc);
   printf("%f\n\r", 0.1234);
   printf("%f\n\r", 1.0000);

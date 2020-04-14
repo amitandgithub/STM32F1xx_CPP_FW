@@ -68,6 +68,8 @@ Uart uart1(UART1_A9_A10,9600);
 
 AnalogIn adc0(LL_ADC_CHANNEL_0);
 
+AnalogIn ChipTemperature(LL_ADC_CHANNEL_16);
+
 namespace HAL
 {
   

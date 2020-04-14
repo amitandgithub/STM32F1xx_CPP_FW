@@ -32,17 +32,13 @@ namespace HAL
     {
       Adc::HwInit(Port,Pin);
       Disable();
-      LL_ADC_SetChannelSamplingTime(ADC1, m_Chanel, SamplingTime); 
-      //LL_ADC_REG_SetFlagEndOfConversion(ADC1,LL_ADC_REG_FLAG_EOC_UNITARY_CONV);
+      LL_ADC_SetChannelSamplingTime(ADC1, m_Chanel, SamplingTime);       
       Enable();
     }
     
     uint16_t Read(){ return Adc::Read(m_Chanel);}
     
-//    uint16_t operator= (AnalogIn const& obj)
-//    {
-//      return Read();
-//    } 
+    uint32_t ReadVoltage(){return __LL_ADC_CALC_DATA_TO_VOLTAGE(3300,Read(),LL_ADC_RESOLUTION_12B);}
     
   private:
     uint32_t m_Chanel; 

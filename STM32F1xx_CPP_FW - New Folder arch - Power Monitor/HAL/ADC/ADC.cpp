@@ -30,10 +30,7 @@ namespace HAL
     if(Port) 
     {
       HAL::DigitalIO::SetInputMode(Port,Pin,ANALOG);
-    }
-
-    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_ADC1);
-   
+    }   
     
     if(m_ADCState == ADC_RESET)
     {    
@@ -58,7 +55,9 @@ namespace HAL
       InterruptManagerInstance.RegisterDeviceInterrupt(ADC1_2_IRQn,0,this);
       
       Enable();
-      //LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(m_ADCx), LL_ADC_PATH_INTERNAL_VREFINT);
+      
+      LL_ADC_StartCalibration(m_ADCx);
+      while(LL_ADC_IsCalibrationOnGoing(m_ADCx));
     }  
 
   }
@@ -93,11 +92,19 @@ namespace HAL
   */
   uint16_t Adc::Read(uint32_t Chanel)
   {  
-#if 0
+  
+    Enable(); // Wake up ADC from deep sleep
+    
+    if(Chanel == LL_ADC_CHANNEL_16)
+    {
+      LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(m_ADCx), LL_ADC_PATH_INTERNAL_TEMPSENSOR);
+    } 
+     
     LL_ADC_REG_SetSequencerRanks(m_ADCx, LL_ADC_REG_RANK_1, Chanel);          
     
-    if( StartConversion() == false) 
-      return 0xFFFF; // error
+    if( StartConversion() == false) return 0xFFFF; // error
+    
+    //LL_mDelay(1);
     
     if( ADC_CONVERSION_DONE(m_ADCx)) 
     {
@@ -106,35 +113,9 @@ namespace HAL
     else        
     {
       return LL_ADC_REG_ReadConversionData12(m_ADCx);
-    } 
-#else    
-      Enable(); // Wake up ADC from deep sleep
-      
-      LL_ADC_REG_SetSequencerRanks(m_ADCx, LL_ADC_REG_RANK_1, Chanel);          
-    
-      Enable();     // Start conversion
-      
-      if( ADC_CONVERSION_DONE(m_ADCx)) 
-      {
-        return 0xFFFF; // error  
-      }
-      else        
-      {
-        return LL_ADC_REG_ReadConversionData12(m_ADCx);
-      }      
-#endif
+    }
   }
 
-
-  int32_t Adc::GetChipTemperature()
-  {
-    Enable();
-    LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(m_ADCx), LL_ADC_PATH_INTERNAL_TEMPSENSOR);
-    Enable();
-    ///return __LL_ADC_CALC_TEMPERATURE_TYP_PARAMS(1750,612,110+5,3000,Read(LL_ADC_CHANNEL_TEMPSENSOR),LL_ADC_RESOLUTION_12B); 
-    return __LL_ADC_CALC_TEMPERATURE_TYP_PARAMS(4300,1400,25,3300,Read(LL_ADC_CHANNEL_TEMPSENSOR),LL_ADC_RESOLUTION_12B);
-  }
-  
   void Adc::ISR()
   {
     if(m_ADCx->SR & LL_ADC_FLAG_AWD1)

@@ -47,7 +47,7 @@ namespace HAL
     typedef LL_RTC_TimeTypeDef RtcDate_t;
     typedef Callback* RTCCallback_t;
     
-    RTCStatus_t HwInit(void *pInitStruct = nullptr);
+    RTCStatus_t HwInit(HAL::ClockManager::RTCClock_t Clock = HAL::ClockManager::CLOCK_LSI);
     
     RTCStatus_t GetTime(RtcTime_t* aRtcTime);
     

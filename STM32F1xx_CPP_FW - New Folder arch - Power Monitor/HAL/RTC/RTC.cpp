@@ -13,37 +13,62 @@
 namespace HAL
 { 
   
-  Rtc::RTCStatus_t Rtc::HwInit(void *pInitStruct)
+  Rtc::RTCStatus_t Rtc::HwInit(HAL::ClockManager::RTCClock_t Clock)
   {
     ErrorStatus status = ERROR;
     
     LL_RTC_InitTypeDef RTC_InitStruct = {0};
-  
-   // LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOC);
-   // LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOD);
     
     HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOC);
     HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOD);
     
-    LL_PWR_EnableBkUpAccess();
-    
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_AFIO);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_PWR);  
     /* Enable BKP CLK enable for backup registers */
-    //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_BKP);
     HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_BKP);
     
-    /* Peripheral clock enable */
-    //LL_RCC_EnableRTC();
+    LL_PWR_EnableBkUpAccess();
+    LL_RCC_ForceBackupDomainReset();
+    LL_RCC_ReleaseBackupDomainReset();
+    
+    if(Clock == HAL::ClockManager::CLOCK_LSE)
+    {
+      //InterruptManagerInstance.RegisterDeviceInterrupt(RCC_IRQn,2,this);
+      LL_RCC_LSE_Disable();
+      LL_RCC_LSE_Enable();
+      
+      /* Wait till LSE is ready */
+      while(LL_RCC_LSE_IsReady() != 1)
+      {
+        
+      }
+      LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
+      RTC_InitStruct.AsynchPrescaler = 0x00007FFFU;
+    }
+    else
+    {
+     
+      LL_RCC_EnableIT_LSIRDY();
+      
+      LL_RCC_LSI_Enable();
+      
+      /* Wait till LSE is ready */
+      while(LL_RCC_LSI_IsReady() != 1)
+      {
+        
+      }
+      LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSI);
+      RTC_InitStruct.AsynchPrescaler = 0x00007FFFU;
+    }
+    
+    LL_RCC_EnableRTC();
     
     /* RTC interrupt Init */  
     InterruptManagerInstance.RegisterDeviceInterrupt(RTC_IRQn,2,this);
-    
-    /** Initialize RTC and set the Time and Date 
-    */
-    RTC_InitStruct.AsynchPrescaler = 0x00007FFFU;
+
     // RTC_InitStruct.OutPutSource = LL_RTC_CALIB_OUTPUT_SECOND;
     LL_RTC_Init(RTC, &RTC_InitStruct);
-    LL_RTC_SetAsynchPrescaler(RTC, 0x00007FFFU);
-  
+    
     return status==ERROR ? RTC_ERROR : RTC_OK;
   } 
   
@@ -268,6 +293,13 @@ namespace HAL
       LL_RTC_ClearFlag_OW(RTC);
       if(m_CounterOverflowCallback) m_CounterOverflowCallback->CallbackFunction();
     }
+    
+//    if(LL_RCC_IsActiveFlag_LSERDY())
+//    {
+//      LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
+//      LL_RCC_ClearFlag_LSERDY();
+//      LL_RCC_EnableRTC();
+//    }
   }
   
   

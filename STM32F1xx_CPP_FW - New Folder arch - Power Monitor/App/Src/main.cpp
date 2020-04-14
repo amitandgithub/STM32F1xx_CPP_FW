@@ -10,8 +10,6 @@
 #include "main.h"
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
-
-uint8_t Buf[20] = "Amit Chaudhary\n\r\r"; // len - 16
 void usb_init();
 
 static void MX_GPIO_Init(void);
@@ -47,26 +45,18 @@ struct s {
 
 int main(void)
 {
-  char text[30];
   SystemClock_Config();
-
+  
   /* Initialize all configured peripherals */
 #if USB_DEVICE
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
 #else
-  uart1.HwInit(9600);
+  uart1.HwInit(9600*2);
   init_printf(NULL,putc);
-  printf("%f\n\r", 0.1234);
-  printf("%f\n\r", 1.0000);
-  printf("%f\n\r", 9999.0);
-  printf("%f\n\r", 299.1234); 
-  sprintf(text, "Sum of %02d and %d is %d \n\r", 1, 2, 10);
-  printf("%s\r",text);
-  printf("0x%x\n\r",0xDEADBEEF); 
-  printf("0x%X\n\r",0xDEADBEEF);  
+  printf("%f\n\r", 0.1234); 
 #endif
-
+  
   DWTHwInit();
   Rtc_test();
   while(1)
@@ -84,12 +74,12 @@ int main(void)
     //LL_mDelay(100);
     //ssd1306_test();
     //Nokia_Lcd_Test();
-   // w25qxx_Test();
-    st7735_Test();
-   // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
+    // w25qxx_Test();
+    //st7735_Test();
+    // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
     //Power_Monitor_Test();
     //Uart_Test();
-   // Adc_Test();
+     Adc_Test();
     //Timer_Test();
     //Ir_Test();
     // Template_Tests();
@@ -98,86 +88,42 @@ int main(void)
 
 void SystemClock_Config(void)
 {
-  LL_FLASH_EnablePrefetch();
-    
+  LL_FLASH_EnablePrefetch();  
   LL_FLASH_SetLatency(LL_FLASH_LATENCY_2);
-
-  LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
-  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);  
   
-  HAL::ClockManager::SetSystemClock(HAL::ClockManager::CLOCK_HSE,LL_RCC_PLLSOURCE_HSE_DIV_1,LL_RCC_PLL_MUL_9);
-  
-//   if(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_2)
-//  {
-//    //Error_Handler();  
-//  }
-//  LL_RCC_HSE_Enable();
-//
-//   /* Wait till HSE is ready */
-//  while(LL_RCC_HSE_IsReady() != 1)
-//  {
-//    
-//  }
-  LL_PWR_EnableBkUpAccess();
-  LL_RCC_ForceBackupDomainReset();
-  LL_RCC_ReleaseBackupDomainReset();
-  //LL_RCC_LSE_Enable();
-  
-#if RTC_ON_LSE
-  LL_RCC_LSE_Disable();
-  LL_RCC_LSE_Enable();
-
-   /* Wait till LSE is ready */
-  while(LL_RCC_LSE_IsReady() != 1)
-  {
-
-  }
-  LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
+#if NEW_BOARD
+  HAL::ClockManager::SetSystemClock(HAL::ClockManager::CLOCK_HSE,LL_RCC_PLLSOURCE_HSE_DIV_2,LL_RCC_PLL_MUL_9);
 #else
-  LL_RCC_LSI_Enable();
-  
-  /* Wait till LSE is ready */
-  while(LL_RCC_LSI_IsReady() != 1)
-  {
-    
-  }
-  LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSI);
+  HAL::ClockManager::SetSystemClock(HAL::ClockManager::CLOCK_HSE,LL_RCC_PLLSOURCE_HSE_DIV_1,LL_RCC_PLL_MUL_9);
 #endif
-
-  LL_RCC_EnableRTC();
-
   
-//#if NEW_BOARD
-//  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSE_DIV_2, LL_RCC_PLL_MUL_9);
-//#else
-//   LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSE_DIV_1, LL_RCC_PLL_MUL_9);
-//#endif
-//   
-//  LL_RCC_PLL_Enable();
-//
-//   /* Wait till PLL is ready */
-//  while(LL_RCC_PLL_IsReady() != 1)
-//  {
-//    
-//  }
-  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
-  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
-  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_2);
-  
-  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
-
-   /* Wait till System clock is ready */
-  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
-  {
-  
-  }
-  LL_SetSystemCoreClock(72000000);
   LL_Init1msTick(72000000);
   SetSystickTimerInterrupt();
 #if USB_DEVICE
   LL_RCC_SetUSBClockSource(LL_RCC_USB_CLKSOURCE_PLL_DIV_1_5);
 #endif
 }
+
+extern uint32_t SystickTimerTicks;
+class SysTimerCallback : public InterruptSource
+{
+public:
+  virtual void ISR(){SystickTimerTicks++;}
+};
+
+extern HAL::InterruptManager InterruptManagerInstance;
+void SetSystickTimerInterrupt()
+{
+  static SysTimerCallback SysTimerObj;
+  SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+  InterruptManagerInstance.RegisterDeviceInterrupt(SysTick_IRQn,1,&SysTimerObj);
+}
+
+
+
+
+
+
 
 
 #if USB_DEVICE
@@ -222,17 +168,4 @@ uint32_t Debug_Write(uint8_t* buf, uint16_t len)
 
 #endif
 
-extern uint32_t SystickTimerTicks;
-class SysTimerCallback : public InterruptSource
-{
-public:
-  virtual void ISR(){SystickTimerTicks++;}
-};
 
-extern HAL::InterruptManager InterruptManagerInstance;
-void SetSystickTimerInterrupt()
-{
-  static SysTimerCallback SysTimerObj;
-  SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
-  InterruptManagerInstance.RegisterDeviceInterrupt(SysTick_IRQn,1,&SysTimerObj);
-}

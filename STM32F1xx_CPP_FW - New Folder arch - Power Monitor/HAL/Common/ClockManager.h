@@ -35,6 +35,13 @@ namespace HAL
     
     typedef enum
     {
+      CLOCK_LSE,
+      CLOCK_LSI,
+      CLOCK_HSI_DIV_128    
+    }RTCClock_t;
+    
+    typedef enum
+    {
       /* AHB peripherals*/
       CLOCK_TYPE_AHB    = 0x00000000,
       CLOCK_DMA1        = CLOCK_TYPE_AHB |  0,
@@ -178,6 +185,20 @@ namespace HAL
      {
        
      }
+     
+     LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
+     LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
+     LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_2);
+     
+     LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
+     
+     /* Wait till System clock is ready */
+     while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
+     {
+       
+     }
+     LL_SetSystemCoreClock(72000000);  
+  
      return true;
    }
    

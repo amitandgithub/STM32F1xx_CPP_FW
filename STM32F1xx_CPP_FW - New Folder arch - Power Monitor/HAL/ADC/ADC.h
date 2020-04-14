@@ -81,7 +81,7 @@ namespace HAL
     
     bool StartConversion();
     
-    uint16_t Read(uint32_t Chanel);
+    uint16_t Read(uint32_t Chanel);  
     
     void Start();
     
@@ -90,8 +90,6 @@ namespace HAL
     void DisableAnalogWatchdog(){LL_ADC_DisableIT_AWD1(ADC1); m_WDCallback = nullptr;}
     
     void ISR() final;
-    
-    int32_t GetChipTemperature();
     
   protected:
     ADC_TypeDef* m_ADCx;
@@ -102,7 +100,8 @@ namespace HAL
   
 }
 
-#define ADC_CONVERSION_DONE(__ADC__) WaitOnFlag(&__ADC__->SR, ADC_SR_EOC, 0, ADC_TIMEOUT)
+#define ADC_CONVERSION_DONE(__ADC__) WaitOnFlag(&__ADC__->SR, LL_ADC_FLAG_EOS, 0, ADC_TIMEOUT)
+
 #define ADC_ENABLED(__ADC__) WaitOnFlag(&__ADC__->SR, ADC_SR_ADONS, 0, ADC_TIMEOUT)
 
 #define __LL_ADC_CALC_VOLTAGE_TO_DATA(__VREFANALOG_VOLTAGE__,\
