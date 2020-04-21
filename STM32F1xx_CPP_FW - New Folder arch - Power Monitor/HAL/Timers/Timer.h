@@ -20,7 +20,7 @@
 #include"DebugLog.h"
 #include"DigitalOut.h"
 #include"DigitalIO.h"
-//#include"GpioInput.h"
+#include"ClockManager.h"
 
 #include"DMA.h"
 #include <stdio.h>
@@ -140,7 +140,8 @@ namespace HAL
       {
         if (((TIM_TypeDef*)Timerx) == TIM2)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM2);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM2);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM2);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM2_IRQn,0,This);  
         }
 #if defined(TIM1)
@@ -158,105 +159,120 @@ namespace HAL
 #if defined(TIM3)
         else if (((TIM_TypeDef*)Timerx) == TIM3)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM3);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM3);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM3);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM3_IRQn,0,This);  
         }
 #endif
 #if defined(TIM4)
         else if (((TIM_TypeDef*)Timerx) == TIM4)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM4);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM4);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM4);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM4_IRQn,0,This);  
         }
 #endif
 #if defined(TIM5)
         else if (((TIM_TypeDef*)Timerx) == TIM5)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM5);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM5);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM5);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM5_IRQn,0,This);  
         }
 #endif
 #if defined(TIM6)
         else if (((TIM_TypeDef*)Timerx) == TIM6)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM6);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM6);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM6);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM6_IRQn,0,This);  
         }
 #endif
 #if defined (TIM7)
         else if (((TIM_TypeDef*)Timerx) == TIM7)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM7);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM7);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM7);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM7_IRQn,0,This);  
         }
 #endif
 #if defined(TIM8)
         else if (((TIM_TypeDef*)Timerx) == TIM8)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM8);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM8);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM8);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM8_IRQn,0,This);  
         }
 #endif
 #if defined(TIM9)
         else if (((TIM_TypeDef*)Timerx) == TIM9)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM9);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM9);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM9);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM9_IRQn,0,This);  
         }
 #endif
 #if defined(TIM10)
         else if (((TIM_TypeDef*)Timerx) == TIM10)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM10);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM10);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM10);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM10_IRQn,0,This);  
         }
 #endif
 #if defined(TIM11)
         else if (((TIM_TypeDef*)Timerx) == TIM11)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM11);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM11);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM11);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM11_IRQn,0,This);  
         }
 #endif
 #if defined(TIM12)
         else if (((TIM_TypeDef*)Timerx) == TIM12)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM12);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM12);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM12);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM12_IRQn,0,This);  
         }
 #endif
 #if defined(TIM13)
         else if (((TIM_TypeDef*)Timerx) == TIM13)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM13);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM13);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM13);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM13_IRQn,0,This);  
         }
 #endif
 #if defined(TIM14)
         else if (((TIM_TypeDef*)Timerx) == TIM14)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM14);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM14);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM14);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM14_IRQn,0,This);  
         }
 #endif
 #if defined(TIM15)
         else if (((TIM_TypeDef*)Timerx) == TIM15)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM15);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM15);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM15);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM15_IRQn,0,This);  
         }
 #endif
 #if defined(TIM16)
         else if (((TIM_TypeDef*)Timerx) == TIM16)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM16);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM16);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM16);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM16_IRQn,0,This);  
         }
 #endif
 #if defined(TIM17)
         else if (((TIM_TypeDef*)Timerx) == TIM17)
         {
-          LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM17);
+          //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM17);
+          HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_TIM17);
           InterruptManagerInstance.RegisterDeviceInterrupt(TIM17_IRQn,0,This);  
         }
 #endif

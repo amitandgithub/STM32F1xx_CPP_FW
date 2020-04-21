@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include"Test.h"
 #include "CPP_HAL.h"
+#include "ClockManager.h"
 
 
 #if USB_DEVICE
@@ -60,7 +61,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
 #else
-  uart1.HwInit(9600);
+  uart1.HwInit(9600/2);
   init_printf(NULL,putc);
 #endif
   LED.HwInit();
@@ -82,11 +83,11 @@ int main(void)
     //ssd1306_test();
     //Nokia_Lcd_Test();
     // w25qxx_Test();
-    st7735_Test();
+    //st7735_Test();
    // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
    // Power_Monitor_Test();
     //Uart_Test();
-   // Adc_Test();
+    Adc_Test();
     //Timer_Test();
     //Ir_Test();
     // Template_Tests();
@@ -104,6 +105,13 @@ void SystemClock_Config(void)
   //Error_Handler();  
   }
   LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
+  
+  HAL::ClockManager::SetSystemClock(HAL::ClockManager::CLOCK_HSE,LL_RCC_PLL_MUL_4,LL_RCC_PLL_DIV_3);
+  
+  // Enable HSI clock for ADC peripheral
+  HAL::ClockManager::SetSystemClock(HAL::ClockManager::CLOCK_HSI,LL_RCC_PLL_MUL_4,LL_RCC_PLL_DIV_3);
+  
+#if 0
   LL_RCC_HSE_Enable();
 
    /* Wait till HSE is ready */
@@ -164,6 +172,7 @@ void SystemClock_Config(void)
   {
   
   }
+#endif //0
   LL_SetSystemCoreClock(32000000);
   LL_Init1msTick(32000000);
   LL_SYSTICK_SetClkSource(LL_SYSTICK_CLKSOURCE_HCLK);

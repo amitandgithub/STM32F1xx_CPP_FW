@@ -132,13 +132,6 @@ void SystemClock_Config(void)
   Error_Handler();  
   }
   LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
-  LL_RCC_HSE_Enable();
-
-   /* Wait till HSE is ready */
-  while(LL_RCC_HSE_IsReady() != 1)
-  {
-    
-  }
   LL_RCC_HSI_Enable();
 
    /* Wait till HSI is ready */
@@ -159,7 +152,7 @@ void SystemClock_Config(void)
   LL_RCC_ReleaseBackupDomainReset();
   LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSI);
   LL_RCC_EnableRTC();
-  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSE, LL_RCC_PLL_MUL_4, LL_RCC_PLL_DIV_3);
+  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLL_MUL_4, LL_RCC_PLL_DIV_2);
   LL_RCC_PLL_Enable();
 
    /* Wait till PLL is ready */

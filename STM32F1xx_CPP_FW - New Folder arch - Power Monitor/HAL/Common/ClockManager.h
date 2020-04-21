@@ -43,7 +43,7 @@ namespace HAL
     typedef enum
     {
       /* AHB peripherals*/
-      CLOCK_TYPE_AHB    = 0x00000000,
+      CLOCK_TYPE_AHB    = 0x30000000UL,
       CLOCK_DMA1        = CLOCK_TYPE_AHB |  0,
       CLOCK_DMA2        = CLOCK_TYPE_AHB |  1,
       CLOCK_SRAM        = CLOCK_TYPE_AHB |  2,
@@ -53,7 +53,7 @@ namespace HAL
       CLOCK_SDIO        = CLOCK_TYPE_AHB |  10,
       
       /* APB1 peripherals*/
-      CLOCK_TYPE_APB1   = 0x10000000,
+      CLOCK_TYPE_APB1   = 0x10000000UL,
       CLOCK_TIM2        = CLOCK_TYPE_APB1 | 0,
       CLOCK_TIM3        = CLOCK_TYPE_APB1 | 1,
       CLOCK_TIM4        = CLOCK_TYPE_APB1 | 2,
@@ -80,7 +80,7 @@ namespace HAL
       
       
       /* APB2 peripherals*/
-      CLOCK_TYPE_APB2   = 0x20000000,
+      CLOCK_TYPE_APB2   = 0x20000000UL,
       CLOCK_AFIO        = CLOCK_TYPE_APB2 | 0,
       CLOCK_GPIOA       = CLOCK_TYPE_APB2 | 2,
       CLOCK_GPIOB       = CLOCK_TYPE_APB2 | 3,
@@ -94,7 +94,7 @@ namespace HAL
       CLOCK_TIM1        = CLOCK_TYPE_APB2 | 11,
       CLOCK_SPI1        = CLOCK_TYPE_APB2 | 12,
       CLOCK_TIM8        = CLOCK_TYPE_APB2 | 13,
-      CLOCK_USART1       = CLOCK_TYPE_APB2 | 14,
+      CLOCK_USART1      = CLOCK_TYPE_APB2 | 14,
       CLOCK_ADC3        = CLOCK_TYPE_APB2 | 15,
       CLOCK_TIM9        = CLOCK_TYPE_APB2 | 19,
       CLOCK_TIM10       = CLOCK_TYPE_APB2 | 20,
@@ -103,19 +103,19 @@ namespace HAL
       
     }PeripheralID_t;
     
-   static bool Enable(PeripheralID_t PeripheralID)
+    static bool Enable(PeripheralID_t PeripheralID)
     {
-      if(PeripheralID & CLOCK_TYPE_AHB)
+      if((PeripheralID & CLOCK_TYPE_AHB) == CLOCK_TYPE_AHB)
       {
         RCC->AHBENR |= 1UL << (uint8_t)PeripheralID;
         return true;
       }
-      else if(PeripheralID & CLOCK_TYPE_APB1)
+      else if( (PeripheralID & CLOCK_TYPE_APB1) == CLOCK_TYPE_APB1)
       {
         RCC->APB1ENR |= 1UL << (uint8_t)PeripheralID;
         return true;
       }
-      else if(PeripheralID & CLOCK_TYPE_APB2)
+      else if( (PeripheralID & CLOCK_TYPE_APB2) == CLOCK_TYPE_APB2)
       {
         RCC->APB2ENR |= 1UL << (uint8_t)PeripheralID;
         return true;
@@ -128,17 +128,17 @@ namespace HAL
     
     static bool Disable(PeripheralID_t PeripheralID)
     {
-      if(PeripheralID & CLOCK_TYPE_AHB)
+       if((PeripheralID & CLOCK_TYPE_AHB) == CLOCK_TYPE_AHB)
       {
         RCC->AHBENR &= ~(1UL << (uint8_t)PeripheralID);
         return true;
       }
-      else if(PeripheralID & CLOCK_TYPE_APB1)
+      else if( (PeripheralID & CLOCK_TYPE_APB1) == CLOCK_TYPE_APB1)
       {
         RCC->APB1ENR &= ~(1UL << (uint8_t)PeripheralID);
         return true;
       }
-      else if(PeripheralID & CLOCK_TYPE_APB2)
+      else if( (PeripheralID & CLOCK_TYPE_APB2) == CLOCK_TYPE_APB2)
       {
         RCC->APB2ENR &= ~(1UL << (uint8_t)PeripheralID);
         return true;
@@ -187,8 +187,8 @@ namespace HAL
      }
      
      LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
-     LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
-     LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_2);
+     LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_2);
+     LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
      
      LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
      

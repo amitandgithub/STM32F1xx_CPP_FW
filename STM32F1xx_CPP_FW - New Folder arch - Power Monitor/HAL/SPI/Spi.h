@@ -23,7 +23,10 @@
 #include"GpioInput.h"
 #include"DigitalIn.h"
 #include"DMA.h"
+#include"ClockManager.h"
 #include <stdio.h>
+
+
 extern HAL::DMA dma1;
 extern Utils::DebugLog<DBG_LOG_TYPE> DebugLogInstance;
 extern HAL::InterruptManager InterruptManagerInstance;   

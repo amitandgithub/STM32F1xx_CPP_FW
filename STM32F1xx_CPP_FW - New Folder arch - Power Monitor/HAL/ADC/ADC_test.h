@@ -41,7 +41,7 @@ void Adc_Test()
     ChipTemperature.HwInit((Port_t)0,0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
     adcVref.HwInit((Port_t)0,0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
 
-    adc0.EnableAnalogWatchdog(0,3250,1000,&AdcCallback);
+    //adc0.EnableAnalogWatchdog(0,3250,1000,&AdcCallback);
     InitDone = true;
   }
 
@@ -55,7 +55,9 @@ void Adc_Test()
     temperature = __LL_ADC_CALC_TEMPERATURE_TYP_PARAMS(4300,1400,25,3300,ChipTemperature.Read(),LL_ADC_RESOLUTION_12B);
     
     sprintf(DbgBuf,(char*)"VolA0 = %d \t VolA1 = %d \t VolA2 = %d \t Vref = %d \tTemperature = %d",VolA0,VolA1,VolA2,Vref,temperature);
+    //sprintf(DbgBuf,(char*)"VolA0 = %d",VolA0);
     printf("%s\n\r",DbgBuf); 
+    return;
     //LL_mDelay(50);
   }
   

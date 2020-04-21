@@ -87,7 +87,8 @@ namespace HAL
         {
           MasterPinsHwInit(A5,A6,A7);
         }       
-        LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
+        //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
+        HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_SPI1);
       }
       else if(m_SPIx == SPI2)
       {        
@@ -101,7 +102,8 @@ namespace HAL
         {
           MasterPinsHwInit(B13,B14,B15);
         } 
-        LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_SPI2);
+        //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_SPI2);
+        HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_SPI2);
       }
       else if(m_SPIx == nullptr)
       {
@@ -120,7 +122,8 @@ namespace HAL
         {
           MasterPinsHwInit(B3,B4,B5);
         }       
-        LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);        
+        //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
+        HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_SPI1);        
       }
       else
       {
@@ -188,47 +191,23 @@ namespace HAL
       Enable();      
       //m_Transaction.Mode = mode;      
       m_SpiStatus = SPI_OK;
-      m_SPIState = SPI_READY;
-      
+      m_SPIState = SPI_READY;      
       return SPI_OK;            
     }        
     
       void Spi::MasterPinsHwInit(Port_t ClkPort, PIN_t ClkPin,Port_t MisoPort, PIN_t MisoPin,Port_t MosiPort, PIN_t MosiPin)
       {   
-#if 0
-        GpioOutput      sck(ClkPort,ClkPin);
-        GpioInput       miso(MisoPort,MisoPin);
-        GpioOutput      mosi(MosiPort,MosiPin);
-        
-        sck.HwInit(OUTPUT_AF_PUSH_PULL);
-        miso.HwInit(INPUT_PULLUP);
-        mosi.HwInit(OUTPUT_AF_PUSH_PULL);   
-#else
         DigitalIO::SetOutputMode(ClkPort,ClkPin,OUTPUT_AF_PUSH_PULL,LL_GPIO_SPEED_FREQ_HIGH); // sck.HwInit(OUTPUT_AF_PUSH_PULL);
         DigitalIO::SetInputMode(MisoPort,MisoPin,INPUT_PULLUP); //miso.HwInit(INPUT_PULLUP);
         DigitalIO::SetOutputMode(MosiPort,MosiPin,OUTPUT_AF_PUSH_PULL,LL_GPIO_SPEED_FREQ_HIGH); // sck.HwInit(OUTPUT_AF_PUSH_PULL);
-#endif
       }
     
       void Spi::SlavePinsHwInit(Port_t ChipSelectPort, PIN_t ChipSelectPin, Port_t ClkPort, PIN_t ClkPin,Port_t MisoPort, PIN_t MisoPin,Port_t MosiPort, PIN_t MosiPin)
       {    
-#if 0
-        GpioInput       ChipSelect(ChipSelectPort,ChipSelectPin);
-        GpioInput       sck(ClkPort,ClkPin);
-        GpioOutput      miso(MisoPort,MisoPin);
-        GpioInput       mosi(MosiPort,MosiPin);
-        
-        ChipSelect.HwInit(INPUT_PULLDOWN);
-        sck.HwInit(INPUT_PULLDOWN);
-        miso.HwInit(OUTPUT_AF_PUSH_PULL);
-        mosi.HwInit(INPUT_PULLDOWN);   
-#else
         DigitalIO::SetInputMode(ChipSelectPort,ChipSelectPin,INPUT_PULLDOWN); //ChipSelect(ChipSelectPort,ChipSelectPin);
         DigitalIO::SetInputMode(ClkPort,ClkPin,INPUT_PULLDOWN); //sck(ClkPort,ClkPin);
         DigitalIO::SetOutputMode(MisoPort,MisoPin,OUTPUT_AF_PUSH_PULL,LL_GPIO_SPEED_FREQ_HIGH); // miso(MisoPort,MisoPin);
         DigitalIO::SetInputMode(MosiPort,MosiPin,INPUT_PULLDOWN); //mosi(MosiPort,MosiPin);
-        
-#endif
       }    
     
 #if SPI_POLL    

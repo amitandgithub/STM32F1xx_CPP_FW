@@ -14,6 +14,7 @@
 #include"chip_peripheral.h"
 #include"InterruptManager.h"
 #include"CPP_HAL.h"
+#include"ClockManager.h"
 
 extern HAL::InterruptManager InterruptManagerInstance;
 extern HAL::Callback* g_GpioCallbacks[16];
@@ -61,30 +62,36 @@ void Gpio_ClockEnable()
 {   
   if((GPIO_TypeDef*)_GPIOx == GPIOA )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOA);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOA);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOA);
   }
   else  if((GPIO_TypeDef*)_GPIOx == GPIOB )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOB);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOB);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOB);
   }
   else  if((GPIO_TypeDef*)_GPIOx == GPIOC )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOC);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOC);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOC);
   }
   else  if((GPIO_TypeDef*)_GPIOx == GPIOD )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOD);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOD);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOD);
   }
 #if defined(GPIOE)
   else  if((GPIO_TypeDef*)_GPIOx == GPIOE )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOE);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOE);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOE);
   }
 #endif
 #if defined(GPIOF)
   else  if((GPIO_TypeDef*)_GPIOx == GPIOF )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOG);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOG);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOG);
   }
 #endif
 }
@@ -93,33 +100,38 @@ void Gpio_ClockDisable()
 {   
   if((GPIO_TypeDef*)_GPIOx == GPIOA )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOA);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOA);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOA);
   }
   else  if((GPIO_TypeDef*)_GPIOx == GPIOB )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOB);
+    //LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOB);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOB);
   }
-  else  if((GPIO_TypeDef*)_GPIOx == GPIOB )
+  else  if((GPIO_TypeDef*)_GPIOx == GPIOC )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOC);
+    //LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOC);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOC);
   }
   else  if((GPIO_TypeDef*)_GPIOx == GPIOD )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOD);
+    //LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOD);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOD);
   }
 #if defined(GPIOE)
   else  if((GPIO_TypeDef*)_GPIOx == GPIOE )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOE);
+    //LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOE);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOE);
   }
 #endif
 #if defined(GPIOF)
   else  if((GPIO_TypeDef*)_GPIOx == GPIOF )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOG);
+    //LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOG);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOG);
   }
-#endif
-  
+#endif  
 }
 
 __STATIC_INLINE IRQn_Type Gpio_get_pin_IRQn(uint8_t pin)
@@ -202,30 +214,36 @@ __STATIC_INLINE void Gpio_ClockEnable(Port_t _GPIOx)
 {   
   if((GPIO_TypeDef*)_GPIOx == GPIOA )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOA);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOA);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOA);
   }
   else  if((GPIO_TypeDef*)_GPIOx == GPIOB )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOB);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOB);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOB);
   }
   else  if((GPIO_TypeDef*)_GPIOx == GPIOC )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOC);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOC);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOC);
   }
   else  if((GPIO_TypeDef*)_GPIOx == GPIOD )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOD);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOD);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOD);
   }
 #if defined(GPIOE)
   else  if((GPIO_TypeDef*)_GPIOx == GPIOE )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOE);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOE);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOE);
   }
 #endif
 #if defined(GPIOF)
   else  if((GPIO_TypeDef*)_GPIOx == GPIOF )
   {
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOG);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOG);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOG);
   }
 #endif
 }
@@ -233,33 +251,38 @@ __STATIC_INLINE void Gpio_ClockDisable(Port_t _GPIOx)
 {   
   if((GPIO_TypeDef*)_GPIOx == GPIOA )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOA);
+    //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOA);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOA);
   }
   else  if((GPIO_TypeDef*)_GPIOx == GPIOB )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOB);
+    //LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOB);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOB);
   }
-  else  if((GPIO_TypeDef*)_GPIOx == GPIOB )
+  else  if((GPIO_TypeDef*)_GPIOx == GPIOC )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOC);
+    //LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOC);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOC);
   }
   else  if((GPIO_TypeDef*)_GPIOx == GPIOD )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOD);
+    //LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOD);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOD);
   }
 #if defined(GPIOE)
   else  if((GPIO_TypeDef*)_GPIOx == GPIOE )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOE);
+    //LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOE);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOE);
   }
 #endif
 #if defined(GPIOF)
   else  if((GPIO_TypeDef*)_GPIOx == GPIOF )
   {
-    LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOG);
+    //LL_APB2_GRP1_DisableClock(LL_APB2_GRP1_PERIPH_GPIOG);
+    HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_GPIOG);
   }
-#endif
-  
+#endif  
 }
 
 

@@ -54,9 +54,9 @@ void Timer_Test()
   //PulseIn_Test();
   //IR_Test();
   //IR_Russia_Test();
-  //PulseOut_Test();
+  PulseOut_Test();
   //IROut_Test();
-  IrDecoder_Test();
+  //IrDecoder_Test();
   //IrEncoder_Test();
 }
 
@@ -149,7 +149,7 @@ void IR_Russia_Test()
 void PulseOut_Test()
 {   
   uint8_t DutyCycle = 50;
-  static HAL::PulseOut<(uint32_t)TIM3,TIM3_CH4_PIN_B1,10000> Dimmer; 
+  static HAL::PulseOut<(uint32_t)TIM3,TIM3_CH1_PIN_A6,10000> Dimmer; 
   Dimmer.HwInit();
   Dimmer.SetDutyCycle(50);
   while(1)

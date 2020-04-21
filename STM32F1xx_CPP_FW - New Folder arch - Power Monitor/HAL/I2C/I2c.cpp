@@ -159,11 +159,13 @@ namespace HAL
     {
       if(m_I2Cx == I2C1)
       {
-        LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_I2C1);
+        //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_I2C1);
+        HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_I2C1);
       }
       else if(m_I2Cx == I2C2)
       {
-        LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_I2C2);
+        //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_I2C2);
+        HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_I2C2);
       }        
     }
     
@@ -171,11 +173,13 @@ namespace HAL
     {
       if(m_I2Cx == I2C1)
       {
-        LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_I2C1);
+        //LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_I2C1);
+        HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_I2C1);
       }
       else if(m_I2Cx == I2C2)
       {
-        LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_I2C2);
+        //LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_I2C2);
+        HAL::ClockManager::Disable(HAL::ClockManager::CLOCK_I2C2);
       }        
     }
 

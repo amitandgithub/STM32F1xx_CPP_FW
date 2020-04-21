@@ -11,12 +11,22 @@
 
 #include "AnalogIn.h"
 
-HAL::AnalogIn adc_1(LL_ADC_CHANNEL_1);
 
 
 #ifndef st7735_test_h
 #define st7735_test_h
 
+extern HAL::Uart uart1;
+extern HAL::AnalogIn adc0;
+extern HAL::AnalogIn ChipTemperature;
+extern uint32_t SystickTimerTicks; 
+extern HAL::Rtc rtc;
+extern BSP::ST7735 TFT_1_8;
+extern BSP::ST7735 TFT_Small; 
+extern BSP::ST7735 TFT_240_240; 
+//extern HAL::INA219 INA219_Dev;
+
+void PowerMonitorST77XX();
 void loop();
 void loop_Small();
 void loop_Small_1();
@@ -26,26 +36,76 @@ void loop_135_240();
 
 #define ST7735_DELAY 500
 
-extern BSP::ST7735 TFT_1_8;
-extern BSP::ST7735 TFT_Small; 
-extern BSP::ST7735 TFT_240_240; 
-//extern HAL::INA219 INA219_Dev;
+
 
 
 #define TFT  TFT_Small
 //#define TFT1  TFT_Small
 
-extern uint32_t SystickTimerTicks; 
-extern HAL::Rtc rtc;
+
 
 uint8_t col,row=30;
 
-//static BSP::INA219::Power_t Power;
-//static char TimeString[]     = "T =            ";
-//static uint8_t I2C_Voltage[] = "V =            ";
-//static uint8_t I2C_Current[] = "I =            ";
-//static uint8_t I2C_mAH[]     = "C =  1234.00mAh"; 
+enum
+{
+  LINE_TIME,
+  LINE_VOLTAGE,
+  LINE_CURRENT,
+  LINE_MAH,
+  LINE_TEMPERATURE,
+  LINE_ANALOG_0
+};
   
+  
+
+void PowerMonitorST77XX()
+{
+  uint8_t Time[] = "T = 00:00:00";
+  uint8_t I2C_Voltage[ ] = "V =            ";
+  uint8_t I2C_Current[ ] = "I =            ";
+  uint8_t I2C_mAH[ ]     = "C = 1234.00mAh ";  
+  uint8_t Temperature[ ] = "Temp =   "; 
+  uint8_t AnalogStr[ ]   = "ADC Ch0 =      "; 
+  static BSP::INA219::Power_t Power;
+  FontDef CurentFont = st7735_Font_7x10;   //st7735_Font_7x10  st7735_Font_16x26 st7735_Font_11x18
+
+  static bool InitDone; 
+  
+  if(InitDone == false)  
+  {    
+    TFT_1_8.HwInit();
+    TFT_1_8.Rotate(BSP::ST7735::ROTATE_180_DEG);
+    TFT_1_8.FillScreen(BLACK);
+    INA219_Dev.HwInit();
+    adc0.HwInit(A0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
+    ChipTemperature.HwInit((Port_t)0,0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
+    InitDone = true;
+  }
+  
+  
+  INA219_Dev.Run(&Power);
+  
+  rtc.GetTime((char*)&Time[4]);
+  TFT_1_8.WriteString(0, CurentFont.height*LINE_TIME, (char*)Time, CurentFont, GREEN, BLACK); 
+  
+  ftoa(Power.Voltage, (char*)&I2C_Voltage[4], 2);
+  TFT_1_8.WriteString(0, CurentFont.height*LINE_VOLTAGE, (char*)I2C_Voltage, CurentFont, GREEN, BLACK);       
+  
+  ftoa(Power.Current, (char*)&I2C_Current[4], 1); 
+  TFT_1_8.WriteString(0, CurentFont.height*LINE_CURRENT, (char*)I2C_Current, CurentFont, GREEN, BLACK);
+
+  ftoa(Power.mAH, (char*)&I2C_mAH[4], 2);  
+  TFT_1_8.WriteString(0, CurentFont.height*LINE_MAH, (char*)I2C_mAH, CurentFont, GREEN, BLACK);
+  
+  ftoa(__LL_ADC_CALC_TEMPERATURE_TYP_PARAMS(4300,1400,25,3300,ChipTemperature.Read(),LL_ADC_RESOLUTION_12B), (char*)&Temperature[7], 1);  
+  TFT_1_8.WriteString(0, CurentFont.height*LINE_TEMPERATURE, (char*)Temperature, CurentFont, GREEN, BLACK);
+  
+  intToStr((uint32_t)adc0.ReadVoltage(), (char*)&AnalogStr[10], 4);  
+  TFT_1_8.WriteString(0, CurentFont.height*LINE_ANALOG_0, (char*)AnalogStr, CurentFont, GREEN, BLACK);
+
+  //LL_mDelay (300);
+}
+
 void st7735_Test()
 { 
   //rtc.GetTime(&TimeString[4]);  
@@ -55,7 +115,8 @@ void st7735_Test()
   //loop_Big();
   //LL_mDelay(1000);
  // loop_135_240();
-  loop_TFT_1_8();
+  //loop_TFT_1_8();
+  PowerMonitorST77XX();
 }
 
 
@@ -132,7 +193,7 @@ void loop_TFT_1_8()
 {
   char TimeString[30];
   static bool InitDone;
-  FontDef CurentFont = st7735_Font_11x18;  
+  FontDef CurentFont = st7735_Font_7x10;  
   if(InitDone == false)  
   {
     
@@ -143,28 +204,11 @@ void loop_TFT_1_8()
   }
   rtc.GetTime(&TimeString[0]); 
   //sprintf(TimeString, "%d", SystickTimerTicks);
-//  TFT_1_8.FillScreen(BLACK);
-//  TFT_1_8.WriteString(0, 0, 
-//                      "           You can search throughout the entire universe for someone who is more deserving of your love and affection than you are yourself, and that person is not to be found anywhere. You, yourself, as much as anybody in the entire universe, deserve your love and affection.",
-//                      st7735_Font_7x10, GREEN, BLACK);
- // TFT_1_8.WriteString(0, 0, TimeString, st7735_Font_16x26, RED, BLACK);  
   TFT_1_8.WriteString(0, CurentFont.height*0, TimeString, CurentFont, CYAN, BLACK);  
   TFT_1_8.WriteString(0, CurentFont.height*1, (char const*)I2C_Voltage, CurentFont, GREEN, BLACK); 
   TFT_1_8.WriteString(0, CurentFont.height*2, (char const*)I2C_Current, CurentFont, GREEN, BLACK);
   TFT_1_8.WriteString(0, CurentFont.height*3, (char const*)I2C_mAH, CurentFont, GREEN, BLACK);
-  
-  //TFT_1_8.Rotate((BSP::ST7735::Rotation_t)(col++ & 3));
-//  TFT_1_8.DrawPixel(col++,row,GREEN);
-//  if(col > 160) 
-//  { 
-//    row += 2 ; 
-//    col = 0;
-//    if(row > 79) 
-//    {
-//      TFT_1_8.FillScreen(BLACK);
-//      row = 30;
-//    }
-//  }
+
 }
 
 

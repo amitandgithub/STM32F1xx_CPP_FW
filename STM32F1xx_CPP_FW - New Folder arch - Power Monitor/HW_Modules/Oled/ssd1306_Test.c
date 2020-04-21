@@ -38,11 +38,11 @@ void ssd1306_test()
   {    
     //INA219_Dev.Run(&Power);
     //Display_I_and_V(22);
-    //PowerMonitor();
+    PowerMonitor();
     //RunCatAnimation();
     //RunArrow();
     //SSD1306_UpdateScreen();    
-    RunAnimation();
+    //RunAnimation();
    //Pixels(num = !num);
     //Waveform();
     
@@ -68,7 +68,7 @@ void Display_I_and_V(uint8_t font)
   SSD1306_GotoXY (0,0);
   SSD1306_Puts( (char*)TimeString, &FONT, SSD1306_COLOR_WHITE);//Font_11x18     
   
-  ftoa(Power.Current, (char*)&I2C_Current[2], 3);  
+  ftoa(Power.Current, (char*)&I2C_Current[2], 1);  
   SSD1306_GotoXY (0,font*1);
   SSD1306_Puts((char*)I2C_Current, &FONT, SSD1306_COLOR_WHITE);
   
@@ -238,29 +238,14 @@ void RunArrow()
 }
 
 
-uint32_t sample_count,Sec_count,Disp_count;
-uint32_t PowerInterval = 1000, previousPowerMillis = 0;
-uint32_t DisplayInterval = 50, previousDisplayMillis = 0; 
-extern uint32_t SystickTimerTicks;
+//uint32_t sample_count,Sec_count,Disp_count;
+//uint32_t PowerInterval = 1000, previousPowerMillis = 0;
+//uint32_t DisplayInterval = 50, previousDisplayMillis = 0; 
+//extern uint32_t SystickTimerTicks;
 void PowerMonitor()
 {
-  uint32_t currentMillis = SystickTimerTicks;//HAL_GetTick();
-     
-  if (currentMillis- previousPowerMillis >= PowerInterval)
-  {
-    previousPowerMillis = currentMillis;
-    INA219_Dev.Run(&Power);
-    mAh += Power.Current /3600.0;   
-    Sec_count++;
-  }
-  
- if (currentMillis - previousDisplayMillis >= DisplayInterval)
-  {
-     previousDisplayMillis = currentMillis;
-     Display_I_and_V(22);
-     Disp_count++;
-  }
- 
+  INA219_Dev.Run(&Power);
+  Display_I_and_V(22); 
 }
 
 float MLX90615_Get_Temperature()

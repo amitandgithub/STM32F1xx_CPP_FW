@@ -58,7 +58,6 @@ namespace HAL
       InterruptManagerInstance.RegisterDeviceInterrupt(ADC1_IRQn,0,this);
       
       Enable();
-      //LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(ADC1), LL_ADC_PATH_INTERNAL_VREFINT);
     }  
 
   }
@@ -98,11 +97,17 @@ namespace HAL
   */
   uint16_t Adc::Read(uint32_t Chanel)
   {    
+    if(Chanel == LL_ADC_CHANNEL_16)
+    {
+      LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(m_ADCx), LL_ADC_PATH_INTERNAL_TEMPSENSOR);
+
+    } 
+
     LL_ADC_REG_SetSequencerRanks(ADC1, LL_ADC_REG_RANK_1, Chanel);          
     
     if( StartConversion() == false) 
       return 0xFFFF; // error
-    
+
     if( ADC_CONVERSION_DONE(ADC1)) 
     {
       return 0xFFFF; // error 
@@ -114,15 +119,15 @@ namespace HAL
   }
 
 
-  int32_t Adc::GetChipTemperature()
-  {
-//    Disable();
+//  int32_t Adc::GetChipTemperature()
+//  {
+////    Disable();
+////    LL_mDelay(1);
+////    Enable();
+//    LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(ADC1), LL_ADC_PATH_INTERNAL_VREFINT);
 //    LL_mDelay(1);
-//    Enable();
-    LL_ADC_SetCommonPathInternalCh(__LL_ADC_COMMON_INSTANCE(ADC1), LL_ADC_PATH_INTERNAL_VREFINT);
-    LL_mDelay(1);
-    return __LL_ADC_CALC_TEMPERATURE_TYP_PARAMS(1750,612,110+5,3000,Read(LL_ADC_CHANNEL_TEMPSENSOR),LL_ADC_RESOLUTION_12B); 
-  }
+//    return __LL_ADC_CALC_TEMPERATURE_TYP_PARAMS(1750,612,110+5,3000,Read(LL_ADC_CHANNEL_TEMPSENSOR),LL_ADC_RESOLUTION_12B); 
+//  }
   
   void Adc::ISR()
   {

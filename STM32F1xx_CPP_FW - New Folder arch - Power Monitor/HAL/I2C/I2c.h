@@ -21,6 +21,7 @@
 #include"DebugLog.h"
 #include"DigitalOut.h"
 #include"DMA.h"
+#include"ClockManager.h"
 
 extern HAL::DMA dma1;
 extern Utils::DebugLog<DBG_LOG_TYPE> DebugLogInstance;

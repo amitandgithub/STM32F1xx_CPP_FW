@@ -34,22 +34,6 @@ namespace BSP
     // if(pPower->Voltage < 0.89f ) pPower->Voltage=0; // Negative voltage till 0.40v is not what we are interested in.
     if(pPower->Current < 0.3 ) pPower->Current = 0;         // Discard the junk values   
     
-//    if( (pPower->Current < 400) && (pPower->Voltage < 16) )
-//    {
-//      SetCalibration_16V_400mA();
-//    }
-//    else if(pPower->Current > 400)
-//    {
-//      SetCalibration_32V_1A();
-//    }
-//    else if(pPower->Current > 1000)
-//    {
-//       SetCalibration_32V_2A();
-//    }
-//    else
-//    {
-//    }
-    
     RUN_EVERY_MILLIS(128,CaptureSamples(pPower));
   }
   

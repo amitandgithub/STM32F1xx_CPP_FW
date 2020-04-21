@@ -22,6 +22,7 @@ void CDC_ReceiveCallback(uint8_t *buf, uint32_t len);
 void SystemClock_Config(void);
 void SetSystickTimerInterrupt();
 extern Uart uart1;
+extern GpioOutput LED;
 
 void putc ( void* p, char c)
 {
@@ -39,8 +40,9 @@ struct s {
 //if you are free to use 32 bit timer you can even do it without IRQ, just simply time= TIMx->CNT.  
 //  uint8_t day = STR_TO_BCD(__DATE__[4],__DATE__[5]);
 //  uint8_t yr  = STR_TO_BCD(__DATE__[9],__DATE__[8]);
+// MCP1703T input max 16V
 
-#define NEW_BOARD 0
+#define NEW_BOARD 1
 #define RTC_ON_LSE 0
 
 int main(void)
@@ -52,13 +54,14 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
 #else
-  uart1.HwInit(9600*2);
+  uart1.HwInit(9600);
   init_printf(NULL,putc);
   printf("%f\n\r", 0.1234); 
 #endif
   
   DWTHwInit();
   Rtc_test();
+  LED.HwInit();
   while(1)
   {
     //BMP280_Test();
@@ -75,14 +78,15 @@ int main(void)
     //ssd1306_test();
     //Nokia_Lcd_Test();
     // w25qxx_Test();
-    //st7735_Test();
+    st7735_Test();
     // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
     //Power_Monitor_Test();
     //Uart_Test();
-     Adc_Test();
+    Adc_Test();
     //Timer_Test();
     //Ir_Test();
     // Template_Tests();
+   // LED.Toggle();
   }    
 }
 
