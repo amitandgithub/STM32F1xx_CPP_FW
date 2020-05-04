@@ -38,7 +38,7 @@ void Rtc_test()
   
   if(InitDone == false)
   {
-    rtc.HwInit(HAL::ClockManager::CLOCK_LSE);
+    rtc.HwInit(HAL::ClockManager::CLOCK_LSI);
     rtc.SetTime(0,0,0);
     //rtc.SetTime(__HOURS__,__MINUTES__,__SECONDS__);
    // rtc.SetAlarm(0,1,0,&RTCSecCallbackObj);

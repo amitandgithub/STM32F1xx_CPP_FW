@@ -78,7 +78,7 @@ int main(void)
     //ssd1306_test();
     //Nokia_Lcd_Test();
     // w25qxx_Test();
-    //st7735_Test();
+    st7735_Test();
     // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
     //Power_Monitor_Test();
     //Uart_Test();
@@ -87,7 +87,7 @@ int main(void)
     //Ir_Test();
     // Template_Tests();
    // LED.Toggle();
-    Menu_test();
+    //Menu_test();
   }    
 }
 
