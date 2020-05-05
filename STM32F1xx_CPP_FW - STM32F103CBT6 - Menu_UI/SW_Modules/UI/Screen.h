@@ -22,7 +22,7 @@ namespace HMI
   class Screen : public Window
   {
   public:
-    static const uint8_t MAX_WINDOWS = 6;
+    static const uint8_t MAX_WINDOWS = 3;
     static const uint16_t WINDOW_HIGHLIGHT_COLOR = MAGENTA;//YELLOW;
     static const uint8_t ACTIVE_WINDOW_NONE = 255;
     
@@ -45,7 +45,7 @@ namespace HMI
     {            
       if(m_CurrentWindowIndex == m_CurrentActiveWindow)
       {
-        m_Windows[m_CurrentWindowIndex]->Display(BackgroundColor); 
+        m_Windows[m_CurrentWindowIndex]->Display(m_BackgroundColor); 
       }
       else
       {
@@ -61,11 +61,7 @@ namespace HMI
     {
       if(InputEvents == HMI::UP)
       {
-        if(m_Captured)
-        {
-          m_Windows[m_CurrentActiveWindow]->EventHandler(HMI::UP);
-        }
-        else
+        if(m_Windows[m_CurrentActiveWindow]->EventHandler(HMI::UP) == 0)
         {
           m_CurrentActiveWindow--;
           if(m_CurrentActiveWindow == 0)  m_CurrentActiveWindow = MAX_WINDOWS-1;
@@ -73,42 +69,33 @@ namespace HMI
       }
       else if(InputEvents == HMI::DOWN)
       {
-        if(m_Captured)
-        {
-          m_Windows[m_CurrentActiveWindow]->EventHandler(HMI::DOWN);
-        }
-        else
+        if(m_Windows[m_CurrentActiveWindow]->EventHandler(HMI::DOWN) == 0)
         {
           m_CurrentActiveWindow++;          
-          if(m_CurrentActiveWindow >= MAX_WINDOWS)  m_CurrentActiveWindow = 0; 
-        }             
+          if(m_CurrentActiveWindow >= MAX_WINDOWS)  m_CurrentActiveWindow = 0;
+        }
       }
       else if(InputEvents == HMI::PRESS)
-      {
-        if(m_Captured)
-        {
-          m_Captured = m_Windows[m_CurrentActiveWindow]->EventHandler(HMI::PRESS);
-        }
-        else
+      {        
+        if(m_Windows[m_CurrentActiveWindow]->EventHandler(HMI::PRESS) == 0)
         {
           m_Captured = 1;
-        }       
+          m_BackgroundColor = WINDOW_HIGHLIGHT_COLOR;
+        }
       }
       else if(InputEvents == HMI::LONGPRESS)
       {
-        if(m_Captured)
-        {
-          m_Captured = m_Windows[m_CurrentActiveWindow]->EventHandler(HMI::LONGPRESS);
-        }
-        else
+        if(m_Windows[m_CurrentActiveWindow]->EventHandler(HMI::LONGPRESS) == 0)
         {
           m_Captured = 0;
-        }      
+          m_BackgroundColor = BLACK;
+        }
       }
-      return 0;
+      return m_Captured;
     }
     
   private:
+    Color_t     m_BackgroundColor;
     uint8_t     m_CurrentWindowIndex;
     uint8_t     m_Captured;
     uint8_t     m_CurrentActiveWindow;

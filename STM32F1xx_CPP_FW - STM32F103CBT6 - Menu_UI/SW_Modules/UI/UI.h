@@ -1,113 +1,117 @@
 /*
- * UI.hpp
- *
- *  Created on: 01-Nov-2017
- *      Author: Amit Chaudhary
- *  13-Oct-2018 : Modified for the New version based upon STM32_HAL
- */
+* UI.h
+*
+*  Created on: 5-May-2020
+*      Author: Amit Chaudhary
+*  
+*/
 
-#ifndef APP_INC_UI_HPP_
-#define APP_INC_UI_HPP_
+#ifndef UI_h
+#define UI_h
 
-//#include "CPP_HAL.h" 
-#include "NokiaLCD.h"
-#include <cstring>
-#include "Screen.h"
+#include"stdint.h"
+#include<cstring>
+#include"Callback.h"
+#include "ST7735.h"
+#include "Window.h"
 
 namespace HMI
-{
-
-extern BSP::NokiaLCD NokiaLCDObj;
-
-class UI
-{
-public:
-    constexpr static unsigned char NO_OF_SCREENS_IN_UI = 10U;
-    typedef uint8_t ScreenHandle_t;
-
-	UI(BSP::NokiaLCD* pNokiaLCD);
+{ 
+  class UI : public Window
+  {
+    static const uint8_t MAX_SCREENS = 2;
+  public:   
     
-	~UI(){};
+     UI():Window(nullptr),m_CurrentActiveScreen(0),m_RegisteredScreenIndex(0),m_Captured(0),m_CurrentScreenIndex(0)
+    {
+
+    }
     
-	bool Init();        
     
-    ScreenHandle_t AddScreen(Screen* pScreen );
     
-    static ScreenHandle_t GetActiveScreen()                 {return ActiveScreen; }
+    void Run(InputEvents_t InputEvents)
+    {
+      if(InputEvents != HMI::NONE)
+      {
+        EventHandler(InputEvents);
+        InputEvents = HMI::NONE;
+      }
+      Display(BLACK);
+    }
     
-    static void SetActiveScreen(ScreenHandle_t ScreenNo)    { PreviousActiveScreen = ActiveScreen; ActiveScreen = ScreenNo; }
     
-    static void GoToScreen(ScreenHandle_t ScreenNo){ PreviousActiveScreen = ActiveScreen; ActiveScreen = ScreenNo; };
+    uint8_t Register(Window* pScren)
+    {
+      if(pScren != nullptr)
+      {
+        m_Screens[m_RegisteredScreenIndex] = pScren;
+        return m_RegisteredScreenIndex++;
+      }
+      return 0xFF;
+    }    
     
-    static void GoToScreen(Screen* pScreen );
+    virtual bool Display(Color_t BackgroundColor)
+    {      
+      m_Screens[m_CurrentActiveScreen]->Display(BLACK);
+      
+      return 0;
+    }
     
-    static void GoToPreviousScreen();
+    uint8_t EventHandler(InputEvents_t InputEvents)
+    {
+      if(InputEvents == HMI::UP)
+      {
+        if(m_Captured == 0)
+        {
+          m_CurrentActiveScreen--;
+          if(m_CurrentActiveScreen == 0)  m_CurrentActiveScreen = MAX_SCREENS-1;
+        }
+        else
+        {
+          m_Screens[m_CurrentActiveScreen]->EventHandler(HMI::UP);
+        }
+      }
+      else if(InputEvents == HMI::DOWN)
+      {
+        if(m_Captured == 0)
+        {
+          m_CurrentActiveScreen++;          
+          if(m_CurrentActiveScreen >= MAX_SCREENS)  m_CurrentActiveScreen = 0;
+        }
+        else
+        {
+          m_Screens[m_CurrentActiveScreen]->EventHandler(HMI::DOWN);
+        }
+      }
+      else if(InputEvents == HMI::PRESS)
+      {
+        if(m_Captured == 0)
+        {
+          m_Captured = 1;
+        } 
+        else
+        {
+          m_Screens[m_CurrentActiveScreen]->EventHandler(HMI::PRESS);
+        }
+      }
+      else if(InputEvents == HMI::LONGPRESS)
+      {        
+        if(m_Captured == 1)
+        {
+          m_Captured = m_Screens[m_CurrentActiveScreen]->EventHandler(HMI::LONGPRESS);
+        } 
+      }
+      return 0;
+    }
     
-    static void GoToNextScreen();
-    
-    void DisplayScreen();
-    
-    void Run(){DisplayScreen();}
-    
-    //void EventHamdler(Screen::Event_t& rEvent);
-
-private:
-        static Screen* m_Screens[NO_OF_SCREENS_IN_UI];
-        static ScreenHandle_t ActiveScreen;
-        static unsigned char PreviousActiveScreen;
-        static unsigned char TotalRegisteredScreens;
-        static ScreenHandle_t TotalAddeedScreens;
-        BSP::NokiaLCD* LCD;
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  private:
+      uint8_t   m_CurrentScreenIndex;
+      uint8_t   m_Captured;
+      uint8_t   m_CurrentActiveScreen;
+      uint8_t   m_RegisteredScreenIndex;
+      Window*   m_Screens[MAX_SCREENS];
+      
+  };
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#endif /* APP_INC_UI_HPP_ */
+#endif // UI_h
