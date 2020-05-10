@@ -22,7 +22,7 @@ namespace HMI
     static const uint8_t MAX_SCREENS = 2;
   public:   
     
-     UI():Window(nullptr),m_CurrentActiveScreen(0),m_RegisteredScreenIndex(0),m_Captured(0),m_CurrentScreenIndex(0),m_BackgroundColor(BLACK)
+     UI():Window(nullptr),m_CurrentActiveScreen(0),m_RegisteredScreenIndex(0),m_Captured(0),m_BackgroundColor(BLACK)
     {
 
     }
@@ -64,7 +64,8 @@ namespace HMI
         if(m_Captured == 0)
         {
           m_CurrentActiveScreen--;
-          if(m_CurrentActiveScreen == 0)  m_CurrentActiveScreen = MAX_SCREENS-1;
+          if(m_CurrentActiveScreen == 0)  m_CurrentActiveScreen = m_RegisteredScreenIndex-1;
+          ClearScreen(BLACK);
         }
         else
         {
@@ -76,7 +77,8 @@ namespace HMI
         if(m_Captured == 0)
         {
           m_CurrentActiveScreen++;          
-          if(m_CurrentActiveScreen >= MAX_SCREENS)  m_CurrentActiveScreen = 0;
+          if(m_CurrentActiveScreen >= m_RegisteredScreenIndex)  m_CurrentActiveScreen = 0;
+          ClearScreen(BLACK);
         }
         else
         {
@@ -100,9 +102,8 @@ namespace HMI
         if(m_Captured == 1)
         {
           m_Captured = m_Screens[m_CurrentActiveScreen]->EventHandler(HMI::LONGPRESS);
-          m_BackgroundColor = BLACK;
-          //m_CurrentActiveScreen++;          
-          if(m_CurrentActiveScreen >= MAX_SCREENS)  m_CurrentActiveScreen = 0;          
+          m_BackgroundColor = BLACK;         
+          if(m_CurrentActiveScreen >= m_RegisteredScreenIndex)  m_CurrentActiveScreen = 0;          
         } 
       }
       return 0;
@@ -110,7 +111,6 @@ namespace HMI
     
   private:
       Color_t   m_BackgroundColor;
-      uint8_t   m_CurrentScreenIndex;
       uint8_t   m_Captured;
       uint8_t   m_CurrentActiveScreen;
       uint8_t   m_RegisteredScreenIndex;

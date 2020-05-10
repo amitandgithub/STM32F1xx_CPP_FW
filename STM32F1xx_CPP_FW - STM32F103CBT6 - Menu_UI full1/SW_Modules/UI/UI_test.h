@@ -5,13 +5,25 @@
 
 #include"Window.h" 
 #include"TextWindow.h" 
-#include"SettingWindow.h" 
+#include"SettingWindow.h"  
+#include"NamedSettingWindow.h"  
 #include"Screen.h" 
 #include"UI.h" 
 
 extern GpioOutput LED;
 
 HMI::InputEvents_t InputEvents = HMI::NONE;
+
+static volatile uint32_t sg_CurrentsettingValue;
+
+class SettingCallback : public HMI::SettingCallback
+{
+    virtual void CallbackFunction(uint32_t UpdatedSettingValue)
+    {
+      //printf("setting Done = %d \n\r",UpdatedSettingValue); 
+      sg_CurrentsettingValue = UpdatedSettingValue;
+    }
+};
 
 class DownCallback : public Callback
 {
@@ -37,8 +49,6 @@ class LongPressCallback1 : public Callback
     }
 };
 
-
-
 static DownCallback DownCb;
 
 static PressCallback PressCb;
@@ -50,6 +60,7 @@ static BSP::HwButton<DigitalIn<B9,INPUT_PULLDOWN>,
   reinterpret_cast <Callback *>(&PressCb),
   reinterpret_cast <Callback *>(&LongPressCb)> B9_HwBtnInt; 
 
+static SettingCallback aSettingCallback;
 #define CURRENT_FONT st7735_Font_11x18
 enum
 {
@@ -62,36 +73,64 @@ enum
   Line7,  
 };
 //st7735_Font_7x10  st7735_Font_11x18 st7735_Font_16x26 
+
+/*************************************************** Setting Window *****************************************************************/
 char Text1[20] = "Delay              ";
 uint32_t Delay1;
 
-const HMI::WindowContext_t  WindowContext1   = {0,127,18*Line1,18*Line2,&st7735_Font_11x18,GREEN,BLACK,RED}; 
-const HMI::SettingContext_t SettingContext1  = {&Delay1,Text1,14,3,6};
+const HMI::WindowContext_t  WindowContext1   = {0,127,18*Line1,18*Line2,&CURRENT_FONT,GREEN,BLACK,RED}; 
+const HMI::SettingContext_t SettingContext1  = {&Delay1,Text1,&aSettingCallback,14,3,6};
                                              
 char Text2[20] = "Brightnes          ";      
 uint32_t Brightness;                       
-const HMI::WindowContext_t  WindowContext2   = {0,127,18*Line2,18*Line3,&st7735_Font_11x18,GREEN,BLACK,RED};
-const HMI::SettingContext_t SettingContext2  = {&Brightness,Text2,14,3,10};
+const HMI::WindowContext_t  WindowContext2   = {0,127,18*Line2,18*Line3,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::SettingContext_t SettingContext2  = {&Brightness,Text2,&aSettingCallback,14,3,10};
                                              
 char Text3[20] = "Amit               ";      
 uint32_t Delay3;                             
-const HMI::WindowContext_t  WindowContext3   = {0,127,18*Line3,18*Line4,&st7735_Font_11x18,GREEN,BLACK,RED};
-const HMI::SettingContext_t SettingContext3  = {&Delay3,Text3,14,3,5};
+const HMI::WindowContext_t  WindowContext3   = {0,127,18*Line3,18*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::SettingContext_t SettingContext3  = {&Delay3,Text3,&aSettingCallback,14,3,5};
                                              
 char Text4[20] = "Sumit             ";       
 uint32_t Delay4;                             
-const HMI::WindowContext_t  WindowContext4   = {0,127,18*Line1,18*Line2,&st7735_Font_11x18,GREEN,BLACK,RED};
-const HMI::SettingContext_t SettingContext4  = {&Delay4,Text4,14,3,6};
+const HMI::WindowContext_t  WindowContext4   = {0,127,18*Line1,18*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::SettingContext_t SettingContext4  = {&Delay4,Text4,&aSettingCallback,14,3,6};
                                              
 char Text5[20] = "Avni              ";       
 uint32_t Delay5;                             
-const HMI::WindowContext_t  WindowContext5   = {0,127,18*Line2,18*Line3,&st7735_Font_11x18,GREEN,BLACK,RED};
-const HMI::SettingContext_t SettingContext5  = {&Delay5,Text5,14,3,5};
+const HMI::WindowContext_t  WindowContext5   = {0,127,18*Line2,18*Line3,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::SettingContext_t SettingContext5  = {&Delay5,Text5,&aSettingCallback,14,3,5};
 
 char Text6[20] = "Vani              ";
 uint32_t Delay6;
-const HMI::WindowContext_t  WindowContext6   = {0,127,18*Line3,18*Line4,&st7735_Font_11x18,GREEN,BLACK,RED};
-const HMI::SettingContext_t SettingContext6  = {&Delay6,Text6,14,3,5};
+const HMI::WindowContext_t  WindowContext6   = {0,127,18*Line3,18*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::SettingContext_t SettingContext6  = {&Delay6,Text6,&aSettingCallback,14,3,5};
+
+/*************************************************** NamedSetting Window *****************************************************************/
+char namesetting1[20] = "Hello              ";       
+uint32_t Frequency;                             
+const HMI::WindowContext_t  NamedWindowContext1   = {0,127,18*Line4,18*Line5,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::NamedSettingTable_t NamedSettingTable1[] = { {0,(char*)"Amit"}, {1,(char*)"Shivani"},{2,(char*)"Avni"} ,{3,(char*)"Kaka"},{4,(char*)"Ritika"},{5,(char*)"Vani"},{6,(char*)"Dadu"},{7,(char*)"Dadi"}};
+const HMI::NamedSettingContext_t NamedSettingContext1  = {&Frequency,namesetting1,&aSettingCallback,14,6,8,NamedSettingTable1};
+
+
+/*************************************************** Text Window *****************************************************************/
+
+class TextCallback : public Callback
+{
+    void CallbackFunction()
+    {
+     sg_CurrentsettingValue++;
+    }
+};
+
+TextCallback Presscb;
+TextCallback LPresscb;
+
+const HMI::WindowContext_t  TextWindowContext1   = {0,127,18*Line5,18*Line6,&CURRENT_FONT,GREEN,BLACK,RED}; 
+const HMI::TextWindowContext_t TextContext1  = {(char*)"Reset Data    ",&Presscb,&LPresscb};
+
+
 
 HMI::Screen HomeScreen;
 HMI::Screen HomeScreen1;
@@ -100,9 +139,11 @@ void Window_test()
 {
   static HMI::UI MyUI;
   
-  static HMI::SettingWindow TextWindow1(&WindowContext1,&SettingContext1);
-  static HMI::SettingWindow TextWindow2(&WindowContext2,&SettingContext2);
-  static HMI::SettingWindow TextWindow3(&WindowContext3,&SettingContext3);
+  static HMI::SettingWindow SettingWindow1(&WindowContext1,&SettingContext1);
+  static HMI::SettingWindow SettingWindow2(&WindowContext2,&SettingContext2);
+  static HMI::SettingWindow SettingWindow3(&WindowContext3,&SettingContext3); 
+  static HMI::NamedSettingWindow NamedSettingWindow4(&NamedWindowContext1,&NamedSettingContext1);
+  static HMI::TextWindow TextWindow1(&TextWindowContext1,&TextContext1);
   
   static HMI::SettingWindow TextWindow4(&WindowContext4,&SettingContext4);
   static HMI::SettingWindow TextWindow5(&WindowContext5,&SettingContext5);
@@ -113,9 +154,11 @@ void Window_test()
   TFT_1_8.FillScreen(BLACK);
   B9_HwBtnInt.HwInit();
   
+  HomeScreen.Register(&SettingWindow1);
+  HomeScreen.Register(&SettingWindow2); 
+  HomeScreen.Register(&SettingWindow3); 
+  HomeScreen.Register(&NamedSettingWindow4);
   HomeScreen.Register(&TextWindow1);
-  HomeScreen.Register(&TextWindow2); 
-  HomeScreen.Register(&TextWindow3); 
   
   HomeScreen1.Register(&TextWindow4); 
   HomeScreen1.Register(&TextWindow5);
@@ -124,7 +167,7 @@ void Window_test()
   MyUI.Register(&HomeScreen);
   MyUI.Register(&HomeScreen1);
   
-  //TFT_1_8.DrawRctangle(0,0,159,st7735_Font_11x18.width+1,CYAN);
+  //TFT_1_8.DrawRctangle(0,0,159,CURRENT_FONT.width+1,CYAN);
 
   while(1)
   {
@@ -145,7 +188,7 @@ void Window_test()
     MyUI.Display(HMI::Screen::WINDOW_HIGHLIGHT_COLOR);
     
 //    rtc.GetTime((char*)Time);
-//    TFT_1_8.WriteString(0+1 + st7735_Font_11x18.width * 3 , 18*0 + 1, (char*)Time, &st7735_Font_11x18, GREEN, BLACK); 
+//    TFT_1_8.WriteString(0+1 + CURRENT_FONT.width * 3 , 18*0 + 1, (char*)Time, &CURRENT_FONT, GREEN, BLACK); 
   }
 }
 

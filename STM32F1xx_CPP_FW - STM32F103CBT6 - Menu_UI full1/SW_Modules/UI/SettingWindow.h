@@ -11,22 +11,13 @@
 
 //#include"stdint.h"
 //#include<cstring>
-//#include"Callback.h"
+#include"Callback.h"
 #include "Window.h"
 
 #define CPU_LOAD 1
 namespace HMI
 { 
-  static const uint32_t Power_of_10[11] = {1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000};
-  
-  typedef struct
-    {
-      uint32_t* pSettingVariable;
-      char*     SettingText;
-      uint8_t   Settinglen;
-      uint8_t   SettingVariableTotalDigits;
-      uint8_t   SettingVariablePosition;
-    }SettingContext_t;
+
   
   class SettingWindow : public Window
   {
@@ -38,9 +29,9 @@ namespace HMI
      m_SettingContext(SettingContext)
     {
       m_SettingText = SettingContext->SettingText;        
-      ResetCounter();
-      intToStr( *SettingContext->pSettingVariable,&SettingContext->SettingText[ SettingContext->SettingVariablePosition],m_TotalDigits,' ');
-      SettingContext->SettingText[SettingContext->Settinglen] = 0;
+      m_CurrentDigitIndex = m_SettingContext->SettingVariablePosition - 1;
+      intToStr( *SettingContext->pSettingVariable,&SettingContext->SettingText[ SettingContext->SettingVariablePosition],SettingContext->SettingVariableTotalDigits,' ');
+      SettingContext->SettingText[SettingContext->Settinglen] = 0;  // Null termination for Display driver to detect the end-of-string
     }
     
     virtual bool Display(Color_t BackgroundColor)
@@ -49,10 +40,9 @@ namespace HMI
       uint32_t Millis = HAL::GetTick();
 #endif
       
-#if 1
-      for(uint8_t i = 0; i<(m_SettingContext->Settinglen); i++ ) // && m_SettingText[i]
+      for(uint8_t i = 0; i < m_SettingContext->Settinglen; i++ )
       {
-        if( (m_ConfigMode == 1) && (i == (m_SettingContext->SettingVariablePosition - 1 + m_CurrentDigitIndex)) )
+        if( (m_ConfigMode == 1) && (i == m_CurrentDigitIndex) )
         {
           WriteChar(m_pWindowContext->x1 + (m_pWindowContext->font->width) * i,
                             m_pWindowContext->y1, m_SettingText[i], m_pWindowContext->font, m_pWindowContext->highlightColor, BackgroundColor);
@@ -63,16 +53,6 @@ namespace HMI
                             m_pWindowContext->y1, m_SettingText[i], m_pWindowContext->font, m_pWindowContext->textColor , BackgroundColor);
         }
       }
-#else
-       if( (m_ConfigMode == 1) )
-        {
-          WriteString(m_pWindowContext->x1 ,m_pWindowContext->y1, m_SettingText, m_pWindowContext->font, m_pWindowContext->highlightColor, BackgroundColor);
-        }
-        else
-        {
-          WriteString(m_pWindowContext->x1 ,m_pWindowContext->y1, m_SettingText, m_pWindowContext->font, m_pWindowContext->textColor, BackgroundColor);
-        }
-#endif
 #if CPU_LOAD
       m_CurrentMillis = HAL::GetTick() - Millis;
 #endif
@@ -83,20 +63,20 @@ namespace HMI
     {
       if(InputEvents == HMI::UP)
       {
-        if( (m_ConfigMode == 1) && (m_TotalDigits < m_SettingContext->Settinglen) )
+        if( (m_ConfigMode == 1) && (m_CurrentDigitIndex < m_SettingContext->SettingVariablePosition + m_SettingContext->SettingVariableTotalDigits) )
         {          
-          m_SettingText[m_SettingContext->SettingVariablePosition - 1 + m_CurrentDigitIndex]++;  // Increment the value on user input
+          m_SettingText[m_CurrentDigitIndex]++;  // Increment the value on UP user event
           
-          if(m_SettingText[m_SettingContext->SettingVariablePosition - 1 + m_CurrentDigitIndex] > '9') m_SettingText[m_SettingContext->SettingVariablePosition - 1 + m_CurrentDigitIndex] = '0';
+          if(m_SettingText[m_CurrentDigitIndex] > '9') m_SettingText[m_CurrentDigitIndex] = '0';
         }
       }
       else if(InputEvents == HMI::DOWN)
       {
-       if( (m_ConfigMode == 1) && (m_TotalDigits < m_SettingContext->Settinglen) )
+        if( (m_ConfigMode == 1) && (m_CurrentDigitIndex < m_SettingContext->SettingVariablePosition + m_SettingContext->SettingVariableTotalDigits) )
         {           
-          m_SettingText[m_SettingContext->SettingVariablePosition - 1 + m_CurrentDigitIndex]--; // decrement the value on user input
+          m_SettingText[m_CurrentDigitIndex]--; // decrement the value on DOWN user event
           
-          if(m_SettingText[m_SettingContext->SettingVariablePosition - 1 + m_CurrentDigitIndex] < '0') m_SettingText[m_SettingContext->SettingVariablePosition - 1 + m_CurrentDigitIndex] = '9';
+          if(m_SettingText[m_CurrentDigitIndex] < '0') m_SettingText[m_CurrentDigitIndex] = '9';
         }
       }
       else if(InputEvents == HMI::PRESS)
@@ -104,62 +84,49 @@ namespace HMI
         if(m_ConfigMode == 0)
         {      
           m_ConfigMode = 1;
-          ResetCounter(); 
-          m_CurrentDigitIndex = 0;
-        }
+          m_CurrentDigitIndex = m_SettingContext->SettingVariablePosition - 1; // Reset this index          
+        }        
         
-        if( (m_ConfigMode == 1) && (m_TotalDigits) )
+        if( (m_ConfigMode == 1) && (m_CurrentDigitIndex < m_SettingContext->SettingVariablePosition + m_SettingContext->SettingVariableTotalDigits - 1) )
         {
-          m_CurrentDigitIndex++;          
-          m_TotalDigits--; // Move to next character for setting its value from user
+          m_CurrentDigitIndex++; // Move to next character for setting its value from user  
         }
         else
         {        
-          ResetCounter();
           m_ConfigMode = 0; // Setting of all the digits are done, exit config mode  
           UpdateMemory(); // convert use entered chars to intiger value 
         }
       }
       else if(InputEvents == HMI::LONGPRESS)
       {
-        ResetCounter();
         m_ConfigMode = 0; // Setting of all the digits are done, exit config mode 
         UpdateMemory();  // convert use entered chars to intiger value
       }
       return m_ConfigMode;
     }
     
+    //Convert user entered string into intiger value and update that in original memeory location
     void UpdateMemory()
     {
       uint32_t temp = 0;
       
-      for(uint8_t i=0;i<m_TotalDigits;i++)
+      for(uint8_t i = m_SettingContext->SettingVariablePosition; i < m_SettingContext->SettingVariablePosition + m_SettingContext->SettingVariableTotalDigits; i++)
       {
-        temp  += (m_SettingText[m_SettingContext->SettingVariablePosition + i] - '0') * Power_of_10[m_TotalDigits -1 -i];
+        temp  += (m_SettingText[i] - '0') * Power_of_10[m_SettingContext->SettingVariablePosition + m_SettingContext->SettingVariableTotalDigits - 1 - i];
       }      
       *m_SettingContext->pSettingVariable = temp;
-    }
-    
-    void ResetCounter()
-    {
-      m_TotalDigits = m_SettingContext->SettingVariableTotalDigits;
+      if(m_SettingContext->pCallback) m_SettingContext->pCallback->CallbackFunction(temp);
     }
     
   private:
-    //const WindowContext_t*  m_pWindowContext;
-    const SettingContext_t* m_SettingContext;    
-    char*         m_SettingText;  
+    const SettingContext_t*     m_SettingContext;    
+    char*                       m_SettingText;  
+    uint8_t                     m_CurrentDigitIndex; // to keep track of current digit under setting by user    
+    uint8_t                     m_ConfigMode;
 #if CPU_LOAD
-    uint32_t      m_CurrentMillis;
-#endif
-    uint8_t       m_CurrentDigitIndex; // to keep track of current digit under setting by user    
-    uint8_t       m_TotalDigits;
-    uint8_t       m_ConfigMode;
-    uint16_t      m_CurrentBackgroundColor;
-    
-    
-    
-    
+    uint32_t                    m_CurrentMillis;
+#endif    
+
   };
 }
 
