@@ -38,7 +38,7 @@ inline uint8_t spi_txrx(uint8_t data)
 DWORD get_fattime()
 {
 	int time = 300;
-	int y = 2020, m = 5, d = 15;
+	int y = 2020, m = 5, d = 16;
 	time %= 86400;
 	return (y-1980)<<25 | m<<21 | d<<16 |
 		(time/3600)<<11 | (time/60%60)<<5 | (time/2%30);

@@ -96,8 +96,8 @@ namespace HMI
           if(m_Windows[m_CurrentActiveWindow]->EventHandler(HMI::PRESS) == 0)
           {
             m_Captured = 0;
-            m_CurrentActiveWindow++;          
-            if(m_CurrentActiveWindow >= m_RegisteredWindowsIndex)  m_CurrentActiveWindow = 0;
+//            m_CurrentActiveWindow++;          
+//            if(m_CurrentActiveWindow >= m_RegisteredWindowsIndex)  m_CurrentActiveWindow = 0;
           }          
         }
       }
@@ -106,7 +106,7 @@ namespace HMI
         if(m_Captured == 1)
         {
           m_Captured = m_Windows[m_CurrentActiveWindow]->EventHandler(HMI::LONGPRESS);
-          m_CurrentActiveWindow++;
+          //m_CurrentActiveWindow++;
         } 
       }
       return m_Captured;

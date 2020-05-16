@@ -102,24 +102,36 @@ namespace HMI
       *m_SettingContext->pSettingVariable = m_SettingContext->pNamedSettingTable[m_CurrentNameIndex].SettingValue;
        if(m_SettingContext->pCallback)  m_SettingContext->pCallback->CallbackFunction(m_SettingContext->pNamedSettingTable[m_CurrentNameIndex].SettingValue);
     }
-    
+
     void CopyName(uint8_t NameIndex)
     {
       uint8_t idx = 0;
       
-      while( (idx < m_SettingContext->Settinglen - m_SettingContext->SettingVariablePosition) ) // (m_SettingContext->pNamedSettingTable[NameIndex].SettingText[idx] != 0) && 
+      while( (idx < m_SettingContext->Settinglen - m_SettingContext->SettingVariablePosition) && (m_SettingContext->pNamedSettingTable[NameIndex].SettingText[idx] != 0) ) // (m_SettingContext->pNamedSettingTable[NameIndex].SettingText[idx] != 0) && 
       {
-        if(m_SettingContext->pNamedSettingTable[NameIndex].SettingText[idx] != 0)
-        {
-          m_SettingContext->SettingText[m_SettingContext->SettingVariablePosition + idx] = m_SettingContext->pNamedSettingTable[NameIndex].SettingText[idx];
-        }
-        else
-        {
-          m_SettingContext->SettingText[m_SettingContext->SettingVariablePosition + idx] = ' '; // Add space if the string is shorter than the total length
-        }
-          idx++;
+        m_SettingContext->SettingText[m_SettingContext->SettingVariablePosition + idx] = m_SettingContext->pNamedSettingTable[NameIndex].SettingText[idx];
+        idx++;
       }
+      memset(&m_SettingContext->SettingText[m_SettingContext->SettingVariablePosition + idx],' ',m_SettingContext->Settinglen - m_SettingContext->SettingVariablePosition - idx);
     }
+    
+//    void CopyName(uint8_t NameIndex)
+//    {
+//      uint8_t idx = 0;
+//      
+//      while( (idx < m_SettingContext->Settinglen - m_SettingContext->SettingVariablePosition) ) // (m_SettingContext->pNamedSettingTable[NameIndex].SettingText[idx] != 0) && 
+//      {
+//        if(m_SettingContext->pNamedSettingTable[NameIndex].SettingText[idx] != 0)
+//        {
+//          m_SettingContext->SettingText[m_SettingContext->SettingVariablePosition + idx] = m_SettingContext->pNamedSettingTable[NameIndex].SettingText[idx];
+//        }
+//        else
+//        {
+//          m_SettingContext->SettingText[m_SettingContext->SettingVariablePosition + idx] = ' '; // Add space if the string is shorter than the total length
+//        }
+//          idx++;
+//      }
+//    }
     
     
   private:

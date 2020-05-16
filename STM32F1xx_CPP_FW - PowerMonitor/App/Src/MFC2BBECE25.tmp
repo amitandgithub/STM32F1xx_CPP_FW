@@ -19,13 +19,10 @@ extern Rtc rtc;
 static AnalogIn adc2(LL_ADC_CHANNEL_2);
 static HAL::PulseOut<(uint32_t)TIM3,TIM3_CH3_PIN_B0,10000> Dimmer; //TIM3_CH1_PIN_A6 
  
-BSP::INA219::Power_t Power;
-uint8_t V_Len, I_Len, mA_Len;
-uint32_t SD_Time,SdSampleTime=1000,SdPrevSampleTime;
-char SD_Power_Array[20];
-
 #if SD_CARD
 /* Globals for SD_CARD task*/
+#define SD_CARD_SAVE_FREQ 100
+
 FATFS fs;
 FIL fil;
 FRESULT fr;
@@ -94,29 +91,21 @@ enum
 };
 //st7735_Font_7x10  st7735_Font_11x18 st7735_Font_16x26 
 
-/*************************************************** NamedSetting Window *****************************************************************/
-SDPressCallback SDPressCb;
-char namesetting1[20] = "SD Card  ";       
-uint32_t SdCardState = 0;                             
-const HMI::WindowContext_t  NamedWindowContext1   = {0,127,18*Line1,18*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
-const HMI::NamedSettingTable_t NamedSettingTable1[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
-const HMI::NamedSettingContext_t NamedSettingContext1  = {&SdCardState,namesetting1,&SDPressCb,14,8,2,NamedSettingTable1};
-
 /*************************************************** Setting Window *****************************************************************/
-char Text1[20] = "SD delay           ";
-//uint32_t SdSampleTime;
+char Text1[20] = "Delay              ";
+uint32_t Delay1;
 
-const HMI::WindowContext_t  WindowContext1   = {0,127,18*Line2,18*Line3,&CURRENT_FONT,GREEN,BLACK,RED}; 
-const HMI::SettingContext_t SettingContext1  = {&SdSampleTime,Text1,&aSettingCallback,14,4,9};
+const HMI::WindowContext_t  WindowContext1   = {0,127,18*Line1,18*Line2,&CURRENT_FONT,GREEN,BLACK,RED}; 
+const HMI::SettingContext_t SettingContext1  = {&Delay1,Text1,&aSettingCallback,14,3,6};
                                              
 char Text2[20] = "Brightnes          ";      
 uint32_t Brightness;                       
-const HMI::WindowContext_t  WindowContext2   = {0,127,18*Line3,18*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::WindowContext_t  WindowContext2   = {0,127,18*Line2,18*Line3,&CURRENT_FONT,GREEN,BLACK,RED};
 const HMI::SettingContext_t SettingContext2  = {&Brightness,Text2,&aSettingCallback,14,3,10};
                                              
 char Text3[20] = "Amit               ";      
 uint32_t Delay3;                             
-const HMI::WindowContext_t  WindowContext3   = {0,127,18*Line4,18*Line5,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::WindowContext_t  WindowContext3   = {0,127,18*Line3,18*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
 const HMI::SettingContext_t SettingContext3  = {&Delay3,Text3,&aSettingCallback,14,3,5};
                                              
 char Text4[20] = "Sumit             ";       
@@ -134,7 +123,12 @@ uint32_t Delay6;
 const HMI::WindowContext_t  WindowContext6   = {0,127,18*Line3,18*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
 const HMI::SettingContext_t SettingContext6  = {&Delay6,Text6,&aSettingCallback,14,3,5};
 
-
+/*************************************************** NamedSetting Window *****************************************************************/
+char namesetting1[20] = "SD Card        ";       
+uint32_t SdCardState = 0;                             
+const HMI::WindowContext_t  NamedWindowContext1   = {0,127,18*Line4,18*Line5,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::NamedSettingTable_t NamedSettingTable1[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
+const HMI::NamedSettingContext_t NamedSettingContext1  = {&SdCardState,namesetting1,nullptr,14,8,2,NamedSettingTable1};
 
 
 /*************************************************** Text Window *****************************************************************/
@@ -211,11 +205,10 @@ HMI::Screen LivePowerScreen;
     TFT_1_8.FillScreen(BLACK);
     B9_HwBtnInt.HwInit();    
     
-    HomeScreen.Register(&NamedSettingWindow4);
     HomeScreen.Register(&SettingWindow1);
     HomeScreen.Register(&SettingWindow2); 
     HomeScreen.Register(&SettingWindow3); 
-    
+    HomeScreen.Register(&NamedSettingWindow4);
     HomeScreen.Register(&TextWindow1);
     
     HomeScreen1.Register(&TextWindow4); 
@@ -255,7 +248,7 @@ HMI::Screen LivePowerScreen;
 #endif
   
   }
-  
+  uint32_t SD_Time;
   void PowerMonitorRun()
   {  
     uint32_t Millis;
@@ -274,34 +267,17 @@ HMI::Screen LivePowerScreen;
     }
     Millis = HAL::GetTick();
     MyUI.Display(HMI::Screen::WINDOW_HIGHLIGHT_COLOR);
-    t1 = HAL::GetTick() - Millis;   
+    t1 = HAL::GetTick() - Millis;
     
+    Millis = HAL::GetTick();
 #if SD_CARD
-    
-   Millis = HAL::GetTick();
-   if(SdCardState && (Millis >= (SdPrevSampleTime + SdSampleTime)) )
-   {
-     SdPrevSampleTime = Millis;
-     memcpy(&SD_Power_Array[0],&PowerText[CHARS_IN_LINE*Line2 + 4],V_Len);
-     SD_Power_Array[V_Len++] = ',';
-     
-     memcpy(&SD_Power_Array[V_Len],&PowerText[CHARS_IN_LINE*Line3 + 4],I_Len);
-     SD_Power_Array[V_Len + I_Len++] = ',';
-     
-     memcpy(&SD_Power_Array[V_Len + I_Len],&PowerText[CHARS_IN_LINE*Line4 + 4],mA_Len);
-     SD_Power_Array[V_Len + I_Len + mA_Len++] = '\n';
-     SD_Power_Array[V_Len + I_Len + mA_Len] = '\0';
-     
-     SdAppendData(&fil,FileName,SD_Power_Array,V_Len + I_Len + mA_Len);
-   }
-   SD_Time = HAL::GetTick() - Millis;
-   
+    RUN_EVERY_MILLIS(1000,Save_To_SD_Card(FileName,&PowerText[0],84));
 #endif
-    
+    SD_Time = HAL::GetTick() - Millis;
     
   }
   
-
+BSP::INA219::Power_t Power;
 void PowerMonitor_UI()
 { 
   INA219_Dev.Run(&Power);
@@ -310,11 +286,11 @@ void PowerMonitor_UI()
   
   PowerText[CHARS_IN_LINE*Line1 + 12] = ' ';
   
-  V_Len = ftoa(Power.Voltage, (char*)&PowerText[CHARS_IN_LINE*Line2 + 4],2,' ');    
+  ftoa(Power.Voltage, (char*)&PowerText[CHARS_IN_LINE*Line2 + 4],2,' ');    
   
-  I_Len = ftoa(Power.Current, (char*)&PowerText[CHARS_IN_LINE*Line3 + 4], 1,' '); 
+  ftoa(Power.Current, (char*)&PowerText[CHARS_IN_LINE*Line3 + 4], 1,' '); 
   
-  mA_Len = ftoa(Power.mAH, (char*)&PowerText[CHARS_IN_LINE*Line4 + 5], 2,' ');  
+  ftoa(Power.mAH, (char*)&PowerText[CHARS_IN_LINE*Line4 + 5], 2,' ');  
   
   ftoa(__LL_ADC_CALC_TEMPERATURE_TYP_PARAMS(4300,1400,25,3300,ChipTemperature.Read(),LL_ADC_RESOLUTION_12B), (char*)&PowerText[CHARS_IN_LINE*Line5 + 9], 1,' ');
   
@@ -387,18 +363,6 @@ bool SdStop(FIL* fil)
     }
   } 
  return false;  
-}
-bool SD_Sucess;
-void SdOnOffCallback(uint32_t UpdatedSettingValue)
-{
-    if(UpdatedSettingValue)
-    {
-      SD_Sucess = SdStart(&fil,FileName,FA_WRITE | FA_OPEN_ALWAYS);
-    }
-    else
-    {
-      SD_Sucess = SdStop(&fil);
-    } 
 }
 
 bool Save_To_SD_Card1(const char* FileName, char* pData, uint32_t len)
