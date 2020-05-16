@@ -22,7 +22,7 @@ namespace HMI
     static const uint8_t MAX_SCREENS = 3;
   public:   
     
-    UI():Window(nullptr),m_Captured(0),m_BackgroundColor(BLACK)
+    UI():Window(nullptr)
     {
       
     }
@@ -112,6 +112,7 @@ namespace HMI
     static void GoToPreviousScreen()
     {
       m_CurrentActiveScreen = m_PreviousActiveScreen;
+      m_Screens[m_PreviousActiveScreen]->ClearScreen(BLACK);
     }
     
     static void GoToScreen(uint8_t Screen)
@@ -120,22 +121,28 @@ namespace HMI
       {
         m_PreviousActiveScreen = m_CurrentActiveScreen;
         m_CurrentActiveScreen = Screen;
+        m_Captured = 0;
+        m_BackgroundColor = BLACK;
+        m_Screens[Screen]->ClearScreen(BLACK);        
       }
     }
     
   private:
-    static uint8_t   m_PreviousActiveScreen;
-    static uint8_t   m_CurrentActiveScreen;
-    static uint8_t   m_RegisteredScreenIndex;
-    Color_t   m_BackgroundColor;
-    uint8_t   m_Captured;      
-    Window*   m_Screens[MAX_SCREENS];
+    static uint8_t      m_PreviousActiveScreen;
+    static uint8_t      m_CurrentActiveScreen;
+    static uint8_t      m_RegisteredScreenIndex;
+    static Color_t      m_BackgroundColor;
+    static uint8_t      m_Captured;      
+    static Window*             m_Screens[MAX_SCREENS];
     
   };
   // static objects initialisation
-  uint8_t   UI::m_CurrentActiveScreen;
-  uint8_t   UI::m_PreviousActiveScreen;
-  uint8_t   UI::m_RegisteredScreenIndex;
+  UI::Window*   UI::m_Screens[MAX_SCREENS];
+  Color_t       UI::m_BackgroundColor;
+  uint8_t       UI::m_Captured;
+  uint8_t       UI::m_CurrentActiveScreen;
+  uint8_t       UI::m_PreviousActiveScreen;
+  uint8_t       UI::m_RegisteredScreenIndex;
 }
 
 #endif // UI_h

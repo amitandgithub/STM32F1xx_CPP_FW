@@ -58,7 +58,7 @@ static PressCallback PressCb;
 
 static LongPressCallback1 LongPressCb;
 
-static BSP::HwButton<DigitalIn<B9,INPUT_PULLDOWN>,
+static BSP::HwButton<DigitalIn<A12,INPUT_PULLDOWN>, // B9
   reinterpret_cast <Callback *>(&DownCb),
   reinterpret_cast <Callback *>(&PressCb),
   reinterpret_cast <Callback *>(&LongPressCb)> B9_HwBtnInt; 
@@ -119,11 +119,25 @@ const HMI::NamedSettingContext_t NamedSettingContext1  = {&Frequency,namesetting
 
 
 /*************************************************** Text Window *****************************************************************/
+class TextUpCallback : public Callback
+{
+    void CallbackFunction()
+    {
+      HMI::UI::GoToScreen(2);
+    }
+};
+class TextDownCallback : public Callback
+{
+    void CallbackFunction()
+    {
+      HMI::UI::GoToScreen(2);
+    }
+};
 class TextPressCallback : public Callback
 {
     void CallbackFunction()
     {
-      sg_CurrentsettingValue++;
+      HMI::UI::GoToPreviousScreen();
     }
 };
 
@@ -135,15 +149,17 @@ class TextLPressCallback : public Callback
     }
 };
 
+TextUpCallback Upcb;
+TextDownCallback Downcb;
 TextPressCallback Presscb;
 TextLPressCallback LPresscb;
 const HMI::WindowContext_t  TextWindowContext1   = {0,127,18*Line5,18*Line6,&CURRENT_FONT,GREEN,BLACK,RED}; 
-const HMI::TextWindowContext_t TextContext1  = {(char*)"Reset Data    ",&Presscb,&Presscb,&Presscb,&LPresscb};
+const HMI::TextWindowContext_t TextContext1  = {(char*)"Live Data     ",&Upcb,&Downcb,nullptr,nullptr};
 
 char PowerText[6*14+1] = "T = 00:00:00  V =           I =            C =            Temp =         A2 =       ";
 
 const HMI::WindowContext_t  PowerWindowContext   = {0,127,0,159,&POWER_SCREEN_FONT,GREEN,BLACK,RED}; 
-const HMI::TextWindowContext_t PowerTextContext  = {(char*)PowerText,&Presscb,&Presscb,&Presscb,&LPresscb};
+const HMI::TextWindowContext_t PowerTextContext  = {(char*)PowerText,nullptr,nullptr,&Presscb,&LPresscb};
 
 
 HMI::Screen HomeScreen;
@@ -220,7 +236,7 @@ void PowerMonitorUI()
     InitDone = true;
   }  
   
-  //INA219_Dev.Run(&Power);
+  INA219_Dev.Run(&Power);
   rtc.GetTime((char*)&PowerText[CHARS_IN_LINE*Line1 +4]);
   PowerText[CHARS_IN_LINE*Line1 + 12] = ' ';
   
@@ -235,100 +251,3 @@ void PowerMonitorUI()
   intToStr((uint32_t)adc2.ReadVoltage(), (char*)&PowerText[CHARS_IN_LINE*Line6 + 8], 4);  
 }
 
-
-
-
-#if 0
-class DownCallback : public Callback
-{
-    void CallbackFunction()
-    {
-     InputEvents_t = HMI::DOWN;
-    }
-};
-  
-class PressCallback : public Callback
-{
-    void CallbackFunction()
-    {
-      InputEvents_t = HMI::PRESS;
-    }
-};
-
-class LongPressCallback1 : public Callback
-{
-    void CallbackFunction()
-    {
-      InputEvents_t = HMI::LONGPRESS;
-    }
-};
-
-//st7735_Font_7x10  st7735_Font_16x26 st7735_Font_11x18
- static HMI::Menu<160,128,&st7735_Font_16x26,16,26,GREEN,BLACK,RED> HomeScr;
- 
-class MenuPressCallback : public Callback
-{
-    void CallbackFunction()
-    {
-      char TimeString[10];
-      rtc.GetTime(&TimeString[0]); 
-      HomeScr.UpdateLineText(0,0,TimeString,8);
-    }
-};
-
-class MenuLongPressCallback : public Callback
-{
-    void CallbackFunction()
-    {
-      HAL::SystemReset();
-    }
-};
-
-MenuPressCallback MenuPressCb; 
-MenuLongPressCallback MenuLongPressCb;
-
-void Menu_test();
-
-static DownCallback DownCb;
-
-static PressCallback PressCb;
-
-static LongPressCallback1 LongPressCb;
-
-
-static BSP::HwButton<DigitalIn<B9,INPUT_PULLDOWN>,
-  reinterpret_cast <Callback *>(&DownCb),
-  reinterpret_cast <Callback *>(&PressCb),
-  reinterpret_cast <Callback *>(&LongPressCb)> B9_HwBtnInt; 
-
-void Menu_test()
-{   
-  HomeScr.LineTextInit(0,"Amit");
-  HomeScr.LineTextInit(1,"Line 1");
-  HomeScr.LineTextInit(2,"Line 2");
-  HomeScr.LineTextInit(3,"Line 3");
-  HomeScr.LineTextInit(4,"Line 4");
-  HomeScr.LineTextInit(5,"Line 5"); 
-  
-  HomeScr.RegisterLineEventHandler(0,nullptr,nullptr,nullptr,nullptr);
-  HomeScr.RegisterLineEventHandler(1,nullptr,nullptr,nullptr,nullptr);
-  HomeScr.RegisterLineEventHandler(2,nullptr,nullptr,nullptr,nullptr);
-  HomeScr.RegisterLineEventHandler(3,nullptr,nullptr,nullptr,nullptr);
-    
-  TFT_1_8.HwInit();
-  TFT_1_8.Rotate(BSP::ST7735::ROTATE_270_DEG);
-  TFT_1_8.FillScreen(BLACK);
-  HomeScr.FlushDisplay();
-  B9_HwBtnInt.HwInit(); 
-  rtc.RegisterCallback(Rtc::RTC_SEC,&PressCb);
-  while(1)
-  {    
-    B9_HwBtnInt.Run();
-    HomeScr.Run(InputEvents_t); 
-    InputEvents_t = HMI::NONE;
-    //LL_mDelay(100);
-  }
-  
-}
-
-#endif
