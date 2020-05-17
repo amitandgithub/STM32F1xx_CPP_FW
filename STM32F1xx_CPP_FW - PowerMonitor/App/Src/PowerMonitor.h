@@ -68,6 +68,15 @@ class SDPressCallback : public HMI::SettingCallback
 };
 
 
+void UartOnOffCallback(uint32_t UpdatedSettingValue);
+class UartPressCallback : public HMI::SettingCallback
+{
+    virtual void CallbackFunction(uint32_t UpdatedSettingValue) 
+    {
+      UartOnOffCallback(UpdatedSettingValue);
+    }
+};
+
 
 
 

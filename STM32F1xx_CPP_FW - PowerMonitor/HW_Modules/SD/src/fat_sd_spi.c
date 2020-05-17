@@ -1,9 +1,11 @@
 
 
 #include "fat_sd_spi.h"
+#include "RTC.h"
 
 extern HAL::Spi spi1;
 extern HAL::Spi spi2;
+extern HAL::Rtc rtc;
 
 #define SD_SPI spi2
 
@@ -35,14 +37,27 @@ inline uint8_t spi_txrx(uint8_t data)
     return  SD_SPI.TxRxPoll8Bit(data);
 }
 
+HAL::Rtc::DateAndTime_t DateAndTime;
+
+#if 0
+DWORD get_fattime()
+{  
+  rtc.Get(&DateAndTime);
+  
+  return (DateAndTime.Year-1980)<<25 | DateAndTime.Month<<21 | DateAndTime.Date<<16 |
+    (DateAndTime.Hours)<<11 | (DateAndTime.Minutes)<<5 | DateAndTime.Seconds;
+}
+#else
 DWORD get_fattime()
 {
-	int time = 300;
-	int y = 2020, m = 5, d = 16;
-	time %= 86400;
-	return (y-1980)<<25 | m<<21 | d<<16 |
-		(time/3600)<<11 | (time/60%60)<<5 | (time/2%30);
+  rtc.Get(&DateAndTime);
+//  int time = rtc.RTC_ReadTimeCounter();
+//  int y = 2020, m = 5, d = 17;
+//  time %= 86400;
+  return (DateAndTime.Year-1980)<<25 | DateAndTime.Month<<21 | DateAndTime.Date<<16 |
+    DateAndTime.Hours<<11 | DateAndTime.Minutes<<5 | DateAndTime.Seconds;
 }
+#endif
 /* crc helpers */
 static uint8_t crc7_one(uint8_t t, uint8_t data)
 {

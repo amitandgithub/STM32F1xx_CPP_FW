@@ -16,12 +16,15 @@ extern INA219 INA219_Dev;
 extern AnalogIn ChipTemperature;
 extern Rtc rtc;
 
-static AnalogIn adc2(LL_ADC_CHANNEL_2);
+static AnalogIn adc0(LL_ADC_CHANNEL_0);
 static HAL::PulseOut<(uint32_t)TIM3,TIM3_CH3_PIN_B0,10000> Dimmer; //TIM3_CH1_PIN_A6 
  
 BSP::INA219::Power_t Power;
 uint8_t V_Len, I_Len, mA_Len;
 uint32_t SD_Time,SdSampleTime=1000,SdPrevSampleTime;
+
+uint32_t Uart_Time,UartState,UartSampleTime=1000,UartPrevSampleTime;
+
 char SD_Power_Array[20];
 
 #if SD_CARD
@@ -102,23 +105,21 @@ const HMI::WindowContext_t  NamedWindowContext1   = {0,127,18*Line1,18*Line2,&CU
 const HMI::NamedSettingTable_t NamedSettingTable1[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
 const HMI::NamedSettingContext_t NamedSettingContext1  = {&SdCardState,namesetting1,&SDPressCb,14,8,2,NamedSettingTable1};
 
+char namesetting2[20] = "UART        ";                                  
+const HMI::WindowContext_t  NamedWindowContext2   = {0,127,18*Line3,18*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::NamedSettingTable_t NamedSettingTable2[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
+const HMI::NamedSettingContext_t NamedSettingContext2  = {&UartState,namesetting2,nullptr,14,8,2,NamedSettingTable2};
+
 /*************************************************** Setting Window *****************************************************************/
 char Text1[20] = "SD delay           ";
-//uint32_t SdSampleTime;
-
 const HMI::WindowContext_t  WindowContext1   = {0,127,18*Line2,18*Line3,&CURRENT_FONT,GREEN,BLACK,RED}; 
 const HMI::SettingContext_t SettingContext1  = {&SdSampleTime,Text1,&aSettingCallback,14,4,9};
                                              
-char Text2[20] = "Brightnes          ";      
-uint32_t Brightness;                       
-const HMI::WindowContext_t  WindowContext2   = {0,127,18*Line3,18*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
-const HMI::SettingContext_t SettingContext2  = {&Brightness,Text2,&aSettingCallback,14,3,10};
-                                             
-char Text3[20] = "Amit               ";      
-uint32_t Delay3;                             
+char Text3[20] = "Uart dly           ";                            
 const HMI::WindowContext_t  WindowContext3   = {0,127,18*Line4,18*Line5,&CURRENT_FONT,GREEN,BLACK,RED};
-const HMI::SettingContext_t SettingContext3  = {&Delay3,Text3,&aSettingCallback,14,3,5};
-                                             
+const HMI::SettingContext_t SettingContext3  = {&UartSampleTime,Text3,&aSettingCallback,14,4,9};
+
+#if 0                                            
 char Text4[20] = "Sumit             ";       
 uint32_t Delay4;                             
 const HMI::WindowContext_t  WindowContext4   = {0,127,18*Line1,18*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
@@ -133,9 +134,7 @@ char Text6[20] = "Vani              ";
 uint32_t Delay6;
 const HMI::WindowContext_t  WindowContext6   = {0,127,18*Line3,18*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
 const HMI::SettingContext_t SettingContext6  = {&Delay6,Text6,&aSettingCallback,14,3,5};
-
-
-
+#endif
 
 /*************************************************** Text Window *****************************************************************/
 class TextUpCallback : public Callback
@@ -168,34 +167,29 @@ class TextLPressCallback : public Callback
     }
 };
 
+#if 0
 TextUpCallback Upcb;
 TextDownCallback Downcb;
-TextPressCallback Presscb;
-TextLPressCallback LPresscb;
 const HMI::WindowContext_t  TextWindowContext1   = {0,127,18*Line5,18*Line6,&CURRENT_FONT,GREEN,BLACK,RED}; 
 const HMI::TextWindowContext_t TextContext1  = {(char*)"Live Data     ",&Upcb,&Downcb,nullptr,nullptr};
+#endif
 
+TextPressCallback Presscb;
+TextLPressCallback LPresscb;
 char PowerText[6*14+1] = "T = 00:00:00  V =           I =            C =            Temp =         A2 =       ";
-
 const HMI::WindowContext_t  PowerWindowContext   = {0,127,0,159,&POWER_SCREEN_FONT,GREEN,BLACK,RED}; 
 const HMI::TextWindowContext_t PowerTextContext  = {(char*)PowerText,nullptr,nullptr,&Presscb,&LPresscb};
 
 
 HMI::Screen HomeScreen;
-HMI::Screen HomeScreen1;
 HMI::Screen LivePowerScreen;
 
   static HMI::UI MyUI;
   
   static HMI::SettingWindow SettingWindow1(&WindowContext1,&SettingContext1);
-  static HMI::SettingWindow SettingWindow2(&WindowContext2,&SettingContext2);
   static HMI::SettingWindow SettingWindow3(&WindowContext3,&SettingContext3); 
   static HMI::NamedSettingWindow NamedSettingWindow4(&NamedWindowContext1,&NamedSettingContext1);
-  static HMI::TextWindow TextWindow1(&TextWindowContext1,&TextContext1);
-  
-  static HMI::SettingWindow TextWindow4(&WindowContext4,&SettingContext4);
-  static HMI::SettingWindow TextWindow5(&WindowContext5,&SettingContext5);
-  static HMI::SettingWindow TextWindow6(&WindowContext6,&SettingContext6);
+  static HMI::NamedSettingWindow NamedSettingWindow5(&NamedWindowContext2,&NamedSettingContext2);
   
   static HMI::TextWindow PowerWindow(&PowerWindowContext,&PowerTextContext);
   
@@ -211,26 +205,19 @@ HMI::Screen LivePowerScreen;
     TFT_1_8.FillScreen(BLACK);
     B9_HwBtnInt.HwInit();    
     
-    HomeScreen.Register(&NamedSettingWindow4);
-    HomeScreen.Register(&SettingWindow1);
-    HomeScreen.Register(&SettingWindow2); 
+    HomeScreen.Register(&NamedSettingWindow4);    
+    HomeScreen.Register(&SettingWindow1); 
+    HomeScreen.Register(&NamedSettingWindow5);
     HomeScreen.Register(&SettingWindow3); 
-    
-    HomeScreen.Register(&TextWindow1);
-    
-    HomeScreen1.Register(&TextWindow4); 
-    HomeScreen1.Register(&TextWindow5);
-    HomeScreen1.Register(&TextWindow6);
     
     LivePowerScreen.Register(&PowerWindow);
     
     MyUI.Register(&HomeScreen);
-    MyUI.Register(&HomeScreen1);
     MyUI.Register(&LivePowerScreen);  
     
 #if SD_CARD   
   // Mmm dd yyyy
-  mem_cpy(&FileName[0], "Pawer", 5);
+  mem_cpy(&FileName[0], "V_1_I", 5);
   FileName[5] = '_';
   FileName[6] = __DATE__[0]; // month[0]
   FileName[7] = __DATE__[1]; // month[1]
@@ -262,11 +249,11 @@ HMI::Screen LivePowerScreen;
     
     INA219_Dev.HwInit();
     ChipTemperature.HwInit((Port_t)0,0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
-    adc2.HwInit(A2,LL_ADC_SAMPLINGTIME_239CYCLES_5);
+    adc0.HwInit(A0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
     B9_HwBtnInt.Run();  
     PowerMonitor_UI();
     B9_HwBtnInt.Run();  
-    PowerOutputUART();
+    
     if(InputEvents != HMI::NONE)
     {
       MyUI.EventHandler(InputEvents);
@@ -275,6 +262,14 @@ HMI::Screen LivePowerScreen;
     Millis = HAL::GetTick();
     MyUI.Display(HMI::Screen::WINDOW_HIGHLIGHT_COLOR);
     t1 = HAL::GetTick() - Millis;   
+    
+    Millis = HAL::GetTick();
+    if(UartState && (Millis >= (UartPrevSampleTime + UartSampleTime)) )
+    {
+      UartPrevSampleTime = Millis;
+      PowerOutputUART();
+    }   
+    
     
 #if SD_CARD
     
@@ -308,6 +303,8 @@ void PowerMonitor_UI()
   
   rtc.GetTime((char*)&PowerText[CHARS_IN_LINE*Line1 +4]);
   
+  //rtc.Get((char*)&PowerText[CHARS_IN_LINE*Line1 +4]);
+  
   PowerText[CHARS_IN_LINE*Line1 + 12] = ' ';
   
   V_Len = ftoa(Power.Voltage, (char*)&PowerText[CHARS_IN_LINE*Line2 + 4],2,' ');    
@@ -318,9 +315,8 @@ void PowerMonitor_UI()
   
   ftoa(__LL_ADC_CALC_TEMPERATURE_TYP_PARAMS(4300,1400,25,3300,ChipTemperature.Read(),LL_ADC_RESOLUTION_12B), (char*)&PowerText[CHARS_IN_LINE*Line5 + 9], 1,' ');
   
-  intToStr((uint32_t)adc2.ReadVoltage(), (char*)&PowerText[CHARS_IN_LINE*Line6 + 8], 4); 
+  intToStr((uint32_t)adc0.ReadVoltage(), (char*)&PowerText[CHARS_IN_LINE*Line6 + 8], 4); 
 }
-
 
 void PowerOutputUART()
 {
@@ -336,8 +332,6 @@ void PowerOutputUART()
   PowerText[CHARS_IN_LINE*Line3 + 9] = ' ';
   PowerText[CHARS_IN_LINE*Line3 + 10] = ' ';
 }
-
-
 
 #if SD_CARD
 

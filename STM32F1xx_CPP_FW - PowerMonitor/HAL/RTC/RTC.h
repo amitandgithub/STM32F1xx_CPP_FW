@@ -12,7 +12,7 @@
 #ifndef RTC_h
 #define RTC_h
 
-#include "CPP_HAL.h"
+#include"CPP_HAL.h"
 #include"chip_peripheral.h"
 #include"Utils.h"
 #include"InterruptManager.h"
@@ -25,6 +25,7 @@ extern HAL::InterruptManager InterruptManagerInstance;
 
 namespace HAL
 {  
+#define RTC_BASE_YEAR 1970
   
   class Rtc : public InterruptSource
   {
@@ -43,11 +44,31 @@ namespace HAL
       RTC_COUNTER_OW = RTC_CRH_OWIE,      
     }CallbackSource_t;
     
+    typedef struct
+    {
+      uint16_t Year;
+      
+      uint8_t Month;
+      
+      uint8_t Date;
+      
+      uint8_t Weekday;
+      
+      uint8_t Hours;    
+      
+      uint8_t Minutes;     
+      
+      uint8_t Seconds;     
+      
+    }DateAndTime_t;
+    
     typedef LL_RTC_TimeTypeDef RtcTime_t;
     typedef LL_RTC_TimeTypeDef RtcDate_t;
     typedef Callback* RTCCallback_t;
     
     RTCStatus_t HwInit(HAL::ClockManager::RTCClock_t Clock = HAL::ClockManager::CLOCK_LSI);
+    
+    uint32_t RTC_ReadTimeCounter();
     
     RTCStatus_t GetTime(RtcTime_t* aRtcTime);
     
@@ -56,6 +77,12 @@ namespace HAL
     RTCStatus_t SetTime(RtcTime_t* aRtcTime);  
     
     RTCStatus_t SetTime(uint8_t Hours, uint8_t Minutes, uint8_t Seconds); 
+    
+    RTCStatus_t Set(uint16_t year,uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second);
+    
+    RTCStatus_t Get(DateAndTime_t* DateAndTime);
+      
+    uint8_t check_for_leap_year(uint16_t year);
     
     RTCStatus_t SetAlarm(RtcTime_t* AlarmTime, RTCCallback_t RTCCallback); 
     
@@ -72,7 +99,7 @@ namespace HAL
     virtual void ISR();
     
   private:
-    uint32_t RTC_ReadTimeCounter(); 
+     
     
     RTCCallback_t m_AlarmCallback;
     RTCCallback_t m_SecondsCallback;

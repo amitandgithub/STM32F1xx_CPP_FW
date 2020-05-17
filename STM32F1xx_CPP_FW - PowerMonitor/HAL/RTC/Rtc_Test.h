@@ -39,7 +39,8 @@ void Rtc_test()
   if(InitDone == false)
   {
     rtc.HwInit(HAL::ClockManager::CLOCK_LSE);
-    rtc.SetTime(0,0,0);
+    rtc.Set(2020, 5, 17, 17,33,0);
+    //rtc.SetTime(0,0,0);
     //rtc.SetTime(__HOURS__,__MINUTES__,__SECONDS__);
    // rtc.SetAlarm(0,1,0,&RTCSecCallbackObj);
    // rtc.RegisterCallback(Rtc::RTC_SEC,&RTCSecCallbackObj); 

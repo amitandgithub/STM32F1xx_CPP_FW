@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <settings>
     <DebugChecksum>
-        <Checksum>1220603460</Checksum>
+        <Checksum>1839176627</Checksum>
     </DebugChecksum>
     <StLinkDriver>
         <stlinkserialNo>20491587</stlinkserialNo>
@@ -93,10 +93,13 @@
     </Simulator>
     <struct_types>
         <Fmt0>BSP::INA219::Power_t-Current	4	0</Fmt0>
-        <Fmt1>HAL::Spi::Transaction_t-RxLen	3	0</Fmt1>
-        <Fmt2>HAL::Spi::Transaction_t-TxLen	4	0</Fmt2>
-        <Fmt3>LL_TIM_InitTypeDef-Prescaler	4	0</Fmt3>
-        <Fmt4>SPI_TypeDef-DR	4	0</Fmt4>
+        <Fmt1>HAL::Rtc::DateAndTime_t-Hours	3	0</Fmt1>
+        <Fmt2>HAL::Rtc::DateAndTime_t-Minutes	3	0</Fmt2>
+        <Fmt3>HAL::Rtc::DateAndTime_t-Seconds	3	0</Fmt3>
+        <Fmt4>HAL::Spi::Transaction_t-RxLen	3	0</Fmt4>
+        <Fmt5>HAL::Spi::Transaction_t-TxLen	4	0</Fmt5>
+        <Fmt6>LL_TIM_InitTypeDef-Prescaler	4	0</Fmt6>
+        <Fmt7>SPI_TypeDef-DR	4	0</Fmt7>
     </struct_types>
     <array_types>
         <Fmt0>char[30]	5	0</Fmt0>

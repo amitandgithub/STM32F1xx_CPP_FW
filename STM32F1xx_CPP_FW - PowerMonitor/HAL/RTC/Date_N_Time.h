@@ -63,5 +63,5 @@
 
 
 #define __DAY__  (uint8_t)((BUILD_DAY_CH0 - '0')<<4 | (BUILD_DAY_CH1 - '0'))
-#define __MONTH__ (uint8_t)((BUILD_MONTH_CH0 - '0')<<4 | (BUILD_MONTH_CH1 - '0'));
+#define __MONTH__ (uint8_t)((BUILD_MONTH_CH0 - '0')<<4 | (BUILD_MONTH_CH1 - '0'))
 #define __YEAR__  (uint8_t)((BUILD_YEAR_CH2 - '0')<<4 | (BUILD_YEAR_CH3 - '0'))

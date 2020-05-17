@@ -13,6 +13,8 @@
 namespace HAL
 { 
   
+  const uint8_t month_table[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  
   Rtc::RTCStatus_t Rtc::HwInit(HAL::ClockManager::RTCClock_t Clock)
   {
     ErrorStatus status = ERROR;
@@ -171,6 +173,191 @@ namespace HAL
     return timecounter;
   }
   
+  Rtc::RTCStatus_t Rtc::Set(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second)
+  {
+    uint32_t i = 0;
+    uint32_t counts = 0;
+    
+    if(year > 2099)
+    {
+      year = 2099;
+    }
+    
+    if(year < 1970)
+    {
+      year = 1970;
+    }
+    
+    for(i = 1970; i < year; i++)
+    {
+      if(check_for_leap_year(i) == 1)
+      {
+        counts += 31622400;
+      }
+      
+      else
+      {
+        counts += 31536000;
+      }
+    }
+    
+    month -= 1;
+    
+    for(i = 0; i < month; i++)
+    {
+      counts += (((uint32_t)month_table[i]) * 86400);
+    }
+    
+    if(check_for_leap_year(1970) == 1)
+    {
+      counts += 86400;
+    }
+    
+    counts += ((uint32_t)(date) * 86400);
+    counts += ((uint32_t)hour * 3600);
+    counts += ((uint32_t)minute * 60);
+    counts += second;
+    
+    /* Enter Initialization mode */
+    if (LL_RTC_EnterInitMode(RTC) != ERROR)
+    {      
+      LL_RTC_TIME_Set(RTC, counts);
+      
+      /* Exit Initialization mode */
+      LL_RTC_ExitInitMode(RTC);
+      
+      return RTC_OK;
+    }    
+    return RTC_ERROR;
+  }
+  
+  Rtc::RTCStatus_t Rtc::Get(DateAndTime_t* DateAndTime)
+  {
+    uint32_t temp1 = 0;
+    static uint32_t day_count;
+    
+    uint32_t temp = 0;
+    uint32_t counts = 0;
+    
+    if(DateAndTime)
+    {      
+      counts = RTC_ReadTimeCounter();
+      temp = (counts / 86400);
+      
+      if(day_count != temp)
+      {
+        day_count = temp;
+        temp1 = RTC_BASE_YEAR;
+        
+        while(temp >= 365)
+        {
+          if(check_for_leap_year(temp1) == 1)
+          {
+            if(temp >= 366)
+            {
+              temp -= 366;
+            }
+            
+            else
+            {
+              break;
+            }
+          }
+          
+          else
+          {
+            temp -= 365;
+          }
+          
+          temp1++;
+        };
+        
+        //cal_year = temp1;
+        DateAndTime->Year = temp1;
+        
+        temp1 = 0;
+        while(temp >= 28)
+        {
+          if((temp1 == 1) && (check_for_leap_year(DateAndTime->Year) == 1))
+          {
+            if(temp >= 29)
+            {
+              temp -= 29;
+            }
+            
+            else
+            {
+              break;
+            }
+          }
+          
+          else
+          {
+            if(temp >= month_table[temp1])
+            {
+              temp -= ((uint32_t)month_table[temp1]);
+            }
+            
+            else
+            {
+              break;
+            }
+          }
+          
+          temp1++;
+        };
+        
+        //cal_month = (temp1 + 1);
+        //cal_date = (temp + 1);
+        DateAndTime->Month = (temp1 + 1);
+        DateAndTime->Date = (temp + 1);
+      }
+      
+      temp = (counts % 86400);
+      
+      //    cal_hour = (temp / 3600);
+      //    cal_minute = ((temp % 3600) / 60);
+      //    cal_second = ((temp % 3600) % 60);
+      
+      DateAndTime->Hours = (temp / 3600);
+      DateAndTime->Minutes = ((temp % 3600) / 60);
+      DateAndTime->Seconds = ((temp % 3600) % 60);
+      
+      return RTC_OK;
+    }
+    return RTC_ERROR;
+  }
+
+
+  uint8_t Rtc::check_for_leap_year(uint16_t year)
+  {
+    if(year % 4 == 0)
+    {
+      if(year % 100 == 0)
+      {
+        if(year % 400 == 0)
+        {
+          return 1;
+        }
+        
+        else 
+        {
+          return 0;
+        }
+      }
+      
+      else 
+      {
+        return 1;
+      }
+    }
+    
+    else 
+    {
+      return 0;
+    }
+  }
+
   Rtc::RTCStatus_t Rtc::SetAlarm(RtcTime_t* AlarmTime, RTCCallback_t RTCCallback)
   {
     if(AlarmTime == nullptr) return RTC_ERROR;  
