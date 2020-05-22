@@ -37,7 +37,7 @@ inline uint8_t spi_txrx(uint8_t data)
     return  SD_SPI.TxRxPoll8Bit(data);
 }
 
-HAL::Rtc::DateAndTime_t DateAndTime;
+
 
 #if 0
 DWORD get_fattime()
@@ -50,12 +50,16 @@ DWORD get_fattime()
 #else
 DWORD get_fattime()
 {
-  rtc.Get(&DateAndTime);
+  HAL::Rtc::RtcDate_t date;
+  HAL::Rtc::RtcTime_t time;
+  rtc.GetTime(&time);
+  rtc.GetDate(&date);
 //  int time = rtc.RTC_ReadTimeCounter();
-//  int y = 2020, m = 5, d = 17;
+//   int y = 2020, m = 5, d = 18;
 //  time %= 86400;
-  return (DateAndTime.Year-1980)<<25 | DateAndTime.Month<<21 | DateAndTime.Date<<16 |
-    DateAndTime.Hours<<11 | DateAndTime.Minutes<<5 | DateAndTime.Seconds;
+  return ((date.Year+2000)-1980)<<25 | date.Month<<21 | date.Day<<16 |
+  //return (y-1980)<<25 | m<<21 | d<<16 |
+    time.Hours<<11 | time.Minutes<<5 | time.Seconds;
 }
 #endif
 /* crc helpers */

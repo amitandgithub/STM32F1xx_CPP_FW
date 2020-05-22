@@ -28,7 +28,6 @@ namespace BSP
     {
       float Voltage;
       float Current;
-      //float Power;
       float mAH;
     }Power_t;
     

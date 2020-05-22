@@ -60,7 +60,7 @@ int main(void)
 #endif
   
   DWTHwInit();
-  Rtc_test();
+  //Rtc_test();
   LED.HwInit();
   PowerMonitorInit();
   while(1)

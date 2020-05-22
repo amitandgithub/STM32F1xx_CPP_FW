@@ -58,7 +58,7 @@ Spi spi2(SPI2_B13_B14_B15);                     // CLK - B13, MISO - B14, MOSI -
 
 Nokia5110LCD<&spi1,C5,B0,C4,C3> NokiaLCDObj;     // CS - C5, DC - B0, Rst - C4, Bkl - C3, 
 
-ST7735 TFT_1_8(ST7735::ST7735_160_x_128,&spi1,A4,B1,B10,A0);            // CS - A4, DC - B1, Rst - B10, Bkl - A0, 
+ST7735 TFT_1_8(ST7735::ST7735_160_x_128,&spi1,A4,B1,B10,A3);            // CS - A4, DC - B1, Rst - B10, Bkl - A0, 
 
 //ST7735 TFT_1_8(ST7735::ST7735_160_x_128,&spi1,B1,B0,B10,B5);            // CS - B1, DC - B0, Rst - B10, Bkl - B5, 
 

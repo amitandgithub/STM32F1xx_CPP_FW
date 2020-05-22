@@ -39,12 +39,12 @@ namespace HAL
   
 #define SPI_POLL                1  // 638
   
-#define SPI_MASTER_Q            1  // 646
+#define SPI_MASTER_Q            0  // 646
   
-#define SPI_MASTER_INTR         1  // 1'724 , 1'892 Q
-#define SPI_SLAVE_INTR          1  // 2'776, 2'824Q
-#define SPI_MASTER_DMA          1  // 1'920, 2'238Q
-#define SPI_SLAVE_DMA           1  // 2'620, 2'676Q - 1'456
+#define SPI_MASTER_INTR         0  // 1'724 , 1'892 Q
+#define SPI_SLAVE_INTR          0  // 2'776, 2'824Q
+#define SPI_MASTER_DMA          0  // 1'920, 2'238Q
+#define SPI_SLAVE_DMA           0  // 2'620, 2'676Q - 1'456
   
   // Full SPI module - 4'646
   

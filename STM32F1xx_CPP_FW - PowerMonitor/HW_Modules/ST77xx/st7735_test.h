@@ -155,7 +155,7 @@ void loop_Small()
 
 void loop_240_240() 
 {
-  char TimeString[30];
+  //char TimeString[30];
   static char col=0;
   static bool InitDone;
   

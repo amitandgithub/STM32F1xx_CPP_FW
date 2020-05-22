@@ -44,35 +44,53 @@ namespace HAL
       RTC_COUNTER_OW = RTC_CRH_OWIE,      
     }CallbackSource_t;
     
+    enum : uint8_t
+    {
+      Mon=1,
+      Tue,
+      Wed,
+      Thu,
+      Fri,
+      Sat,
+      Sun
+    };
+    
+    typedef struct
+    {      
+      uint8_t Hours;      
+      uint8_t Minutes;      
+      uint8_t Seconds;      
+    }Time_t;
+    
     typedef struct
     {
-      uint16_t Year;
-      
+      uint8_t Year;
       uint8_t Month;
-      
-      uint8_t Date;
-      
-      uint8_t Weekday;
-      
-      uint8_t Hours;    
-      
-      uint8_t Minutes;     
-      
-      uint8_t Seconds;     
-      
-    }DateAndTime_t;
+      uint8_t Day;
+      uint8_t Weekday;     
+    }Date_t;
     
-    typedef LL_RTC_TimeTypeDef RtcTime_t;
-    typedef LL_RTC_TimeTypeDef RtcDate_t;
+    typedef Time_t RtcTime_t;
+    typedef Date_t RtcDate_t;
     typedef Callback* RTCCallback_t;
     
     RTCStatus_t HwInit(HAL::ClockManager::RTCClock_t Clock = HAL::ClockManager::CLOCK_LSI);
     
-    uint32_t RTC_ReadTimeCounter();
+    uint32_t ReadTimeCounter();
     
+    RTCStatus_t SetCounter(uint32_t counter_time);
+    
+    void CountertoTime(uint32_t counter, RtcTime_t* aRtcTime);
+    
+    void CountertoTimeStr(uint32_t counter, char* timeStr);
+      
     RTCStatus_t GetTime(RtcTime_t* aRtcTime);
     
     RTCStatus_t GetTime(char* timeStr);
+    
+    RTCStatus_t GetDate(RtcDate_t* RtcDate);
+    
+    RTCStatus_t GetDate(char* dateStr);
     
     RTCStatus_t SetTime(RtcTime_t* aRtcTime);  
     
@@ -80,7 +98,7 @@ namespace HAL
     
     RTCStatus_t Set(uint16_t year,uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second);
     
-    RTCStatus_t Get(DateAndTime_t* DateAndTime);
+    uint8_t WeekDayNum(uint32_t nYear, uint8_t nMonth, uint8_t nDay);
       
     uint8_t check_for_leap_year(uint16_t year);
     
@@ -98,9 +116,9 @@ namespace HAL
     
     virtual void ISR();
     
-  private:
-     
-    
+  private:     
+    //RtcTime_t m_RtcTime;
+    RtcDate_t m_RtcDate;
     RTCCallback_t m_AlarmCallback;
     RTCCallback_t m_SecondsCallback;
     RTCCallback_t m_CounterOverflowCallback;

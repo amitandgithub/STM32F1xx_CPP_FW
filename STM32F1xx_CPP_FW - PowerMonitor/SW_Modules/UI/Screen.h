@@ -22,7 +22,7 @@ namespace HMI
   class Screen : public Window
   {
   public:
-    static const uint8_t MAX_WINDOWS = 5;
+    static const uint8_t MAX_WINDOWS = 6;
     static const uint16_t WINDOW_HIGHLIGHT_COLOR = MAGENTA;//YELLOW;
     static const uint8_t ACTIVE_WINDOW_NONE = 255;
     

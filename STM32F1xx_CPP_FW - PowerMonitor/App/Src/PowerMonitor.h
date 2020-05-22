@@ -34,8 +34,12 @@
 #ifndef PowerMonitor_h
 #define PowerMonitor_h
 
+#define POWER_MONITOR_UART uart1
 
-
+//st7735_Font_7x10  st7735_Font_11x18 st7735_Font_16x26 
+#define CURRENT_FONT st7735_Font_11x18
+#define CURRENT_FONT_H 18
+#define POWER_SCREEN_FONT CURRENT_FONT
 
 
 
@@ -67,7 +71,6 @@ class SDPressCallback : public HMI::SettingCallback
     }
 };
 
-
 void UartOnOffCallback(uint32_t UpdatedSettingValue);
 class UartPressCallback : public HMI::SettingCallback
 {
@@ -77,23 +80,22 @@ class UartPressCallback : public HMI::SettingCallback
     }
 };
 
+void UartBaudratefx(uint32_t UpdatedSettingValue);
+class UartBrCallback : public HMI::SettingCallback
+{
+    virtual void CallbackFunction(uint32_t UpdatedSettingValue) 
+    {
+      UartBaudratefx(UpdatedSettingValue);
+    }
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void RtcTimeSetfx(uint32_t UpdatedSettingValue);
+class RtcTimeSetCallback : public HMI::SettingCallback
+{
+    virtual void CallbackFunction(uint32_t UpdatedSettingValue) 
+    {
+      RtcTimeSetfx(UpdatedSettingValue);
+    }
+};
 
 #endif // PowerMonitor_h
