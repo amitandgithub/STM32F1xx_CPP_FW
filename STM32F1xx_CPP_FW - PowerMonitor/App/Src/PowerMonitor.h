@@ -63,6 +63,10 @@ bool Save_To_SD_Card1(const char* FileName, char* pData, uint32_t len);
 bool Save_To_SD_Card(const char* FileName, char* pData, uint32_t len);
 void SdOnOffCallback(uint32_t UpdatedSettingValue);
 
+void ResetPowerData();
+
+#if SD_CARD
+
 class SDPressCallback : public HMI::SettingCallback
 {
     virtual void CallbackFunction(uint32_t UpdatedSettingValue) 
@@ -70,6 +74,7 @@ class SDPressCallback : public HMI::SettingCallback
       SdOnOffCallback(UpdatedSettingValue);
     }
 };
+#endif
 
 void UartOnOffCallback(uint32_t UpdatedSettingValue);
 class UartPressCallback : public HMI::SettingCallback

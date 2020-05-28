@@ -25,7 +25,8 @@ extern HAL::AnalogIn adc0;
 BSP::INA219::Power_t Power;
 uint8_t V_Len, I_Len, mA_Len;
 uint32_t SD_Time,SdSampleTime=1000,SdPrevSampleTime;
-static uint32_t PrevTimerCount,TimerCount;
+static uint16_t TimerCount;
+static uint32_t PrevTimerCount;
 
 uint32_t Uart_Time,UartState,UartSampleTime=1000,UartPrevSampleTime,UartBr = 9600;
 
@@ -96,16 +97,26 @@ enum
   Line4,
   Line5,
   Line6,
-  Line7,  
+  Line7,
+  Line8  
 };
 
 /*************************************************** NamedSetting Window *****************************************************************/
+#if SD_CARD
 SDPressCallback SDPressCb;
+
 char namesetting1[20] = "SD Card  ";       
 uint32_t SdCardState = 0;                             
 const HMI::WindowContext_t  NamedWindowContext1   = {0,127,CURRENT_FONT_H*Line1,CURRENT_FONT_H*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
 const HMI::NamedSettingTable_t NamedSettingTable1[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
 const HMI::NamedSettingContext_t NamedSettingContext1  = {&SdCardState,namesetting1,&SDPressCb,14,8,2,NamedSettingTable1};
+#else
+char namesetting1[20] = "SD Card  ";       
+uint32_t SdCardState = 0;                             
+const HMI::WindowContext_t  NamedWindowContext1   = {0,127,CURRENT_FONT_H*Line1,CURRENT_FONT_H*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::NamedSettingTable_t NamedSettingTable1[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
+const HMI::NamedSettingContext_t NamedSettingContext1  = {&SdCardState,namesetting1,nullptr,14,8,2,NamedSettingTable1};
+#endif
 
 char namesetting2[20] = "UART        ";                                  
 const HMI::WindowContext_t  NamedWindowContext2   = {0,127,CURRENT_FONT_H*Line3,CURRENT_FONT_H*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
@@ -169,19 +180,19 @@ class TextDownCallback : public Callback
       HMI::UI::GoToScreen(2);
     }
 };
-class TextPressCallback : public Callback
-{
-    void CallbackFunction()
-    {
-      HMI::UI::GoToPreviousScreen();
-    }
-};
+//class TextPressCallback : public Callback
+//{
+//    void CallbackFunction()
+//    {
+//      ResetPowerData();
+//    }
+//};
 
 class TextLPressCallback : public Callback
 {
     void CallbackFunction()
     {
-      SystemReset();
+      ResetPowerData();
     }
 };
 
@@ -192,43 +203,63 @@ const HMI::WindowContext_t  TextWindowContext1   = {0,127,CURRENT_FONT_H*Line5,C
 const HMI::TextWindowContext_t TextContext1  = {(char*)"Live Data     ",&Upcb,&Downcb,nullptr,nullptr};
 #endif
 
-TextPressCallback Presscb;
+//TextPressCallback Presscb;
 TextLPressCallback LPresscb;
-char PowerText[6*14+1] = "Thu 21-05 27'c"
+char PowerText[7*14+1] = "Thu 21-05 27'c"
                          "T = 00:00:00  "
                          "T = 00:00:00  "
                          "V =           "
                          "I =           "
-                         "C =           ";
+                         "C =           "
+                         "A0 =          ";
                          
 const HMI::WindowContext_t  PowerWindowContext   = {0,127,0,159,&POWER_SCREEN_FONT,GREEN,BLACK,RED}; 
-const HMI::TextWindowContext_t PowerTextContext  = {(char*)PowerText,nullptr,nullptr,&Presscb,&LPresscb};
+const HMI::TextWindowContext_t PowerTextContext  = {(char*)PowerText,nullptr,nullptr,nullptr,&LPresscb};
+                         
+//const HMI::WindowContext_t  PowerWindowContext_M   = {0,127,0,159,&POWER_SCREEN_FONT,GREEN,BLACK,RED}; 
+const HMI::TextWindowContext_t PowerTextContext_M  = {(char*)&PowerText[CHARS_IN_LINE*Line3],nullptr,nullptr,nullptr,&LPresscb};
 
 
 HMI::Screen HomeScreen;
 HMI::Screen TimenDateScreen;
 HMI::Screen LivePowerScreen;
+HMI::Screen PowerScreenMinimal;
 
-  static HMI::UI MyUI;
-  
-  static HMI::SettingWindow SettingWindow1(&WindowContext1,&SettingContext1);  
-  static HMI::NamedSettingWindow NamedSettingWindow4(&NamedWindowContext1,&NamedSettingContext1);
-  static HMI::NamedSettingWindow NamedSettingWindow5(&NamedWindowContext2,&NamedSettingContext2);
-  static HMI::SettingWindow SettingWindow3(&WindowContext3,&SettingContext3); 
-  static HMI::SettingWindow SettingWindowBr(&WindowContextBr,&SettingContextBr); 
-  
-  static HMI::SettingWindow SettingWindowRTC_time(&RTC_time_WindowContext,&RTC_time_Text_SettingContext); 
-  static HMI::SettingWindow SettingWindowRTC_date(&RTC_date_WindowContext,&RTC_date_Text_SettingContext); 
-  
-  static HMI::TextWindow PowerWindow(&PowerWindowContext,&PowerTextContext);
-  
+static HMI::UI MyUI;
 
- static volatile uint32_t t1;
+static HMI::SettingWindow SettingWindow1(&WindowContext1,&SettingContext1);  
+static HMI::NamedSettingWindow NamedSettingWindow4(&NamedWindowContext1,&NamedSettingContext1);
+static HMI::NamedSettingWindow NamedSettingWindow5(&NamedWindowContext2,&NamedSettingContext2);
+static HMI::SettingWindow SettingWindow3(&WindowContext3,&SettingContext3); 
+static HMI::SettingWindow SettingWindowBr(&WindowContextBr,&SettingContextBr); 
+
+static HMI::SettingWindow SettingWindowRTC_time(&RTC_time_WindowContext,&RTC_time_Text_SettingContext); 
+static HMI::SettingWindow SettingWindowRTC_date(&RTC_date_WindowContext,&RTC_date_Text_SettingContext); 
+
+static HMI::TextWindow PowerWindow(&PowerWindowContext,&PowerTextContext);
+static HMI::TextWindow PowerWindowMinimal(&PowerWindowContext,&PowerTextContext_M);
+
+
+static volatile uint32_t t1;
  
   void PowerMonitorInit()
   {
     //Dimmer.HwInit();  
     //Dimmer.SetDutyCycle(50); //1-24.6mv 2-52.5 10-276mv  50-1.39v 99 - 2.75v 100 2.77v
+    
+    // Power up Backup Domain for accessing RTC NV RAM
+    rtc.PowerBackupDomain();
+    
+    // Retore previous values to RTC NV RAM
+    TimerCount = rtc.ReadBackupReg(2);
+    Power.mAH  = rtc.ReadBackupReg(3);
+      
+    // Initialize Current sensor
+    INA219_Dev.HwInit();
+    
+    // Initialize On chip Temperature sensor
+    ChipTemperature.HwInit((Port_t)0,0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
+    
     TFT_1_8.HwInit();
     TFT_1_8.Rotate(BSP::ST7735::ROTATE_270_DEG);
     TFT_1_8.FillScreen(BLACK);
@@ -246,15 +277,19 @@ HMI::Screen LivePowerScreen;
     TimenDateScreen.Register(&SettingWindowRTC_time); 
     TimenDateScreen.Register(&SettingWindowRTC_date); 
     
+    PowerScreenMinimal.Register(&PowerWindowMinimal);
     
     MyUI.Register(&LivePowerScreen);  
+    MyUI.Register(&PowerScreenMinimal);  
     MyUI.Register(&HomeScreen);
     MyUI.Register(&TimenDateScreen);
     
 #if SD_CARD   
-  mem_cpy(&FileName[0], "Power", 5);
+  memcpy(&FileName[0], "Power", 5);
   FileName[5] = '_';
   rtc.GetTime(&FileName[6]);
+  FileName[8] = '_';
+  FileName[11] = '_';
   FileName[14] = '_';
   rtc.GetDate(&FileName[15]);
   FileName[27] = '.';
@@ -270,9 +305,7 @@ HMI::Screen LivePowerScreen;
   {  
     uint32_t Millis;
     
-    INA219_Dev.HwInit();
-    ChipTemperature.HwInit((Port_t)0,0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
-    //adc0.HwInit(A0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
+    adc0.HwInit(A0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
     B9_HwBtnInt.Run();  
     PowerMonitor_UI();
     B9_HwBtnInt.Run();  
@@ -300,13 +333,13 @@ HMI::Screen LivePowerScreen;
    if(SdCardState && (Millis >= (SdPrevSampleTime + SdSampleTime)) )
    {
      SdPrevSampleTime = Millis;
-     memcpy(&SD_Power_Array[0],&PowerText[CHARS_IN_LINE*Line2 + 4],V_Len);
+     memcpy(&SD_Power_Array[0],&PowerText[CHARS_IN_LINE*Line4 + 4],V_Len);
      SD_Power_Array[V_Len++] = ',';
      
-     memcpy(&SD_Power_Array[V_Len],&PowerText[CHARS_IN_LINE*Line3 + 4],I_Len);
+     memcpy(&SD_Power_Array[V_Len],&PowerText[CHARS_IN_LINE*Line5 + 4],I_Len);
      SD_Power_Array[V_Len + I_Len++] = ',';
      
-     memcpy(&SD_Power_Array[V_Len + I_Len],&PowerText[CHARS_IN_LINE*Line4 + 4],mA_Len);
+     memcpy(&SD_Power_Array[V_Len + I_Len],&PowerText[CHARS_IN_LINE*Line6 + 4],mA_Len);
      SD_Power_Array[V_Len + I_Len + mA_Len++] = '\n';
      SD_Power_Array[V_Len + I_Len + mA_Len] = '\0';
      
@@ -344,24 +377,34 @@ void PowerMonitor_UI()
       mA_Len = ftoa(Power.mAH, (char*)&PowerText[CHARS_IN_LINE*Line6 + 4], 2,' ');    
       rtc.CountertoTimeStr(TimerCount++,(char*)&PowerText[CHARS_IN_LINE*Line3 + 4]);
       PowerText[CHARS_IN_LINE*Line3 + 12] = ' ';
+      
+      // Store current values to RTC NV RAM
+      rtc.WriteBackupReg(2,TimerCount);
+      rtc.WriteBackupReg(3,(uint32_t)Power.mAH);
     }
   }
-  //intToStr((uint32_t)adc0.ReadVoltage(), (char*)&PowerText[CHARS_IN_LINE*Line6 + 5], 4); 
+  intToStr((uint32_t)adc0.ReadVoltage(), (char*)&PowerText[CHARS_IN_LINE*Line7 + 5], 4); 
+}
+
+void ResetPowerData()
+{
+  TimerCount = 0;
+  Power.mAH = 0;
 }
 
 void PowerOutputUART()
 {
-  PowerText[CHARS_IN_LINE*Line2 + 10] = 0;
-  printf("%s",&PowerText[CHARS_IN_LINE*Line2]);
-  PowerText[CHARS_IN_LINE*Line2 + 10] = ' ';
+  PowerText[CHARS_IN_LINE*Line4 + 10] = 0;
+  printf("%s",&PowerText[CHARS_IN_LINE*Line4]);
+  PowerText[CHARS_IN_LINE*Line4 + 10] = ' ';
   
-  PowerText[CHARS_IN_LINE*Line3 + 8] = '\n';
-  PowerText[CHARS_IN_LINE*Line3 + 9] = '\r';
-  PowerText[CHARS_IN_LINE*Line3 + 10] = 0;
-  printf("%s",&PowerText[CHARS_IN_LINE*Line3]);
-  PowerText[CHARS_IN_LINE*Line3 + 8] = ' ';
-  PowerText[CHARS_IN_LINE*Line3 + 9] = ' ';
-  PowerText[CHARS_IN_LINE*Line3 + 10] = ' ';
+  PowerText[CHARS_IN_LINE*Line5 + 8] = '\n';
+  PowerText[CHARS_IN_LINE*Line5 + 9] = '\r';
+  PowerText[CHARS_IN_LINE*Line5 + 10] = 0;
+  printf("%s",&PowerText[CHARS_IN_LINE*Line5]);
+  PowerText[CHARS_IN_LINE*Line5 + 8] = ' ';
+  PowerText[CHARS_IN_LINE*Line5 + 9] = ' ';
+  PowerText[CHARS_IN_LINE*Line5 + 10] = ' ';
 }
 
 #if SD_CARD
@@ -426,6 +469,7 @@ void SdOnOffCallback(uint32_t UpdatedSettingValue)
       SD_Sucess = SdStop(&fil);
     } 
 }
+#endif
 
 void UartBaudratefx(uint32_t UpdatedSettingValue)
 {
@@ -448,7 +492,5 @@ void RtcTimeSetfx(uint32_t UpdatedSettingValue)
   
   rtc.Set(2000+year,month,day,hour,min,sec);
 }
-
-#endif
 
 

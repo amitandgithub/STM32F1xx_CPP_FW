@@ -14,24 +14,25 @@ namespace HAL
 { 
   
   static const uint8_t month_table[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-  static const char* weekdays[8] = {"   ","Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
+  static const char* weekdays[7] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
   
   Rtc::RTCStatus_t Rtc::HwInit(HAL::ClockManager::RTCClock_t Clock)
   {
     
     LL_RTC_InitTypeDef RTC_InitStruct = {0};
     
-    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOC);
-//    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOD);
-    
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_GPIOC);    
     HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_AFIO);
-    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_PWR);  
-    /* Enable BKP CLK enable for backup registers */
-    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_BKP);
     
-    LL_PWR_EnableBkUpAccess();
-    LL_RCC_ForceBackupDomainReset();
-    LL_RCC_ReleaseBackupDomainReset();
+//    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_PWR);  
+//    /* Enable BKP CLK enable for backup registers */
+//    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_BKP);
+//    
+//    LL_PWR_EnableBkUpAccess();
+    PowerBackupDomain();
+    
+//    LL_RCC_ForceBackupDomainReset();
+//    LL_RCC_ReleaseBackupDomainReset();
     
     if(Clock == HAL::ClockManager::CLOCK_LSE)
     {
@@ -48,8 +49,7 @@ namespace HAL
       RTC_InitStruct.AsynchPrescaler = 0x00007FFFU;
     }
     else
-    {
-     
+    {     
       //LL_RCC_EnableIT_LSIRDY();
       
       LL_RCC_LSI_Enable();
@@ -59,6 +59,7 @@ namespace HAL
       {
         
       }
+
       LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSI);
       RTC_InitStruct.AsynchPrescaler = 0x00007FFFU;
     }
@@ -69,12 +70,18 @@ namespace HAL
     InterruptManagerInstance.RegisterDeviceInterrupt(RTC_IRQn,2,this);
 
     // RTC_InitStruct.OutPutSource = LL_RTC_CALIB_OUTPUT_SECOND;
-    if(LL_RTC_Init(RTC, &RTC_InitStruct) == SUCCESS)
-    {          
-      LL_RTC_EnableWriteProtection(RTC);
-      return RTC_OK;
-    }    
-    return RTC_OK;
+    
+    if(LL_RTC_BKP_GetRegister(BKP, LL_RTC_BKP_DR1) != 0xBABE)
+    {        
+      if(LL_RTC_Init(RTC, &RTC_InitStruct) == SUCCESS)
+      {          
+        LL_RTC_EnableWriteProtection(RTC);
+        Set(2020,5,23,12,12,12);
+        LL_RTC_BKP_SetRegister(BKP,LL_RTC_BKP_DR1,0xBABE);
+        return RTC_OK;
+      }     
+    } 
+    return RTC_ERROR;
   } 
   
   Rtc::RTCStatus_t Rtc::GetTime(RtcTime_t* aRtcTime)
@@ -85,6 +92,14 @@ namespace HAL
       return RTC_OK;
     }
     return RTC_ERROR;
+  }
+  
+  void Rtc::PowerBackupDomain()
+  {
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_BKP);
+    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_PWR);
+    LL_PWR_EnableBkUpAccess();    
+    LL_RTC_DisableWriteProtection(RTC);
   }
   
   void Rtc::CountertoTimeStr(uint32_t counter, char* timeStr)
@@ -300,8 +315,6 @@ namespace HAL
     counts += ((uint32_t)minute * 60);
     counts += second;
  
-    HAL::ClockManager::Enable(HAL::ClockManager::CLOCK_PWR);
-    LL_PWR_EnableBkUpAccess();
     SetCounter(counts);
     
     return RTC_ERROR;
@@ -309,6 +322,7 @@ namespace HAL
   
   Rtc::RTCStatus_t Rtc::SetCounter(uint32_t counter_time)
   {
+    PowerBackupDomain();
     if (LL_RTC_WaitForSynchro(RTC) != ERROR)
     {
       /* Enter Initialization mode */
