@@ -105,62 +105,71 @@ enum
 #if SD_CARD
 SDPressCallback SDPressCb;
 
-char namesetting1[20] = "SD Card  ";       
+char SdCardText[20] = "SD Card  ";       
 uint32_t SdCardState = 0;                             
-const HMI::WindowContext_t  NamedWindowContext1   = {0,127,CURRENT_FONT_H*Line1,CURRENT_FONT_H*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
-const HMI::NamedSettingTable_t NamedSettingTable1[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
-const HMI::NamedSettingContext_t NamedSettingContext1  = {&SdCardState,namesetting1,&SDPressCb,14,8,2,NamedSettingTable1};
+const HMI::WindowContext_t  NamedWindowContextSdCard   = {0,127,CURRENT_FONT_H*Line1,CURRENT_FONT_H*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::NamedSettingTable_t NamedSettingTableSdCard[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
+const HMI::NamedSettingContext_t NamedSettingContextSdCard  = {&SdCardState,SdCardText,&SDPressCb,14,8,2,NamedSettingTableSdCard};
 #else
-char namesetting1[20] = "SD Card  ";       
+char SdCardText[20] = "SD Card  ";       
 uint32_t SdCardState = 0;                             
-const HMI::WindowContext_t  NamedWindowContext1   = {0,127,CURRENT_FONT_H*Line1,CURRENT_FONT_H*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
-const HMI::NamedSettingTable_t NamedSettingTable1[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
-const HMI::NamedSettingContext_t NamedSettingContext1  = {&SdCardState,namesetting1,nullptr,14,8,2,NamedSettingTable1};
+const HMI::WindowContext_t  NamedWindowContextSdCard   = {0,127,CURRENT_FONT_H*Line1,CURRENT_FONT_H*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::NamedSettingTable_t NamedSettingTableSdCard[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
+const HMI::NamedSettingContext_t NamedSettingContextSdCard  = {&SdCardState,SdCardText,nullptr,14,8,2,NamedSettingTableSdCard};
 #endif
+static HMI::NamedSettingWindow NamedSettingWindowSdCard(&NamedWindowContextSdCard,&NamedSettingContextSdCard);
 
 UartStateCallback UartStateCb;
-char namesetting2[20] = "UART        ";                                  
-const HMI::WindowContext_t  NamedWindowContext2   = {0,127,CURRENT_FONT_H*Line3,CURRENT_FONT_H*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
-const HMI::NamedSettingTable_t NamedSettingTable2[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
-const HMI::NamedSettingContext_t NamedSettingContext2  = {&UartState,namesetting2,&UartStateCb,14,8,2,NamedSettingTable2};
-
+char UartText[20] = "UART        ";                                  
+const HMI::WindowContext_t  NamedWindowContextUart   = {0,127,CURRENT_FONT_H*Line3,CURRENT_FONT_H*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::NamedSettingTable_t NamedSettingTableUart[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
+const HMI::NamedSettingContext_t NamedSettingContextUart  = {&UartState,UartText,&UartStateCb,14,8,2,NamedSettingTableUart};
+static HMI::NamedSettingWindow NamedSettingWindowUart(&NamedWindowContextUart,&NamedSettingContextUart);
 
 /*************************************************** Setting Window *****************************************************************/
 UartDelayCallback UartDelayCb;
-char Text1[20] = "SD delay           ";
-const HMI::WindowContext_t  WindowContext1   = {0,127,CURRENT_FONT_H*Line2,CURRENT_FONT_H*Line3,&CURRENT_FONT,GREEN,BLACK,RED}; 
-const HMI::SettingContext_t SettingContext1  = {&SdSampleTime,Text1,&UartDelayCb,14,4,9};
-                                             
-char Text3[20] = "Uart dly           ";                            
-const HMI::WindowContext_t  WindowContext3   = {0,127,CURRENT_FONT_H*Line4,CURRENT_FONT_H*Line5,&CURRENT_FONT,GREEN,BLACK,RED};
-const HMI::SettingContext_t SettingContext3  = {&UartSampleTime,Text3,&UartDelayCb,14,4,9};
+char SDDelayText[20] = "SD delay           ";
+const HMI::WindowContext_t  WindowContextSDDelay   = {0,127,CURRENT_FONT_H*Line2,CURRENT_FONT_H*Line3,&CURRENT_FONT,GREEN,BLACK,RED}; 
+const HMI::SettingContext_t SettingContextSDDelay  = {&SdSampleTime,SDDelayText,&UartDelayCb,14,4,9};
+static HMI::SettingWindow SettingWindowSDDelay(&WindowContextSDDelay,&SettingContextSDDelay); 
+
+char UartDelayText[20] = "Uart dly           ";                            
+const HMI::WindowContext_t  WindowContextUartDelay   = {0,127,CURRENT_FONT_H*Line4,CURRENT_FONT_H*Line5,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::SettingContext_t SettingContextUartDelay  = {&UartSampleTime,UartDelayText,&UartDelayCb,14,4,9};
+static HMI::SettingWindow SettingWindowUartDelay(&WindowContextUartDelay,&SettingContextUartDelay);
 
 UartBrCallback UartBaudrateCallback;
 char TextBr[20] = "Uart Br           ";                            
 const HMI::WindowContext_t  WindowContextBr   = {0,127,CURRENT_FONT_H*Line5,CURRENT_FONT_H*Line6,&CURRENT_FONT,GREEN,BLACK,RED};
 const HMI::SettingContext_t SettingContextBr  = {&UartBr,TextBr,&UartBaudrateCallback,14,6,8};
+static HMI::SettingWindow SettingWindowBr(&WindowContextBr,&SettingContextBr); 
 
 char UartBrText[20] = "UART Br 460800";                                  
 const HMI::WindowContext_t  UartBrWindowContext   = {0,127,CURRENT_FONT_H*Line5,CURRENT_FONT_H*Line6,&CURRENT_FONT,GREEN,BLACK,RED};
 const HMI::NamedSettingTable_t UartBrSettingTable[] = { {0,(char*)"4800"}, {1,(char*)"9600"}, {2,(char*)"19200"}, {3,(char*)"38400"}, {4,(char*)"115200"}, {5,(char*)"230400"}, {6,(char*)"460800"} };
 const HMI::NamedSettingContext_t UartBrSettingContext  = {&UartBr,UartBrText,&UartBaudrateCallback,14,8,7,UartBrSettingTable};
+static HMI::NamedSettingWindow UartBrNamedSettingWindow(&UartBrWindowContext,&UartBrSettingContext);
+
+
+char RTC_date_Text[20] = "SetDate yymmdd ";       
+uint32_t RTC_date;                             
+const HMI::WindowContext_t  RTC_date_WindowContext        = {0,127,CURRENT_FONT_H*Line1,CURRENT_FONT_H*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::SettingContext_t RTC_date_Text_SettingContext  = {&RTC_date,RTC_date_Text,nullptr,14,6,8};
+static HMI::SettingWindow SettingWindowRTC_date(&RTC_date_WindowContext,&RTC_date_Text_SettingContext); 
 
 RtcTimeSetCallback RtcTimeSetCb;
-char RTC_time_Text[20] = "SetTime 101010 ";       
+char RTC_time_Text[20] = "SetTime hhmmss ";       
 uint32_t RTC_time;                             
-const HMI::WindowContext_t  RTC_time_WindowContext        = {0,127,CURRENT_FONT_H*Line1,CURRENT_FONT_H*Line2,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::WindowContext_t  RTC_time_WindowContext        = {0,127,CURRENT_FONT_H*Line2,CURRENT_FONT_H*Line3,&CURRENT_FONT,GREEN,BLACK,RED};
 const HMI::SettingContext_t RTC_time_Text_SettingContext  = {&RTC_time,RTC_time_Text,&RtcTimeSetCb,14,6,8};
-
-char RTC_date_Text[20] = "SetDate ddmmyy ";       
-uint32_t RTC_date;                             
-const HMI::WindowContext_t  RTC_date_WindowContext        = {0,127,CURRENT_FONT_H*Line2,CURRENT_FONT_H*Line3,&CURRENT_FONT,GREEN,BLACK,RED};
-const HMI::SettingContext_t RTC_date_Text_SettingContext  = {&RTC_date,RTC_date_Text,nullptr,14,6,8};
+static HMI::SettingWindow SettingWindowRTC_time(&RTC_time_WindowContext,&RTC_time_Text_SettingContext); 
 
 DisplayBrightnessCallback DisplayBrightnessCb;
 char Brightness_Text[15] = "Brightness 100";       
-uint32_t Brightness;                             
+uint32_t Brightness = 100;                             
 const HMI::WindowContext_t  BrightnessWindowContext        = {0,127,CURRENT_FONT_H*Line3,CURRENT_FONT_H*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
 const HMI::SettingContext_t BrightnessText_SettingContext  = {&Brightness,Brightness_Text,&DisplayBrightnessCb,14,3,11};
+static HMI::SettingWindow SettingWindowBrightness(&BrightnessWindowContext,&BrightnessText_SettingContext);
 
 /*************************************************** Text Window *****************************************************************/
 class TextUpCallback : public Callback
@@ -186,8 +195,6 @@ class TextLPressCallback : public Callback
     }
 };
 
-
-//TextPressCallback Presscb;
 TextLPressCallback LPresscb;
 char PowerText[4*14+1] = "T = 00:00:00  "
                          "V =           "
@@ -195,18 +202,21 @@ char PowerText[4*14+1] = "T = 00:00:00  "
                          "C =           ";
                          
 const HMI::WindowContext_t  PowerWindowContext   = {0,127,0,159,&POWER_SCREEN_FONT,GREEN,BLACK,RED}; 
-const HMI::TextWindowContext_t PowerTextContext  = {(char*)PowerText,nullptr,nullptr,nullptr,&LPresscb};
-                         
+const HMI::TextWindowContext_t PowerTextContext  = {(char*)PowerText,nullptr,nullptr,&LPresscb,&LPresscb};
+static HMI::TextWindow PowerWindow(&PowerWindowContext,&PowerTextContext);
+
 /*************************** TIME  ******************************************************************/
 char TimeText[10]      =  "10:20:20 ";                         
 const HMI::WindowContext_t  TimeWindowContext   = {0,127,0,TIME_FONT_H*Line1,&TIME_FONT,GREEN,BLACK,RED}; 
 const HMI::TextWindowContext_t TimeTextContext  = {(char*)TimeText,nullptr,nullptr,nullptr,nullptr};
+static HMI::TextWindow TimeWindow(&TimeWindowContext,&TimeTextContext);
 
 /*************************** Date  ******************************************************************/
-char DateText[19]      =  "Sun      "
-                          "24 May 20";
+char DateText[] =  "Mon,24 May 20 "
+                   "25'c          ";
 const HMI::WindowContext_t  DateWindowContext   = {0,127,TIME_FONT_H*Line2,TIME_FONT_H*Line3,&POWER_SCREEN_FONT,GREEN,BLACK,RED}; 
 const HMI::TextWindowContext_t DateTextContext  = {(char*)DateText,nullptr,nullptr,nullptr,nullptr};
+static HMI::TextWindow DateWindow(&DateWindowContext,&DateTextContext);
 
 HMI::Screen ClockScreen;
 HMI::Screen HomeScreen;
@@ -214,24 +224,6 @@ HMI::Screen TimenDateScreen;
 HMI::Screen LivePowerScreen;
 
 static HMI::UI MyUI;
-
-static HMI::SettingWindow SettingWindow1(&WindowContext1,&SettingContext1);  
-static HMI::NamedSettingWindow NamedSettingWindow4(&NamedWindowContext1,&NamedSettingContext1);
-static HMI::NamedSettingWindow NamedSettingWindow5(&NamedWindowContext2,&NamedSettingContext2);
-static HMI::NamedSettingWindow UartBrNamedSettingWindow(&UartBrWindowContext,&UartBrSettingContext);
-
-static HMI::SettingWindow SettingWindow3(&WindowContext3,&SettingContext3); 
-static HMI::SettingWindow SettingWindowBr(&WindowContextBr,&SettingContextBr); 
-
-static HMI::SettingWindow SettingWindowRTC_time(&RTC_time_WindowContext,&RTC_time_Text_SettingContext); 
-static HMI::SettingWindow SettingWindowRTC_date(&RTC_date_WindowContext,&RTC_date_Text_SettingContext); 
-static HMI::SettingWindow SettingWindowBrightness(&BrightnessWindowContext,&BrightnessText_SettingContext);
-
-static HMI::TextWindow TimeWindow(&TimeWindowContext,&TimeTextContext);
-static HMI::TextWindow DateWindow(&DateWindowContext,&DateTextContext);
-
-static HMI::TextWindow PowerWindow(&PowerWindowContext,&PowerTextContext);
-
 
 static volatile uint32_t t1;
  
@@ -258,10 +250,10 @@ static volatile uint32_t t1;
     ClockScreen.Register(&TimeWindow);
     ClockScreen.Register(&DateWindow);
     
-    HomeScreen.Register(&NamedSettingWindow4);    
-    HomeScreen.Register(&SettingWindow1); 
-    HomeScreen.Register(&NamedSettingWindow5);    
-    HomeScreen.Register(&SettingWindow3); 
+    HomeScreen.Register(&NamedSettingWindowSdCard);    
+    HomeScreen.Register(&SettingWindowSDDelay); 
+    HomeScreen.Register(&NamedSettingWindowUart);    
+    HomeScreen.Register(&SettingWindowUartDelay); 
     HomeScreen.Register(&UartBrNamedSettingWindow);
     //HomeScreen.Register(&SettingWindowBr);
    
@@ -272,17 +264,17 @@ static volatile uint32_t t1;
     TimenDateScreen.Register(&SettingWindowRTC_date); 
     TimenDateScreen.Register(&SettingWindowBrightness); 
     
+    memcpy(&RTC_date_Text[8],"yymmdd",7);
+    memcpy(&RTC_time_Text[8],"hhmmss",7);
+
     MyUI.Register(&ClockScreen);
     MyUI.Register(&LivePowerScreen);  
     MyUI.Register(&HomeScreen);
     MyUI.Register(&TimenDateScreen);
-    
-#if SD_CARD  
-    //BuildName(FileName);
-#endif
+
   
   }
-  
+  static uint32_t TempPrevSampleTime,TempSampleTime = 5000;
   void PowerMonitorRun()
   {  
     uint32_t Millis;
@@ -307,6 +299,17 @@ static volatile uint32_t t1;
       UartPrevSampleTime = Millis;
       PowerOutputUART();
     }    
+    
+    Millis = HAL::GetTick();
+    if(UartState && (Millis >= (TempPrevSampleTime + TempSampleTime)) )
+    {
+       TempPrevSampleTime = Millis;
+       intToStr(__LL_ADC_CALC_TEMPERATURE_TYP_PARAMS(4300,1400,25,3300,ChipTemperature.Read(),LL_ADC_RESOLUTION_12B), (char*)&DateText[CHARS_IN_LINE*Line2], 1,'\'');
+       //DateText[CHARS_IN_LINE*Line2 + 2] = '\'';
+       DateText[CHARS_IN_LINE*Line2 + 3] = 'c';
+    }    
+    
+   
     
 #if SD_CARD
     
@@ -339,6 +342,7 @@ void PowerMonitor_UI()
   rtc.GetTime((char*)&TimeText[0]);
     
   rtc.GetDate((char*)&DateText[0]);  
+  DateText[13] = ' ';
   
   V_Len = ftoa(Power.Voltage, (char*)&PowerText[CHARS_IN_LINE*Line2 + 4],2,' ');    
   
@@ -513,11 +517,12 @@ void RtcTimeSetfx(uint32_t UpdatedSettingValue)
   sec = (uint8_t)(UpdatedSettingValue%100);
   
   rtc.Set(2000+year,month,day,hour,min,sec);
-  //rtc.WriteBackupReg(RTC_POWER_SETTINGS,rtc.ReadTimeCounter);
+  //rtc.WriteBackupReg(RTC_COUNTER_SET,rtc.ReadTimeCounter);
 }
 
 void DisplayBrightness(uint32_t brightness)
 {
+  if(brightness == 0) brightness = 1;
   Dimmer.SetDutyCycle(brightness); //1-24.6mv 2-52.5 10-276mv  50-1.39v 99 - 2.75v 100 2.77v
 }
 

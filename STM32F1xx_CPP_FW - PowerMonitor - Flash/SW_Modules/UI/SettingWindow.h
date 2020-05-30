@@ -40,12 +40,7 @@ namespace HMI
 #if CPU_LOAD
       uint32_t Millis = HAL::GetTick();
 #endif
-            
-//      if(CurrentSettingValue != *m_SettingContext->pSettingVariable)
-//      {
-//        intToStr( *m_SettingContext->pSettingVariable,&m_SettingContext->SettingText[ m_SettingContext->SettingVariablePosition],m_SettingContext->SettingVariableTotalDigits,' ');
-//      }
-      
+
       for(uint8_t i = 0; i < m_SettingContext->Settinglen; i++ )
       {
         if( (m_ConfigMode == 1) && (i == m_CurrentDigitIndex) )

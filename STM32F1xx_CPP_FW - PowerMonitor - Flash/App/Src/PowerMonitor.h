@@ -97,6 +97,7 @@ typedef union
     uint16_t UartState   :1;
     uint16_t UartBaudrate:3; 
     uint16_t SdCardState :1; 
+    uint16_t Brightness  :7;
   }bits;
   
   uint16_t Word16;
