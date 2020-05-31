@@ -31,13 +31,7 @@ namespace HMI
       HAL::MemSet32((uint32_t*)m_Windows,0,MAX_WINDOWS);
     }
     
-//    virtual void Init()
-//    {
-//      for(uint32_t i = 0; i<m_RegisteredWindowsIndex; i++)
-//      {
-//        m_Windows[i]->Init();
-//      }      
-//    }
+    virtual void Init(){};
     
     uint8_t Register(Window* pWindow)
     {

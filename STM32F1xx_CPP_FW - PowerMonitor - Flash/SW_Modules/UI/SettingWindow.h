@@ -18,7 +18,6 @@
 namespace HMI
 { 
 
-  
   class SettingWindow : public Window
   {
     
@@ -28,9 +27,7 @@ namespace HMI
      Window(WindowContext),
      m_SettingContext(SettingContext)
     {   
-     // CurrentSettingValue = *m_SettingContext->pSettingVariable;
       m_CurrentDigitIndex = m_SettingContext->SettingVariablePosition - 1;
-      //intToStr( *SettingContext->pSettingVariable,&SettingContext->SettingText[ SettingContext->SettingVariablePosition],SettingContext->SettingVariableTotalDigits,' ');
       intToStr( *m_SettingContext->pSettingVariable,&m_SettingContext->SettingText[ m_SettingContext->SettingVariablePosition],m_SettingContext->SettingVariableTotalDigits,' ');
       SettingContext->SettingText[SettingContext->Settinglen] = 0;  // Null termination for Display driver to detect the end-of-string
     }
@@ -126,7 +123,6 @@ namespace HMI
     }
     
   private:
-   // uint32_t CurrentSettingValue;
     const SettingContext_t*     m_SettingContext;    
     uint8_t                     m_CurrentDigitIndex; // to keep track of current digit under setting by user    
     uint8_t                     m_ConfigMode;

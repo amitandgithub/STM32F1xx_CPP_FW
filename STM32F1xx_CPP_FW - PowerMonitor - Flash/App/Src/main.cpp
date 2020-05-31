@@ -73,7 +73,7 @@ int main(void)
     //LED_IN.Read() ? LED_C13.High() : LED_C13.Low();
     //if(MillisElapsed<100>()) ssd1306_test();
     //RUN_EVERY_MILLIS(100,fxx(1,2));
-    // RUN_EVERY_MILLIS(100,ssd1306_test());
+    //RUN_EVERY_MILLIS(100,ssd1306_test());
     //Rtc_test();
     //LL_mDelay(100);
     //ssd1306_test();
@@ -86,8 +86,7 @@ int main(void)
     //Adc_Test();
     //Timer_Test();
     //Ir_Test();
-    // Template_Tests();
-    
+    //Template_Tests();    
     //Window_test();
     PowerMonitorRun();
     

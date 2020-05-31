@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR ELF Linker V8.40.2.214/W32 for ARM                  30/May/2020  09:26:55
+# IAR ELF Linker V8.40.2.214/W32 for ARM                  31/May/2020  20:52:25
 # Copyright 2007-2019 IAR Systems AB.
 #
 #    Output file  =
@@ -10,7 +10,7 @@
 #        C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - PowerMonitor -
 #        Flash\IAR\Debug\List\Main.map
 #    Command line =
-#        -f C:\Users\AMITCH~1\AppData\Local\Temp\EWE37B.tmp
+#        -f C:\Users\AMITCH~1\AppData\Local\Temp\EWEED2.tmp
 #        ("C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - PowerMonitor -
 #        Flash\IAR\Debug\Obj\ADC.o"
 #        "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - PowerMonitor -
@@ -243,7 +243,7 @@ initialize by copy { rw };
   .intvec                ro code   0x800'0000    0xec  startup_stm32f103xb.o [1]
                                  - 0x800'00ec    0xec
 
-"P1":                                          0xa9ae
+"P1":                                          0xa97d
   .text                  ro code   0x800'00ec  0x15d4  ff.o [1]
   .text                  ro code   0x800'16c0    0xb8  diskio.o [1]
   .text                  ro code   0x800'1778     0x6  ABImemclr.o [5]
@@ -264,14 +264,15 @@ initialize by copy { rw };
   .text                  ro code   0x800'3d6c   0x158  stm32f1xx_ll_rtc.o [1]
   .text                  ro code   0x800'3ec4    0x68  DblToFlt.o [4]
   .text                  ro code   0x800'3f2c   0x1ce  Utils.o [1]
-  .text                  ro code   0x800'40fa     0x2  UI.o [1]
+  .text                  ro code   0x800'40fa     0x2  PowerMonitor.o [1]
   .text                  ro code   0x800'40fc   0x6e8  I2c.o [1]
   .text                  ro code   0x800'47e4    0x82  DMA.o [1]
   .text                  ro code   0x800'4866     0xa  cxxabi.o [3]
   .text                  ro code   0x800'4870   0x1d6  INA219.o [1]
-  .rodata                const     0x800'4a46     0x1  unwind_debug.o [6]
+  .text                  ro code   0x800'4a46     0x2  UI.o [1]
   .text                  ro code   0x800'4a48   0x6a0  ST7735.o [1]
   .text                  ro code   0x800'50e8   0x25a  Uart.o [1]
+  .rodata                const     0x800'5342     0x1  unwind_debug.o [6]
   .text                  ro code   0x800'5344   0x138  ADC.o [1]
   .text                  ro code   0x800'547c    0x2a  FltToS32.o [4]
   .text                  ro code   0x800'54a8    0x24  S32ToFlt.o [4]
@@ -298,146 +299,157 @@ initialize by copy { rw };
   .text                  ro code   0x800'6210    0xd2  DblSub.o [4]
   .rodata                const     0x800'62e4  0x134c  st7735fonts.o [1]
   .rodata                const     0x800'7630   0xd5c  st7735fonts.o [1]
-  .text                  ro code   0x800'838c   0x7c0  PowerMonitor.o [1]
-  .text                  ro code   0x800'8b4c    0x2c  PowerMonitor.o [1]
-  .text                  ro code   0x800'8b78    0x38  PowerMonitor.o [1]
-  .text                  ro code   0x800'8bb0    0x28  PowerMonitor.o [1]
-  .text                  ro code   0x800'8bd8    0x88  PowerMonitor.o [1]
-  .text                  ro code   0x800'8c60    0x48  PowerMonitor.o [1]
-  .text                  ro code   0x800'8ca8    0x22  PowerMonitor.o [1]
-  .text                  ro code   0x800'8ccc    0xe4  UI.o [1]
-  .text                  ro code   0x800'8db0    0xd8  PowerMonitor.o [1]
-  .text                  ro code   0x800'8e88    0x24  FltCmpGe.o [4]
-  .text                  ro code   0x800'8eac    0x22  FltToU32.o [4]
-  .text                  ro code   0x800'8ece    0x3c  PowerMonitor.o [1]
-  .text                  ro code   0x800'8f0c    0x24  PowerMonitor.o [1]
-  .text                  ro code   0x800'8f30    0x30  PowerMonitor.o [1]
-  .text                  ro code   0x800'8f60   0x20a  stm32f1xx_ll_tim.o [1]
-  .text                  ro code   0x800'916c    0x24  PowerMonitor.o [1]
-  .text                  ro code   0x800'9190    0x50  PowerMonitor.o [1]
-  .text                  ro code   0x800'91e0   0x410  InterruptHandlers.o [1]
-  .rodata                const     0x800'95f0   0x350  fat_sd_spi.o [1]
-  .text                  ro code   0x800'9940   0x1e0  main.o [1]
-  .text                  ro code   0x800'9b20    0x14  w25qxx.o [1]
-  .text                  ro code   0x800'9b34    0xa8  PowerMonitor.o [1]
-  .text                  ro code   0x800'9bdc    0x44  PowerMonitor.o [1]
-  .text                  ro code   0x800'9c20    0xa8  PowerMonitor.o [1]
-  .text                  ro code   0x800'9cc8    0xa0  PowerMonitor.o [1]
-  .rodata                const     0x800'9d68    0x8c  ST7735.o [1]
-  .rodata                const     0x800'9df4    0x80  ff.o [1]
-  .text                  ro code   0x800'9e74    0x78  lz77_init_single.o [5]
-  .text                  ro code   0x800'9eec    0x6e  PowerMonitor.o [1]
-  .text                  ro code   0x800'9f5a    0x2a  PowerMonitor.o [1]
-  .text                  ro code   0x800'9f84    0x60  system_stm32f1xx.o [1]
-  .text                  ro code   0x800'9fe4    0x48  PowerMonitor.o [1]
-  .rodata                const     0x800'a02c    0x40  DigitalIO.o [1]
-  .rodata                const     0x800'a06c    0x40  GpioOutput.o [1]
-  .text                  ro code   0x800'a0ac    0x40  PowerMonitor.o [1]
-  .rodata                const     0x800'a0ec    0x38  PowerMonitor.o [1]
-  .text                  ro code   0x800'a124    0x34  PowerMonitor.o [1]
-  .text                  ro code   0x800'a158    0x30  PowerMonitor.o [1]
-  .rodata                const     0x800'a188    0x2c  PowerMonitor.o [1]
-  .text                  ro code   0x800'a1b4    0x2c  PowerMonitor.o [1]
-  .rodata                const     0x800'a1e0    0x28  fat_sd_spi.o [1]
-  .rodata                const     0x800'a208    0x28  fat_sd_spi.o [1]
-  .rodata                const     0x800'a230    0x28  fat_sd_spi.o [1]
-  .text                  ro code   0x800'a258    0x28  PowerMonitor.o [1]
-  .text                  ro code   0x800'a280    0x28  PowerMonitor.o [1]
-  .text                  ro code   0x800'a2a8    0x28  data_init.o [5]
-  .rodata                const     0x800'a2d0    0x24  fat_sd_spi.o [1]
-  .rodata                const     0x800'a2f4    0x24  fat_sd_spi.o [1]
-  .text                  ro code   0x800'a318    0x24  PowerMonitor.o [1]
-  .iar.init_table        const     0x800'a33c    0x24  - Linker created -
-  .rodata                const     0x800'a360    0x20  fat_sd_spi.o [1]
-  .text                  ro code   0x800'a380    0x20  cmain_call_ctors.o [5]
-  .text                  ro code   0x800'a3a0    0x1e  cmain.o [5]
-  .text                  ro code   0x800'a3be     0x4  low_level_init.o [2]
-  .text                  ro code   0x800'a3c2     0x4  exit.o [2]
-  .text                  ro code   0x800'a3c8     0xe  cexit.o [5]
-  .text                  ro code   0x800'a3d8    0x14  exit.o [6]
-  .text                  ro code   0x800'a3ec    0x1c  main.o [1]
-  .text                  ro code   0x800'a408    0x1a  PowerMonitor.o [1]
-  .rodata                const     0x800'a424    0x18  fat_sd_spi.o [1]
-  .rodata                const     0x800'a43c    0x18  fat_sd_spi.o [1]
-  .text                  ro code   0x800'a454    0x18  irSend.o [1]
-  .text                  ro code   0x800'a46c    0x18  PowerMonitor.o [1]
-  .text                  ro code   0x800'a484    0x18  PowerMonitor.o [1]
-  .rodata                const     0x800'a49c    0x14  ADC.o [1]
-  .rodata                const     0x800'a4b0    0x14  I2c.o [1]
-  .rodata                const     0x800'a4c4    0x14  I2c.o [1]
-  .rodata                const     0x800'a4d8    0x14  I2c.o [1]
-  .rodata                const     0x800'a4ec    0x14  main.o [1]
-  .rodata                const     0x800'a500    0x14  main.o [1]
-  .rodata                const     0x800'a514    0x14  main.o [1]
-  .rodata                const     0x800'a528    0x14  main.o [1]
-  .rodata                const     0x800'a53c    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a550    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a564    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a578    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a58c    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a5a0    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a5b4    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a5c8    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a5dc    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a5f0    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a604    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a618    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a62c    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a640    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a654    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a668    0x14  PowerMonitor.o [1]
-  .rodata                const     0x800'a67c    0x14  RTC.o [1]
-  .rodata                const     0x800'a690    0x14  Spi.o [1]
-  .rodata                const     0x800'a6a4    0x14  Uart.o [1]
-  .rodata                const     0x800'a6b8    0x14  UI.o [1]
-  SHT$$PREINIT_ARRAY               0x800'a6cc     0x0  <Block>
-  SHT$$INIT_ARRAY                  0x800'a6cc    0x14  <Block>
-    .init_array          const     0x800'a6cc     0x4  CPP_HAL.o [1]
-    .init_array          const     0x800'a6d0     0x4  fat_sd_spi.o [1]
-    .init_array          const     0x800'a6d4     0x4  irSend.o [1]
-    .init_array          const     0x800'a6d8     0x4  main.o [1]
-    .init_array          const     0x800'a6dc     0x4  PowerMonitor.o [1]
-  __iar_tls$$INIT_ARRAY            0x800'a6e0     0x0  <Block>
-  .rodata                const     0x800'a6e0    0x10  fat_sd_spi.o [1]
-  .rodata                const     0x800'a6f0    0x10  fat_sd_spi.o [1]
-  .rodata                const     0x800'a700    0x10  fat_sd_spi.o [1]
-  .rodata                const     0x800'a710    0x10  fat_sd_spi.o [1]
-  .rodata                const     0x800'a720    0x10  fat_sd_spi.o [1]
-  .rodata                const     0x800'a730    0x10  fat_sd_spi.o [1]
-  .rodata                const     0x800'a740    0x10  fat_sd_spi.o [1]
-  .rodata                const     0x800'a750    0x10  fat_sd_spi.o [1]
-  .rodata                const     0x800'a760    0x10  PowerMonitor.o [1]
-  .rodata                const     0x800'a770    0x10  PowerMonitor.o [1]
-  .text                  ro code   0x800'a780    0x10  main.o [1]
-  .text                  ro code   0x800'a790    0x10  startup_stm32f103xb.o [1]
-  .text                  ro code   0x800'a7a0    0x10  stm32f1xx_it.o [1]
-  .rodata                const     0x800'a7b0     0xc  fat_sd_spi.o [1]
-  .rodata                const     0x800'a7bc     0xc  fat_sd_spi.o [1]
-  .rodata                const     0x800'a7c8     0xc  fat_sd_spi.o [1]
-  .rodata                const     0x800'a7d4     0xc  PowerMonitor.o [1]
-  .rodata                const     0x800'a7e0     0xc  PowerMonitor.o [1]
-  .rodata                const     0x800'a7ec     0xc  PowerMonitor.o [1]
-  .rodata                const     0x800'a7f8     0xc  PowerMonitor.o [1]
-  .rodata                const     0x800'a804     0xc  PowerMonitor.o [1]
-  .rodata                const     0x800'a810     0xc  PowerMonitor.o [1]
-  .text                  ro code   0x800'a81c     0xc  PowerMonitor.o [1]
-  .text                  ro code   0x800'a828     0xc  PowerMonitor.o [1]
-  .text                  ro code   0x800'a834     0xc  PowerMonitor.o [1]
-  .text                  ro code   0x800'a840     0xc  cstartup_M.o [5]
-  .rodata                const     0x800'a84c     0x8  fat_sd_spi.o [1]
-  .rodata                const     0x800'a854     0x8  fat_sd_spi.o [1]
-  .rodata                const     0x800'a85c     0x8  PowerMonitor.o [1]
-  .rodata                const     0x800'a864     0x8  PowerMonitor.o [1]
-  .rodata                const     0x800'a86c     0x8  PowerMonitor.o [1]
-  .rodata                const     0x800'a874     0x8  PowerMonitor.o [1]
-  .rodata                const     0x800'a87c     0x8  PowerMonitor.o [1]
-  .rodata                const     0x800'a884     0x8  PowerMonitor.o [1]
-  .rodata                const     0x800'a88c     0x8  PowerMonitor.o [1]
-  .rodata                const     0x800'a894     0x8  system_stm32f1xx.o [1]
-  .text                  ro code   0x800'a89c     0x6  PowerMonitor.o [1]
-  .text                  ro code   0x800'a8a2     0x6  PowerMonitor.o [1]
-  .rodata                const     0x800'a8a8     0x4  PowerMonitor.o [1]
-  .rodata                const     0x800'a8ac     0x4  PowerMonitor.o [1]
+  .text                  ro code   0x800'838c   0x794  PowerMonitor.o [1]
+  .text                  ro code   0x800'8b20    0x2c  PowerMonitor.o [1]
+  .text                  ro code   0x800'8b4c    0x38  PowerMonitor.o [1]
+  .text                  ro code   0x800'8b84    0x28  PowerMonitor.o [1]
+  .text                  ro code   0x800'8bac    0x88  PowerMonitor.o [1]
+  .text                  ro code   0x800'8c34    0x48  PowerMonitor.o [1]
+  .text                  ro code   0x800'8c7c    0x22  PowerMonitor.o [1]
+  .text                  ro code   0x800'8ca0    0xe4  UI.o [1]
+  .text                  ro code   0x800'8d84    0xd8  PowerMonitor.o [1]
+  .text                  ro code   0x800'8e5c    0x24  FltCmpGe.o [4]
+  .text                  ro code   0x800'8e80    0x22  FltToU32.o [4]
+  .text                  ro code   0x800'8ea2    0x3c  PowerMonitor.o [1]
+  .text                  ro code   0x800'8ee0    0x24  PowerMonitor.o [1]
+  .text                  ro code   0x800'8f04    0x30  PowerMonitor.o [1]
+  .text                  ro code   0x800'8f34   0x20a  stm32f1xx_ll_tim.o [1]
+  .text                  ro code   0x800'9140    0x24  PowerMonitor.o [1]
+  .text                  ro code   0x800'9164    0x50  PowerMonitor.o [1]
+  .text                  ro code   0x800'91b4   0x410  InterruptHandlers.o [1]
+  .rodata                const     0x800'95c4   0x350  fat_sd_spi.o [1]
+  .text                  ro code   0x800'9914   0x1e0  main.o [1]
+  .text                  ro code   0x800'9af4    0x14  w25qxx.o [1]
+  .text                  ro code   0x800'9b08    0xa8  PowerMonitor.o [1]
+  .text                  ro code   0x800'9bb0    0x44  PowerMonitor.o [1]
+  .text                  ro code   0x800'9bf4    0xa8  PowerMonitor.o [1]
+  .text                  ro code   0x800'9c9c    0xa0  PowerMonitor.o [1]
+  .rodata                const     0x800'9d3c    0x8c  ST7735.o [1]
+  .rodata                const     0x800'9dc8    0x80  ff.o [1]
+  .text                  ro code   0x800'9e48    0x78  lz77_init_single.o [5]
+  .text                  ro code   0x800'9ec0    0x6e  PowerMonitor.o [1]
+  .text                  ro code   0x800'9f2e    0x2a  PowerMonitor.o [1]
+  .text                  ro code   0x800'9f58    0x60  system_stm32f1xx.o [1]
+  .text                  ro code   0x800'9fb8    0x48  PowerMonitor.o [1]
+  .rodata                const     0x800'a000    0x40  DigitalIO.o [1]
+  .rodata                const     0x800'a040    0x40  GpioOutput.o [1]
+  .text                  ro code   0x800'a080    0x40  PowerMonitor.o [1]
+  .rodata                const     0x800'a0c0    0x38  PowerMonitor.o [1]
+  .text                  ro code   0x800'a0f8    0x34  PowerMonitor.o [1]
+  .text                  ro code   0x800'a12c    0x30  PowerMonitor.o [1]
+  .rodata                const     0x800'a15c    0x2c  PowerMonitor.o [1]
+  .text                  ro code   0x800'a188    0x2c  PowerMonitor.o [1]
+  .rodata                const     0x800'a1b4    0x28  fat_sd_spi.o [1]
+  .rodata                const     0x800'a1dc    0x28  fat_sd_spi.o [1]
+  .rodata                const     0x800'a204    0x28  fat_sd_spi.o [1]
+  .text                  ro code   0x800'a22c    0x28  PowerMonitor.o [1]
+  .text                  ro code   0x800'a254    0x28  PowerMonitor.o [1]
+  .text                  ro code   0x800'a27c    0x28  data_init.o [5]
+  .rodata                const     0x800'a2a4    0x24  fat_sd_spi.o [1]
+  .rodata                const     0x800'a2c8    0x24  fat_sd_spi.o [1]
+  .text                  ro code   0x800'a2ec    0x24  PowerMonitor.o [1]
+  .iar.init_table        const     0x800'a310    0x24  - Linker created -
+  .rodata                const     0x800'a334    0x20  fat_sd_spi.o [1]
+  .text                  ro code   0x800'a354    0x20  cmain_call_ctors.o [5]
+  .text                  ro code   0x800'a374    0x1e  cmain.o [5]
+  .text                  ro code   0x800'a392     0x4  low_level_init.o [2]
+  .text                  ro code   0x800'a396     0x4  exit.o [2]
+  .text                  ro code   0x800'a39c     0xe  cexit.o [5]
+  .text                  ro code   0x800'a3ac    0x14  exit.o [6]
+  .text                  ro code   0x800'a3c0    0x1c  main.o [1]
+  .text                  ro code   0x800'a3dc    0x1a  PowerMonitor.o [1]
+  .rodata                const     0x800'a3f8    0x18  fat_sd_spi.o [1]
+  .rodata                const     0x800'a410    0x18  fat_sd_spi.o [1]
+  .text                  ro code   0x800'a428    0x18  irSend.o [1]
+  .text                  ro code   0x800'a440    0x18  PowerMonitor.o [1]
+  .text                  ro code   0x800'a458    0x18  PowerMonitor.o [1]
+  .rodata                const     0x800'a470    0x14  ADC.o [1]
+  .rodata                const     0x800'a484    0x14  I2c.o [1]
+  .rodata                const     0x800'a498    0x14  I2c.o [1]
+  .rodata                const     0x800'a4ac    0x14  I2c.o [1]
+  .rodata                const     0x800'a4c0    0x14  main.o [1]
+  .rodata                const     0x800'a4d4    0x14  main.o [1]
+  .rodata                const     0x800'a4e8    0x14  main.o [1]
+  .rodata                const     0x800'a4fc    0x14  main.o [1]
+  .rodata                const     0x800'a510    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a524    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a538    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a54c    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a560    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a574    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a588    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a59c    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a5b0    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a5c4    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a5d8    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a5ec    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a600    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a614    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a628    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a63c    0x14  PowerMonitor.o [1]
+  .rodata                const     0x800'a650    0x14  RTC.o [1]
+  .rodata                const     0x800'a664    0x14  Spi.o [1]
+  .rodata                const     0x800'a678    0x14  Uart.o [1]
+  .rodata                const     0x800'a68c    0x14  UI.o [1]
+  SHT$$PREINIT_ARRAY               0x800'a6a0     0x0  <Block>
+  SHT$$INIT_ARRAY                  0x800'a6a0    0x14  <Block>
+    .init_array          const     0x800'a6a0     0x4  CPP_HAL.o [1]
+    .init_array          const     0x800'a6a4     0x4  fat_sd_spi.o [1]
+    .init_array          const     0x800'a6a8     0x4  irSend.o [1]
+    .init_array          const     0x800'a6ac     0x4  main.o [1]
+    .init_array          const     0x800'a6b0     0x4  PowerMonitor.o [1]
+  __iar_tls$$INIT_ARRAY            0x800'a6b4     0x0  <Block>
+  .rodata                const     0x800'a6b4    0x10  fat_sd_spi.o [1]
+  .rodata                const     0x800'a6c4    0x10  fat_sd_spi.o [1]
+  .rodata                const     0x800'a6d4    0x10  fat_sd_spi.o [1]
+  .rodata                const     0x800'a6e4    0x10  fat_sd_spi.o [1]
+  .rodata                const     0x800'a6f4    0x10  fat_sd_spi.o [1]
+  .rodata                const     0x800'a704    0x10  fat_sd_spi.o [1]
+  .rodata                const     0x800'a714    0x10  fat_sd_spi.o [1]
+  .rodata                const     0x800'a724    0x10  fat_sd_spi.o [1]
+  .rodata                const     0x800'a734    0x10  PowerMonitor.o [1]
+  .rodata                const     0x800'a744    0x10  PowerMonitor.o [1]
+  .text                  ro code   0x800'a754    0x10  main.o [1]
+  .text                  ro code   0x800'a764    0x10  startup_stm32f103xb.o [1]
+  .text                  ro code   0x800'a774    0x10  stm32f1xx_it.o [1]
+  .rodata                const     0x800'a784     0xc  fat_sd_spi.o [1]
+  .rodata                const     0x800'a790     0xc  fat_sd_spi.o [1]
+  .rodata                const     0x800'a79c     0xc  fat_sd_spi.o [1]
+  .rodata                const     0x800'a7a8     0xc  PowerMonitor.o [1]
+  .rodata                const     0x800'a7b4     0xc  PowerMonitor.o [1]
+  .rodata                const     0x800'a7c0     0xc  PowerMonitor.o [1]
+  .rodata                const     0x800'a7cc     0xc  PowerMonitor.o [1]
+  .rodata                const     0x800'a7d8     0xc  PowerMonitor.o [1]
+  .rodata                const     0x800'a7e4     0xc  PowerMonitor.o [1]
+  .text                  ro code   0x800'a7f0     0xc  PowerMonitor.o [1]
+  .text                  ro code   0x800'a7fc     0xc  PowerMonitor.o [1]
+  .text                  ro code   0x800'a808     0xc  PowerMonitor.o [1]
+  .text                  ro code   0x800'a814     0xc  cstartup_M.o [5]
+  .rodata                const     0x800'a820     0x8  fat_sd_spi.o [1]
+  .rodata                const     0x800'a828     0x8  fat_sd_spi.o [1]
+  .rodata                const     0x800'a830     0x8  PowerMonitor.o [1]
+  .rodata                const     0x800'a838     0x8  PowerMonitor.o [1]
+  .rodata                const     0x800'a840     0x8  PowerMonitor.o [1]
+  .rodata                const     0x800'a848     0x8  PowerMonitor.o [1]
+  .rodata                const     0x800'a850     0x8  PowerMonitor.o [1]
+  .rodata                const     0x800'a858     0x8  PowerMonitor.o [1]
+  .rodata                const     0x800'a860     0x8  PowerMonitor.o [1]
+  .rodata                const     0x800'a868     0x8  system_stm32f1xx.o [1]
+  .text                  ro code   0x800'a870     0x6  PowerMonitor.o [1]
+  .text                  ro code   0x800'a876     0x6  PowerMonitor.o [1]
+  .rodata                const     0x800'a87c     0x4  PowerMonitor.o [1]
+  .rodata                const     0x800'a880     0x4  PowerMonitor.o [1]
+  .rodata                const     0x800'a884     0x4  RTC.o [1]
+  .rodata                const     0x800'a888     0x4  RTC.o [1]
+  .rodata                const     0x800'a88c     0x4  RTC.o [1]
+  .rodata                const     0x800'a890     0x4  RTC.o [1]
+  .rodata                const     0x800'a894     0x4  RTC.o [1]
+  .rodata                const     0x800'a898     0x4  RTC.o [1]
+  .rodata                const     0x800'a89c     0x4  RTC.o [1]
+  .rodata                const     0x800'a8a0     0x4  RTC.o [1]
+  .rodata                const     0x800'a8a4     0x4  RTC.o [1]
+  .rodata                const     0x800'a8a8     0x4  RTC.o [1]
+  .rodata                const     0x800'a8ac     0x4  RTC.o [1]
   .rodata                const     0x800'a8b0     0x4  RTC.o [1]
   .rodata                const     0x800'a8b4     0x4  RTC.o [1]
   .rodata                const     0x800'a8b8     0x4  RTC.o [1]
@@ -446,23 +458,12 @@ initialize by copy { rw };
   .rodata                const     0x800'a8c4     0x4  RTC.o [1]
   .rodata                const     0x800'a8c8     0x4  RTC.o [1]
   .rodata                const     0x800'a8cc     0x4  RTC.o [1]
-  .rodata                const     0x800'a8d0     0x4  RTC.o [1]
-  .rodata                const     0x800'a8d4     0x4  RTC.o [1]
-  .rodata                const     0x800'a8d8     0x4  RTC.o [1]
-  .rodata                const     0x800'a8dc     0x4  RTC.o [1]
-  .rodata                const     0x800'a8e0     0x4  RTC.o [1]
-  .rodata                const     0x800'a8e4     0x4  RTC.o [1]
-  .rodata                const     0x800'a8e8     0x4  RTC.o [1]
-  .rodata                const     0x800'a8ec     0x4  RTC.o [1]
-  .rodata                const     0x800'a8f0     0x4  RTC.o [1]
-  .rodata                const     0x800'a8f4     0x4  RTC.o [1]
-  .rodata                const     0x800'a8f8     0x4  RTC.o [1]
-  .text                  ro code   0x800'a8fc     0x4  PowerMonitor.o [1]
-  .text                  ro code   0x800'a900     0x0  cstart_call_dtors.o [5]
-  .rodata                const     0x800'a900     0x0  zero_init3.o [5]
-  .rodata                const     0x800'a900     0x0  lz77_init_single.o [5]
-  Initializer bytes      const     0x800'a900   0x19a  <for P2-1>
-                                 - 0x800'aa9a  0xa9ae
+  .text                  ro code   0x800'a8d0     0x4  PowerMonitor.o [1]
+  .text                  ro code   0x800'a8d4     0x0  cstart_call_dtors.o [5]
+  .rodata                const     0x800'a8d4     0x0  zero_init3.o [5]
+  .rodata                const     0x800'a8d4     0x0  lz77_init_single.o [5]
+  Initializer bytes      const     0x800'a8d4   0x195  <for P2-1>
+                                 - 0x800'aa69  0xa97d
 
 "P2", part 1 of 3:                              0x448
   P2-1                            0x2000'0000   0x448  <Init block>
@@ -470,20 +471,22 @@ initialize by copy { rw };
     .data                inited   0x2000'0014    0x1c  fat_sd_spi.o [1]
     .data                inited   0x2000'0030    0x3c  fat_sd_spi.o [1]
     .data                inited   0x2000'006c     0x8  main.o [1]
-    .data                inited   0x2000'0074   0x274  PowerMonitor.o [1]
-    .data                inited   0x2000'02e8    0x2c  PowerMonitor.o [1]
-    .data                inited   0x2000'0314     0xc  PowerMonitor.o [1]
-    .data                inited   0x2000'0320     0x4  PowerMonitor.o [1]
-    .data                inited   0x2000'0324    0x14  PowerMonitor.o [1]
-    .data                inited   0x2000'0338     0x4  PowerMonitor.o [1]
-    .data                inited   0x2000'033c    0x14  PowerMonitor.o [1]
-    .data                inited   0x2000'0350     0x4  PowerMonitor.o [1]
-    .data                inited   0x2000'0354    0x14  PowerMonitor.o [1]
-    .data                inited   0x2000'0368    0x14  PowerMonitor.o [1]
-    .data                inited   0x2000'037c     0x4  PowerMonitor.o [1]
+    .data                inited   0x2000'0074   0x24c  PowerMonitor.o [1]
+    .data                inited   0x2000'02c0    0x2c  PowerMonitor.o [1]
+    .data                inited   0x2000'02ec     0xc  PowerMonitor.o [1]
+    .data                inited   0x2000'02f8     0x4  PowerMonitor.o [1]
+    .data                inited   0x2000'02fc    0x14  PowerMonitor.o [1]
+    .data                inited   0x2000'0310     0x4  PowerMonitor.o [1]
+    .data                inited   0x2000'0314    0x14  PowerMonitor.o [1]
+    .data                inited   0x2000'0328     0x4  PowerMonitor.o [1]
+    .data                inited   0x2000'032c    0x14  PowerMonitor.o [1]
+    .data                inited   0x2000'0340    0x14  PowerMonitor.o [1]
+    .data                inited   0x2000'0354     0x4  PowerMonitor.o [1]
+    .data                inited   0x2000'0358    0x14  PowerMonitor.o [1]
+    .data                inited   0x2000'036c    0x14  PowerMonitor.o [1]
     .data                inited   0x2000'0380    0x14  PowerMonitor.o [1]
-    .data                inited   0x2000'0394    0x14  PowerMonitor.o [1]
-    .data                inited   0x2000'03a8     0x4  PowerMonitor.o [1]
+    .data                inited   0x2000'0394     0x4  PowerMonitor.o [1]
+    .data                inited   0x2000'0398    0x14  PowerMonitor.o [1]
     .data                inited   0x2000'03ac     0x4  PowerMonitor.o [1]
     .data                inited   0x2000'03b0    0x10  PowerMonitor.o [1]
     .data                inited   0x2000'03c0     0x4  PowerMonitor.o [1]
@@ -538,7 +541,7 @@ Unused ranges:
 
          From           To      Size
          ----           --      ----
-   0x800'aa9a   0x801'ffff  0x1'5566
+   0x800'aa69   0x801'ffff  0x1'5597
   0x2000'1668  0x2000'4fff    0x3998
 
 
@@ -553,8 +556,8 @@ Zero (__iar_zero_init3)
           0x2000'0448  0x883
 
 Copy/lz77 (__iar_lz77_init_single3)
-    1 source range, total size 0x19a (37% of destination):
-           0x800'a900  0x19a
+    1 source range, total size 0x195 (36% of destination):
+           0x800'a8d4  0x195
     1 destination range, total size 0x448:
           0x2000'0000  0x448
 
@@ -582,7 +585,7 @@ C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - PowerMonitor - Flash\IAR\D
     INA219.o                   514                16
     InterruptHandlers.o      1'040
     InterruptManager.o         116               260
-    PowerMonitor.o           4'082      923    1'461
+    PowerMonitor.o           4'040      919    1'461
     RTC.o                    1'488      124       80
     ST7735.o                 1'696      140
     Spi.o                    1'004       20
@@ -590,7 +593,7 @@ C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - PowerMonitor - Flash\IAR\D
     Uart.o                     602       20
     Utils.o                    462
     diskio.o                   184                16
-    fat_sd_spi.o             4'224    1'337       96
+    fat_sd_spi.o             4'224    1'336       96
     ff.o                     5'588      128      520
     irSend.o                    24        4        8
     main.o                     526       87      336
@@ -609,7 +612,7 @@ C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - PowerMonitor - Flash\IAR\D
     tinyprintf.o               816                 8
     w25qxx.o                    44
     ------------------------------------------------
-    Total:                  28'608   11'398    3'267
+    Total:                  28'566   11'393    3'267
 
 dl7M_tln.a: [2]
     cppinit.o                  160                20
@@ -665,10 +668,10 @@ shb_l.a: [6]
     ------------------------------------------------
     Total:                      20        1
 
-    Gaps                        25        4
+    Gaps                        23        4
     Linker created                       36    2'444
 ----------------------------------------------------
-    Grand Total:            32'235   11'439    5'731
+    Grand Total:            32'191   11'434    5'731
 
 
 *******************************************************************************
@@ -679,12 +682,12 @@ Entry                       Address    Size  Type      Object
 -----                       -------    ----  ----      ------
 .iar.dynexit$$Base      0x2000'0ccc           --   Gb  - Linker created -
 .iar.dynexit$$Limit     0x2000'0e64           --   Gb  - Linker created -
-.iar.init_table$$Base    0x800'a33c           --   Gb  - Linker created -
-.iar.init_table$$Limit   0x800'a360           --   Gb  - Linker created -
-?main                    0x800'a3a1          Code  Gb  cmain.o [5]
-ADC1_2_IRQHandler        0x800'9389    0x18  Code  Gb  InterruptHandlers.o [1]
-AHBPrescTable            0x800'9fd4    0x10  Data  Gb  system_stm32f1xx.o [1]
-APBPrescTable            0x800'a894     0x8  Data  Gb  system_stm32f1xx.o [1]
+.iar.init_table$$Base    0x800'a310           --   Gb  - Linker created -
+.iar.init_table$$Limit   0x800'a334           --   Gb  - Linker created -
+?main                    0x800'a375          Code  Gb  cmain.o [5]
+ADC1_2_IRQHandler        0x800'935d    0x18  Code  Gb  InterruptHandlers.o [1]
+AHBPrescTable            0x800'9fa8    0x10  Data  Gb  system_stm32f1xx.o [1]
+APBPrescTable            0x800'a868     0x8  Data  Gb  system_stm32f1xx.o [1]
 Adc_Test()::InitDone    0x2000'09bc     0x1  Data  Lc  main.o [1]
 B9_HwBtnInt             0x2000'0124    0x10  Data  Lc  PowerMonitor.o [1]
 BSP::HwButton<HAL::DigitalIn<(Port_t)1073809408, (PIN_t)8U, (Mode_t)2U>, reinterpret_cast<HAL::Callback *>((&DownCb.__b_N3HAL8CallbackE)), reinterpret_cast<HAL::Callback *>((&PressCb.__b_N3HAL8CallbackE)), reinterpret_cast<HAL::Callback *>((&LongPressCb.__b_N3HAL8CallbackE))>::Run()::ElapsedTime
@@ -692,11 +695,11 @@ BSP::HwButton<HAL::DigitalIn<(Port_t)1073809408, (PIN_t)8U, (Mode_t)2U>, reinter
 BSP::HwButton<HAL::DigitalIn<(Port_t)1073809408, (PIN_t)8U, (Mode_t)2U>, reinterpret_cast<HAL::Callback *>((&DownCb.__b_N3HAL8CallbackE)), reinterpret_cast<HAL::Callback *>((&PressCb.__b_N3HAL8CallbackE)), reinterpret_cast<HAL::Callback *>((&LongPressCb.__b_N3HAL8CallbackE))>::Run(){1}{12}::LastClickStateEntered
                         0x2000'0c9c     0x4  Data  Lc  PowerMonitor.o [1]
 BSP::HwButton<HAL::DigitalIn<(Port_t)1073809408, (unsigned short)8, (Mode_t)2, (IntEdge_t)3, (HAL::Callback *)0>, (&[local to PowerMonitor_cpp]::DownCb), (&[local to PowerMonitor_cpp]::PressCb), (&[local to PowerMonitor_cpp]::LongPressCb)>::EventHandler()
-                         0x800'9191    0x50  Code  Gb  PowerMonitor.o [1]
+                         0x800'9165    0x50  Code  Gb  PowerMonitor.o [1]
 BSP::HwButton<HAL::DigitalIn<(Port_t)1073809408, (unsigned short)8, (Mode_t)2, (IntEdge_t)3, (HAL::Callback *)0>, (&[local to PowerMonitor_cpp]::DownCb), (&[local to PowerMonitor_cpp]::PressCb), (&[local to PowerMonitor_cpp]::LongPressCb)>::ReadButton()
-                         0x800'916d    0x24  Code  Gb  PowerMonitor.o [1]
+                         0x800'9141    0x24  Code  Gb  PowerMonitor.o [1]
 BSP::HwButton<HAL::DigitalIn<(Port_t)1073809408, (unsigned short)8, (Mode_t)2, (IntEdge_t)3, (HAL::Callback *)0>, (&[local to PowerMonitor_cpp]::DownCb), (&[local to PowerMonitor_cpp]::PressCb), (&[local to PowerMonitor_cpp]::LongPressCb)>::Run()
-                         0x800'8db1    0xd8  Code  Gb  PowerMonitor.o [1]
+                         0x800'8d85    0xd8  Code  Gb  PowerMonitor.o [1]
 BSP::INA219::CaptureSamples(BSP::INA219::Power_t *)
                          0x800'48bb    0x50  Code  Gb  INA219.o [1]
 BSP::INA219::CaptureSamples(BSP::INA219::Power_t *)::CurrentSamples
@@ -749,59 +752,59 @@ BSP::ST7735::WriteData(unsigned short)
 BSP::ST7735::WriteString(unsigned short, unsigned short, char const *, FontDef *, unsigned short, unsigned short)
                          0x800'4f9d    0x68  Code  Gb  ST7735.o [1]
 BSP::w25qxx::w25qxx(HAL::Spi *, Port_t, unsigned short)
-                         0x800'9b21     0x2  Code  Gb  w25qxx.o [1]
+                         0x800'9af5     0x2  Code  Gb  w25qxx.o [1]
 Brightness              0x2000'03c0     0x4  Data  Gb  PowerMonitor.o [1]
 BrightnessText_SettingContext
-                         0x800'8b3c    0x10  Data  Lc  PowerMonitor.o [1]
+                         0x800'8b10    0x10  Data  Lc  PowerMonitor.o [1]
 BrightnessWindowContext
-                         0x800'8b28    0x14  Data  Lc  PowerMonitor.o [1]
+                         0x800'8afc    0x14  Data  Lc  PowerMonitor.o [1]
 Brightness_Text         0x2000'03b0    0x10  Data  Gb  PowerMonitor.o [1]
-BuildName(char *)        0x800'87c5    0x44  Code  Gb  PowerMonitor.o [1]
-BusFault_Handler         0x800'a7a7     0x2  Code  Gb  stm32f1xx_it.o [1]
-CAN1_RX1_IRQHandler      0x800'93bb    0x18  Code  Gb  InterruptHandlers.o [1]
-CAN1_SCE_IRQHandler      0x800'93d3    0x18  Code  Gb  InterruptHandlers.o [1]
+BuildName(char *)        0x800'87a9    0x44  Code  Gb  PowerMonitor.o [1]
+BusFault_Handler         0x800'a77b     0x2  Code  Gb  stm32f1xx_it.o [1]
+CAN1_RX1_IRQHandler      0x800'938f    0x18  Code  Gb  InterruptHandlers.o [1]
+CAN1_SCE_IRQHandler      0x800'93a7    0x18  Code  Gb  InterruptHandlers.o [1]
 CHANNEL_OFFSET_TAB       0x800'47dc     0x8  Data  Lc  I2c.o [1]
 CSTACK$$Base            0x2000'0e68           --   Gb  - Linker created -
 CSTACK$$Limit           0x2000'1668           --   Gb  - Linker created -
 ChipTemperature         0x2000'0884     0xc  Data  Gb  CPP_HAL.o [1]
-ClockScreen             0x2000'0240    0x28  Data  Gb  PowerMonitor.o [1]
+ClockScreen             0x2000'0218    0x28  Data  Gb  PowerMonitor.o [1]
 DMA1_Channel1_IRQHandler
-                         0x800'92d3    0x1c  Code  Gb  InterruptHandlers.o [1]
+                         0x800'92a7    0x1c  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel2_IRQHandler
-                         0x800'92ef    0x1c  Code  Gb  InterruptHandlers.o [1]
+                         0x800'92c3    0x1c  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel3_IRQHandler
-                         0x800'930b    0x1c  Code  Gb  InterruptHandlers.o [1]
+                         0x800'92df    0x1c  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel4_IRQHandler
-                         0x800'9327    0x1a  Code  Gb  InterruptHandlers.o [1]
+                         0x800'92fb    0x1a  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel5_IRQHandler
-                         0x800'9341    0x18  Code  Gb  InterruptHandlers.o [1]
+                         0x800'9315    0x18  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel6_IRQHandler
-                         0x800'9359    0x18  Code  Gb  InterruptHandlers.o [1]
+                         0x800'932d    0x18  Code  Gb  InterruptHandlers.o [1]
 DMA1_Channel7_IRQHandler
-                         0x800'9371    0x18  Code  Gb  InterruptHandlers.o [1]
+                         0x800'9345    0x18  Code  Gb  InterruptHandlers.o [1]
 DateText                0x2000'03c8    0x20  Data  Gb  PowerMonitor.o [1]
-DateTextContext          0x800'a668    0x14  Data  Lc  PowerMonitor.o [1]
-DateWindow              0x2000'0234     0xc  Data  Lc  PowerMonitor.o [1]
-DateWindowContext        0x800'a654    0x14  Data  Lc  PowerMonitor.o [1]
+DateTextContext          0x800'a63c    0x14  Data  Lc  PowerMonitor.o [1]
+DateWindow              0x2000'020c     0xc  Data  Lc  PowerMonitor.o [1]
+DateWindowContext        0x800'a628    0x14  Data  Lc  PowerMonitor.o [1]
 DbgBuf                  0x2000'0a24    0xc8  Data  Gb  main.o [1]
-DebugMon_Handler         0x800'a7ad     0x2  Code  Gb  stm32f1xx_it.o [1]
+DebugMon_Handler         0x800'a781     0x2  Code  Gb  stm32f1xx_it.o [1]
 Dimmer                  0x2000'00c0     0x8  Data  Lc  PowerMonitor.o [1]
 DisplayBrightnessCallback::CallbackFunction(unsigned int)
-                         0x800'a319    0x24  Code  Gb  PowerMonitor.o [1]
+                         0x800'a2ed    0x24  Code  Gb  PowerMonitor.o [1]
 DisplayBrightnessCb     0x2000'03ac     0x4  Data  Gb  PowerMonitor.o [1]
 DownCallback::CallbackFunction()
-                         0x800'a81d     0xc  Code  Gb  PowerMonitor.o [1]
-DownCb                  0x2000'0314     0x4  Data  Lc  PowerMonitor.o [1]
+                         0x800'a7f1     0xc  Code  Gb  PowerMonitor.o [1]
+DownCb                  0x2000'02ec     0x4  Data  Lc  PowerMonitor.o [1]
 DtorRecArray            0x2000'0ccc     0xc  Data  Lc  cppinit.o [2]
-EXTI0_IRQHandler         0x800'9265    0x16  Code  Gb  InterruptHandlers.o [1]
-EXTI15_10_IRQHandler     0x800'9583    0x12  Code  Gb  InterruptHandlers.o [1]
-EXTI1_IRQHandler         0x800'927b    0x16  Code  Gb  InterruptHandlers.o [1]
-EXTI2_IRQHandler         0x800'9291    0x16  Code  Gb  InterruptHandlers.o [1]
-EXTI3_IRQHandler         0x800'92a7    0x16  Code  Gb  InterruptHandlers.o [1]
-EXTI4_IRQHandler         0x800'92bd    0x16  Code  Gb  InterruptHandlers.o [1]
-EXTI9_5_IRQHandler       0x800'93eb    0x18  Code  Gb  InterruptHandlers.o [1]
-ExCvt                    0x800'9df4    0x80  Data  Lc  ff.o [1]
-FLASH_IRQHandler         0x800'9239    0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI0_IRQHandler         0x800'9239    0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI15_10_IRQHandler     0x800'9557    0x12  Code  Gb  InterruptHandlers.o [1]
+EXTI1_IRQHandler         0x800'924f    0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI2_IRQHandler         0x800'9265    0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI3_IRQHandler         0x800'927b    0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI4_IRQHandler         0x800'9291    0x16  Code  Gb  InterruptHandlers.o [1]
+EXTI9_5_IRQHandler       0x800'93bf    0x18  Code  Gb  InterruptHandlers.o [1]
+ExCvt                    0x800'9dc8    0x80  Data  Lc  ff.o [1]
+FLASH_IRQHandler         0x800'920d    0x16  Code  Gb  InterruptHandlers.o [1]
 FatFs                   0x2000'0c74     0x4  Data  Lc  ff.o [1]
 FileName                0x2000'0104    0x20  Data  Gb  PowerMonitor.o [1]
 Fsid                    0x2000'0c70     0x2  Data  Lc  ff.o [1]
@@ -815,7 +818,7 @@ HAL::Adc::Read(unsigned int)
 HAL::Adc::m_ADCState    0x2000'0cc8     0x1  Data  Gb  ADC.o [1]
 HAL::Adc::m_WDCallback  0x2000'0ca8     0x4  Data  Gb  ADC.o [1]
 HAL::AnalogIn::HwInit(Port_t, unsigned short, unsigned int)
-                         0x800'8c61    0x48  Code  Gb  PowerMonitor.o [1]
+                         0x800'8c35    0x48  Code  Gb  PowerMonitor.o [1]
 HAL::DMA::ChanelHwInit(unsigned int, unsigned int, unsigned int)
                          0x800'4815    0x1e  Code  Gb  DMA.o [1]
 HAL::DMA::ClearFlag(unsigned int, unsigned int)
@@ -843,7 +846,7 @@ HAL::DigitalIO::SetOutputMode(Port_t, unsigned short, Mode_t, unsigned int)
 HAL::DigitalIO::g_GpioCallbacks
                         0x2000'0bec    0x40  Data  Gb  DigitalIO.o [1]
 HAL::DigitalIn<(Port_t)1073809408, (unsigned short)8, (Mode_t)2, (IntEdge_t)3, (HAL::Callback *)0>::ISR()
-                         0x800'a8fd     0x4  Code  Gb  PowerMonitor.o [1]
+                         0x800'a8d1     0x4  Code  Gb  PowerMonitor.o [1]
 HAL::GetTicksSince(unsigned int)
                          0x800'3cab    0x14  Code  Gb  CPP_HAL.o [1]
 HAL::GpioOutput::GpioOutput(Port_t, unsigned short)
@@ -881,9 +884,9 @@ HAL::InterruptManager::m_SysTick_Handler
 HAL::MemSet32(unsigned int *, unsigned int, unsigned int)
                          0x800'3c7d     0xc  Code  Gb  CPP_HAL.o [1]
 HAL::PulseOut<(unsigned int)1073742848, (TimerChanel_t)49, (unsigned int)10000>::HwInit()
-                         0x800'8bd9    0x88  Code  Gb  PowerMonitor.o [1]
+                         0x800'8bad    0x88  Code  Gb  PowerMonitor.o [1]
 HAL::PulseOut<(unsigned int)1073742848, (TimerChanel_t)49, (unsigned int)10000>::ISR()
-                         0x800'37d3     0x2  Code  Gb  PowerMonitor.o [1]
+                         0x800'40fb     0x2  Code  Gb  PowerMonitor.o [1]
 HAL::PulseOut<(unsigned int)1073742848, (TimerChanel_t)49, (unsigned int)38000>::ISR()
                          0x800'181f     0x2  Code  Gb  main.o [1]
 HAL::Rtc::CountertoTime(unsigned int, HAL::Rtc::Time_t *)
@@ -933,9 +936,9 @@ HAL::Spi::TxPoll(unsigned char *, unsigned int, HAL::Spi::XferMode_t)
 HAL::Spi::TxRxPoll8Bit(unsigned char)
                          0x800'2dc3    0x3e  Code  Gb  Spi.o [1]
 HAL::Timer::TimerStatus_t HAL::Timer::ClockEnableAndRegisterInterrupt<(unsigned int)1073742848>(HAL::InterruptSource *)
-                         0x800'8f0d    0x24  Code  Gb  PowerMonitor.o [1]
+                         0x800'8ee1    0x24  Code  Gb  PowerMonitor.o [1]
 HAL::Timer::TimerStatus_t HAL::Timer::HwInit<(unsigned int)1073742848, (unsigned int)0, (unsigned int)7199, (bool)1>()
-                         0x800'8f31    0x30  Code  Gb  PowerMonitor.o [1]
+                         0x800'8f05    0x30  Code  Gb  PowerMonitor.o [1]
 HAL::Uart::HwInit(unsigned int, unsigned int, unsigned int)
                          0x800'5121   0x14a  Code  Gb  Uart.o [1]
 HAL::Uart::ISR()         0x800'5341     0x2  Code  Gb  Uart.o [1]
@@ -950,44 +953,45 @@ HAL::Uart::Uart(UartPort_t, unsigned int)
 HAL::WaitOnFlag(unsigned int volatile *, unsigned int, unsigned int, unsigned int)
                          0x800'3c89    0x22  Code  Gb  CPP_HAL.o [1]
 HMI::NamedSettingWindow::CopyName(unsigned char)
-                         0x800'8ecf    0x3c  Code  Gb  PowerMonitor.o [1]
+                         0x800'8ea3    0x3c  Code  Gb  PowerMonitor.o [1]
 HMI::NamedSettingWindow::Display(unsigned short)
-                         0x800'9fe5    0x48  Code  Gb  PowerMonitor.o [1]
+                         0x800'9fb9    0x48  Code  Gb  PowerMonitor.o [1]
 HMI::NamedSettingWindow::EventHandler(HMI::InputEvents_t)
-                         0x800'9eed    0x6e  Code  Gb  PowerMonitor.o [1]
+                         0x800'9ec1    0x6e  Code  Gb  PowerMonitor.o [1]
 HMI::NamedSettingWindow::Init()
-                         0x800'a1b5    0x2c  Code  Gb  PowerMonitor.o [1]
+                         0x800'a189    0x2c  Code  Gb  PowerMonitor.o [1]
 HMI::NamedSettingWindow::NamedSettingWindow(HMI::WindowContext_t const *, HMI::NamedSettingContext_t const *)
-                         0x800'8b4d    0x2c  Code  Gb  PowerMonitor.o [1]
+                         0x800'8b21    0x2c  Code  Gb  PowerMonitor.o [1]
 HMI::NamedSettingWindow::UpdateMemory()
-                         0x800'9f5b    0x2a  Code  Gb  PowerMonitor.o [1]
+                         0x800'9f2f    0x2a  Code  Gb  PowerMonitor.o [1]
 HMI::Screen::Display(unsigned short)
-                         0x800'a159    0x30  Code  Gb  PowerMonitor.o [1]
+                         0x800'a12d    0x30  Code  Gb  PowerMonitor.o [1]
 HMI::Screen::EventHandler(HMI::InputEvents_t)
-                         0x800'9c21    0xa8  Code  Gb  PowerMonitor.o [1]
+                         0x800'9bf5    0xa8  Code  Gb  PowerMonitor.o [1]
+HMI::Screen::Init()      0x800'37d3     0x2  Code  Gb  PowerMonitor.o [1]
 HMI::Screen::Register(HMI::Window *)
-                         0x800'8ca9    0x22  Code  Gb  PowerMonitor.o [1]
-HMI::Screen::Screen()    0x800'8bb1    0x28  Code  Gb  PowerMonitor.o [1]
+                         0x800'8c7d    0x22  Code  Gb  PowerMonitor.o [1]
+HMI::Screen::Screen()    0x800'8b85    0x28  Code  Gb  PowerMonitor.o [1]
 HMI::SettingWindow::Display(unsigned short)
-                         0x800'9cc9    0xa0  Code  Gb  PowerMonitor.o [1]
+                         0x800'9c9d    0xa0  Code  Gb  PowerMonitor.o [1]
 HMI::SettingWindow::EventHandler(HMI::InputEvents_t)
-                         0x800'9b35    0xa8  Code  Gb  PowerMonitor.o [1]
+                         0x800'9b09    0xa8  Code  Gb  PowerMonitor.o [1]
 HMI::SettingWindow::Init()
-                         0x800'a409    0x1a  Code  Gb  PowerMonitor.o [1]
+                         0x800'a3dd    0x1a  Code  Gb  PowerMonitor.o [1]
 HMI::SettingWindow::SettingWindow(HMI::WindowContext_t const *, HMI::SettingContext_t const *)
-                         0x800'8b79    0x38  Code  Gb  PowerMonitor.o [1]
+                         0x800'8b4d    0x38  Code  Gb  PowerMonitor.o [1]
 HMI::SettingWindow::UpdateMemory()
-                         0x800'9bdd    0x44  Code  Gb  PowerMonitor.o [1]
+                         0x800'9bb1    0x44  Code  Gb  PowerMonitor.o [1]
 HMI::TextWindow::Display(unsigned short)
-                         0x800'a259    0x28  Code  Gb  PowerMonitor.o [1]
+                         0x800'a22d    0x28  Code  Gb  PowerMonitor.o [1]
 HMI::TextWindow::EventHandler(HMI::InputEvents_t)
-                         0x800'a125    0x34  Code  Gb  PowerMonitor.o [1]
+                         0x800'a0f9    0x34  Code  Gb  PowerMonitor.o [1]
 HMI::UI::Display(unsigned short)
-                         0x800'8ce7    0x18  Code  Gb  UI.o [1]
+                         0x800'8cbb    0x18  Code  Gb  UI.o [1]
 HMI::UI::EventHandler(HMI::InputEvents_t)
-                         0x800'8cff    0xaa  Code  Gb  UI.o [1]
+                         0x800'8cd3    0xaa  Code  Gb  UI.o [1]
 HMI::UI::Register(HMI::Window *)
-                         0x800'8ccd    0x1a  Code  Gb  UI.o [1]
+                         0x800'8ca1    0x1a  Code  Gb  UI.o [1]
 HMI::UI::m_BackgroundColor
                         0x2000'0c30     0x2  Data  Gb  UI.o [1]
 HMI::UI::m_Captured     0x2000'0c2c     0x1  Data  Gb  UI.o [1]
@@ -998,17 +1002,17 @@ HMI::UI::m_PreviousActiveScreen
 HMI::UI::m_RegisteredScreenIndex
                         0x2000'0c2f     0x1  Data  Gb  UI.o [1]
 HMI::UI::m_Screens      0x2000'0c34    0x14  Data  Gb  UI.o [1]
-HMI::Window::Init()      0x800'40fb     0x2  Code  Gb  UI.o [1]
-HardFault_Handler        0x800'a7a3     0x2  Code  Gb  stm32f1xx_it.o [1]
-HomeScreen              0x2000'0268    0x28  Data  Gb  PowerMonitor.o [1]
-I2C1_ER_IRQHandler       0x800'94c3    0x12  Code  Gb  InterruptHandlers.o [1]
-I2C1_EV_IRQHandler       0x800'94ab    0x18  Code  Gb  InterruptHandlers.o [1]
-I2C2_ER_IRQHandler       0x800'94f3    0x12  Code  Gb  InterruptHandlers.o [1]
-I2C2_EV_IRQHandler       0x800'94db    0x12  Code  Gb  InterruptHandlers.o [1]
+HMI::Window::Init()      0x800'4a47     0x2  Code  Gb  UI.o [1]
+HardFault_Handler        0x800'a777     0x2  Code  Gb  stm32f1xx_it.o [1]
+HomeScreen              0x2000'0240    0x28  Data  Gb  PowerMonitor.o [1]
+I2C1_ER_IRQHandler       0x800'9497    0x12  Code  Gb  InterruptHandlers.o [1]
+I2C1_EV_IRQHandler       0x800'947f    0x18  Code  Gb  InterruptHandlers.o [1]
+I2C2_ER_IRQHandler       0x800'94c7    0x12  Code  Gb  InterruptHandlers.o [1]
+I2C2_EV_IRQHandler       0x800'94af    0x12  Code  Gb  InterruptHandlers.o [1]
 INA219_Dev              0x2000'08e8    0x18  Data  Gb  CPP_HAL.o [1]
 IR_OUT                  0x2000'0c88     0x8  Data  Lc  irSend.o [1]
-I_Len                   0x2000'02e9     0x1  Data  Gb  PowerMonitor.o [1]
-InputEvents             0x2000'02eb     0x1  Data  Gb  PowerMonitor.o [1]
+I_Len                   0x2000'02c1     0x1  Data  Gb  PowerMonitor.o [1]
+InputEvents             0x2000'02c3     0x1  Data  Gb  PowerMonitor.o [1]
 InterruptManagerInstance
                         0x2000'0cc9     0x1  Data  Gb  CPP_HAL.o [1]
 LED                     0x2000'0890     0x8  Data  Gb  CPP_HAL.o [1]
@@ -1025,252 +1029,252 @@ LL_RTC_Init              0x800'3d6d    0x6e  Code  Gb  stm32f1xx_ll_rtc.o [1]
 LL_RTC_WaitForSynchro    0x800'3e6f    0x4c  Code  Gb  stm32f1xx_ll_rtc.o [1]
 LL_SPI_Init              0x800'37d5    0x58  Code  Gb  stm32f1xx_ll_spi.o [1]
 LL_SetSystemCoreClock    0x800'600b     0x6  Code  Gb  stm32f1xx_ll_utils.o [1]
-LL_TIM_Init              0x800'8f61    0x5e  Code  Gb  stm32f1xx_ll_tim.o [1]
-LL_TIM_OC_Init           0x800'8fbf   0x192  Code  Gb  stm32f1xx_ll_tim.o [1]
+LL_TIM_Init              0x800'8f35    0x5e  Code  Gb  stm32f1xx_ll_tim.o [1]
+LL_TIM_OC_Init           0x800'8f93   0x192  Code  Gb  stm32f1xx_ll_tim.o [1]
 LL_USART_Init            0x800'6019    0x9a  Code  Gb  stm32f1xx_ll_usart.o [1]
 LL_mDelay                0x800'5fe9    0x22  Code  Gb  stm32f1xx_ll_utils.o [1]
 LPresscb                0x2000'03c4     0x4  Data  Gb  PowerMonitor.o [1]
 LfnBuf                  0x2000'0678   0x200  Data  Lc  ff.o [1]
 LfnOfs                   0x800'16b0    0x10  Data  Lc  ff.o [1]
-LivePowerScreen         0x2000'02b8    0x28  Data  Gb  PowerMonitor.o [1]
+LivePowerScreen         0x2000'0290    0x28  Data  Gb  PowerMonitor.o [1]
 LongPressCallback1::CallbackFunction()
-                         0x800'a835     0xc  Code  Gb  PowerMonitor.o [1]
-LongPressCb             0x2000'031c     0x4  Data  Lc  PowerMonitor.o [1]
-MemManage_Handler        0x800'a7a5     0x2  Code  Gb  stm32f1xx_it.o [1]
+                         0x800'a809     0xc  Code  Gb  PowerMonitor.o [1]
+LongPressCb             0x2000'02f4     0x4  Data  Lc  PowerMonitor.o [1]
+MemManage_Handler        0x800'a779     0x2  Code  Gb  stm32f1xx_it.o [1]
 MillisElapsed<128U>()::previous_millis
                         0x2000'0c7c     0x4  Data  Lc  INA219.o [1]
 MillisElapsed<128U>()::static guard for previous_millis
                         0x2000'0c78     0x1  Data  Lc  INA219.o [1]
-MyUI                    0x2000'02e0     0x8  Data  Lc  PowerMonitor.o [1]
-NMI_Handler              0x800'a7a1     0x2  Code  Gb  stm32f1xx_it.o [1]
+MyUI                    0x2000'02b8     0x8  Data  Lc  PowerMonitor.o [1]
+NMI_Handler              0x800'a775     0x2  Code  Gb  stm32f1xx_it.o [1]
 NamedSettingContextSdCard
-                         0x800'8a10    0x14  Data  Lc  PowerMonitor.o [1]
+                         0x800'89e4    0x14  Data  Lc  PowerMonitor.o [1]
 NamedSettingContextUart
-                         0x800'8a38    0x14  Data  Lc  PowerMonitor.o [1]
+                         0x800'8a0c    0x14  Data  Lc  PowerMonitor.o [1]
 NamedSettingTableSdCard
-                         0x800'a760    0x10  Data  Lc  PowerMonitor.o [1]
-NamedSettingTableUart    0x800'a770    0x10  Data  Lc  PowerMonitor.o [1]
+                         0x800'a734    0x10  Data  Lc  PowerMonitor.o [1]
+NamedSettingTableUart    0x800'a744    0x10  Data  Lc  PowerMonitor.o [1]
 NamedSettingWindowSdCard
                         0x2000'0134    0x14  Data  Lc  PowerMonitor.o [1]
 NamedSettingWindowUart  0x2000'0148    0x14  Data  Lc  PowerMonitor.o [1]
 NamedWindowContextSdCard
-                         0x800'89fc    0x14  Data  Lc  PowerMonitor.o [1]
-NamedWindowContextUart   0x800'8a24    0x14  Data  Lc  PowerMonitor.o [1]
-PVD_IRQHandler           0x800'91f7    0x16  Code  Gb  InterruptHandlers.o [1]
-PendSV_Handler           0x800'a7af     0x2  Code  Gb  stm32f1xx_it.o [1]
+                         0x800'89d0    0x14  Data  Lc  PowerMonitor.o [1]
+NamedWindowContextUart   0x800'89f8    0x14  Data  Lc  PowerMonitor.o [1]
+PVD_IRQHandler           0x800'91cb    0x16  Code  Gb  InterruptHandlers.o [1]
+PendSV_Handler           0x800'a783     0x2  Code  Gb  stm32f1xx_it.o [1]
 Power                   0x2000'00b4     0xc  Data  Gb  PowerMonitor.o [1]
-PowerMonitorInit()       0x800'8453   0x13a  Code  Gb  PowerMonitor.o [1]
-PowerMonitorRun()        0x800'858d   0x15e  Code  Gb  PowerMonitor.o [1]
-PowerMonitor_UI()        0x800'86eb    0x9c  Code  Gb  PowerMonitor.o [1]
-PowerOutputUART()        0x800'8787    0x3c  Code  Gb  PowerMonitor.o [1]
+PowerMonitorInit()       0x800'8453   0x11e  Code  Gb  PowerMonitor.o [1]
+PowerMonitorRun()        0x800'8571   0x15e  Code  Gb  PowerMonitor.o [1]
+PowerMonitor_UI()        0x800'86cf    0x9c  Code  Gb  PowerMonitor.o [1]
+PowerOutputUART()        0x800'876b    0x3c  Code  Gb  PowerMonitor.o [1]
 PowerSettings           0x2000'00b0     0x2  Data  Gb  PowerMonitor.o [1]
 PowerText               0x2000'0074    0x3c  Data  Gb  PowerMonitor.o [1]
-PowerTextContext         0x800'a618    0x14  Data  Lc  PowerMonitor.o [1]
-PowerWindow             0x2000'0210     0xc  Data  Lc  PowerMonitor.o [1]
-PowerWindowContext       0x800'a604    0x14  Data  Lc  PowerMonitor.o [1]
+PowerTextContext         0x800'a5ec    0x14  Data  Lc  PowerMonitor.o [1]
+PowerWindow             0x2000'01e8     0xc  Data  Lc  PowerMonitor.o [1]
+PowerWindowContext       0x800'a5d8    0x14  Data  Lc  PowerMonitor.o [1]
 PressCallback::CallbackFunction()
-                         0x800'a829     0xc  Code  Gb  PowerMonitor.o [1]
-PressCb                 0x2000'0318     0x4  Data  Lc  PowerMonitor.o [1]
+                         0x800'a7fd     0xc  Code  Gb  PowerMonitor.o [1]
+PressCb                 0x2000'02f0     0x4  Data  Lc  PowerMonitor.o [1]
 PrevTimerCount          0x2000'00cc     0x4  Data  Lc  PowerMonitor.o [1]
-RCC_IRQHandler           0x800'924f    0x16  Code  Gb  InterruptHandlers.o [1]
+RCC_IRQHandler           0x800'9223    0x16  Code  Gb  InterruptHandlers.o [1]
 RTCSecCallback::CallbackFunction()
-                         0x800'a3ed    0x1c  Code  Gb  main.o [1]
+                         0x800'a3c1    0x1c  Code  Gb  main.o [1]
 RTCSecCallback::RtcSecCount
                         0x2000'0c58     0x4  Data  Gb  main.o [1]
 RTCSecCallbackObj       0x2000'0070     0x4  Data  Gb  main.o [1]
-RTC_Alarm_IRQHandler     0x800'959d    0x12  Code  Gb  InterruptHandlers.o [1]
-RTC_IRQHandler           0x800'9223    0x16  Code  Gb  InterruptHandlers.o [1]
+RTC_Alarm_IRQHandler     0x800'9571    0x12  Code  Gb  InterruptHandlers.o [1]
+RTC_IRQHandler           0x800'91f7    0x16  Code  Gb  InterruptHandlers.o [1]
 RTC_date                0x2000'0cb4     0x4  Data  Gb  PowerMonitor.o [1]
-RTC_date_Text           0x2000'01ac    0x14  Data  Gb  PowerMonitor.o [1]
+RTC_date_Text           0x2000'0380    0x14  Data  Gb  PowerMonitor.o [1]
 RTC_date_Text_SettingContext
-                         0x800'8af4    0x10  Data  Lc  PowerMonitor.o [1]
-RTC_date_WindowContext   0x800'8ae0    0x14  Data  Lc  PowerMonitor.o [1]
+                         0x800'8ac8    0x10  Data  Lc  PowerMonitor.o [1]
+RTC_date_WindowContext   0x800'8ab4    0x14  Data  Lc  PowerMonitor.o [1]
 RTC_time                0x2000'0cb8     0x4  Data  Gb  PowerMonitor.o [1]
-RTC_time_Text           0x2000'01d4    0x14  Data  Gb  PowerMonitor.o [1]
+RTC_time_Text           0x2000'0398    0x14  Data  Gb  PowerMonitor.o [1]
 RTC_time_Text_SettingContext
-                         0x800'8b18    0x10  Data  Lc  PowerMonitor.o [1]
-RTC_time_WindowContext   0x800'8b04    0x14  Data  Lc  PowerMonitor.o [1]
-Region$$Table$$Base      0x800'a33c           --   Gb  - Linker created -
-Region$$Table$$Limit     0x800'a360           --   Gb  - Linker created -
-RestoreSettings()        0x800'891d    0x50  Code  Gb  PowerMonitor.o [1]
+                         0x800'8aec    0x10  Data  Lc  PowerMonitor.o [1]
+RTC_time_WindowContext   0x800'8ad8    0x14  Data  Lc  PowerMonitor.o [1]
+Region$$Table$$Base      0x800'a310           --   Gb  - Linker created -
+Region$$Table$$Limit     0x800'a334           --   Gb  - Linker created -
+RestoreSettings()        0x800'8901    0x50  Code  Gb  PowerMonitor.o [1]
 RtcTimeSetCallback::CallbackFunction(unsigned int)
-                         0x800'a8a3     0x6  Code  Gb  PowerMonitor.o [1]
-RtcTimeSetCb            0x2000'03a8     0x4  Data  Gb  PowerMonitor.o [1]
+                         0x800'a877     0x6  Code  Gb  PowerMonitor.o [1]
+RtcTimeSetCb            0x2000'0394     0x4  Data  Gb  PowerMonitor.o [1]
 RtcTimeSetfx(unsigned int)
-                         0x800'88b9    0x62  Code  Gb  PowerMonitor.o [1]
-Rtc_test()               0x800'99a3    0x26  Code  Gb  main.o [1]
+                         0x800'889d    0x62  Code  Gb  PowerMonitor.o [1]
+Rtc_test()               0x800'9977    0x26  Code  Gb  main.o [1]
 Rtc_test()::InitDone    0x2000'006c     0x1  Data  Lc  main.o [1]
-SDDelayText             0x2000'0354    0x14  Data  Gb  PowerMonitor.o [1]
+SDDelayText             0x2000'032c    0x14  Data  Gb  PowerMonitor.o [1]
 SDPressCallback::CallbackFunction(unsigned int)
-                         0x800'a89d     0x6  Code  Gb  PowerMonitor.o [1]
-SDPressCb               0x2000'0320     0x4  Data  Gb  PowerMonitor.o [1]
+                         0x800'a871     0x6  Code  Gb  PowerMonitor.o [1]
+SDPressCb               0x2000'02f8     0x4  Data  Gb  PowerMonitor.o [1]
 SD_CS                   0x2000'0c68     0x8  Data  Gb  fat_sd_spi.o [1]
-SD_Power_Array          0x2000'02ec    0x14  Data  Gb  PowerMonitor.o [1]
+SD_Power_Array          0x2000'02c4    0x14  Data  Gb  PowerMonitor.o [1]
 SD_Sucess               0x2000'0cca     0x1  Data  Gb  PowerMonitor.o [1]
-SD_Time                 0x2000'0300     0x4  Data  Gb  PowerMonitor.o [1]
+SD_Time                 0x2000'02d8     0x4  Data  Gb  PowerMonitor.o [1]
 SD_ff_hw                0x2000'0c48    0x10  Data  Gb  diskio.o [1]
-SHT$$INIT_ARRAY$$Base    0x800'a6cc           --   Gb  - Linker created -
-SHT$$INIT_ARRAY$$Limit   0x800'a6e0           --   Gb  - Linker created -
+SHT$$INIT_ARRAY$$Base    0x800'a6a0           --   Gb  - Linker created -
+SHT$$INIT_ARRAY$$Limit   0x800'a6b4           --   Gb  - Linker created -
 SHT$$PREINIT_ARRAY$$Base
-                         0x800'a6cc           --   Gb  - Linker created -
+                         0x800'a6a0           --   Gb  - Linker created -
 SHT$$PREINIT_ARRAY$$Limit
-                         0x800'a6cc           --   Gb  - Linker created -
-SPI1_IRQHandler          0x800'950b    0x12  Code  Gb  InterruptHandlers.o [1]
-SPI2_IRQHandler          0x800'9523    0x12  Code  Gb  InterruptHandlers.o [1]
-SVC_Handler              0x800'a7ab     0x2  Code  Gb  stm32f1xx_it.o [1]
+                         0x800'a6a0           --   Gb  - Linker created -
+SPI1_IRQHandler          0x800'94df    0x12  Code  Gb  InterruptHandlers.o [1]
+SPI2_IRQHandler          0x800'94f7    0x12  Code  Gb  InterruptHandlers.o [1]
+SVC_Handler              0x800'a77f     0x2  Code  Gb  stm32f1xx_it.o [1]
 SdAppendData(FIL *, char const *, char *, unsigned int)
-                         0x800'8837    0x34  Code  Gb  PowerMonitor.o [1]
+                         0x800'881b    0x34  Code  Gb  PowerMonitor.o [1]
 SdCardState             0x2000'00dc     0x4  Data  Gb  PowerMonitor.o [1]
-SdCardText              0x2000'0324    0x14  Data  Gb  PowerMonitor.o [1]
+SdCardText              0x2000'02fc    0x14  Data  Gb  PowerMonitor.o [1]
 SdOnOffCallback(unsigned int)
-                         0x800'8887    0x32  Code  Gb  PowerMonitor.o [1]
-SdPrevSampleTime        0x2000'0304     0x4  Data  Gb  PowerMonitor.o [1]
+                         0x800'886b    0x32  Code  Gb  PowerMonitor.o [1]
+SdPrevSampleTime        0x2000'02dc     0x4  Data  Gb  PowerMonitor.o [1]
 SdSampleTime            0x2000'00c8     0x4  Data  Gb  PowerMonitor.o [1]
 SdStart(FIL *, char const *, unsigned char)
-                         0x800'8809    0x2e  Code  Gb  PowerMonitor.o [1]
-SdStop(FIL *)            0x800'886b    0x1c  Code  Gb  PowerMonitor.o [1]
+                         0x800'87ed    0x2e  Code  Gb  PowerMonitor.o [1]
+SdStop(FIL *)            0x800'884f    0x1c  Code  Gb  PowerMonitor.o [1]
 SetSystickTimerInterrupt()
-                         0x800'9aa3    0x26  Code  Gb  main.o [1]
+                         0x800'9a77    0x26  Code  Gb  main.o [1]
 SetSystickTimerInterrupt()::SysTimerObj
                         0x2000'0c94     0x4  Data  Lc  main.o [1]
 SetSystickTimerInterrupt()::static guard for SysTimerObj
                         0x2000'0c90     0x1  Data  Lc  main.o [1]
-SettingContextBr         0x800'8aa8    0x10  Data  Lc  PowerMonitor.o [1]
-SettingContextSDDelay    0x800'8a60    0x10  Data  Lc  PowerMonitor.o [1]
+SettingContextBr         0x800'8a7c    0x10  Data  Lc  PowerMonitor.o [1]
+SettingContextSDDelay    0x800'8a34    0x10  Data  Lc  PowerMonitor.o [1]
 SettingContextUartDelay
-                         0x800'8a84    0x10  Data  Lc  PowerMonitor.o [1]
+                         0x800'8a58    0x10  Data  Lc  PowerMonitor.o [1]
 SettingWindowBr         0x2000'0184    0x14  Data  Lc  PowerMonitor.o [1]
 SettingWindowBrightness
-                        0x2000'01fc    0x14  Data  Lc  PowerMonitor.o [1]
-SettingWindowRTC_date   0x2000'01c0    0x14  Data  Lc  PowerMonitor.o [1]
-SettingWindowRTC_time   0x2000'01e8    0x14  Data  Lc  PowerMonitor.o [1]
+                        0x2000'01d4    0x14  Data  Lc  PowerMonitor.o [1]
+SettingWindowRTC_date   0x2000'01ac    0x14  Data  Lc  PowerMonitor.o [1]
+SettingWindowRTC_time   0x2000'01c0    0x14  Data  Lc  PowerMonitor.o [1]
 SettingWindowSDDelay    0x2000'015c    0x14  Data  Lc  PowerMonitor.o [1]
 SettingWindowUartDelay  0x2000'0170    0x14  Data  Lc  PowerMonitor.o [1]
-SysTick_Handler          0x800'95d1     0xe  Code  Gb  InterruptHandlers.o [1]
+SysTick_Handler          0x800'95a5     0xe  Code  Gb  InterruptHandlers.o [1]
 SysTimerCallback::ISR()
-                         0x800'a781    0x10  Code  Gb  main.o [1]
-SystemClock_Config()     0x800'9a1d    0x86  Code  Gb  main.o [1]
+                         0x800'a755    0x10  Code  Gb  main.o [1]
+SystemClock_Config()     0x800'99f1    0x86  Code  Gb  main.o [1]
 SystemCoreClock         0x2000'0444     0x4  Data  Gb  system_stm32f1xx.o [1]
-SystemInit               0x800'9f85    0x40  Code  Gb  system_stm32f1xx.o [1]
+SystemInit               0x800'9f59    0x40  Code  Gb  system_stm32f1xx.o [1]
 SystickTimerTicks       0x2000'0cac     0x4  Data  Gb  CPP_HAL.o [1]
-TAMPER_IRQHandler        0x800'920d    0x16  Code  Gb  InterruptHandlers.o [1]
+TAMPER_IRQHandler        0x800'91e1    0x16  Code  Gb  InterruptHandlers.o [1]
 TFT_1_8                 0x2000'0918    0x30  Data  Gb  CPP_HAL.o [1]
 TFT_240_240             0x2000'0978    0x30  Data  Gb  CPP_HAL.o [1]
 TFT_Small               0x2000'0948    0x30  Data  Gb  CPP_HAL.o [1]
-TIM1_BRK_IRQHandler      0x800'9403    0x18  Code  Gb  InterruptHandlers.o [1]
-TIM1_CC_IRQHandler       0x800'944b    0x18  Code  Gb  InterruptHandlers.o [1]
+TIM1_BRK_IRQHandler      0x800'93d7    0x18  Code  Gb  InterruptHandlers.o [1]
+TIM1_CC_IRQHandler       0x800'941f    0x18  Code  Gb  InterruptHandlers.o [1]
 TIM1_TRG_COM_IRQHandler
-                         0x800'9433    0x18  Code  Gb  InterruptHandlers.o [1]
-TIM1_UP_IRQHandler       0x800'941b    0x18  Code  Gb  InterruptHandlers.o [1]
-TIM2_IRQHandler          0x800'9463    0x18  Code  Gb  InterruptHandlers.o [1]
-TIM3_IRQHandler          0x800'947b    0x18  Code  Gb  InterruptHandlers.o [1]
-TIM4_IRQHandler          0x800'9493    0x18  Code  Gb  InterruptHandlers.o [1]
-TempPrevSampleTime      0x2000'0310     0x4  Data  Lc  PowerMonitor.o [1]
-TextBr                  0x2000'0380    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'9407    0x18  Code  Gb  InterruptHandlers.o [1]
+TIM1_UP_IRQHandler       0x800'93ef    0x18  Code  Gb  InterruptHandlers.o [1]
+TIM2_IRQHandler          0x800'9437    0x18  Code  Gb  InterruptHandlers.o [1]
+TIM3_IRQHandler          0x800'944f    0x18  Code  Gb  InterruptHandlers.o [1]
+TIM4_IRQHandler          0x800'9467    0x18  Code  Gb  InterruptHandlers.o [1]
+TempPrevSampleTime      0x2000'02e8     0x4  Data  Lc  PowerMonitor.o [1]
+TextBr                  0x2000'0358    0x14  Data  Gb  PowerMonitor.o [1]
 TextLPressCallback::CallbackFunction()
-                         0x800'a485    0x18  Code  Gb  PowerMonitor.o [1]
-TimeText                0x2000'021c     0xc  Data  Gb  PowerMonitor.o [1]
-TimeTextContext          0x800'a640    0x14  Data  Lc  PowerMonitor.o [1]
-TimeWindow              0x2000'0228     0xc  Data  Lc  PowerMonitor.o [1]
-TimeWindowContext        0x800'a62c    0x14  Data  Lc  PowerMonitor.o [1]
-TimenDateScreen         0x2000'0290    0x28  Data  Gb  PowerMonitor.o [1]
+                         0x800'a459    0x18  Code  Gb  PowerMonitor.o [1]
+TimeText                0x2000'01f4     0xc  Data  Gb  PowerMonitor.o [1]
+TimeTextContext          0x800'a614    0x14  Data  Lc  PowerMonitor.o [1]
+TimeWindow              0x2000'0200     0xc  Data  Lc  PowerMonitor.o [1]
+TimeWindowContext        0x800'a600    0x14  Data  Lc  PowerMonitor.o [1]
+TimenDateScreen         0x2000'0268    0x28  Data  Gb  PowerMonitor.o [1]
 TimerCount              0x2000'00b2     0x2  Data  Lc  PowerMonitor.o [1]
-USART1_IRQHandler        0x800'953b    0x12  Code  Gb  InterruptHandlers.o [1]
-USART2_IRQHandler        0x800'9553    0x12  Code  Gb  InterruptHandlers.o [1]
-USART3_IRQHandler        0x800'956b    0x12  Code  Gb  InterruptHandlers.o [1]
-USBWakeUp_IRQHandler     0x800'95b7    0x12  Code  Gb  InterruptHandlers.o [1]
+USART1_IRQHandler        0x800'950f    0x12  Code  Gb  InterruptHandlers.o [1]
+USART2_IRQHandler        0x800'9527    0x12  Code  Gb  InterruptHandlers.o [1]
+USART3_IRQHandler        0x800'953f    0x12  Code  Gb  InterruptHandlers.o [1]
+USBWakeUp_IRQHandler     0x800'958b    0x12  Code  Gb  InterruptHandlers.o [1]
 USB_HP_CAN1_TX_IRQHandler
-                         0x800'93a1    0x18  Code  Gb  InterruptHandlers.o [1]
+                         0x800'9375    0x18  Code  Gb  InterruptHandlers.o [1]
 USB_LP_CAN1_RX0_IRQHandler
-                         0x800'93b9     0x2  Code  Gb  InterruptHandlers.o [1]
-UartBaudRateTable        0x800'89e0    0x1c  Data  Lc  PowerMonitor.o [1]
-UartBaudrateCallback    0x2000'037c     0x4  Data  Gb  PowerMonitor.o [1]
+                         0x800'938d     0x2  Code  Gb  InterruptHandlers.o [1]
+UartBaudRateTable        0x800'89b4    0x1c  Data  Lc  PowerMonitor.o [1]
+UartBaudrateCallback    0x2000'0354     0x4  Data  Gb  PowerMonitor.o [1]
 UartBr                  0x2000'00d8     0x4  Data  Gb  PowerMonitor.o [1]
 UartBrCallback::CallbackFunction(unsigned int)
-                         0x800'a0ad    0x40  Code  Gb  PowerMonitor.o [1]
+                         0x800'a081    0x40  Code  Gb  PowerMonitor.o [1]
 UartBrNamedSettingWindow
                         0x2000'0198    0x14  Data  Lc  PowerMonitor.o [1]
-UartBrSettingContext     0x800'8acc    0x14  Data  Lc  PowerMonitor.o [1]
-UartBrSettingTable       0x800'a0ec    0x38  Data  Lc  PowerMonitor.o [1]
-UartBrText              0x2000'0394    0x14  Data  Gb  PowerMonitor.o [1]
-UartBrWindowContext      0x800'8ab8    0x14  Data  Lc  PowerMonitor.o [1]
+UartBrSettingContext     0x800'8aa0    0x14  Data  Lc  PowerMonitor.o [1]
+UartBrSettingTable       0x800'a0c0    0x38  Data  Lc  PowerMonitor.o [1]
+UartBrText              0x2000'036c    0x14  Data  Gb  PowerMonitor.o [1]
+UartBrWindowContext      0x800'8a8c    0x14  Data  Lc  PowerMonitor.o [1]
 UartDelayCallback::CallbackFunction(unsigned int)
-                         0x800'a46d    0x18  Code  Gb  PowerMonitor.o [1]
-UartDelayCb             0x2000'0350     0x4  Data  Gb  PowerMonitor.o [1]
-UartDelayText           0x2000'0368    0x14  Data  Gb  PowerMonitor.o [1]
-UartPrevSampleTime      0x2000'0308     0x4  Data  Gb  PowerMonitor.o [1]
+                         0x800'a441    0x18  Code  Gb  PowerMonitor.o [1]
+UartDelayCb             0x2000'0328     0x4  Data  Gb  PowerMonitor.o [1]
+UartDelayText           0x2000'0340    0x14  Data  Gb  PowerMonitor.o [1]
+UartPrevSampleTime      0x2000'02e0     0x4  Data  Gb  PowerMonitor.o [1]
 UartSampleTime          0x2000'00d4     0x4  Data  Gb  PowerMonitor.o [1]
 UartState               0x2000'00d0     0x4  Data  Gb  PowerMonitor.o [1]
 UartStateCallback::CallbackFunction(unsigned int)
-                         0x800'a281    0x28  Code  Gb  PowerMonitor.o [1]
-UartStateCb             0x2000'0338     0x4  Data  Gb  PowerMonitor.o [1]
-UartText                0x2000'033c    0x14  Data  Gb  PowerMonitor.o [1]
-UsageFault_Handler       0x800'a7a9     0x2  Code  Gb  stm32f1xx_it.o [1]
-V_Len                   0x2000'02e8     0x1  Data  Gb  PowerMonitor.o [1]
+                         0x800'a255    0x28  Code  Gb  PowerMonitor.o [1]
+UartStateCb             0x2000'0310     0x4  Data  Gb  PowerMonitor.o [1]
+UartText                0x2000'0314    0x14  Data  Gb  PowerMonitor.o [1]
+UsageFault_Handler       0x800'a77d     0x2  Code  Gb  stm32f1xx_it.o [1]
+V_Len                   0x2000'02c0     0x1  Data  Gb  PowerMonitor.o [1]
 Virtual function table for DisplayBrightnessCallback
-                         0x800'a810     0xc  Data  Gb  PowerMonitor.o [1]
+                         0x800'a7e4     0xc  Data  Gb  PowerMonitor.o [1]
 Virtual function table for DownCallback
-                         0x800'a5a0    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'a574    0x14  Data  Gb  PowerMonitor.o [1]
 Virtual function table for HAL::Adc
-                         0x800'a49c    0x14  Data  Gb  ADC.o [1]
+                         0x800'a470    0x14  Data  Gb  ADC.o [1]
 Virtual function table for HAL::AnalogIn
-                         0x800'a500    0x14  Data  Gb  main.o [1]
+                         0x800'a4d4    0x14  Data  Gb  main.o [1]
 Virtual function table for HAL::DigitalIn<(Port_t)1073809408, (unsigned short)8, (Mode_t)2, (IntEdge_t)3, (HAL::Callback *)0>
-                         0x800'a5dc    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'a5b0    0x14  Data  Gb  PowerMonitor.o [1]
 Virtual function table for HAL::I2c
-                         0x800'a4d8    0x14  Data  Gb  I2c.o [1]
+                         0x800'a4ac    0x14  Data  Gb  I2c.o [1]
 Virtual function table for HAL::I2c::I2C_DMA_Rx_Callback
-                         0x800'a4b0    0x14  Data  Gb  I2c.o [1]
+                         0x800'a484    0x14  Data  Gb  I2c.o [1]
 Virtual function table for HAL::I2c::I2C_DMA_Tx_Callback
-                         0x800'a4c4    0x14  Data  Gb  I2c.o [1]
+                         0x800'a498    0x14  Data  Gb  I2c.o [1]
 Virtual function table for HAL::PulseOut<(unsigned int)1073742848, (TimerChanel_t)49, (unsigned int)10000>
-                         0x800'a58c    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'a560    0x14  Data  Gb  PowerMonitor.o [1]
 Virtual function table for HAL::PulseOut<(unsigned int)1073742848, (TimerChanel_t)49, (unsigned int)38000>
-                         0x800'a514    0x14  Data  Gb  main.o [1]
+                         0x800'a4e8    0x14  Data  Gb  main.o [1]
 Virtual function table for HAL::Rtc
-                         0x800'a67c    0x14  Data  Gb  RTC.o [1]
+                         0x800'a650    0x14  Data  Gb  RTC.o [1]
 Virtual function table for HAL::Spi
-                         0x800'a690    0x14  Data  Gb  Spi.o [1]
+                         0x800'a664    0x14  Data  Gb  Spi.o [1]
 Virtual function table for HAL::Uart
-                         0x800'a6a4    0x14  Data  Gb  Uart.o [1]
+                         0x800'a678    0x14  Data  Gb  Uart.o [1]
 Virtual function table for HMI::NamedSettingWindow
-                         0x800'a564    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'a538    0x14  Data  Gb  PowerMonitor.o [1]
 Virtual function table for HMI::Screen
-                         0x800'a578    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'a54c    0x14  Data  Gb  PowerMonitor.o [1]
 Virtual function table for HMI::SettingWindow
-                         0x800'a550    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'a524    0x14  Data  Gb  PowerMonitor.o [1]
 Virtual function table for HMI::TextWindow
-                         0x800'a53c    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'a510    0x14  Data  Gb  PowerMonitor.o [1]
 Virtual function table for HMI::UI
-                         0x800'a6b8    0x14  Data  Gb  UI.o [1]
+                         0x800'a68c    0x14  Data  Gb  UI.o [1]
 Virtual function table for LongPressCallback1
-                         0x800'a5c8    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'a59c    0x14  Data  Gb  PowerMonitor.o [1]
 Virtual function table for PressCallback
-                         0x800'a5b4    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'a588    0x14  Data  Gb  PowerMonitor.o [1]
 Virtual function table for RTCSecCallback
-                         0x800'a4ec    0x14  Data  Gb  main.o [1]
+                         0x800'a4c0    0x14  Data  Gb  main.o [1]
 Virtual function table for RtcTimeSetCallback
-                         0x800'a804     0xc  Data  Gb  PowerMonitor.o [1]
+                         0x800'a7d8     0xc  Data  Gb  PowerMonitor.o [1]
 Virtual function table for SDPressCallback
-                         0x800'a7d4     0xc  Data  Gb  PowerMonitor.o [1]
+                         0x800'a7a8     0xc  Data  Gb  PowerMonitor.o [1]
 Virtual function table for SysTimerCallback
-                         0x800'a528    0x14  Data  Gb  main.o [1]
+                         0x800'a4fc    0x14  Data  Gb  main.o [1]
 Virtual function table for TextLPressCallback
-                         0x800'a5f0    0x14  Data  Gb  PowerMonitor.o [1]
+                         0x800'a5c4    0x14  Data  Gb  PowerMonitor.o [1]
 Virtual function table for UartBrCallback
-                         0x800'a7f8     0xc  Data  Gb  PowerMonitor.o [1]
+                         0x800'a7cc     0xc  Data  Gb  PowerMonitor.o [1]
 Virtual function table for UartDelayCallback
-                         0x800'a7ec     0xc  Data  Gb  PowerMonitor.o [1]
+                         0x800'a7c0     0xc  Data  Gb  PowerMonitor.o [1]
 Virtual function table for UartStateCallback
-                         0x800'a7e0     0xc  Data  Gb  PowerMonitor.o [1]
+                         0x800'a7b4     0xc  Data  Gb  PowerMonitor.o [1]
 VolA0                   0x2000'09f4     0x2  Data  Gb  main.o [1]
 VolA1                   0x2000'09f6     0x2  Data  Gb  main.o [1]
 VolA2                   0x2000'09f8     0x2  Data  Gb  main.o [1]
 Vref                    0x2000'09fa     0x2  Data  Gb  main.o [1]
-WWDG_IRQHandler          0x800'91e1    0x16  Code  Gb  InterruptHandlers.o [1]
-WindowContextBr          0x800'8a94    0x14  Data  Lc  PowerMonitor.o [1]
-WindowContextSDDelay     0x800'8a4c    0x14  Data  Lc  PowerMonitor.o [1]
-WindowContextUartDelay   0x800'8a70    0x14  Data  Lc  PowerMonitor.o [1]
+WWDG_IRQHandler          0x800'91b5    0x16  Code  Gb  InterruptHandlers.o [1]
+WindowContextBr          0x800'8a68    0x14  Data  Lc  PowerMonitor.o [1]
+WindowContextSDDelay     0x800'8a20    0x14  Data  Lc  PowerMonitor.o [1]
+WindowContextUartDelay   0x800'8a44    0x14  Data  Lc  PowerMonitor.o [1]
 [local to DigitalIO_cpp]::LL_GPIO_SetPinMode(GPIO_TypeDef *, unsigned int, unsigned int)
                          0x800'3835    0x18  Code  Lc  DigitalIO.o [1]
 [local to DigitalIO_cpp]::LL_GPIO_SetPinOutputType(GPIO_TypeDef *, unsigned int, unsigned int)
@@ -1282,7 +1286,7 @@ WindowContextUartDelay   0x800'8a70    0x14  Data  Lc  PowerMonitor.o [1]
 [local to GpioOutput_cpp]::LL_GPIO_SetPinOutputType(GPIO_TypeDef *, unsigned int, unsigned int)
                          0x800'28b9    0x16  Code  Lc  GpioOutput.o [1]
 [local to PowerMonitor_cpp]::HMI::Power_of_10
-                         0x800'a188    0x2c  Data  Lc  PowerMonitor.o [1]
+                         0x800'a15c    0x2c  Data  Lc  PowerMonitor.o [1]
 [local to RTC_cpp]::HAL::month_table
                          0x800'33f0     0xc  Data  Lc  RTC.o [1]
 [local to RTC_cpp]::HAL::months
@@ -1349,14 +1353,14 @@ WindowContextUartDelay   0x800'8a70    0x14  Data  Lc  PowerMonitor.o [1]
                          0x800'33fd    0x5a  Code  Lc  tinyprintf.o [1]
 __aeabi_atexit           0x800'4867     0xa  Code  Gb  cxxabi.o [3]
 __aeabi_cfcmple          0x800'589d          Code  Gb  FltCmpLe.o [4]
-__aeabi_cfrcmple         0x800'8e89          Code  Gb  FltCmpGe.o [4]
+__aeabi_cfrcmple         0x800'8e5d          Code  Gb  FltCmpGe.o [4]
 __aeabi_d2f              0x800'3ec5          Code  Gb  DblToFlt.o [4]
 __aeabi_dadd             0x800'5c61          Code  Gb  DblAdd.o [4]
 __aeabi_ddiv             0x800'5a19          Code  Gb  DblDiv.o [4]
 __aeabi_dmul             0x800'5df9          Code  Gb  DblMul.o [4]
 __aeabi_f2d              0x800'59d1          Code  Gb  FltToDbl.o [4]
 __aeabi_f2iz             0x800'547d          Code  Gb  FltToS32.o [4]
-__aeabi_f2uiz            0x800'8ead          Code  Gb  FltToU32.o [4]
+__aeabi_f2uiz            0x800'8e81          Code  Gb  FltToU32.o [4]
 __aeabi_fadd             0x800'58ed          Code  Gb  FltAdd.o [4]
 __aeabi_fdiv             0x800'5625          Code  Gb  FltDiv.o [4]
 __aeabi_fmul             0x800'554d          Code  Gb  FltMul.o [4]
@@ -1372,42 +1376,42 @@ __aeabi_ui2f             0x800'5f9d          Code  Gb  U32ToFlt.o [4]
 __call_ctors             0x800'57fd    0x18  Code  Gb  cppinit.o [2]
 __call_dtors             0x800'584b     0xc  Code  Gb  cppinit.o [2]
 __call_dtors0            0x800'5857    0x36  Code  Gb  cppinit.o [2]
-__cexit_call_dtors       0x800'a3cb          Code  Gb  cexit.o [5]
-__cmain                  0x800'a3a1          Code  Gb  cmain.o [5]
-__cstart_call_dtors      0x800'a900          Data  Gb  cstart_call_dtors.o [5]
+__cexit_call_dtors       0x800'a39f          Code  Gb  cexit.o [5]
+__cmain                  0x800'a375          Code  Gb  cmain.o [5]
+__cstart_call_dtors      0x800'a8d4          Data  Gb  cstart_call_dtors.o [5]
 __cxa_atexit             0x800'5815    0x36  Code  Gb  cppinit.o [2]
 __dso_handle            0x2000'0cc4     0x4  Data  Gb  cppinit.o [2]
-__exit                   0x800'a3d9    0x14  Code  Gb  exit.o [6]
+__exit                   0x800'a3ad    0x14  Code  Gb  exit.o [6]
 __iar_Memset             0x800'17b9          Code  Gb  ABImemset.o [5]
 __iar_Memset_word        0x800'17c1          Code  Gb  ABImemset.o [5]
 __iar_cstart_call_ctors
-                         0x800'a381    0x20  Code  Gb  cmain_call_ctors.o [5]
+                         0x800'a355    0x20  Code  Gb  cmain_call_ctors.o [5]
 __iar_dadd               0x800'6211          Code  Gb  DblSub.o [4]
-__iar_data_init3         0x800'a2a9    0x28  Code  Gb  data_init.o [5]
-__iar_debug_exceptions   0x800'4a46     0x1  Data  Gb  unwind_debug.o [6]
+__iar_data_init3         0x800'a27d    0x28  Code  Gb  data_init.o [5]
+__iar_debug_exceptions   0x800'5342     0x1  Data  Gb  unwind_debug.o [6]
 __iar_dsub               0x800'5c71          Code  Gb  DblAdd.o [4]
 __iar_dsubStart          0x800'5c83          Code  Gb  DblAdd.o [4]
 __iar_fadd               0x800'54d9          Code  Gb  FltSub.o [4]
 __iar_fsub               0x800'58f9          Code  Gb  FltAdd.o [4]
 __iar_fsubStart          0x800'5909          Code  Gb  FltAdd.o [4]
 __iar_lz77_init_single3
-                         0x800'9e75    0x78  Code  Gb  lz77_init_single.o [5]
-__iar_program_start      0x800'a841          Code  Gb  cstartup_M.o [5]
+                         0x800'9e49    0x78  Code  Gb  lz77_init_single.o [5]
+__iar_program_start      0x800'a815          Code  Gb  cstartup_M.o [5]
 __iar_tls$$INIT_ARRAY$$Base
-                         0x800'a6e0           --   Gb  - Linker created -
+                         0x800'a6b4           --   Gb  - Linker created -
 __iar_tls$$INIT_ARRAY$$Limit
-                         0x800'a6e0           --   Gb  - Linker created -
+                         0x800'a6b4           --   Gb  - Linker created -
 __iar_zero_init3         0x800'177f    0x3a  Code  Gb  zero_init3.o [5]
-__low_level_init         0x800'a3bf     0x4  Code  Gb  low_level_init.o [2]
+__low_level_init         0x800'a393     0x4  Code  Gb  low_level_init.o [2]
 __sti__routine           0x800'3b5d   0x10a  Code  Lc  CPP_HAL.o [1]
 __sti__routine           0x800'1821     0xe  Code  Lc  fat_sd_spi.o [1]
-__sti__routine           0x800'a455     0xc  Code  Lc  irSend.o [1]
-__sti__routine           0x800'9941    0x62  Code  Lc  main.o [1]
+__sti__routine           0x800'a429     0xc  Code  Lc  irSend.o [1]
+__sti__routine           0x800'9915    0x62  Code  Lc  main.o [1]
 __sti__routine           0x800'838d    0xc6  Code  Lc  PowerMonitor.o [1]
 __vector_table           0x800'0000          Data  Gb  startup_stm32f103xb.o [1]
-_call_main               0x800'a3ad          Code  Gb  cmain.o [5]
-_exit                    0x800'a3c9          Code  Gb  cexit.o [5]
-_main                    0x800'a3bb          Code  Gb  cmain.o [5]
+_call_main               0x800'a381          Code  Gb  cmain.o [5]
+_exit                    0x800'a39d          Code  Gb  cexit.o [5]
+_main                    0x800'a38f          Code  Gb  cmain.o [5]
 adc0                    0x2000'0878     0xc  Data  Gb  CPP_HAL.o [1]
 adc1                    0x2000'09fc     0xc  Data  Gb  main.o [1]
 adc2                    0x2000'0a08     0xc  Data  Gb  main.o [1]
@@ -1424,7 +1428,7 @@ disk_read                0x800'16df    0x2e  Code  Gb  diskio.o [1]
 disk_status              0x800'16c1     0xc  Code  Gb  diskio.o [1]
 disk_write               0x800'170d    0x2e  Code  Gb  diskio.o [1]
 dma1                    0x2000'08e4     0x4  Data  Gb  CPP_HAL.o [1]
-exit                     0x800'a3c3     0x4  Code  Gb  exit.o [2]
+exit                     0x800'a397     0x4  Code  Gb  exit.o [2]
 f_close                  0x800'1591    0x1c  Code  Gb  ff.o [1]
 f_lseek                  0x800'15ad    0xf2  Code  Gb  ff.o [1]
 f_mount                  0x800'0cb9    0x66  Code  Gb  ff.o [1]
@@ -1439,29 +1443,29 @@ ftoa(float, char *, int)
                          0x800'3fe7    0x5e  Code  Gb  Utils.o [1]
 ftoa(float, char *, int, char)
                          0x800'4045    0x62  Code  Gb  Utils.o [1]
-generic_st7789           0x800'9dd0    0x24  Data  Lc  ST7735.o [1]
+generic_st7789           0x800'9da4    0x24  Data  Lc  ST7735.o [1]
 get_fat(FATFS *, unsigned long)
                          0x800'0199    0xce  Code  Gb  ff.o [1]
 get_fattime              0x800'186d    0x46  Code  Gb  fat_sd_spi.o [1]
 hwif_init(hwif *)        0x800'2179   0x442  Code  Gb  fat_sd_spi.o [1]
 i2c1                    0x2000'0898    0x4c  Data  Gb  CPP_HAL.o [1]
-init_cmds1               0x800'9d68    0x3c  Data  Lc  ST7735.o [1]
+init_cmds1               0x800'9d3c    0x3c  Data  Lc  ST7735.o [1]
 init_cmds2_160X80        0x800'50d8    0x10  Data  Lc  ST7735.o [1]
 init_cmds2_IS_128X160    0x800'50c8    0x10  Data  Lc  ST7735.o [1]
-init_cmds3               0x800'9da4    0x2c  Data  Lc  ST7735.o [1]
+init_cmds3               0x800'9d78    0x2c  Data  Lc  ST7735.o [1]
 init_printf              0x800'36c7     0x8  Code  Gb  tinyprintf.o [1]
 intToStr(int, char *, int)
                          0x800'3f2d    0x5c  Code  Gb  Utils.o [1]
 intToStr(int, char *, int, char)
                          0x800'3f89    0x5e  Code  Gb  Utils.o [1]
-mA_Len                  0x2000'02ea     0x1  Data  Gb  PowerMonitor.o [1]
-main                     0x800'99d1    0x42  Code  Gb  main.o [1]
+mA_Len                  0x2000'02c2     0x1  Data  Gb  PowerMonitor.o [1]
+main                     0x800'99a5    0x42  Code  Gb  main.o [1]
 myTime                  0x2000'0c5c     0xc  Data  Gb  main.o [1]
 next_abi_dtor_rec       0x2000'0cc0     0x4  Data  Lc  cppinit.o [2]
 power(float, int)        0x800'40ad    0x4e  Code  Gb  Utils.o [1]
 put_fat(FATFS *, unsigned long, unsigned long)
                          0x800'0267    0xee  Code  Gb  ff.o [1]
-putc(void *, char)       0x800'99c9     0x6  Code  Gb  main.o [1]
+putc(void *, char)       0x800'999d     0x6  Code  Gb  main.o [1]
 r1_strings              0x2000'0014    0x1c  Data  Lc  fat_sd_spi.o [1]
 r2_strings              0x2000'0030    0x3c  Data  Lc  fat_sd_spi.o [1]
 rtc                     0x2000'0000    0x14  Data  Gb  CPP_HAL.o [1]
@@ -1494,7 +1498,7 @@ st7735_Font_11x18       0x2000'0434     0x8  Data  Gb  st7735fonts.o [1]
 st7735_Font_16x26       0x2000'043c     0x8  Data  Gb  st7735fonts.o [1]
 stdout_putf             0x2000'0ca0     0x4  Data  Lc  tinyprintf.o [1]
 stdout_putp             0x2000'0ca4     0x4  Data  Lc  tinyprintf.o [1]
-t1                      0x2000'030c     0x4  Data  Lc  PowerMonitor.o [1]
+t1                      0x2000'02e4     0x4  Data  Lc  PowerMonitor.o [1]
 temperature             0x2000'0a20     0x4  Data  Gb  main.o [1]
 tfp_format               0x800'3523   0x1a4  Code  Gb  tinyprintf.o [1]
 tfp_printf               0x800'36cf    0x16  Code  Gb  tinyprintf.o [1]
@@ -1511,8 +1515,8 @@ w25qxxDev               0x2000'09c0    0x34  Data  Gb  main.o [1]
 [5] = rt7M_tl.a
 [6] = shb_l.a
 
-  32'235 bytes of readonly  code memory
-  11'439 bytes of readonly  data memory
+  32'191 bytes of readonly  code memory
+  11'434 bytes of readonly  data memory
    5'731 bytes of readwrite data memory
 
 Errors: none

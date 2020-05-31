@@ -22,39 +22,39 @@ namespace HMI
     
   public:   
     
-     TextWindow(const WindowContext_t* WindowContext,const TextWindowContext_t* TextWindowContext) :
+    TextWindow(const WindowContext_t* WindowContext,const TextWindowContext_t* TextWindowContext) :
       Window(WindowContext),
-     m_pTextWindowContext(TextWindowContext)
-    {
-
-    }    
-    
-    virtual bool Display(Color_t BackgroundColor)
-    {      
-      TFT_1_8.WriteString(m_pWindowContext->x1, m_pWindowContext->y1, m_pTextWindowContext->SettingText, m_pWindowContext->font, m_pWindowContext->textColor,BackgroundColor); 
-      return 0;
-    }
-    
-    virtual uint8_t EventHandler(InputEvents_t InputEvents)
-    {
-      if(InputEvents == HMI::UP)
+      m_pTextWindowContext(TextWindowContext)
       {
-         if(m_pTextWindowContext->pUPCb) m_pTextWindowContext->pUPCb->CallbackFunction(); 
+        
+      }    
+      
+      virtual bool Display(Color_t BackgroundColor)
+      {      
+        TFT_1_8.WriteString(m_pWindowContext->x1, m_pWindowContext->y1, m_pTextWindowContext->SettingText, m_pWindowContext->font, m_pWindowContext->textColor,BackgroundColor); 
+        return 0;
       }
-      else if(InputEvents == HMI::DOWN)
+      
+      virtual uint8_t EventHandler(InputEvents_t InputEvents)
       {
-        if(m_pTextWindowContext->pDownCb) m_pTextWindowContext->pDownCb->CallbackFunction(); 
-      }
-      else if(InputEvents == HMI::PRESS)
-      {
-        if(m_pTextWindowContext->pPressCb) m_pTextWindowContext->pPressCb->CallbackFunction();
-      }
-      else if(InputEvents == HMI::LONGPRESS)
-      {
-        if(m_pTextWindowContext->pLPressCb) m_pTextWindowContext->pLPressCb->CallbackFunction();
-      }
-      return 0;
-    }    
+        if(InputEvents == HMI::UP)
+        {
+          if(m_pTextWindowContext->pUPCb) m_pTextWindowContext->pUPCb->CallbackFunction(); 
+        }
+        else if(InputEvents == HMI::DOWN)
+        {
+          if(m_pTextWindowContext->pDownCb) m_pTextWindowContext->pDownCb->CallbackFunction(); 
+        }
+        else if(InputEvents == HMI::PRESS)
+        {
+          if(m_pTextWindowContext->pPressCb) m_pTextWindowContext->pPressCb->CallbackFunction();
+        }
+        else if(InputEvents == HMI::LONGPRESS)
+        {
+          if(m_pTextWindowContext->pLPressCb) m_pTextWindowContext->pLPressCb->CallbackFunction();
+        }
+        return 0;
+      }    
   private:
     const TextWindowContext_t*  m_pTextWindowContext;    
   };

@@ -255,23 +255,17 @@ static volatile uint32_t t1;
     HomeScreen.Register(&NamedSettingWindowUart);    
     HomeScreen.Register(&SettingWindowUartDelay); 
     HomeScreen.Register(&UartBrNamedSettingWindow);
-    //HomeScreen.Register(&SettingWindowBr);
-   
-    
+
     LivePowerScreen.Register(&PowerWindow);
     
     TimenDateScreen.Register(&SettingWindowRTC_time); 
     TimenDateScreen.Register(&SettingWindowRTC_date); 
     TimenDateScreen.Register(&SettingWindowBrightness); 
-    
-    memcpy(&RTC_date_Text[8],"yymmdd",7);
-    memcpy(&RTC_time_Text[8],"hhmmss",7);
 
     MyUI.Register(&ClockScreen);
     MyUI.Register(&LivePowerScreen);  
     MyUI.Register(&HomeScreen);
     MyUI.Register(&TimenDateScreen);
-
   
   }
   static uint32_t TempPrevSampleTime,TempSampleTime = 5000;
