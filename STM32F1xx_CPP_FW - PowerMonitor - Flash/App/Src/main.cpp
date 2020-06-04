@@ -42,7 +42,7 @@ struct s {
 //  uint8_t yr  = STR_TO_BCD(__DATE__[9],__DATE__[8]);
 // MCP1703T input max 16V
 
-#define NEW_BOARD 1
+#define NEW_BOARD 0
 #define RTC_ON_LSE 0
 
 int main(void)
@@ -78,7 +78,7 @@ int main(void)
     //LL_mDelay(100);
     //ssd1306_test();
     //Nokia_Lcd_Test();
-    // w25qxx_Test();
+     w25qxx_Test();
     //st7735_Test();
     // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
     //Power_Monitor_Test();
@@ -88,7 +88,7 @@ int main(void)
     //Ir_Test();
     //Template_Tests();    
     //Window_test();
-    PowerMonitorRun();
+    //PowerMonitorRun();
     
   }    
 }

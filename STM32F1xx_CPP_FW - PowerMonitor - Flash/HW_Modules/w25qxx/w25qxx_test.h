@@ -114,7 +114,8 @@ enum
   SLAVE_INTR_TX,
   SLAVE_DMA_RX,
   SLAVE_DMA_TX,
-  POLL_SLAVE_TEST
+  POLL_SLAVE_TEST,
+  POLL_MASTER_TX
 };
 
 uint32_t BusyCount = 0;
@@ -133,7 +134,8 @@ void w25qxx_Test()
   
   
  // HAL::DigitalOut<A3> A3Pin;
-  HAL::DigitalOut<B3> B3PinCS;
+  HAL::DigitalOut<A4> B3PinCS;
+  
   if(InitDone == false)
   {
     w25qxxDev.HwInit();
@@ -158,7 +160,7 @@ void w25qxx_Test()
   
   Transaction.Mode = _8_BIT;
   Transaction.pChipselect = &w25qxxDev.m_CSPin;
-  test_id = w25qxx_POLL_TX;//SLAVE_DMA;//SLAVE_INTR;
+  test_id = POLL_MASTER_TX;//w25qxx_POLL_TX;//SLAVE_DMA;//SLAVE_INTR;
   while(1)
   {
     
@@ -417,11 +419,24 @@ void w25qxx_Test()
       B3PinCS.High();
       LL_mDelay(1100);   
       break;
+    case POLL_MASTER_TX: 
+      SPI.SetBaudrate(Spi::SPI_BAUDRATE_DIV2);
+      B3PinCS.Low();
+      SPI.Tx((uint8_t)'A');
+      HAL::usDelay(13);     
+      SPI.Tx((uint8_t)'m'); 
+      HAL::usDelay(13);     
+      SPI.Tx((uint8_t)'i');
+      HAL::usDelay(13);      
+      SPI.Tx((uint8_t)'t');
+//      SPI.Tx((uint8_t)pBuffer[0]++);
+//      SPI.Tx((uint8_t)pBuffer[0]);
+      B3PinCS.High();
     
     default: break;      
     }
     memset(RxBuf,0,sizeof(RxBuf));
-    //LL_mDelay(1000);        
+    LL_mDelay(1);        
   }  
 }
 

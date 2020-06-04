@@ -41,32 +41,6 @@ namespace HAL
     return LL_PINS[pin];  
   }
   
-  //    template<PIN_t _pin>
-  //    IRQn_Type Gpio_get_pin_IRQn()
-  //    {
-  //        IRQn_Type LL_IRQns[16] = 
-  //        {
-  //            EXTI0_IRQn ,
-  //            EXTI1_IRQn,  
-  //            EXTI2_IRQn,
-  //            EXTI3_IRQn,
-  //            EXTI4_IRQn,
-  //            EXTI9_5_IRQn,
-  //            EXTI9_5_IRQn,
-  //            EXTI9_5_IRQn,
-  //            EXTI9_5_IRQn,
-  //            EXTI9_5_IRQn,
-  //            EXTI15_10_IRQn ,
-  //            EXTI15_10_IRQn ,
-  //            EXTI15_10_IRQn ,
-  //            EXTI15_10_IRQn ,
-  //            EXTI15_10_IRQn ,
-  //            EXTI15_10_IRQn ,       
-  //        };
-  //        
-  //        return LL_IRQns[_pin]; 
-  //    }
-  
   uint32_t DigitalIO::get_LL_pin(uint8_t pin)
   {
     uint32_t LL_PINS[16] = 
