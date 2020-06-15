@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <settings>
     <DebugChecksum>
-        <Checksum>4002642819</Checksum>
+        <Checksum>469989356</Checksum>
     </DebugChecksum>
     <StLinkDriver>
         <stlinkserialNo>20491587</stlinkserialNo>
@@ -28,8 +28,8 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <Disassembly>
-        <MixedMode>1</MixedMode>
         <InstrCount>0</InstrCount>
+        <MixedMode>1</MixedMode>
     </Disassembly>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -151,10 +151,15 @@
         <Stop>1</Stop>
     </MemConfig>
     <Aliases>
-        <A0>_ "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C\System\stm32f1xx_it.c" ""</A0>
-        <A1>_ "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Txn\App\Src\main.cpp" ""</A1>
-        <A2>_ "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Txn\Test\inc\I2CIntrTest.h" ""</A2>
-        <Count>3</Count>
+        <A0>_ "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C\HAL\Common\InterruptHandlers.cpp" ""</A0>
+        <A1>_ "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C\HAL\Gpio\Gpio.cpp" ""</A1>
+        <A2>_ "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C\HAL\Gpio\GpioOutput.cpp" ""</A2>
+        <A3>_ "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C\HAL\Gpio\GpioOutput.h" ""</A3>
+        <A4>_ "C:\Amit_Chaudhary\Code\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C\System\stm32f1xx_it.c" ""</A4>
+        <A5>_ "C:\Amit_Chaudhary\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - NewI2C\System\stm32f1xx_it.c" ""</A5>
+        <A6>_ "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Txn\App\Src\main.cpp" ""</A6>
+        <A7>_ "C:\Amit_Chaudhary\STM32\Projects\IAR\STM32F1xx_CPP_FW\STM32F1xx_CPP_FW - CPF - Txn\Test\inc\I2CIntrTest.h" ""</A7>
+        <Count>8</Count>
         <SuppressDialog>0</SuppressDialog>
     </Aliases>
     <Simulator>

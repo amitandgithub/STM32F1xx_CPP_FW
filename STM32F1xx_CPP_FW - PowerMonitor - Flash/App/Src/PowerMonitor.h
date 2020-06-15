@@ -104,7 +104,7 @@ typedef union
 }PowerSettings_t;
 
 /*****************************SD CARD ********************************/
-#define SD_CARD 1
+#define SD_CARD 0
 #define SD_CARD_SAVE_FREQ 100
 
 void BuildName(char* Name);
@@ -173,6 +173,32 @@ class DisplayBrightnessCallback : public HMI::SettingCallback
     }
 };
 
+void Ina219ModeFx(uint32_t UpdatedSettingValue);
+class Ina219ModeCallback : public HMI::SettingCallback
+{
+    virtual void CallbackFunction(uint32_t UpdatedSettingValue) 
+    {
+      Ina219ModeFx(UpdatedSettingValue);
+    }
+};
+
+void AddSecondsFx(uint32_t UpdatedSettingValue);
+class AddSecondsCallback : public HMI::SettingCallback
+{
+    virtual void CallbackFunction(uint32_t UpdatedSettingValue) 
+    {
+      AddSecondsFx(UpdatedSettingValue);
+    }
+};
+
+void SubSecondsFx(uint32_t UpdatedSettingValue);
+class SubSecondsCallback : public HMI::SettingCallback
+{
+    virtual void CallbackFunction(uint32_t UpdatedSettingValue) 
+    {
+      SubSecondsFx(UpdatedSettingValue);
+    }
+};
 
 
 #endif // PowerMonitor_h

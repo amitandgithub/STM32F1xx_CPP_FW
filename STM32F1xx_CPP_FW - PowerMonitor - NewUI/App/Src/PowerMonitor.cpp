@@ -85,7 +85,7 @@ static PressCallback PressCb;
 
 static LongPressCallback1 LongPressCb;
 
-static BSP::HwButton<HAL::DigitalIn<A8,INPUT_PULLDOWN>,reinterpret_cast <HAL::Callback *>(&DownCb),reinterpret_cast <HAL::Callback *>(&PressCb),reinterpret_cast <HAL::Callback *>(&LongPressCb)> B9_HwBtnInt; 
+static BSP::HwButton<HAL::DigitalIn<B11,INPUT_PULLDOWN>,reinterpret_cast <HAL::Callback *>(&DownCb),reinterpret_cast <HAL::Callback *>(&PressCb),reinterpret_cast <HAL::Callback *>(&LongPressCb)> B9_HwBtnInt; 
 
 static SettingCallback aSettingCallback;
 

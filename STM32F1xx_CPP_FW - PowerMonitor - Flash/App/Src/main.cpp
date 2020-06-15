@@ -42,7 +42,7 @@ struct s {
 //  uint8_t yr  = STR_TO_BCD(__DATE__[9],__DATE__[8]);
 // MCP1703T input max 16V
 
-#define NEW_BOARD 0
+#define NEW_BOARD 1
 #define RTC_ON_LSE 0
 
 int main(void)
@@ -54,7 +54,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
 #else
-  uart1.HwInit(9600);//115200
+  uart1.HwInit(460800);//115200
   init_printf(NULL,putc);
   printf("%f\n\r", 0.1234); 
 #endif
@@ -78,7 +78,7 @@ int main(void)
     //LL_mDelay(100);
     //ssd1306_test();
     //Nokia_Lcd_Test();
-     w25qxx_Test();
+    // w25qxx_Test();
     //st7735_Test();
     // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
     //Power_Monitor_Test();
@@ -88,7 +88,7 @@ int main(void)
     //Ir_Test();
     //Template_Tests();    
     //Window_test();
-    //PowerMonitorRun();
+    PowerMonitorRun();
     
   }    
 }

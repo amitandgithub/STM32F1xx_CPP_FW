@@ -18,7 +18,7 @@ extern Rtc rtc;
 extern Uart uart1;
 
 
-extern HAL::AnalogIn adc0;
+extern HAL::AnalogIn adc1;
 //static AnalogIn adc0(LL_ADC_CHANNEL_0);
 static HAL::PulseOut<(uint32_t)TIM3,TIM3_CH3_PIN_B0,10000> Dimmer; //TIM3_CH1_PIN_A6 
 
@@ -87,7 +87,7 @@ static PressCallback PressCb;
 
 static LongPressCallback1 LongPressCb;
 
-static BSP::HwButton<HAL::DigitalIn<A8,INPUT_PULLDOWN>,reinterpret_cast <HAL::Callback *>(&DownCb),reinterpret_cast <HAL::Callback *>(&PressCb),reinterpret_cast <HAL::Callback *>(&LongPressCb)> B9_HwBtnInt; 
+static BSP::HwButton<HAL::DigitalIn<B11/*B11 A8*/,INPUT_PULLDOWN>,reinterpret_cast <HAL::Callback *>(&DownCb),reinterpret_cast <HAL::Callback *>(&PressCb),reinterpret_cast <HAL::Callback *>(&LongPressCb)> B9_HwBtnInt; 
 
 enum
 {
@@ -125,6 +125,7 @@ const HMI::WindowContext_t  NamedWindowContextUart   = {0,127,CURRENT_FONT_H*Lin
 const HMI::NamedSettingTable_t NamedSettingTableUart[] = { {0,(char*)"OFF"}, {1,(char*)"ON"}};
 const HMI::NamedSettingContext_t NamedSettingContextUart  = {&UartState,UartText,&UartStateCb,14,8,2,NamedSettingTableUart};
 static HMI::NamedSettingWindow NamedSettingWindowUart(&NamedWindowContextUart,&NamedSettingContextUart);
+
 
 /*************************************************** Setting Window *****************************************************************/
 UartDelayCallback UartDelayCb;
@@ -164,12 +165,36 @@ const HMI::WindowContext_t  RTC_time_WindowContext        = {0,127,CURRENT_FONT_
 const HMI::SettingContext_t RTC_time_Text_SettingContext  = {&RTC_time,RTC_time_Text,&RtcTimeSetCb,14,6,8};
 static HMI::SettingWindow SettingWindowRTC_time(&RTC_time_WindowContext,&RTC_time_Text_SettingContext); 
 
+AddSecondsCallback AddSecondsCb;
+uint32_t AddSeconds;
+char AddSecondsText[20] = "RTC Sec+           ";                            
+const HMI::WindowContext_t  WindowContextAddSeconds   = {0,127,CURRENT_FONT_H*Line3,CURRENT_FONT_H*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::SettingContext_t SettingContextAddSeconds  = {&AddSeconds,AddSecondsText,&AddSecondsCb,14,4,9};
+static HMI::SettingWindow SettingWindowAddSeconds(&WindowContextAddSeconds,&SettingContextAddSeconds);
+
+SubSecondsCallback SubSecondsCb;
+uint32_t SubSeconds;
+char SubSecondsText[20] = "RTC Sec-           ";                            
+const HMI::WindowContext_t  WindowContextSubSeconds   = {0,127,CURRENT_FONT_H*Line4,CURRENT_FONT_H*Line5,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::SettingContext_t SettingContextSubSeconds  = {&SubSeconds,SubSecondsText,&SubSecondsCb,14,4,9};
+static HMI::SettingWindow SettingWindowSubSeconds(&WindowContextSubSeconds,&SettingContextSubSeconds);
+
 DisplayBrightnessCallback DisplayBrightnessCb;
 char Brightness_Text[15] = "Brightness 100";       
 uint32_t Brightness = 100;                             
-const HMI::WindowContext_t  BrightnessWindowContext        = {0,127,CURRENT_FONT_H*Line3,CURRENT_FONT_H*Line4,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::WindowContext_t  BrightnessWindowContext        = {0,127,CURRENT_FONT_H*Line5,CURRENT_FONT_H*Line6,&CURRENT_FONT,GREEN,BLACK,RED};
 const HMI::SettingContext_t BrightnessText_SettingContext  = {&Brightness,Brightness_Text,&DisplayBrightnessCb,14,3,11};
 static HMI::SettingWindow SettingWindowBrightness(&BrightnessWindowContext,&BrightnessText_SettingContext);
+
+
+
+Ina219ModeCallback Ina219ModeCb;
+uint32_t CurrentIna219Mode;
+char Ina219ModeText[20] = "Mode        ";                                  
+const HMI::WindowContext_t  NamedWindowContextIna219Mode   = {0,127,CURRENT_FONT_H*Line6,CURRENT_FONT_H*Line7,&CURRENT_FONT,GREEN,BLACK,RED};
+const HMI::NamedSettingTable_t NamedSettingTableIna219Mode[] = { {0,(char*)"400ma,16V"}, {1,(char*)"3200ma,26V"}};
+const HMI::NamedSettingContext_t NamedSettingContextIna219Mode  = {&CurrentIna219Mode,Ina219ModeText,&Ina219ModeCb,14,5,2,NamedSettingTableIna219Mode};
+static HMI::NamedSettingWindow NamedSettingWindowIna219Mode(&NamedWindowContextIna219Mode,&NamedSettingContextIna219Mode);
 
 /*************************************************** Text Window *****************************************************************/
 class TextUpCallback : public Callback
@@ -213,7 +238,9 @@ static HMI::TextWindow TimeWindow(&TimeWindowContext,&TimeTextContext);
 
 /*************************** Date  ******************************************************************/
 char DateText[] =  "Mon,24 May 20 "
-                   "25'c          ";
+                   "25'c          "
+                   "Bat 12.0v     ";
+
 const HMI::WindowContext_t  DateWindowContext   = {0,127,TIME_FONT_H*Line2,TIME_FONT_H*Line3,&POWER_SCREEN_FONT,GREEN,BLACK,RED}; 
 const HMI::TextWindowContext_t DateTextContext  = {(char*)DateText,nullptr,nullptr,nullptr,nullptr};
 static HMI::TextWindow DateWindow(&DateWindowContext,&DateTextContext);
@@ -234,6 +261,7 @@ static volatile uint32_t t1;
     
     // Power up Backup Domain for accessing RTC NV RAM
     rtc.PowerBackupDomain();
+    adc1.HwInit(A1,LL_ADC_SAMPLINGTIME_239CYCLES_5);
     
     RestoreSettings();
     // Initialize Current sensor
@@ -260,7 +288,10 @@ static volatile uint32_t t1;
     
     TimenDateScreen.Register(&SettingWindowRTC_time); 
     TimenDateScreen.Register(&SettingWindowRTC_date); 
+    TimenDateScreen.Register(&SettingWindowAddSeconds); 
+    TimenDateScreen.Register(&SettingWindowSubSeconds);
     TimenDateScreen.Register(&SettingWindowBrightness); 
+    TimenDateScreen.Register(&NamedSettingWindowIna219Mode);
 
     MyUI.Register(&ClockScreen);
     MyUI.Register(&LivePowerScreen);  
@@ -273,7 +304,7 @@ static volatile uint32_t t1;
   {  
     uint32_t Millis;
     
-    adc0.HwInit(A0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
+   // adc0.HwInit(A0,LL_ADC_SAMPLINGTIME_239CYCLES_5);
     B9_HwBtnInt.Run();  
     PowerMonitor_UI();
     B9_HwBtnInt.Run();  
@@ -299,8 +330,10 @@ static volatile uint32_t t1;
     {
        TempPrevSampleTime = Millis;
        intToStr(__LL_ADC_CALC_TEMPERATURE_TYP_PARAMS(4300,1400,25,3300,ChipTemperature.Read(),LL_ADC_RESOLUTION_12B), (char*)&DateText[CHARS_IN_LINE*Line2], 1,'\'');
-       //DateText[CHARS_IN_LINE*Line2 + 2] = '\'';
        DateText[CHARS_IN_LINE*Line2 + 3] = 'c';
+       
+       ftoa(__LL_ADC_CALC_DATA_TO_VOLTAGE(3300,adc1.Read(),LL_ADC_RESOLUTION_12B)/100.0, (char*)&DateText[CHARS_IN_LINE*Line3 + 4], 1,'v');
+       
     }    
     
    
@@ -520,6 +553,31 @@ void DisplayBrightness(uint32_t brightness)
   Dimmer.SetDutyCycle(brightness); //1-24.6mv 2-52.5 10-276mv  50-1.39v 99 - 2.75v 100 2.77v
 }
 
+void Ina219ModeFx(uint32_t UpdatedSettingValue)
+{
+  if(UpdatedSettingValue == 0)
+  {
+    INA219_Dev.SetCalibration_16V_400mA();
+  }
+  else if(UpdatedSettingValue == 1)
+  {
+    INA219_Dev.SetCalibration_32V_2A();
+  }
+}
+
+void AddSecondsFx(uint32_t UpdatedSettingValue)
+{
+  uint32_t TotalCounts;  
+  TotalCounts = rtc.ReadTimeCounter() + UpdatedSettingValue;
+  rtc.SetCounter(TotalCounts);  
+}
+
+void SubSecondsFx(uint32_t UpdatedSettingValue)
+{
+  uint32_t TotalCounts;  
+  TotalCounts = rtc.ReadTimeCounter() - UpdatedSettingValue;
+  rtc.SetCounter(TotalCounts);  
+}
 
 void RestoreSettings()
 {

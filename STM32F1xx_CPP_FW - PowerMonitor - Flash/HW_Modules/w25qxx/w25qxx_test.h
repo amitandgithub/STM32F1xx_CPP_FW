@@ -115,7 +115,9 @@ enum
   SLAVE_DMA_RX,
   SLAVE_DMA_TX,
   POLL_SLAVE_TEST,
-  POLL_MASTER_TX
+  POLL_MASTER_TX,
+  POLL_MASTER_RX,
+  POLL_MASTER_TX_RX,
 };
 
 uint32_t BusyCount = 0;
@@ -160,7 +162,11 @@ void w25qxx_Test()
   
   Transaction.Mode = _8_BIT;
   Transaction.pChipselect = &w25qxxDev.m_CSPin;
-  test_id = POLL_MASTER_TX;//w25qxx_POLL_TX;//SLAVE_DMA;//SLAVE_INTR;
+  // Only for Stm8 slave testing
+  memcpy(TxBuf,"AmitC 1",7);
+  SPI.SetBaudrate(Spi::SPI_BAUDRATE_DIV128);
+  
+  test_id = POLL_MASTER_TX_RX;//w25qxx_POLL_TX;//SLAVE_DMA;//SLAVE_INTR;
   while(1)
   {
     
@@ -420,25 +426,52 @@ void w25qxx_Test()
       LL_mDelay(1100);   
       break;
     case POLL_MASTER_TX: 
-      SPI.SetBaudrate(Spi::SPI_BAUDRATE_DIV2);
+      static uint8_t count;
       B3PinCS.Low();
-      SPI.Tx((uint8_t)'A');
-      HAL::usDelay(13);     
-      SPI.Tx((uint8_t)'m'); 
-      HAL::usDelay(13);     
-      SPI.Tx((uint8_t)'i');
-      HAL::usDelay(13);      
-      SPI.Tx((uint8_t)'t');
-//      SPI.Tx((uint8_t)pBuffer[0]++);
-//      SPI.Tx((uint8_t)pBuffer[0]);
+      TxBuf[5] = count++;
+      SPI.TxPoll(TxBuf,7);
       B3PinCS.High();
-    
+      HAL::usDelay(10);
+      break;
+
+    case POLL_MASTER_RX:      
+      B3PinCS.Low();
+      SPI.RxPoll(&RxBuf[0],7);
+      B3PinCS.High();
+      HAL::usDelay(200);
+      break;
+      
+    case POLL_MASTER_TX_RX: 
+      TxBuf[5]++;
+      B3PinCS.Low();
+      SPI.TxPoll(TxBuf,6);
+      B3PinCS.High();
+      //LL_mDelay(1);
+      HAL::usDelay(10);
+      B3PinCS.Low();
+      SPI.RxPoll(&RxBuf[0],7);
+      B3PinCS.High();
+      //LL_mDelay(1);
+      HAL::usDelay(20);
+      break;
+      
     default: break;      
     }
-    memset(RxBuf,0,sizeof(RxBuf));
-    LL_mDelay(1);        
+    //LL_mDelay(1); 
+    //memset(RxBuf,0,sizeof(RxBuf));
+           
   }  
 }
 
 
+#if 0
+      SPI.Tx((uint8_t)'A');
+      HAL::usDelay(11);     
+      SPI.Tx((uint8_t)'m'); 
+      HAL::usDelay(11);     
+      SPI.Tx((uint8_t)'i');
+      HAL::usDelay(11);      
+      SPI.Tx((uint8_t)'t');
+#endif
+      
 #endif // w25qxx_test_h

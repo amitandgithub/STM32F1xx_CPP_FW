@@ -7,8 +7,9 @@ void Uart_DMA_Test();
 
 extern HAL::Uart uart1;
 extern HAL::AnalogIn adc0;
+extern HAL::AnalogIn adc1;
 extern HAL::AnalogIn ChipTemperature;
-HAL::AnalogIn adc1(LL_ADC_CHANNEL_1);
+
 HAL::AnalogIn adc2(LL_ADC_CHANNEL_2);
 HAL::AnalogIn adcVref(LL_ADC_CHANNEL_VREFINT);
 
