@@ -36,7 +36,7 @@ struct s {
 //Micros = Millis*1000 + 1000 – SysTick->VAL/72
 //if you are free to use 32 bit timer you can even do it without IRQ, just simply time= TIMx->CNT.  
 
-#define NEW_BOARD 0
+#define NEW_BOARD 1
 
 int main(void)
 {	
@@ -66,11 +66,11 @@ int main(void)
     //Rtc_test();
     //LL_mDelay(100);
     //ssd1306_test();
-   // Nokia_Lcd_Test();
+    Nokia_Lcd_Test();
     //w25qxx_Test();
     //st7735_Test();
    // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
-    Power_Monitor_Test();
+   // Power_Monitor_Test();
   }    
 }
 

@@ -29,7 +29,7 @@ void Nokia_Lcd_Test()
     LCDx.HwInit();
     INA219_Dev.HwInit();
     INA219_Dev.SetCalibration_16V_400mA(); //SetCalibration_32V_2A//SetCalibration_16V_400mA
-    LCDx.BackLightON();
+    //LCDx.BackLightON();
     InitDone = true;
   }
   
@@ -47,7 +47,7 @@ void Nokia_Lcd_Test()
     LCDx.DisplayStr(2,0,(char const*)I2C_Current);
     LCDx.DisplayStr(3,0,(char const*)I2C_mAH);
     
-    if(0)//previousVal != *((uint16_t*)&TimeString[10])  )
+    if(1)//previousVal != *((uint16_t*)&TimeString[10])  )
     {      
       previousVal = *((uint16_t*)&TimeString[10]);
      // HAL::DBG_PRINT((uint8_t*)" ",1);
@@ -61,7 +61,7 @@ void Nokia_Lcd_Test()
       HAL::DBG_PRINT((uint8_t*)"\n\r",2);
     }
     
-    LL_mDelay(100);    
+    LL_mDelay(10);    
   }
   
 }

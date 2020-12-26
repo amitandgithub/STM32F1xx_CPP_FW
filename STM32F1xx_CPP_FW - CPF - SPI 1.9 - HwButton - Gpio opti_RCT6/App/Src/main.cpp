@@ -69,11 +69,11 @@ int main(void)
     //Rtc_test();
     //LL_mDelay(100);
     //ssd1306_test();
-   // Nokia_Lcd_Test();
+    Nokia_Lcd_Test();
     //w25qxx_Test();
     //st7735_Test();
    // HAL::DBG_PRINT((uint8_t*)"Amit\n\r",6);
-    Run_Power_Monitor();
+    //Run_Power_Monitor();
   }    
 }
 

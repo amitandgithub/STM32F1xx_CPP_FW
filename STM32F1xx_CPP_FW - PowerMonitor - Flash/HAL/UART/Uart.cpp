@@ -389,7 +389,7 @@ namespace HAL
   {
     if( (RxBuf == nullptr) || (RxLen == 0) ) return UART_INVALID_PARAMS;
     
-    m_UARTState = UART_TX_BUSY;
+    m_UARTState = UART_RX_BUSY;
     m_Transaction.Len = RxLen;
     m_Transaction.Buf = RxBuf;
     m_Transaction.XferDoneCallback = pUARTCallback; 

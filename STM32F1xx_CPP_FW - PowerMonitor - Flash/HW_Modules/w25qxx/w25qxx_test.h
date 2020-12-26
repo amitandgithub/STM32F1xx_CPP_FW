@@ -118,6 +118,7 @@ enum
   POLL_MASTER_TX,
   POLL_MASTER_RX,
   POLL_MASTER_TX_RX,
+  POLL_MASTER_TCAM_TEST
 };
 
 uint32_t BusyCount = 0;
@@ -164,9 +165,9 @@ void w25qxx_Test()
   Transaction.pChipselect = &w25qxxDev.m_CSPin;
   // Only for Stm8 slave testing
   memcpy(TxBuf,"AmitC 1",7);
-  SPI.SetBaudrate(Spi::SPI_BAUDRATE_DIV128);
+  SPI.SetBaudrate(Spi::SPI_BAUDRATE_DIV256);
   
-  test_id = POLL_MASTER_TX_RX;//w25qxx_POLL_TX;//SLAVE_DMA;//SLAVE_INTR;
+  test_id = POLL_MASTER_TCAM_TEST;//w25qxx_POLL_TX;//SLAVE_DMA;//SLAVE_INTR;
   while(1)
   {
     
@@ -452,6 +453,25 @@ void w25qxx_Test()
       SPI.RxPoll(&RxBuf[0],7);
       B3PinCS.High();
       //LL_mDelay(1);
+      HAL::usDelay(20);
+      break;
+      
+      case POLL_MASTER_TCAM_TEST: 
+      TxBuf[0] = 0x00;
+      TxBuf[1] = 0x01;
+      TxBuf[2] = 0x02;
+      TxBuf[3] = 0x03;
+      TxBuf[4] = 0x04;
+      TxBuf[5] = 0x05;
+      B3PinCS.Low();
+      SPI.TxPoll(TxBuf,6);
+      B3PinCS.High();
+      LL_mDelay(100);
+      HAL::usDelay(10);
+      B3PinCS.Low();
+      SPI.RxPoll(&RxBuf[0],8);
+      B3PinCS.High();
+      LL_mDelay(5000);
       HAL::usDelay(20);
       break;
       

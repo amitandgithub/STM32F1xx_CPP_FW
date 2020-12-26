@@ -11,7 +11,7 @@
 #include <cstdint>
 
 
-#define USB_DEVICE 0
+#define USB_DEVICE 1
 
 typedef enum
 {
